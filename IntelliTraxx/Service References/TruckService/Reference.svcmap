@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="181fa0fd-e886-4eab-bb8a-16c689e6b91c" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings>
+      <CollectionMapping TypeName="System.Collections.Generic.List`1" Category="List" />
+    </CollectionMappings>
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost/LATATraxxService/TruckService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="TruckService.xsd" MetadataType="Schema" ID="a83a639e-758c-4461-b1d6-a577b6f76605" SourceId="1" SourceUrl="http://localhost/LATATraxxService/TruckService.svc?xsd=xsd3" />
+    <MetadataFile FileName="TruckService.wsdl" MetadataType="Wsdl" ID="b80dfd70-8c8d-45de-9e38-5caebe4b9a25" SourceId="1" SourceUrl="http://localhost/LATATraxxService/TruckService.svc?wsdl" />
+    <MetadataFile FileName="TruckService1.xsd" MetadataType="Schema" ID="c38d1b19-ad40-456b-87e6-4240349cd419" SourceId="1" SourceUrl="http://localhost/LATATraxxService/TruckService.svc?xsd=xsd5" />
+    <MetadataFile FileName="TruckService2.xsd" MetadataType="Schema" ID="500f2cd5-c5ae-428c-a61b-a4567f8648a8" SourceId="1" SourceUrl="http://localhost/LATATraxxService/TruckService.svc?xsd=xsd4" />
+    <MetadataFile FileName="TruckService.disco" MetadataType="Disco" ID="20cb3bf0-0a3c-4419-9bce-b87f73eceef5" SourceId="1" SourceUrl="http://localhost/LATATraxxService/TruckService.svc?disco" />
+    <MetadataFile FileName="TruckService3.xsd" MetadataType="Schema" ID="ed4883e4-a668-4087-a66d-8ad25e25a908" SourceId="1" SourceUrl="http://localhost/LATATraxxService/TruckService.svc?xsd=xsd1" />
+    <MetadataFile FileName="TruckService4.xsd" MetadataType="Schema" ID="b9ad1f9b-c2a4-46f6-856c-c7eecad0644f" SourceId="1" SourceUrl="http://localhost/LATATraxxService/TruckService.svc?xsd=xsd2" />
+    <MetadataFile FileName="TruckService5.xsd" MetadataType="Schema" ID="1feb7cf5-dc25-4016-bb79-a40a13141267" SourceId="1" SourceUrl="http://localhost/LATATraxxService/TruckService.svc?xsd=xsd0" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

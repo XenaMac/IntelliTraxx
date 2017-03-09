@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/LATATrax" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/LATATrax" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost/TraxxCloudService/AlertAdminSvc.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:complexType name="ArrayOfalertClass">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="alertClass" nillable="true" type="tns:alertClass" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfalertClass" nillable="true" type="tns:ArrayOfalertClass" />
+  <xs:complexType name="alertClass">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AlertClassID" type="ser:guid" />
+      <xs:element minOccurs="0" name="AlertClassName" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="alertClass" nillable="true" type="tns:alertClass" />
+  <xs:complexType name="ArrayOfalertVehicle">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="alertVehicle" nillable="true" type="tns:alertVehicle" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfalertVehicle" nillable="true" type="tns:ArrayOfalertVehicle" />
+  <xs:complexType name="alertVehicle">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AlertAction" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="AlertID" type="ser:guid" />
+      <xs:element minOccurs="0" name="VehicleID" type="ser:guid" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="alertVehicle" nillable="true" type="tns:alertVehicle" />
+  <xs:complexType name="ArrayOfalertGeoFence">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="alertGeoFence" nillable="true" type="tns:alertGeoFence" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfalertGeoFence" nillable="true" type="tns:ArrayOfalertGeoFence" />
+  <xs:complexType name="alertGeoFence">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AlertID" type="ser:guid" />
+      <xs:element minOccurs="0" name="GeoFenceID" type="ser:guid" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="alertGeoFence" nillable="true" type="tns:alertGeoFence" />
+  <xs:complexType name="ArrayOfdbAlert">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="dbAlert" nillable="true" type="tns:dbAlert" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfdbAlert" nillable="true" type="tns:ArrayOfdbAlert" />
+  <xs:complexType name="dbAlert">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AlertActive" type="xs:boolean" />
+      <xs:element minOccurs="0" name="AlertClassID" type="ser:guid" />
+      <xs:element minOccurs="0" name="AlertEndTime" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="AlertFriendlyName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="AlertID" type="ser:guid" />
+      <xs:element minOccurs="0" name="AlertStartTime" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="AlertType" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="minVal" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="dbAlert" nillable="true" type="tns:dbAlert" />
+  <xs:complexType name="ArrayOflinkVehicle">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="linkVehicle" nillable="true" type="tns:linkVehicle" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOflinkVehicle" nillable="true" type="tns:ArrayOflinkVehicle" />
+  <xs:complexType name="linkVehicle">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ID" type="ser:guid" />
+      <xs:element minOccurs="0" name="vehicleID" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="linkVehicle" nillable="true" type="tns:linkVehicle" />
+  <xs:complexType name="ArrayOfpolyData">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="polyData" nillable="true" type="tns:polyData" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfpolyData" nillable="true" type="tns:ArrayOfpolyData" />
+  <xs:complexType name="polyData">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="polyID" type="ser:guid" />
+      <xs:element minOccurs="0" name="polyName" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="polyData" nillable="true" type="tns:polyData" />
+  <xs:complexType name="ArrayOfschedule">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="schedule" nillable="true" type="tns:schedule" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfschedule" nillable="true" type="tns:ArrayOfschedule" />
+  <xs:complexType name="schedule">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="DOW" type="xs:int" />
+      <xs:element minOccurs="0" name="EffDtEnd" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="EffDtStart" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="active" type="xs:boolean" />
+      <xs:element minOccurs="0" name="company" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="createdBy" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="createdOn" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="endTime" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="modifiedBy" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="modifiedOn" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="scheduleID" type="ser:guid" />
+      <xs:element minOccurs="0" name="scheduleName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="startTime" type="xs:dateTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="schedule" nillable="true" type="tns:schedule" />
+  <xs:complexType name="ArrayOfvsLink">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="vsLink" nillable="true" type="tns:vsLink" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfvsLink" nillable="true" type="tns:ArrayOfvsLink" />
+  <xs:complexType name="vsLink">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="endTime" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="scheduleName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="startTime" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="vehicleID" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="vsLink" nillable="true" type="tns:vsLink" />
+</xs:schema>

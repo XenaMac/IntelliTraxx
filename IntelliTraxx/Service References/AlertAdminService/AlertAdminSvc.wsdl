@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="AlertAdminSvc" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://localhost/TraxxCloudService/AlertAdminSvc.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://localhost/TraxxCloudService/AlertAdminSvc.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost/TraxxCloudService/AlertAdminSvc.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/LATATrax" />
+      <xsd:import schemaLocation="http://localhost/TraxxCloudService/AlertAdminSvc.svc?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IAlertAdminSvc_getAlertClasses_InputMessage">
+    <wsdl:part name="parameters" element="tns:getAlertClasses" />
+  </wsdl:message>
+  <wsdl:message name="IAlertAdminSvc_getAlertClasses_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getAlertClassesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAlertAdminSvc_getAlertVehicles_InputMessage">
+    <wsdl:part name="parameters" element="tns:getAlertVehicles" />
+  </wsdl:message>
+  <wsdl:message name="IAlertAdminSvc_getAlertVehicles_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getAlertVehiclesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAlertAdminSvc_getAlertGeoFences_InputMessage">
+    <wsdl:part name="parameters" element="tns:getAlertGeoFences" />
+  </wsdl:message>
+  <wsdl:message name="IAlertAdminSvc_getAlertGeoFences_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getAlertGeoFencesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAlertAdminSvc_getAlerts_InputMessage">
+    <wsdl:part name="parameters" element="tns:getAlerts" />
+  </wsdl:message>
+  <wsdl:message name="IAlertAdminSvc_getAlerts_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getAlertsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAlertAdminSvc_getAllLinkVehicles_InputMessage">
+    <wsdl:part name="parameters" element="tns:getAllLinkVehicles" />
+  </wsdl:message>
+  <wsdl:message name="IAlertAdminSvc_getAllLinkVehicles_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getAllLinkVehiclesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAlertAdminSvc_getPolygons_InputMessage">
+    <wsdl:part name="parameters" element="tns:getPolygons" />
+  </wsdl:message>
+  <wsdl:message name="IAlertAdminSvc_getPolygons_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getPolygonsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAlertAdminSvc_getLinkedAlertsVehicles_InputMessage">
+    <wsdl:part name="parameters" element="tns:getLinkedAlertsVehicles" />
+  </wsdl:message>
+  <wsdl:message name="IAlertAdminSvc_getLinkedAlertsVehicles_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getLinkedAlertsVehiclesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAlertAdminSvc_getLinkedAlertsGeoFences_InputMessage">
+    <wsdl:part name="parameters" element="tns:getLinkedAlertsGeoFences" />
+  </wsdl:message>
+  <wsdl:message name="IAlertAdminSvc_getLinkedAlertsGeoFences_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getLinkedAlertsGeoFencesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAlertAdminSvc_getAllSchedules_InputMessage">
+    <wsdl:part name="parameters" element="tns:getAllSchedules" />
+  </wsdl:message>
+  <wsdl:message name="IAlertAdminSvc_getAllSchedules_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getAllSchedulesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAlertAdminSvc_getAllSchedulesByVehicle_InputMessage">
+    <wsdl:part name="parameters" element="tns:getAllSchedulesByVehicle" />
+  </wsdl:message>
+  <wsdl:message name="IAlertAdminSvc_getAllSchedulesByVehicle_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getAllSchedulesByVehicleResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAlertAdminSvc_getAllVehiclesBySchedule_InputMessage">
+    <wsdl:part name="parameters" element="tns:getAllVehiclesBySchedule" />
+  </wsdl:message>
+  <wsdl:message name="IAlertAdminSvc_getAllVehiclesBySchedule_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getAllVehiclesByScheduleResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAlertAdminSvc_updateAlertData_InputMessage">
+    <wsdl:part name="parameters" element="tns:updateAlertData" />
+  </wsdl:message>
+  <wsdl:message name="IAlertAdminSvc_updateAlertData_OutputMessage">
+    <wsdl:part name="parameters" element="tns:updateAlertDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAlertAdminSvc_deleteAlert_InputMessage">
+    <wsdl:part name="parameters" element="tns:deleteAlert" />
+  </wsdl:message>
+  <wsdl:message name="IAlertAdminSvc_deleteAlert_OutputMessage">
+    <wsdl:part name="parameters" element="tns:deleteAlertResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAlertAdminSvc_changeAlertStatus_InputMessage">
+    <wsdl:part name="parameters" element="tns:changeAlertStatus" />
+  </wsdl:message>
+  <wsdl:message name="IAlertAdminSvc_changeAlertStatus_OutputMessage">
+    <wsdl:part name="parameters" element="tns:changeAlertStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAlertAdminSvc_changeSchedule_InputMessage">
+    <wsdl:part name="parameters" element="tns:changeSchedule" />
+  </wsdl:message>
+  <wsdl:message name="IAlertAdminSvc_changeSchedule_OutputMessage">
+    <wsdl:part name="parameters" element="tns:changeScheduleResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAlertAdminSvc_deleteSchedules_InputMessage">
+    <wsdl:part name="parameters" element="tns:deleteSchedules" />
+  </wsdl:message>
+  <wsdl:message name="IAlertAdminSvc_deleteSchedules_OutputMessage">
+    <wsdl:part name="parameters" element="tns:deleteSchedulesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAlertAdminSvc_deleteSchedulesBySchedule_InputMessage">
+    <wsdl:part name="parameters" element="tns:deleteSchedulesBySchedule" />
+  </wsdl:message>
+  <wsdl:message name="IAlertAdminSvc_deleteSchedulesBySchedule_OutputMessage">
+    <wsdl:part name="parameters" element="tns:deleteSchedulesByScheduleResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAlertAdminSvc_deleteSchedulesByVehicle_InputMessage">
+    <wsdl:part name="parameters" element="tns:deleteSchedulesByVehicle" />
+  </wsdl:message>
+  <wsdl:message name="IAlertAdminSvc_deleteSchedulesByVehicle_OutputMessage">
+    <wsdl:part name="parameters" element="tns:deleteSchedulesByVehicleResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAlertAdminSvc_updateSchedules_InputMessage">
+    <wsdl:part name="parameters" element="tns:updateSchedules" />
+  </wsdl:message>
+  <wsdl:message name="IAlertAdminSvc_updateSchedules_OutputMessage">
+    <wsdl:part name="parameters" element="tns:updateSchedulesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAlertAdminSvc_addVehicleToSchedule_InputMessage">
+    <wsdl:part name="parameters" element="tns:addVehicleToSchedule" />
+  </wsdl:message>
+  <wsdl:message name="IAlertAdminSvc_addVehicleToSchedule_OutputMessage">
+    <wsdl:part name="parameters" element="tns:addVehicleToScheduleResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAlertAdminSvc_addSchedulesToVehicle_InputMessage">
+    <wsdl:part name="parameters" element="tns:addSchedulesToVehicle" />
+  </wsdl:message>
+  <wsdl:message name="IAlertAdminSvc_addSchedulesToVehicle_OutputMessage">
+    <wsdl:part name="parameters" element="tns:addSchedulesToVehicleResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IAlertAdminSvc">
+    <wsdl:operation name="getAlertClasses">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAlertAdminSvc/getAlertClasses" message="tns:IAlertAdminSvc_getAlertClasses_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAlertAdminSvc/getAlertClassesResponse" message="tns:IAlertAdminSvc_getAlertClasses_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getAlertVehicles">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAlertAdminSvc/getAlertVehicles" message="tns:IAlertAdminSvc_getAlertVehicles_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAlertAdminSvc/getAlertVehiclesResponse" message="tns:IAlertAdminSvc_getAlertVehicles_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getAlertGeoFences">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAlertAdminSvc/getAlertGeoFences" message="tns:IAlertAdminSvc_getAlertGeoFences_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAlertAdminSvc/getAlertGeoFencesResponse" message="tns:IAlertAdminSvc_getAlertGeoFences_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getAlerts">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAlertAdminSvc/getAlerts" message="tns:IAlertAdminSvc_getAlerts_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAlertAdminSvc/getAlertsResponse" message="tns:IAlertAdminSvc_getAlerts_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getAllLinkVehicles">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAlertAdminSvc/getAllLinkVehicles" message="tns:IAlertAdminSvc_getAllLinkVehicles_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAlertAdminSvc/getAllLinkVehiclesResponse" message="tns:IAlertAdminSvc_getAllLinkVehicles_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getPolygons">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAlertAdminSvc/getPolygons" message="tns:IAlertAdminSvc_getPolygons_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAlertAdminSvc/getPolygonsResponse" message="tns:IAlertAdminSvc_getPolygons_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getLinkedAlertsVehicles">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAlertAdminSvc/getLinkedAlertsVehicles" message="tns:IAlertAdminSvc_getLinkedAlertsVehicles_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAlertAdminSvc/getLinkedAlertsVehiclesResponse" message="tns:IAlertAdminSvc_getLinkedAlertsVehicles_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getLinkedAlertsGeoFences">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAlertAdminSvc/getLinkedAlertsGeoFences" message="tns:IAlertAdminSvc_getLinkedAlertsGeoFences_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAlertAdminSvc/getLinkedAlertsGeoFencesResponse" message="tns:IAlertAdminSvc_getLinkedAlertsGeoFences_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getAllSchedules">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAlertAdminSvc/getAllSchedules" message="tns:IAlertAdminSvc_getAllSchedules_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAlertAdminSvc/getAllSchedulesResponse" message="tns:IAlertAdminSvc_getAllSchedules_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getAllSchedulesByVehicle">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAlertAdminSvc/getAllSchedulesByVehicle" message="tns:IAlertAdminSvc_getAllSchedulesByVehicle_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAlertAdminSvc/getAllSchedulesByVehicleResponse" message="tns:IAlertAdminSvc_getAllSchedulesByVehicle_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getAllVehiclesBySchedule">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAlertAdminSvc/getAllVehiclesBySchedule" message="tns:IAlertAdminSvc_getAllVehiclesBySchedule_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAlertAdminSvc/getAllVehiclesByScheduleResponse" message="tns:IAlertAdminSvc_getAllVehiclesBySchedule_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="updateAlertData">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAlertAdminSvc/updateAlertData" message="tns:IAlertAdminSvc_updateAlertData_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAlertAdminSvc/updateAlertDataResponse" message="tns:IAlertAdminSvc_updateAlertData_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="deleteAlert">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAlertAdminSvc/deleteAlert" message="tns:IAlertAdminSvc_deleteAlert_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAlertAdminSvc/deleteAlertResponse" message="tns:IAlertAdminSvc_deleteAlert_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="changeAlertStatus">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAlertAdminSvc/changeAlertStatus" message="tns:IAlertAdminSvc_changeAlertStatus_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAlertAdminSvc/changeAlertStatusResponse" message="tns:IAlertAdminSvc_changeAlertStatus_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="changeSchedule">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAlertAdminSvc/changeSchedule" message="tns:IAlertAdminSvc_changeSchedule_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAlertAdminSvc/changeScheduleResponse" message="tns:IAlertAdminSvc_changeSchedule_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="deleteSchedules">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAlertAdminSvc/deleteSchedules" message="tns:IAlertAdminSvc_deleteSchedules_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAlertAdminSvc/deleteSchedulesResponse" message="tns:IAlertAdminSvc_deleteSchedules_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="deleteSchedulesBySchedule">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAlertAdminSvc/deleteSchedulesBySchedule" message="tns:IAlertAdminSvc_deleteSchedulesBySchedule_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAlertAdminSvc/deleteSchedulesByScheduleResponse" message="tns:IAlertAdminSvc_deleteSchedulesBySchedule_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="deleteSchedulesByVehicle">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAlertAdminSvc/deleteSchedulesByVehicle" message="tns:IAlertAdminSvc_deleteSchedulesByVehicle_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAlertAdminSvc/deleteSchedulesByVehicleResponse" message="tns:IAlertAdminSvc_deleteSchedulesByVehicle_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="updateSchedules">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAlertAdminSvc/updateSchedules" message="tns:IAlertAdminSvc_updateSchedules_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAlertAdminSvc/updateSchedulesResponse" message="tns:IAlertAdminSvc_updateSchedules_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="addVehicleToSchedule">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAlertAdminSvc/addVehicleToSchedule" message="tns:IAlertAdminSvc_addVehicleToSchedule_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAlertAdminSvc/addVehicleToScheduleResponse" message="tns:IAlertAdminSvc_addVehicleToSchedule_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="addSchedulesToVehicle">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAlertAdminSvc/addSchedulesToVehicle" message="tns:IAlertAdminSvc_addSchedulesToVehicle_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAlertAdminSvc/addSchedulesToVehicleResponse" message="tns:IAlertAdminSvc_addSchedulesToVehicle_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IAlertAdminSvc" type="tns:IAlertAdminSvc">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="getAlertClasses">
+      <soap:operation soapAction="http://tempuri.org/IAlertAdminSvc/getAlertClasses" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAlertVehicles">
+      <soap:operation soapAction="http://tempuri.org/IAlertAdminSvc/getAlertVehicles" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAlertGeoFences">
+      <soap:operation soapAction="http://tempuri.org/IAlertAdminSvc/getAlertGeoFences" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAlerts">
+      <soap:operation soapAction="http://tempuri.org/IAlertAdminSvc/getAlerts" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAllLinkVehicles">
+      <soap:operation soapAction="http://tempuri.org/IAlertAdminSvc/getAllLinkVehicles" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getPolygons">
+      <soap:operation soapAction="http://tempuri.org/IAlertAdminSvc/getPolygons" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getLinkedAlertsVehicles">
+      <soap:operation soapAction="http://tempuri.org/IAlertAdminSvc/getLinkedAlertsVehicles" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getLinkedAlertsGeoFences">
+      <soap:operation soapAction="http://tempuri.org/IAlertAdminSvc/getLinkedAlertsGeoFences" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAllSchedules">
+      <soap:operation soapAction="http://tempuri.org/IAlertAdminSvc/getAllSchedules" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAllSchedulesByVehicle">
+      <soap:operation soapAction="http://tempuri.org/IAlertAdminSvc/getAllSchedulesByVehicle" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAllVehiclesBySchedule">
+      <soap:operation soapAction="http://tempuri.org/IAlertAdminSvc/getAllVehiclesBySchedule" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updateAlertData">
+      <soap:operation soapAction="http://tempuri.org/IAlertAdminSvc/updateAlertData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteAlert">
+      <soap:operation soapAction="http://tempuri.org/IAlertAdminSvc/deleteAlert" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="changeAlertStatus">
+      <soap:operation soapAction="http://tempuri.org/IAlertAdminSvc/changeAlertStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="changeSchedule">
+      <soap:operation soapAction="http://tempuri.org/IAlertAdminSvc/changeSchedule" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteSchedules">
+      <soap:operation soapAction="http://tempuri.org/IAlertAdminSvc/deleteSchedules" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteSchedulesBySchedule">
+      <soap:operation soapAction="http://tempuri.org/IAlertAdminSvc/deleteSchedulesBySchedule" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteSchedulesByVehicle">
+      <soap:operation soapAction="http://tempuri.org/IAlertAdminSvc/deleteSchedulesByVehicle" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updateSchedules">
+      <soap:operation soapAction="http://tempuri.org/IAlertAdminSvc/updateSchedules" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="addVehicleToSchedule">
+      <soap:operation soapAction="http://tempuri.org/IAlertAdminSvc/addVehicleToSchedule" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="addSchedulesToVehicle">
+      <soap:operation soapAction="http://tempuri.org/IAlertAdminSvc/addSchedulesToVehicle" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="AlertAdminSvc">
+    <wsdl:port name="BasicHttpBinding_IAlertAdminSvc" binding="tns:BasicHttpBinding_IAlertAdminSvc">
+      <soap:address location="http://localhost/TraxxCloudService/AlertAdminSvc.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

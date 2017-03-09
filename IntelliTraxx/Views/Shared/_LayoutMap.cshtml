@@ -1,0 +1,85 @@
+﻿@using Microsoft.AspNet.Identity
+@using System.Security.Claims;
+@using System.Threading;
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkyxzsMHs1COuqcUEkPKiHY2289J0LG-4&libraries=drawing" async defer></script>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/themes/base/css")
+    @Styles.Render("~/Content/logoMenu")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/highcharts")
+    @Scripts.Render("~/bundles/logoMenu")
+    <script src="~/Scripts/fleet.js"></script>
+</head>
+<body>
+    @{
+        var claimsIdentity = User.Identity as System.Security.Claims.ClaimsIdentity;
+        var identity = (ClaimsPrincipal)Thread.CurrentPrincipal;
+        var roles = identity.Claims.Where(c => c.Type == "Roles").Select(c => c.Value).SingleOrDefault();
+    }
+    @*<div class="container-fluid row">
+    <nav class="navbar navbar-default navbar-fixed-top col-lg-4 col-lg-offset-4">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar9">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+
+            <div class="brand-centered">
+                <img src="~/Content/Images/IntelliTraxx_Logo2.png" alt="IntelliTraxx">
+            </div>
+
+            <div id="navbar9" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">@identity.Identity.Name (<small>@roles.ToString().Replace(",", "")</small>) <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="~/Fleet/Index"><span class="glyphicons glyphicons-cadastral-map"></span> Map</a></li>
+                            <li><a href="#" id="openAlerts"><span class="glyphicons glyphicons-alert"></span>Alerts</a></li>
+                            <li><a href="#"><span class="glyphicons glyphicons-charts"></span>Analytics</a></li>
+                            @if (@roles.Contains("Admin"))
+                            {
+                                <li class="divider"></li>
+                                <li><a href="#"><span class="glyphicons glyphicons-cogwheel"></span>Administration</a></li>
+                            }
+                            <li class="divider"></li>
+                            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <li><a href="javascript:document.getElementById('logoutForm').submit()" class="col-sm-offset-2"><span class="glyphicons glyphicons-exit"></span>Log off</a></li>
+                            }
+                        </ul>
+                    </li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Vehicles <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu" id="vehicleList"></ul>
+                    </li>
+                </ul>
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+        <!--/.container-fluid -->
+    </nav>
+    </div>*@
+    <div class="body-content">
+        @RenderBody()
+    </div>
+
+    @RenderSection("scripts", required: false)
+    @Html.Partial("_Toastr")
+</body>
+</html>

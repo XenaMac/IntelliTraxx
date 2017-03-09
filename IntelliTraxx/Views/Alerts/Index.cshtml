@@ -1,0 +1,113 @@
+﻿@model List<IntelliTraxx.AlertAdminService.dbAlert>
+
+@{
+    ViewBag.Title = "Alerts";
+    Layout = "~/Views/Shared/_LayoutAlerts.cshtml";
+}
+
+<div id="nav" class="container-fluid center-block">
+    <div id="logo"></div>
+    <div id="mapIcon" class="mapIcon_in" data-toggle="tooltip" data-placement="left" title="Map"></div>
+    <div id="alertsIcon" class="alertsIcon_in" data-toggle="tooltip" data-placement="left" title="Alerts"></div>
+    <div id="geofenceIcon" class="geofenceIcon_in" data-toggle="tooltip" data-placement="left" title="Disabled"></div>
+    <div id="appsIcon" class="appsIcon_in" data-toggle="tooltip" data-placement="bottom" title="Disabled"></div>
+    <div id="diagnosticsIcon" class="diagnosticsIcon_in" data-toggle="tooltip" data-placement="right" title="Diagnostics"></div>
+    <div id="analyticsIcon" class="analyticsIcon_in" data-toggle="tooltip" data-placement="right" title="Analytics"></div>
+    <div id="adminIcon" class="adminIcon_in" data-toggle="tooltip" data-placement="right" title="Administration"></div>
+    <div id="profileDiv" class="profileDiv_in">
+        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+            {
+        @Html.AntiForgeryToken()
+        <small>
+            <ul class="list-group">
+                <li class="list-group-item"><a href="" class="text-left" style="padding: 5px;"><i class="glyphicons glyphicons-user"></i> Jon McKinley (Administrator)</a><br /></li>
+                <li class="list-group-item"><a href="" class="text-left" style="padding: 5px;"><i class="glyphicons glyphicons-bell"></i> Notifications<span class="badge" style="margin-left: 5px;">3</span></a><br /></li>
+                <li class="list-group-item"><a href="" class="text-left" style="padding: 5px;"><i class="glyphicons glyphicons-question-sign"></i> Help</a></li>
+                <li class="list-group-item"><a href="javascript:document.getElementById('logoutForm').submit()" style="padding: 5px;"><i class="glyphicons glyphicons-exit"></i> Log off</a></li>
+            </ul>
+        </small>
+        }
+    </div>
+</div>
+
+<div class="container-fluid col-lg-8 col-lg-offset-2">
+    <h1 class="text-right alertsPageHeader"><strong>Alerts</strong></h1>
+    <div id="toolbar1" style="margin-bottom: 15px;" class="col-lg-12">
+        <div class="form-inline">
+            <div class="input-group input-group">
+                <input type="text" id="datetimepicker" class="form-control" aria-label="From Date" placeholder="From Date">
+                <span class="input-group-btn">
+                    <button class="btn btn-info" type="button" id="fromDateOpener"><i class="glyphicons glyphicons-calendar"></i></button>
+                </span>
+            </div>
+
+            <div class="input-group">
+                <input type="text" id="toDatetimepicker" class="form-control" aria-label="To Date" placeholder="To Date">
+                <span class="input-group-btn">
+                    <button class="btn btn-info" type="button" id="toDateOpener"><i class="glyphicons glyphicons-calendar"></i></button>
+                </span>
+            </div>
+
+            <button class="btn btn-info" id="filter"><i class="glyphicons glyphicons-filter"></i> Apply Date Range</button>
+            <button class="btn btn-warning" id="alertsAdmin"><i class="glyphicons glyphicons-git-create"></i> Alert Administration</button>
+        </div>
+    </div>
+    <div id="alertOrVehicleDiv" class="col-lg-4">
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#byAlertDiv" aria-controls="byAlertDiv" role="tab" data-toggle="tab">By Alert</a></li>
+            <li role="presentation"><a href="#byVehicleDiv" aria-controls="byVehicleDiv" role="tab" data-toggle="tab">By Vehicle</a></li>
+        </ul>
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="byAlertDiv"></div>
+            <div role="tabpanel" class="tab-pane" id="byVehicleDiv"></div>
+        </div>
+    </div>
+    <div id="vehiclealerts" class="col-lg-8">
+        <div class="panel panel-info" id="alertsDiv">
+            <div class="panel-heading" id="alertName">Alerts Table</div>
+            <div id="alertsTable" style="padding-left: 10px; padding-right: 10px;">
+                <!-- Table -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    var to = new Date();
+    var from = new Date(to.getFullYear(), to.getMonth(), to.getDate(), "00", "01");
+
+    $('#datetimepicker').datetimepicker({
+        value: from
+    });
+
+    $('#fromDateOpener').click(function () {
+        $('#datetimepicker').datetimepicker('show');
+    });
+
+    $('#toDatetimepicker').datetimepicker({
+        value: to
+    });
+
+    $('#toDateOpener').click(function () {
+        $('#toDatetimepicker').datetimepicker('show');
+    });
+
+    function queryParams() {
+        return {
+            type: 'owner',
+            sort: 'updated',
+            direction: 'desc',
+            per_page: 25,
+            page: 1
+        };
+    }
+
+    function dateFormat(value, row, index) {
+        if (value != "/Date(978332400000)/") {
+            return moment(value).add(moment().utcOffset(), 'minutes').format('MM/DD/YYYY HH:mm');
+        } else {
+            return "N/A";
+        }
+    }
+</script>
