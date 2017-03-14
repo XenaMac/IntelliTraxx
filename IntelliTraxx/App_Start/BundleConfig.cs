@@ -50,6 +50,13 @@ namespace IntelliTraxx
             bundles.Add(new ScriptBundle("~/bundles/logoMenu").Include(
                      "~/Scripts/logoMenu.js"));
 
+            bundles.Add(new StyleBundle("~/Content/BSMS").Include(
+                    "~/Content/BootStrap_MultiSelect/bootstrap-multiselect.css"
+                    ));
+
+            bundles.Add(new ScriptBundle("~/bundles/BSMS").Include(
+                     "~/Scripts/BS_MultiSelect/bootstrap-multiselect.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/Site.css",
                       "~/Content/glyphicons.css",

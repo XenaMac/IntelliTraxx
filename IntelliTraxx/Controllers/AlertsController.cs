@@ -1,5 +1,6 @@
 ﻿using IntelliTraxx.TruckService;
 using IntelliTraxx.AlertAdminService;
+using IntelliTraxx.PolygonService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace IntelliTraxx.Controllers
     {
         TruckServiceClient truckService = new TruckServiceClient();
         AlertAdminSvcClient alertService = new AlertAdminSvcClient();
+        PolygonServiceClient polygonService = new PolygonServiceClient();
 
         // GET: Alerts
         [Authorize]
@@ -19,7 +21,6 @@ namespace IntelliTraxx.Controllers
         {
             return View();
         }
-
 
         [Authorize]
         public ActionResult Admin()
@@ -101,6 +102,22 @@ namespace IntelliTraxx.Controllers
 
             return Json(ret, JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult getAlertClasses()
+        {
+            var classes = alertService.getAlertClasses();
+
+            return Json(classes, JsonRequestBehavior.AllowGet);
+        }
+
+        #region Polygons
+        public ActionResult GetAllFences()
+        {
+            var Fences = polygonService.getPolygons();
+
+            return Json(Fences, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
 
         public class AlertHistory
         {

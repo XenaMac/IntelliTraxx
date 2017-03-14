@@ -33,6 +33,66 @@
 <div class="container-fluid col-lg-8 col-lg-offset-2">
     <h1 class="text-right alertsPageHeader"><strong>Alerts Administration </strong></h1>
     <div id="alertsDiv" class="container-fluid"></div>
+    <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h3 id="myModalLabel"><i class="glyphicons glyphicons-light-beacon"></i>  Create New Alert</h3>
+                </div>
+                <div class="modal-body" id="myWizard">
+
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="4" style="width: 20%;">
+                            Step 1 of 5
+                        </div>
+                    </div>
+
+                    <div class="navbar">
+                        <div class="navbar-inner">
+                            <ul class="nav nav-pills">
+                                <li class="active"><a href="#step1" data-toggle="tab" data-step="1">Chose Alert Class</a></li>
+                                <li><a href="#step2" data-toggle="tab" data-step="2">Assign Polygon</a></li>
+                                <li><a href="#step3" data-toggle="tab" data-step="3">Assign Vehicle(s)</a></li>
+                                <li><a href="#step4" data-toggle="tab" data-step="4">Assign Values</a></li>
+                                <li><a href="#step5" data-toggle="tab" data-step="5">Review and Submit</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="tab-content">
+                        <div class="tab-pane fade in active" id="step1">
+                            <div class="well row" id="step1well"></div>
+                            @*<a class="btn btn-default next" href="#">Continue</a>*@
+                        </div>
+                        <div class="tab-pane fade" id="step2">
+                            <div class="well" id="step2well"></div>
+                            <a class="btn btn-default nnext" href="#">Continue</a>
+                        </div>
+                        <div class="tab-pane fade" id="step3">
+                            <div class="well center-block text-center" id="step3well"></div>
+                            <a class="btn btn-default nnnext" href="#">Continue</a>
+                        </div>
+                        <div class="tab-pane fade" id="step4">
+                            <div class="well" id="step4well">
+                                <div id="step4Div"></div>
+                            </div>
+                            <a class="btn btn-default nnnnext" href="#">Continue</a>
+                        </div>
+                        <div class="tab-pane fade" id="step5">
+                            <div class="well" id="step5well">
+                                <div id="step5Div"></div>
+                            </div>
+                            <a class="btn btn-success first" href="#">Submit</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" data-dismiss="modal" aria-hidden="true" id="cancelCreateAlert">Cancel</button>
+                    @*<button class="btn btn-primary">Save changes</button>*@
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script type="text/javascript">

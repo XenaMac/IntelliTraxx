@@ -256,6 +256,8 @@
     <Content Include="Content\bootstrap-toggle.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\BootStrapWizard\material-bootstrap-wizard.css" />
+    <Content Include="Content\BootStrap_MultiSelect\bootstrap-multiselect.css" />
     <Content Include="Content\glyphicons-bootstrap.css" />
     <Content Include="Content\glyphicons.css" />
     <Content Include="Content\Images\black.png" />
@@ -360,6 +362,7 @@
     <Content Include="fonts\glyphicons-regular.woff2" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\BS_MultiSelect\bootstrap-multiselect.js" />
     <Content Include="Scripts\fleet.js" />
     <Content Include="Scripts\Highcharts\highcharts-3d.js" />
     <Content Include="Scripts\Highcharts\highcharts-more.js" />
