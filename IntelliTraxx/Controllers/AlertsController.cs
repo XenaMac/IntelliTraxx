@@ -117,6 +117,13 @@ namespace IntelliTraxx.Controllers
 
             return Json(Fences, JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult updateAlertData()
+        {
+            
+
+            return Json("", JsonRequestBehavior.AllowGet);
+        }
         #endregion
 
         public class AlertHistory

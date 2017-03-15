@@ -1899,7 +1899,6 @@
     }
 
     function openNav() {
-        //alert("opening nav");
         document.getElementById("mySidenav").style.width = "45em";
         document.getElementById("map").style.marginright = "45em";
     }

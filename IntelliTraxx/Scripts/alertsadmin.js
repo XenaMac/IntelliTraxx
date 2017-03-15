@@ -8,6 +8,9 @@
     var valueAlerts = ['SPEEDING', 'STATIONARY']
     var alertVehicles = [];
     var alertValue = null;
+    var copy = '';
+
+    $('[data-toggle="tooltip"]').tooltip()
 
     //#region Menu scripts
 
@@ -306,7 +309,7 @@
     //#region gelAllVehicles(true)
 
     function getAllVehicles() {
-        $('#step3well').html('');
+        $('#vehicTable').html('');
         var _url = 'getAllVehicles';
         var _data = 'loadHistorical=true'
         $.ajax({
@@ -322,25 +325,49 @@
 
     function getAllVehiclesSuccess(data) {
         if (data.length > 0) {
-            $('#step3well').html('<div class="form-group" id="alertVehiclesForm"><label class="control-label" for="alertVehicles">Vehicles assigned to this alert:&nbsp;&nbsp;</label><select id="alertVehicles" class="form-control" multiple="multiple"></select></div>');
-            var select = document.getElementById('alertVehicles');
+            $('#vehicTable').html('<button class="btn btn-info btn-xs" data-toggle="button" id="selectAll">Select All</button><hr><small><table id="alertsVehicleTable" class="table table-responsive table-striped table-condensed"><thead><tr><td class="hidden">VehicleID</td><td class="header">Assign</td><td class="header">Vehicle ID</td><td class="header text-center">Alert E-mail(s)</td></tr></thead><tbody></tbody></table></small>');
+
+            //set content within table
+            $("#alertsVehicleTable tbody").html('');
+
             for (var i = 0; i < data.length; i++) {
-                var opt = document.createElement('option');
-                opt.value = data[i].VehicleID;
-                opt.innerHTML = data[i].extendedData.VehicleFriendlyName;
-                select.appendChild(opt);
+                var markup = '<tr><td class="hidden">' + data[i].VehicleID + '</td><td class="text-center"><input id="tb_' + data[i].VehicleID + '" class="vehicleActive" type="checkbox" data-toggle="toggle" data-size="mini"></td><td class="text-center">' + data[i].extendedData.VehicleFriendlyName + '</td><td class="text-center"><input type="text" id="em_' + data[i].VehicleID + '" class="emailbox" size="75" placeholder="email1@url.com; email2@url.com; blank if none">&nbsp;<button id="' + data[i].VehicleID + '" class="btn btn-primary btn-xs assign glyphicons glyphicons-copy" data-toggle="tooltip" data-placement="top" title="Copy to All E-mail Fields"/></td></tr>';
+
+                $("#alertsVehicleTable tbody").append(markup);
             }
 
-            $('#alertVehicles').multiselect({
-                includeSelectAllOption: true,
-                selectAllValue: 'select-all-value'
-            });
+            $('[data-toggle="tooltip"]').tooltip()
+
+            $("[class='vehicleActive']").bootstrapToggle();
+
+            $('#selectAll').click(function () {
+                if ($(this).text() == "Unselect All") {
+                    $(".vehicleActive").bootstrapToggle('off');
+                    $(this).text('Select All')
+                } else {
+                    $(".vehicleActive").bootstrapToggle('on');
+                    $(this).text('Unselect All')
+                }
+            })
+
+            $('.assign').click(function () {
+                var recordId = $(this).attr("id");
+                $('.emailbox').val($('#em_' + recordId).val());
+            })
 
             $('.nnnext').click(function () {
-                if ($('#alertVehicles').val() == '') {
-                    $('#alertVehiclesForm').addClass('has-error');
+                $('.vehicleActive').each(function () {
+                    if (this.checked) {
+                        alertVehicles.push({
+                            id: $(this).attr('id').substring(3, $(this).attr('id').length),
+                            email: $('#em_' + $(this).attr('id')).val()
+                        });
+                    }
+                });
+
+                if (alertVehicles.length == 0) {
+                    alert("Please choose at least one vehicle for this alert");
                 } else {
-                    alertVehicles = $('#alertVehicles').val();
                     if (isInArray(valueAlerts, alertClassName)) {
                         loadValuesPane(alertClassName);
                     } else {
@@ -353,7 +380,7 @@
             })
 
         } else {
-            alert('A problem occurred pulling the all vehicles, please reload or contact the administrator.');
+            alert('A problem occurred pulling all vehicles, please reload or contact the administrator.');
         }
     }
 
@@ -403,7 +430,7 @@
                 markup += '<p class="lead">Alert Name: <strong>' + $('#alertName').val() + '</strong></p>';
                 markup += '<p class="lead">Description: <strong>This alert will trigger when any of the below vehicles start up and its last known position was inside of a polygon.</strong></p><ul>';
                 for (var i = 0; i < alertVehicles.length; i++) {
-                    markup += '<li><strong>' + alertVehicles[i] + '</strong></li>';
+                    markup += '<li><strong>' + alertVehicles[i].id + '</strong></li>';
                 }
                 markup += '</ul><hr  style="height:1px;border:none;color:#000;background-color:#000;">';
                 break;
@@ -412,7 +439,7 @@
                 markup += '<p class="lead">Alert Name: <strong>' + $('#alertName').val() + '</strong></p>';
                 markup += '<p class="lead">Description: <strong>This alert will trigger when any of the below vehicles broadcast a speed faster than: <u>' + alertValue + '</u> miles per hour.</strong></p><ul>';
                 for (var i = 0; i < alertVehicles.length; i++) {
-                    markup += '<li><strong>' + alertVehicles[i] + '</strong></li>';
+                    markup += '<li><strong>' + alertVehicles[i].id + '</strong></li>';
                 }
                 markup += '</ul><hr  style="height:1px;border:none;color:#000;background-color:#000;">';
                 break;
@@ -422,9 +449,9 @@
                 markup += '<p class="lead">Description: <strong>This alert will trigger when any of these vehicles: ';
                 for (var i = 0; i < alertVehicles.length; i++) {
                     if (i != alertVehicles.length - 1) {
-                        markup += alertVehicles[i] + ', ';
+                        markup += alertVehicles[i].id + ', ';
                     } else {
-                        markup += alertVehicles[i];
+                        markup += alertVehicles[i].id;
                     }
                 }
                 markup += ' remain stationary in any of the following fences: ';
@@ -443,7 +470,7 @@
                 markup += '<p class="lead">Alert Name: <strong>' + $('#alertName').val() + '</strong></p>';
                 markup += '<p class="lead">Description: <strong>This alert will trigger when any of the below vehicles start up:</strong></p><ul>';
                 for (var i = 0; i < alertVehicles.length; i++) {
-                    markup += '<li><strong>' + alertVehicles[i] + '</strong></li>';
+                    markup += '<li><strong>' + alertVehicles[i].id + '</strong></li>';
                 }
                 markup += '</ul><hr  style="height:1px;border:none;color:#000;background-color:#000;">';
                 break;
@@ -453,9 +480,9 @@
                 markup += '<p class="lead">Description: <strong>This alert will trigger when any of these vehicles: ';
                 for (var i = 0; i < alertVehicles.length; i++) {
                     if (i != alertVehicles.length - 1) {
-                        markup += alertVehicles[i] + ', ';
+                        markup += alertVehicles[i].id + ', ';
                     } else {
-                        markup += alertVehicles[i];
+                        markup += alertVehicles[i].id;
                     }
                 }
                 markup += ' enter any of the following fences: ';
@@ -474,9 +501,9 @@
                 markup += '<p class="lead">Description: <strong>This alert will trigger when any of these vehicles: ';
                 for (var i = 0; i < alertVehicles.length; i++) {
                     if (i != alertVehicles.length - 1) {
-                        markup += alertVehicles[i] + ', ';
+                        markup += alertVehicles[i].id + ', ';
                     } else {
-                        markup += alertVehicles[i];
+                        markup += alertVehicles[i].id;
                     }
                 }
                 markup += ' exit any of the following fences: ';
@@ -487,13 +514,10 @@
                         markup += polygonNames[i];
                     }
                 }
-                markup += '. </strong></p> <hr  style="height:1px;border:none;color:#000;background-color:#000;">';
                 break;
             default:
                 markup += "";
         }
-
-        markup += '<div class="form-group" style="overflow: hidden;"><label for="alertEmails">Email the below addresses upon trigger: </label><input type="text" class="form-control" id="alertEmails" placeholder="someone@someplace.com; someoneelse@someplace.com; finally@someplace.com">';
 
         $('#step5Div').append(markup);
     }
