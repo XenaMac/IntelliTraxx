@@ -1,6 +1,9 @@
 ﻿$(function () {
+    var alertName;
     var alertClassID;
     var alertClassName;
+    var alertStart;
+    var alertEnd;
     var polygonIDs = [];
     var polygonNames = [];
     var polygonAlerts = ['STATIONARY', 'ENTER POLYGON', 'EXIT POLYGON']
@@ -139,7 +142,7 @@
     //#region getAlertClasses
 
     function getAlertClasses() {
-        $('#step1well').html('');
+        $('#alertClassDiv').html('');
         var _url = 'getAlertClasses';
         var _data = ''
         $.ajax({
@@ -155,48 +158,51 @@
 
     function getAlertClassesSuccess(data) {
         if (data.length > 0) {
-            var markup = '<form class="form-horizontal"><div class="form-group" id="alertNameFormGroup"><label for="alertName" class="col-sm-2 control-label">Alert Name:</label><div class="col-sm-10"><input type="text" class="form-control" id="alertName" placeholder="Ex: Downtown Enter Alert"></div></div></form>';
-            $('#step1well').append(markup);
+            var markup = '';
 
             for (var i = 0; i < data.length; i++) {
                 markup = '';
 
                 switch (data[i].AlertClassName) {
                     case "LAST POSITION":
-                        markup += '<div class="col-md-3"><div class="thumbnail text-center"><i class="material-icons md-48">all_out</i><div class="caption"><h4>' + data[i].AlertClassName + '</h4><small><p>Vehicle will trigger an alert upon startup, if last known position was inside a polygon.</p></small><p><a href="#" id="' + data[i].AlertClassID + '" name="' + data[i].AlertClassName + '" class="btn btn-info btn-sm next" role="button">Select</a></div></div></div></div>';
+                        markup += '<div class="col-lg-3"><div class="panel panel-info text-center classTN "><div class="panel-heading"><strong>' + data[i].AlertClassName + '</strong></div><div class="panel-body next" id="' + data[i].AlertClassID + '" name="' + data[i].AlertClassName + '"><i class="material-icons md-48">all_out</i><br><small>Vehicle will trigger an alert upon startup, if last known position was inside a polygon.</small></div></div></div>'
                         break;
                     case "SPEEDING":
-                        markup += '<div class="col-md-3"><div class="thumbnail text-center"><i class="material-icons md-48">network_check</i><div class="caption"><h4>' + data[i].AlertClassName + '</h4><small><p>Vehicle will trigger an alert when transmitted speed is over the assigned value.<br /><br /></p></small><p><a href="#" id="' + data[i].AlertClassID + '" name="' + data[i].AlertClassName + '"  class="btn btn-info btn-sm next" role="button">Select</a></div></div></div></div>';
+                        markup += '<div class="col-lg-3"><div class="panel panel-info text-center classTN"><div class="panel-heading"><strong>' + data[i].AlertClassName + '</strong></div><div class="panel-body next"  id="' + data[i].AlertClassID + '" name="' + data[i].AlertClassName + '"><i class="material-icons md-48">network_check</i><br><small>Vehicle will trigger an alert upon startup, if last known position was inside a polygon.</small></div></div></div>'
                         break;
                     //case "SCHEDULE":
                     //    markup += '<div class="col-md-3"><div class="thumbnail text-center"><i class="material-icons md-48">event_available</i><div class="caption"><h4>' + data[i].AlertClassName + '</h4><small><p>Vehicle will trigger an alert when it is active outside of an assigned schedule.<br /><br /></p></small><p><a href="#" id="' + data[i].AlertClassID + '" name="' + data[i].AlertClassName + '" class="btn btn-info btn-sm next" role="button">Select</a></div></div></div></div>';
                     //    break;
                     case "STATIONARY":
-                        markup += '<div class="col-md-3"><div class="thumbnail text-center"><i class="material-icons md-48">gps_fixed</i><div class="caption"><h4>' + data[i].AlertClassName + '</h4><small><p>Vehicle will trigger an alert when it has been stationary within an assigned geofence for a specific amount of time.</p></small><p><a href="#" id="' + data[i].AlertClassID + '" name="' + data[i].AlertClassName + '" class="btn btn-info btn-sm next" role="button">Select</a></div></div></div></div>';
+                        markup += '<div class="col-lg-3"><div class="panel panel-info text-center classTN"><div class="panel-heading"><strong>' + data[i].AlertClassName + '</strong></div><div class="panel-body next" id="' + data[i].AlertClassID + '" name="' + data[i].AlertClassName + '"><i class="material-icons md-48">gps_fixed</i><br><small>Vehicle will trigger an alert upon startup, if last known position was inside a polygon.</small></div></div></div>'
                         break;
                     case "STARTUP":
-                        markup += '<div class="col-md-3"><div class="thumbnail text-center"><i class="material-icons md-48">power_settings_new</i><div class="caption"><h4>' + data[i].AlertClassName + '</h4><small><p>Vehicle will trigger an alert the very first time it starts up for the day.<br /><br /></p></small><p><a href="#" id="' + data[i].AlertClassID + '" name="' + data[i].AlertClassName + '" class="btn btn-info btn-sm next" role="button">Select</a></div></div></div></div>';
+                        markup += '<div class="col-lg-3"><div class="panel panel-info text-center classTN"><div class="panel-heading"><strong>' + data[i].AlertClassName + '</strong></div><div class="panel-body next" id="' + data[i].AlertClassID + '" name="' + data[i].AlertClassName + '"><i class="material-icons md-48">power_settings_new</i><br><small>Vehicle will trigger an alert upon startup, if last known position was inside a polygon.</small></div></div></div>'
                         break;
                     case "ENTER POLYGON":
-                        markup += '<div class="col-md-3"><div class="thumbnail text-center"><i class="material-icons md-48">input</i><div class="caption"><h4>' + data[i].AlertClassName + '</h4><small><p>Vehicle will trigger an alert when it enters an assigned polygon.<br /><br /></p></small><p><a href="#" id="' + data[i].AlertClassID + '" name="' + data[i].AlertClassName + '" class="btn btn-info btn-sm next" role="button">Select</a></div></div></div></div>';
+                        markup += '<div class="col-lg-3"><div class="panel panel-info text-center classTN"><div class="panel-heading"><strong>' + data[i].AlertClassName + '</strong></div><div class="panel-body next" id="' + data[i].AlertClassID + '" name="' + data[i].AlertClassName + '"><i class="material-icons md-48">input</i><br><small>Vehicle will trigger an alert upon startup, if last known position was inside a polygon.</small></div></div></div>'
                         break;
                     case "EXIT POLYGON":
-                        markup += '<div class="col-md-3"><div class="thumbnail text-center"><i class="material-icons md-48">open_in_new</i><div class="caption"><h4>' + data[i].AlertClassName + '</h4><small><p>Vehicle will trigger an alert when it exits an assigned polygon.<br /><br /></p></small><p><a href="#" id="' + data[i].AlertClassID + '" name="' + data[i].AlertClassName + '" class="btn btn-info btn-sm next" role="button">Select</a></div></div></div></div>';
+                        markup += '<div class="col-lg-3"><div class="panel panel-info text-center classTN"><div class="panel-heading"><strong>' + data[i].AlertClassName + '</strong></div><div class="panel-body next" id="' + data[i].AlertClassID + '" name="' + data[i].AlertClassName + '"><i class="material-icons md-48">open_in_new</i><br><small>Vehicle will trigger an alert upon startup, if last known position was inside a polygon.</small></div></div></div>'
                         break;
                     default:
                         markup += "";
                 }
-                $('#step1well').append(markup);
+                $('#alertClassDiv').append(markup);
             }
 
             $('#myModal').modal('show');
 
             $('.next').click(function () {
                 if ($('#alertName').val() == '') {
-                    $('#alertNameFormGroup').addClass('has-error');
+                    $('#alertName').attr('style', "border-radius: 5px; border:#FF0000 1px solid; ::-webkit-input-placeholder { color: red; }");
+                    $('#alertName').attr('placeholder', "Alert Name Required");
                 } else {
                     alertClassID = $(this).attr('id');
                     alertClassName = $(this).attr('name');
+                    alertName = $('#alertName').val();
+                    alertStart = $('#startDate').val();
+                    alertEnd = $('#endDate').val();
 
                     if (isInArray(polygonAlerts, alertClassName)) {
                         var nextId = $(this).parents('.tab-pane').next().attr("id");
@@ -279,8 +285,8 @@
                 polygonNames = [];
                 $(".pgSelect").each(function () {
                     if (this.checked) {
-                        polygonIDs.push($(this).attr('id'));
-                        polygonNames.push($(this).attr('name'));
+                        polygonIDs.push({ id: $(this).attr('id') });
+                        polygonNames.push({ name: $(this).attr('name') });
                     }
                 });
 
@@ -331,7 +337,7 @@
             $("#alertsVehicleTable tbody").html('');
 
             for (var i = 0; i < data.length; i++) {
-                var markup = '<tr><td class="hidden">' + data[i].VehicleID + '</td><td class="text-center"><input id="tb_' + data[i].VehicleID + '" class="vehicleActive" type="checkbox" data-toggle="toggle" data-size="mini"></td><td class="text-center">' + data[i].extendedData.VehicleFriendlyName + '</td><td class="text-center"><input type="text" id="em_' + data[i].VehicleID + '" class="emailbox" size="75" placeholder="email1@url.com; email2@url.com; blank if none">&nbsp;<button id="' + data[i].VehicleID + '" class="btn btn-primary btn-xs assign glyphicons glyphicons-copy" data-toggle="tooltip" data-placement="top" title="Copy to All E-mail Fields"/></td></tr>';
+                var markup = '<tr><td class="hidden">' + data[i].VehicleID + '</td><td class="text-center"><input id="tb_' + data[i].extendedData.ID + '" name="' + data[i].extendedData.VehicleFriendlyName + '" class="vehicleActive" type="checkbox" data-toggle="toggle" data-size="mini"></td><td class="text-center">' + data[i].extendedData.VehicleFriendlyName + '</td><td class="text-center"><input type="text" id="em_' + data[i].extendedData.ID + '" class="emailbox" size="75" placeholder="email1@url.com; email2@url.com; blank if none">&nbsp;<button id="' + data[i].extendedData.ID + '" class="btn btn-primary btn-xs assign glyphicons glyphicons-copy" data-toggle="tooltip" data-placement="top" title="Copy to All E-mail Fields"/></td></tr>';
 
                 $("#alertsVehicleTable tbody").append(markup);
             }
@@ -360,7 +366,8 @@
                     if (this.checked) {
                         alertVehicles.push({
                             id: $(this).attr('id').substring(3, $(this).attr('id').length),
-                            email: $('#em_' + $(this).attr('id')).val()
+                            name: $(this).attr('name'),
+                            email : "EMAIL:" + $('#em_' + $(this).attr('id').substring(3, $(this).attr('id').length)).val()
                         });
                     }
                 });
@@ -428,38 +435,50 @@
             case "LAST POSITION":
                 markup += '<p class="lead">Alert Class: <strong>' + alertClassName + '</strong></p>';
                 markup += '<p class="lead">Alert Name: <strong>' + $('#alertName').val() + '</strong></p>';
+                if (startDate != null && endDate != null) {
+                    markup += '<p class="lead">Start Date/Time: <strong>' + alertStart + '</strong></p>';
+                    markup += '<p class="lead">End Date/Time: <strong>' + alertEnd + '</strong></p>';
+                }
                 markup += '<p class="lead">Description: <strong>This alert will trigger when any of the below vehicles start up and its last known position was inside of a polygon.</strong></p><ul>';
                 for (var i = 0; i < alertVehicles.length; i++) {
-                    markup += '<li><strong>' + alertVehicles[i].id + '</strong></li>';
+                    markup += '<li><strong>' + alertVehicles[i].name + '</strong></li>';
                 }
                 markup += '</ul><hr  style="height:1px;border:none;color:#000;background-color:#000;">';
                 break;
             case "SPEEDING":
                 markup += '<p class="lead">Alert Class: <strong>' + alertClassName + '</strong></p>';
                 markup += '<p class="lead">Alert Name: <strong>' + $('#alertName').val() + '</strong></p>';
+                if (startDate != null && endDate != null) {
+                    markup += '<p class="lead">Start Date/Time: <strong>' + alertStart + '</strong></p>';
+                    markup += '<p class="lead">End Date/Time: <strong>' + alertEnd + '</strong></p>';
+                }
                 markup += '<p class="lead">Description: <strong>This alert will trigger when any of the below vehicles broadcast a speed faster than: <u>' + alertValue + '</u> miles per hour.</strong></p><ul>';
                 for (var i = 0; i < alertVehicles.length; i++) {
-                    markup += '<li><strong>' + alertVehicles[i].id + '</strong></li>';
+                    markup += '<li><strong>' + alertVehicles[i].name + '</strong></li>';
                 }
                 markup += '</ul><hr  style="height:1px;border:none;color:#000;background-color:#000;">';
                 break;
             case "STATIONARY":
                 markup += '<p class="lead">Alert Class: <strong>' + alertClassName + '</strong></p>';
                 markup += '<p class="lead">Alert Name: <strong>' + $('#alertName').val() + '</strong></p>';
+                if (startDate != null && endDate != null) {
+                    markup += '<p class="lead">Start Date/Time: <strong>' + alertStart + '</strong></p>';
+                    markup += '<p class="lead">End Date/Time: <strong>' + alertEnd + '</strong></p>';
+                }
                 markup += '<p class="lead">Description: <strong>This alert will trigger when any of these vehicles: ';
                 for (var i = 0; i < alertVehicles.length; i++) {
                     if (i != alertVehicles.length - 1) {
-                        markup += alertVehicles[i].id + ', ';
+                        markup += alertVehicles[i].name + ', ';
                     } else {
-                        markup += alertVehicles[i].id;
+                        markup += alertVehicles[i].name;
                     }
                 }
                 markup += ' remain stationary in any of the following fences: ';
                 for(var i = 0; i < polygonNames.length; i++) {
                     if (i != polygonNames.length - 1) {
-                        markup += polygonNames[i] + ', ';
+                        markup += polygonNames[i].name + ', ';
                     } else {
-                        markup += polygonNames[i];
+                        markup += polygonNames[i].name;
                     }
                 }
                 markup += ' for over ' + alertValue + ' minutes.</strong></p><ul>';
@@ -468,29 +487,37 @@
             case "STARTUP":
                 markup += '<p class="lead">Alert Class: <strong>' + alertClassName + '</strong></p>';
                 markup += '<p class="lead">Alert Name: <strong>' + $('#alertName').val() + '</strong></p>';
+                if (startDate != null && endDate != null) {
+                    markup += '<p class="lead">Start Date/Time: <strong>' + alertStart + '</strong></p>';
+                    markup += '<p class="lead">End Date/Time: <strong>' + alertEnd + '</strong></p>';
+                }
                 markup += '<p class="lead">Description: <strong>This alert will trigger when any of the below vehicles start up:</strong></p><ul>';
                 for (var i = 0; i < alertVehicles.length; i++) {
-                    markup += '<li><strong>' + alertVehicles[i].id + '</strong></li>';
+                    markup += '<li><strong>' + alertVehicles[i].name + '</strong></li>';
                 }
                 markup += '</ul><hr  style="height:1px;border:none;color:#000;background-color:#000;">';
                 break;
             case "ENTER POLYGON":
                 markup += '<p class="lead">Alert Class: <strong>' + alertClassName + '</strong></p>';
                 markup += '<p class="lead">Alert Name: <strong>' + $('#alertName').val() + '</strong></p>';
+                if (startDate != null && endDate != null) {
+                    markup += '<p class="lead">Start Date/Time: <strong>' + alertStart + '</strong></p>';
+                    markup += '<p class="lead">End Date/Time: <strong>' + alertEnd + '</strong></p>';
+                }
                 markup += '<p class="lead">Description: <strong>This alert will trigger when any of these vehicles: ';
                 for (var i = 0; i < alertVehicles.length; i++) {
                     if (i != alertVehicles.length - 1) {
-                        markup += alertVehicles[i].id + ', ';
+                        markup += alertVehicles[i].name + ', ';
                     } else {
-                        markup += alertVehicles[i].id;
+                        markup += alertVehicles[i].name;
                     }
                 }
                 markup += ' enter any of the following fences: ';
                 for (var i = 0; i < polygonNames.length; i++) {
                     if (i != polygonNames.length - 1) {
-                        markup += polygonNames[i] + ', ';
+                        markup += polygonNames[i].name + ', ';
                     } else {
-                        markup += polygonNames[i];
+                        markup += polygonNames[i].name;
                     }
                 }
                 markup += '. </strong></p> <hr  style="height:1px;border:none;color:#000;background-color:#000;">';
@@ -498,20 +525,24 @@
             case "EXIT POLYGON":
                 markup += '<p class="lead">Alert Class: <strong>' + alertClassName + '</strong></p>';
                 markup += '<p class="lead">Alert Name: <strong>' + $('#alertName').val() + '</strong></p>';
+                if (startDate != null && endDate != null) {
+                    markup += '<p class="lead">Start Date/Time: <strong>' + alertStart + '</strong></p>';
+                    markup += '<p class="lead">End Date/Time: <strong>' + alertEnd + '</strong></p>';
+                }
                 markup += '<p class="lead">Description: <strong>This alert will trigger when any of these vehicles: ';
                 for (var i = 0; i < alertVehicles.length; i++) {
                     if (i != alertVehicles.length - 1) {
-                        markup += alertVehicles[i].id + ', ';
+                        markup += alertVehicles[i].name + ', ';
                     } else {
-                        markup += alertVehicles[i].id;
+                        markup += alertVehicles[i].name;
                     }
                 }
                 markup += ' exit any of the following fences: ';
                 for (var i = 0; i < polygonNames.length; i++) {
                     if (i != polygonNames.length - 1) {
-                        markup += polygonNames[i] + ', ';
+                        markup += polygonNames[i].name + ', ';
                     } else {
-                        markup += polygonNames[i];
+                        markup += polygonNames[i].name;
                     }
                 }
                 break;
@@ -524,6 +555,73 @@
 
     //#endregion
 
+    //#region SubmitAlert()
+
+    $('#submitAlert').click(function () {
+        submitAlert();
+    });
+
+    function submitAlert(ID, enabled, updatedb) {
+        //polygonIDs = JSON.stringify(polygonIDs);
+        //polygonNames = JSON.stringify(polygonNames);
+        //alertVehicles = JSON.stringify(alertVehicles);
+
+        var _url = 'updateAlertData';
+        var _data = JSON.stringify({ 'alertClassID': alertClassID, 'alertClassName': alertClassName, 'alertName': alertName, 'startDate': alertStart, 'endDate': alertEnd, 'polygonIDs': polygonIDs, 'polygonNames': polygonNames, 'alertVehicles': alertVehicles, 'alertValue': alertValue });
+        //var _data = "alertClassID=" + alertClassID + "&AlertClassName=" + alertClassName + "&alertName=" + alertName + "&startDate=" + alertStart + "&endDate=" + alertEnd + "&polygonIDs=" + JSON.stringify(polygonIDs) + "&polygonNames=" + polygonNames + "&alertVehicles=" + alertVehicles + "&alertValue=" + alertValue;
+
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: _url,
+            data: _data,
+            contentType: "application/json; charset=utf-8",
+            success: submitAlertSuccess,
+            error: submitAlertError
+        });
+    }
+
+    function submitAlertSuccess(data) {
+        if (data == "OK") {
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-bottom-left",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+            Command: toastr["success"]("Alert Created");
+            clearVars();
+            $('#myModal').modal('hide');
+            $('#alertClassDiv').html('');
+            $('#step2well').html('');
+            $('#vehicTable').html('');
+            $('#step4Div').html('');
+            $('#step5Div').html('');
+            $('[href=\\#step1]').tab('show');
+            getAlerts();
+        } else {
+
+        }
+    }
+
+    function submitAlertError(result, error) {
+        var err = error;
+        alert('A problem occurred submitting this alert, please reload or contact the administrator. Error: ' + error);
+    }
+
+    //#endregion
+
     function isInArray(arr, obj) {
         return (arr.indexOf(obj) != -1);
     }
@@ -531,4 +629,20 @@
     $('#cancelCreateAlert').click(function () {
         location.reload();
     });
+
+    function clearVars() {
+        alertName;
+        alertClassID;
+        alertClassName;
+        alertStart;
+        alertEnd;
+        polygonIDs = [];
+        polygonNames = [];
+        alertVehicles = [];
+        alertValue = null;
+        copy = '';
+        $('#alertName').val('');
+        $('#startDate').val('');
+        $('#endDate').val('');
+    }
 });

@@ -274,3 +274,9 @@ table .header {
     overflow-x: hidden;
     overflow-y: scroll;
 }
+
+.classTN:hover {
+    background-color: #2FA4E7;
+    color: #fff;
+    cursor: pointer;
+}

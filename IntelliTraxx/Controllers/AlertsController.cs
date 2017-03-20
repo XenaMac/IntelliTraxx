@@ -5,7 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-
+using System.Web.Script.Serialization;
+using Newtonsoft.Json.Serialization;
 
 namespace IntelliTraxx.Controllers
 {
@@ -118,11 +119,57 @@ namespace IntelliTraxx.Controllers
             return Json(Fences, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult updateAlertData()
+        [HttpPost]
+        public ActionResult updateAlertData(string alertClassID, string alertClassName, string alertName, string startDate, string endDate, List<polygonID> polygonIDs, List<polygonNames> polygonNames, List<AV> alertVehicles, string alertValue)
         {
-            
+            DateTime s = DateTime.Now;
+            DateTime e = DateTime.Now.AddYears(5);
 
-            return Json("", JsonRequestBehavior.AllowGet);
+            if (startDate != "")
+            {
+                s = Convert.ToDateTime(startDate);
+            }
+
+            if (endDate != "")
+            {
+                e = Convert.ToDateTime(endDate);
+            }
+
+            //create alert class
+            dbAlert alert = new dbAlert();
+            alert.AlertID = Guid.NewGuid();
+            alert.AlertActive = true;
+            alert.AlertStartTime = s;
+            alert.AlertEndTime = e;
+            alert.AlertType = "N";
+            alert.AlertClassID = new Guid(alertClassID);
+            alert.AlertFriendlyName = alertName;
+            alert.minVal = alertValue;
+
+            //create polygon list
+            List<alertGeoFence> fences = new List<alertGeoFence>();
+            foreach (polygonID pg in polygonIDs)
+            {
+                alertGeoFence fence = new alertGeoFence();
+                fence.AlertID = alert.AlertID;
+                fence.GeoFenceID = new Guid(pg.id);
+                fences.Add(fence);
+            }
+
+            //list of vehicles
+            List<alertVehicle> vehicles = new List<alertVehicle>();
+            foreach (AV veh in alertVehicles)
+            {
+                alertVehicle vehicle = new alertVehicle();
+                vehicle.AlertAction = veh.email;
+                vehicle.AlertID = alert.AlertID;
+                vehicle.VehicleID = new Guid(veh.id);
+                vehicles.Add(vehicle);
+            }
+
+            string results = alertService.updateAlertData(alert, fences, vehicles);
+
+            return Json("OK", JsonRequestBehavior.AllowGet);
         }
         #endregion
 
@@ -135,6 +182,22 @@ namespace IntelliTraxx.Controllers
         public class dbAlerts : dbAlert
         {
             public string AlertClassName { get; set; }
+        }
+
+        public class AV
+        {
+            public string id { get; set; }
+            public string name { get; set; }
+            public string email { get; set; }
+        }
+
+        public class polygonID
+        {
+            public string id { get; set; }
+        }
+        public class polygonNames
+        {
+            public string Name { get; set; }
         }
     }
 }
