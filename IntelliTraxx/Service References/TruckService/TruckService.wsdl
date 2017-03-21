@@ -406,6 +406,12 @@
   <wsdl:message name="ITruckService_getGPSTracking_OutputMessage">
     <wsdl:part name="parameters" element="tns:getGPSTrackingResponse" />
   </wsdl:message>
+  <wsdl:message name="ITruckService_clearAlerts_InputMessage">
+    <wsdl:part name="parameters" element="tns:clearAlerts" />
+  </wsdl:message>
+  <wsdl:message name="ITruckService_clearAlerts_OutputMessage">
+    <wsdl:part name="parameters" element="tns:clearAlertsResponse" />
+  </wsdl:message>
   <wsdl:message name="ITruckService_reloadVehicles_InputMessage">
     <wsdl:part name="parameters" element="tns:reloadVehicles" />
   </wsdl:message>
@@ -682,6 +688,10 @@
     <wsdl:operation name="getGPSTracking">
       <wsdl:input wsaw:Action="http://tempuri.org/ITruckService/getGPSTracking" message="tns:ITruckService_getGPSTracking_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ITruckService/getGPSTrackingResponse" message="tns:ITruckService_getGPSTracking_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="clearAlerts">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITruckService/clearAlerts" message="tns:ITruckService_clearAlerts_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITruckService/clearAlertsResponse" message="tns:ITruckService_clearAlerts_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="reloadVehicles">
       <wsdl:input wsaw:Action="http://tempuri.org/ITruckService/reloadVehicles" message="tns:ITruckService_reloadVehicles_InputMessage" />
@@ -1281,6 +1291,15 @@
     </wsdl:operation>
     <wsdl:operation name="getGPSTracking">
       <soap:operation soapAction="http://tempuri.org/ITruckService/getGPSTracking" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="clearAlerts">
+      <soap:operation soapAction="http://tempuri.org/ITruckService/clearAlerts" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

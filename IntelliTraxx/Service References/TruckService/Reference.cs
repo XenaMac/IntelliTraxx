@@ -4329,6 +4329,12 @@ namespace IntelliTraxx.TruckService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/getGPSTracking", ReplyAction="http://tempuri.org/ITruckService/getGPSTrackingResponse")]
         System.Threading.Tasks.Task<System.Collections.Generic.List<IntelliTraxx.TruckService.VehicleGPSRecord>> getGPSTrackingAsync(string vehicleID, System.DateTime from, System.DateTime to);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/clearAlerts", ReplyAction="http://tempuri.org/ITruckService/clearAlertsResponse")]
+        string clearAlerts(bool clearAll, string vehicleID);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/clearAlerts", ReplyAction="http://tempuri.org/ITruckService/clearAlertsResponse")]
+        System.Threading.Tasks.Task<string> clearAlertsAsync(bool clearAll, string vehicleID);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/reloadVehicles", ReplyAction="http://tempuri.org/ITruckService/reloadVehiclesResponse")]
         void reloadVehicles();
         
@@ -4895,6 +4901,14 @@ namespace IntelliTraxx.TruckService {
         
         public System.Threading.Tasks.Task<System.Collections.Generic.List<IntelliTraxx.TruckService.VehicleGPSRecord>> getGPSTrackingAsync(string vehicleID, System.DateTime from, System.DateTime to) {
             return base.Channel.getGPSTrackingAsync(vehicleID, from, to);
+        }
+        
+        public string clearAlerts(bool clearAll, string vehicleID) {
+            return base.Channel.clearAlerts(clearAll, vehicleID);
+        }
+        
+        public System.Threading.Tasks.Task<string> clearAlertsAsync(bool clearAll, string vehicleID) {
+            return base.Channel.clearAlertsAsync(clearAll, vehicleID);
         }
         
         public void reloadVehicles() {

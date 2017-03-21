@@ -493,6 +493,83 @@ namespace IntelliTraxx.AlertAdminService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="alertData", Namespace="http://schemas.datacontract.org/2004/07/LATATrax")]
+    [System.SerializableAttribute()]
+    public partial class alertData : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private IntelliTraxx.AlertAdminService.dbAlert alertField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Collections.Generic.List<IntelliTraxx.AlertAdminService.alertGeoFence> alertGeoFencesField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Collections.Generic.List<IntelliTraxx.AlertAdminService.alertVehicle> alertVehiclesField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public IntelliTraxx.AlertAdminService.dbAlert alert {
+            get {
+                return this.alertField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.alertField, value) != true)) {
+                    this.alertField = value;
+                    this.RaisePropertyChanged("alert");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Collections.Generic.List<IntelliTraxx.AlertAdminService.alertGeoFence> alertGeoFences {
+            get {
+                return this.alertGeoFencesField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.alertGeoFencesField, value) != true)) {
+                    this.alertGeoFencesField = value;
+                    this.RaisePropertyChanged("alertGeoFences");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Collections.Generic.List<IntelliTraxx.AlertAdminService.alertVehicle> alertVehicles {
+            get {
+                return this.alertVehiclesField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.alertVehiclesField, value) != true)) {
+                    this.alertVehiclesField = value;
+                    this.RaisePropertyChanged("alertVehicles");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="schedule", Namespace="http://schemas.datacontract.org/2004/07/LATATrax")]
     [System.SerializableAttribute()]
     public partial class schedule : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
@@ -873,6 +950,12 @@ namespace IntelliTraxx.AlertAdminService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAlertAdminSvc/getLinkedAlertsGeoFences", ReplyAction="http://tempuri.org/IAlertAdminSvc/getLinkedAlertsGeoFencesResponse")]
         System.Threading.Tasks.Task<System.Collections.Generic.List<string>> getLinkedAlertsGeoFencesAsync(string alertFriendlyName);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAlertAdminSvc/getAlertData", ReplyAction="http://tempuri.org/IAlertAdminSvc/getAlertDataResponse")]
+        IntelliTraxx.AlertAdminService.alertData getAlertData(System.Guid alertID);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAlertAdminSvc/getAlertData", ReplyAction="http://tempuri.org/IAlertAdminSvc/getAlertDataResponse")]
+        System.Threading.Tasks.Task<IntelliTraxx.AlertAdminService.alertData> getAlertDataAsync(System.Guid alertID);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAlertAdminSvc/getAllSchedules", ReplyAction="http://tempuri.org/IAlertAdminSvc/getAllSchedulesResponse")]
         System.Collections.Generic.List<IntelliTraxx.AlertAdminService.schedule> getAllSchedules();
         
@@ -1041,6 +1124,14 @@ namespace IntelliTraxx.AlertAdminService {
         
         public System.Threading.Tasks.Task<System.Collections.Generic.List<string>> getLinkedAlertsGeoFencesAsync(string alertFriendlyName) {
             return base.Channel.getLinkedAlertsGeoFencesAsync(alertFriendlyName);
+        }
+        
+        public IntelliTraxx.AlertAdminService.alertData getAlertData(System.Guid alertID) {
+            return base.Channel.getAlertData(alertID);
+        }
+        
+        public System.Threading.Tasks.Task<IntelliTraxx.AlertAdminService.alertData> getAlertDataAsync(System.Guid alertID) {
+            return base.Channel.getAlertDataAsync(alertID);
         }
         
         public System.Collections.Generic.List<IntelliTraxx.AlertAdminService.schedule> getAllSchedules() {

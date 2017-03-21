@@ -86,6 +86,14 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="polyData" nillable="true" type="tns:polyData" />
+  <xs:complexType name="alertData">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="alert" nillable="true" type="tns:dbAlert" />
+      <xs:element minOccurs="0" name="alertGeoFences" nillable="true" type="tns:ArrayOfalertGeoFence" />
+      <xs:element minOccurs="0" name="alertVehicles" nillable="true" type="tns:ArrayOfalertVehicle" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="alertData" nillable="true" type="tns:alertData" />
   <xs:complexType name="ArrayOfschedule">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="schedule" nillable="true" type="tns:schedule" />

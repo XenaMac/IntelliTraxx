@@ -12,6 +12,7 @@
     var alertVehicles = [];
     var alertValue = null;
     var copy = '';
+    var editAlertID = null;
 
     $('[data-toggle="tooltip"]').tooltip()
 
@@ -72,7 +73,8 @@
                     });
 
                     $('.editAlertBtn').click(function () {
-                        alert($(this).attr('id'));
+                        $(this).html('<img src=\'../Content/Images/preloader.gif\' width=\'25\' />')
+                        getAlert($(this).attr('id'));
                     });
 
                     $('#newAlert').click(function () {
@@ -85,7 +87,7 @@
 
     function getAlertsError(data, error) {
         var err = error;
-        alert('A problem occurred getting the alert, please reload or contact the administrator. Error: ' + error);
+        alert('A problem occurred retrieving the alerts, please reload or contact the administrator. Error: ' + error);
     }
 
     //#endregion
@@ -192,6 +194,7 @@
             }
 
             $('#myModal').modal('show');
+            $('[href=\\#step1]').tab('show');
 
             $('.next').click(function () {
                 if ($('#alertName').val() == '') {
@@ -331,7 +334,7 @@
 
     function getAllVehiclesSuccess(data) {
         if (data.length > 0) {
-            $('#vehicTable').html('<button class="btn btn-info btn-xs" data-toggle="button" id="selectAll">Select All</button><hr><small><table id="alertsVehicleTable" class="table table-responsive table-striped table-condensed"><thead><tr><td class="hidden">VehicleID</td><td class="header">Assign</td><td class="header">Vehicle ID</td><td class="header text-center">Alert E-mail(s)</td></tr></thead><tbody></tbody></table></small>');
+            $('#vehicTable').html('<button class="btn btn-info btn-xs" data-toggle="button" id="selectAll">Select All</button><br /><small><table id="alertsVehicleTable" class="table table-responsive table-striped table-condensed"><thead><tr><td class="hidden">VehicleID</td><td class="header">Assign</td><td class="header">Vehicle ID</td><td class="header text-center">Alert E-mail(s)</td></tr></thead><tbody></tbody></table></small>');
 
             //set content within table
             $("#alertsVehicleTable tbody").html('');
@@ -362,6 +365,8 @@
             })
 
             $('.nnnext').click(function () {
+                alertVehicles = [];
+
                 $('.vehicleActive').each(function () {
                     if (this.checked) {
                         alertVehicles.push({
@@ -561,11 +566,7 @@
         submitAlert();
     });
 
-    function submitAlert(ID, enabled, updatedb) {
-        //polygonIDs = JSON.stringify(polygonIDs);
-        //polygonNames = JSON.stringify(polygonNames);
-        //alertVehicles = JSON.stringify(alertVehicles);
-
+    function submitAlert() {
         var _url = 'updateAlertData';
         var _data = JSON.stringify({ 'alertClassID': alertClassID, 'alertClassName': alertClassName, 'alertName': alertName, 'startDate': alertStart, 'endDate': alertEnd, 'polygonIDs': polygonIDs, 'polygonNames': polygonNames, 'alertVehicles': alertVehicles, 'alertValue': alertValue });
         //var _data = "alertClassID=" + alertClassID + "&AlertClassName=" + alertClassName + "&alertName=" + alertName + "&startDate=" + alertStart + "&endDate=" + alertEnd + "&polygonIDs=" + JSON.stringify(polygonIDs) + "&polygonNames=" + polygonNames + "&alertVehicles=" + alertVehicles + "&alertValue=" + alertValue;
@@ -611,7 +612,24 @@
             $('[href=\\#step1]').tab('show');
             getAlerts();
         } else {
-
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-bottom-left",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+            Command: toastr["warning"]("Create Alert Failed");
         }
     }
 
@@ -627,8 +645,14 @@
     }
 
     $('#cancelCreateAlert').click(function () {
-        location.reload();
+        clearVars();
+        $('#coAlertsTable').bootstrapTable('refresh');
     });
+
+    $('#myModal').on('hidden.bs.modal', function (e) {
+        clearVars();
+        $('#coAlertsTable').bootstrapTable('refresh');
+    })
 
     function clearVars() {
         alertName;
@@ -644,5 +668,192 @@
         $('#alertName').val('');
         $('#startDate').val('');
         $('#endDate').val('');
+        editAlertID = null;
+        $('#deleteAlert').addClass('hidden');
     }
+
+    //#region EDIT ALERT: getAlert()
+
+    function getAlert(ID) {
+        var _url = 'getAlertData';
+        var _data = "ID=" + ID;
+
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: _url,
+            data: _data,
+            contentType: "application/json; charset=utf-8",
+            success: getAlertSuccess,
+            error: getAlertError
+        });
+    }
+
+    function getAlertSuccess(data) {
+        if (data.length == 0) {
+            alert('There were no alert found with this id' + ID + '. Does that seem right to you?');
+        } else {
+            //alert
+            editAlertID = data.alert;
+            alertClassID = data.alert.AlertClassID;
+            alertClassName = data.alert.AlertClassName;
+            alertName = data.alert.AlertFriendlyName;
+            alertValue = data.alert.minVal;
+            alertStart = moment(data.alert.AlertStartTime).format('MM/DD/YYYY HH:mm');
+            alertEnd = moment(data.alert.AlertEndTime).format('MM/DD/YYYY HH:mm');
+
+            for(var p = 0; p < data.extendedAlertFences.length; p++) {
+                polygonIDs.push(data.extendedAlertFences[p].geoFenceID);
+                polygonNames.push(data.extendedAlertFences[p].polyName);
+            }
+
+            for(var v = 0; v < data.extendedAlertVehicles.length; v++) {
+                alertVehicles.push({
+                    id: data.extendedAlertVehicles[v].extendedData.ID,
+                    name: data.extendedAlertVehicles[v].extendedData.VehicleFriendlyName,
+                    email: function () {
+                        for (var i = 0; i < data.alertVehicles.length; i++) {
+                            if (data.alertVehicles[i].VehicleID == data.extendedAlertVehicles[v].extendedData.ID) {
+                                "EMAIL:" + data.alertVehicles[i].AlertAction;
+                            }
+                        }
+                    }
+                });
+            }
+
+            getAlertClasses()
+            $('[href=\\#step1]').tab('show');
+            $('#deleteAlert').removeClass('hidden');
+
+            $('#myModal').on('shown.bs.modal', function () {
+                $('#alertName').val(alertName);
+                $('#startDate').val(alertStart);
+                $('#endDate').val(alertEnd);
+                $('#' + alertClassID).css({ 'background-color': '#2fa4e7', 'color': 'white' });
+
+
+                $(document).on('shown.bs.tab', 'a[data-toggle="tab"]', function (e) {
+                    if (e.target.toString().indexOf('#step2') !== -1) {
+                        $('#step2well').addClass('hidden');
+                        for (var p = 0; p < polygonIDs.length; p++) {
+                            $('#' + polygonIDs[p]).bootstrapToggle('on')
+                        }
+                        $('#step2well').removeClass('hidden');
+                    } else if (e.target.toString().indexOf('#step3') !== -1) {
+                        $('#vehicTable').addClass('hidden');
+                        $('#vehicTableLoading').html('<img src=\'../Content/Images/preloader.gif\' width=\'100\' />');
+                        setTimeout(function () {
+                            for (var v = 0; v < alertVehicles.length; v++) {
+                                $('#tb_' + alertVehicles[v].id).bootstrapToggle('on')
+                                for (var av = 0; av < data.alertVehicles.length; av++) {
+                                    if (data.alertVehicles[av].VehicleID == alertVehicles[v].id) {
+                                        $('#em_' + alertVehicles[v].id).val(data.alertVehicles[av].AlertAction.substring(6, data.alertVehicles[av].AlertAction.length));
+                                    }
+                                }
+                            }
+                            $('#vehicTableLoading').html('');
+                            $('#vehicTable').removeClass('hidden');
+                        }, 3000);
+                    } else if (e.target.toString().indexOf('#step4') !== -1) {
+                        $('#step4DivLoading').html('<img src=\'../Content/Images/preloader.gif\' width=\'100\' />');
+                        $('#step4Div').addClass('hidden');
+                        setTimeout(function () {
+                            $('#alertValue').val(alertValue);
+                            $('#step4DivLoading').html('');
+                            $('#step4Div').removeClass('hidden');
+                        }, 1000);
+                    }
+                });
+            })
+        }
+    }
+
+    function getAlertError(data, error) {
+        var err = error;
+        alert('A problem occurred retrieving the alert, please reload or contact the administrator. Error: ' + error);
+    }
+
+    //#endregion
+
+    //#region DELETE Alert
+
+    $('#deleteAlert').click(function () {
+        if (confirm("Are you sure? This will delete the alert forever.")) {
+            deleteAlert();
+        }
+    });
+
+    function deleteAlert() {
+        var _url = 'deleteAlert';
+        var _data =  JSON.stringify({ 'alert': editAlertID });
+
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: _url,
+            data: _data,
+            contentType: "application/json; charset=utf-8",
+            success: deleteAlertSuccess,
+            error: deleteAlertError
+        });
+    }
+
+    function deleteAlertSuccess(data) {
+        if (data == "OK") {
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-bottom-left",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+            Command: toastr["success"]("Alert Deleted");
+            clearVars();
+            $('#myModal').modal('hide');
+            $('#alertClassDiv').html('');
+            $('#step2well').html('');
+            $('#vehicTable').html('');
+            $('#step4Div').html('');
+            $('#step5Div').html('');
+            $('[href=\\#step1]').tab('show');
+            getAlerts();
+        } else {
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-bottom-left",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+            Command: toastr["warning"]("Delete Alert Failed");
+        }
+    };
+
+    function deleteAlertError(data, error) {
+        var err = error;
+        alert('A problem occurred deleting the alert, please reload or contact the administrator. Error: ' + error);
+    }
+
+    //#endregion DELTE Alert
+
 });

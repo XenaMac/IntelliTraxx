@@ -56,6 +56,12 @@
   <wsdl:message name="IAlertAdminSvc_getLinkedAlertsGeoFences_OutputMessage">
     <wsdl:part name="parameters" element="tns:getLinkedAlertsGeoFencesResponse" />
   </wsdl:message>
+  <wsdl:message name="IAlertAdminSvc_getAlertData_InputMessage">
+    <wsdl:part name="parameters" element="tns:getAlertData" />
+  </wsdl:message>
+  <wsdl:message name="IAlertAdminSvc_getAlertData_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getAlertDataResponse" />
+  </wsdl:message>
   <wsdl:message name="IAlertAdminSvc_getAllSchedules_InputMessage">
     <wsdl:part name="parameters" element="tns:getAllSchedules" />
   </wsdl:message>
@@ -166,6 +172,10 @@
     <wsdl:operation name="getLinkedAlertsGeoFences">
       <wsdl:input wsaw:Action="http://tempuri.org/IAlertAdminSvc/getLinkedAlertsGeoFences" message="tns:IAlertAdminSvc_getLinkedAlertsGeoFences_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IAlertAdminSvc/getLinkedAlertsGeoFencesResponse" message="tns:IAlertAdminSvc_getLinkedAlertsGeoFences_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getAlertData">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAlertAdminSvc/getAlertData" message="tns:IAlertAdminSvc_getAlertData_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAlertAdminSvc/getAlertDataResponse" message="tns:IAlertAdminSvc_getAlertData_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="getAllSchedules">
       <wsdl:input wsaw:Action="http://tempuri.org/IAlertAdminSvc/getAllSchedules" message="tns:IAlertAdminSvc_getAllSchedules_InputMessage" />
@@ -287,6 +297,15 @@
     </wsdl:operation>
     <wsdl:operation name="getLinkedAlertsGeoFences">
       <soap:operation soapAction="http://tempuri.org/IAlertAdminSvc/getLinkedAlertsGeoFences" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAlertData">
+      <soap:operation soapAction="http://tempuri.org/IAlertAdminSvc/getAlertData" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

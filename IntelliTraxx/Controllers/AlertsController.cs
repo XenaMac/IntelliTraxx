@@ -111,12 +111,66 @@ namespace IntelliTraxx.Controllers
             return Json(classes, JsonRequestBehavior.AllowGet);
         }
 
-        #region Polygons
         public ActionResult GetAllFences()
         {
             var Fences = polygonService.getPolygons();
 
             return Json(Fences, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult getLinkedAlertsVehicles(string alertFriendlyName)
+        {
+            List<Vehicle> vehicles = truckService.getAllVehicles(true);
+            List<string> linkedVehicles = alertService.getLinkedAlertsVehicles(alertFriendlyName);
+            List<Vehicle> linkedAlertVehicles = new List<Vehicle>();
+            foreach(string id in linkedVehicles)
+            {
+                Guid Vid = new Guid(id);
+                Vehicle v = vehicles.Where(veh => veh.extendedData.ID == Vid).FirstOrDefault();
+                linkedAlertVehicles.Add(v);
+            }
+            return Json(linkedAlertVehicles, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult getLinkedAlertsFences(string alertFriendlyName)
+        {
+            List<polyData> allFences = alertService.getPolygons();
+            List<string> linkedFences = alertService.getLinkedAlertsGeoFences(alertFriendlyName);
+            List<polyData> linkeAlertFences = new List<polyData>();
+            foreach (string GeoName in linkedFences)
+            {
+                polyData p = allFences.Where(ply => ply.polyName == GeoName).FirstOrDefault();
+                linkeAlertFences.Add(p);
+            }
+            return Json(linkeAlertFences, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult getAlertData(Guid ID)
+        {
+            alertData AD = alertService.getAlertData(ID);
+            extendedAlertData EAD = new extendedAlertData();
+            EAD.alert = AD.alert;
+            EAD.alertGeoFences = AD.alertGeoFences;
+            EAD.alertVehicles = AD.alertVehicles;
+            EAD.extendedAlertFences = new List<PolygonService.polygonData>();
+            EAD.extendedAlertVehicles = new List<Vehicle>();
+
+
+            foreach(alertGeoFence gf in AD.alertGeoFences)
+            {
+                PolygonService.polygonData poly = new PolygonService.polygonData();
+                poly = polygonService.getPolygons().Where(p => p.geoFenceID == gf.GeoFenceID).FirstOrDefault();
+                EAD.extendedAlertFences.Add(poly);
+            }
+
+            foreach(alertVehicle av in AD.alertVehicles)
+            {
+                Vehicle v = new Vehicle();
+                v = truckService.getAllVehicles(true).Where(vh => vh.extendedData.ID == av.VehicleID).FirstOrDefault();
+                EAD.extendedAlertVehicles.Add(v);
+            }
+
+            return Json(EAD, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -171,7 +225,13 @@ namespace IntelliTraxx.Controllers
 
             return Json("OK", JsonRequestBehavior.AllowGet);
         }
-        #endregion
+
+        [HttpPost]
+        public ActionResult deleteAlert(dbAlert alert)
+        {
+            string result = alertService.deleteAlert(alert);
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
 
         public class AlertHistory
         {
@@ -195,9 +255,17 @@ namespace IntelliTraxx.Controllers
         {
             public string id { get; set; }
         }
+
         public class polygonNames
         {
             public string Name { get; set; }
+        }
+
+        public class extendedAlertData : alertData
+        {
+            public List<Vehicle> extendedAlertVehicles { get; set; }
+
+            public List<PolygonService.polygonData> extendedAlertFences { get; set;}
         }
     }
 }

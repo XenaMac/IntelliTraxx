@@ -36,7 +36,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h3 id="myModalLabel"><i class="glyphicons glyphicons-light-beacon"></i>  Create New Alert</h3>
+                    <h3 id="myModalLabel"><i class="glyphicons glyphicons-light-beacon"></i>  Create/Edit Alert</h3>
                 </div>
                 <div class="modal-body" id="myWizard">
 
@@ -75,7 +75,7 @@
                                         <label class="sr-only" for="endDate">End Date:</label>
                                         <input type="text" class="form-control" id="endDate" placeholder="End Date">
                                     </div><br />
-                                    <small><em>Note: alert will be active at all times if no start and end date are given.</em></small><br /><br />
+                                    <small><em>Note: alert will be active from this time for 5 years if no start and end date are given.</em></small><br /><br />
                                 </form>
                                 <div id="alertClassDiv"></div>
                             </div>
@@ -88,6 +88,7 @@
                         <div class="tab-pane fade" id="step3">
                             <div class="well" id="step3well">
                                 <div id="step3well">
+                                    <div id="vehicTableLoading" class="text-center"></div>
                                     <div id="vehicTable"></div>
                                 </div>
                             </div>
@@ -95,6 +96,7 @@
                         </div>
                         <div class="tab-pane fade" id="step4">
                             <div class="well" id="step4well">
+                                <div id="step4DivLoading" class="text-center"></div>
                                 <div id="step4Div"></div>
                             </div>
                             <a class="btn btn-default nnnnext" href="#">Continue</a>
@@ -108,8 +110,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn" data-dismiss="modal" aria-hidden="true" id="cancelCreateAlert">Cancel</button>
-                    @*<button class="btn btn-primary">Save changes</button>*@
+                    <button class="btn btn-info" data-dismiss="modal" aria-hidden="true" id="cancelCreateAlert">Cancel</button>
+                    <button class="btn btn-danger hidden" aria-hidden="true" id="deleteAlert">Delete</button>
                 </div>
             </div>
         </div>

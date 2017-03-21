@@ -917,6 +917,21 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="clearAlerts">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="clearAll" type="xs:boolean" />
+        <xs:element minOccurs="0" name="vehicleID" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="clearAlertsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="clearAlertsResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="reloadVehicles">
     <xs:complexType>
       <xs:sequence />
