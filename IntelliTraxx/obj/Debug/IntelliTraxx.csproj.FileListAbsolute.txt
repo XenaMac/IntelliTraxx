@@ -201,4 +201,3 @@ C:\GitHub\XenaTech\IntellilTraxx\IntelliTraxx\bin\Microsoft.Owin.Security.Twitte
 C:\GitHub\XenaTech\IntellilTraxx\IntelliTraxx\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 C:\GitHub\XenaTech\IntellilTraxx\IntelliTraxx\obj\Debug\IntelliTraxx.dll
 C:\GitHub\XenaTech\IntellilTraxx\IntelliTraxx\obj\Debug\IntelliTraxx.pdb
-C:\GitHub\XenaTech\IntellilTraxx\IntelliTraxx\obj\Debug\IntelliTraxx.csprojResolveAssemblyReference.cache

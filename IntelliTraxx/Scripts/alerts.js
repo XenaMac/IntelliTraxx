@@ -19,6 +19,10 @@
 
     $('#geofenceIcon').click(function () { });
 
+    $('#diagnosticsIcon').click(function () {
+        window.location.href = '../Scheduling/Index';
+    });
+
     //#endregion
 
     $('#filter').click(function () {

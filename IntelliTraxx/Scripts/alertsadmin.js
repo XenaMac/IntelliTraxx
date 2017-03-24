@@ -26,6 +26,10 @@
         window.location.href = '../Alerts/Index';
     });
 
+    $('#diagnosticsIcon').click(function () {
+        window.location.href = '../Scheduling/Index';
+    });
+
     //#endregion
 
     getAlerts();

@@ -222,6 +222,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MessageActionFilter.cs" />
     <Compile Include="Controllers\MessageControllerBase.cs" />
+    <Compile Include="Controllers\SchedulingController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -410,6 +411,7 @@
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\scheduling.js" />
     <Content Include="Scripts\tableExport.js" />
     <Content Include="Scripts\toastr.js" />
     <Content Include="Scripts\_references.js" />
@@ -609,6 +611,8 @@
     <Content Include="Views\Shared\_LayoutTraxx.cshtml" />
     <Content Include="Views\Shared\_LayoutAlertsAdmin.cshtml" />
     <Content Include="Views\Alerts\Admin.cshtml" />
+    <Content Include="Views\Scheduling\Index.cshtml" />
+    <Content Include="Views\Shared\_LayoutScheduling.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
