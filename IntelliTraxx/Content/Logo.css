@@ -139,7 +139,7 @@
 }
 
 .diagnosticsIcon_in {
-    background-image: url('Logo/DiagnosticsIcon.png');
+    background-image: url('Logo/Scheduling.png');
     background-repeat: no-repeat;
     background-size: 25px;
     background-position: center;
@@ -153,7 +153,7 @@
     opacity: 0;
 }
 .diagnosticsIcon_out {
-    background-image: url('Logo/DiagnosticsIcon.png');
+    background-image: url('Logo/Scheduling.png');
     background-repeat: no-repeat;
     background-size: 25px;
     background-position: center;

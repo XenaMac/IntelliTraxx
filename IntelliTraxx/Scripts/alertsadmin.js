@@ -76,11 +76,12 @@
                         $(this).html('<img src=\'../Content/Images/preloader.gif\' width=\'25\' />')
                         getAlert($(this).attr('id'));
                     });
-
-                    $('#newAlert').click(function () {
-                        getAlertClasses();
-                    });
                 },
+            });
+
+
+            $('#newAlert').click(function () {
+                getAlertClasses();
             });
         }
     }
@@ -144,7 +145,7 @@
     //#region getAlertClasses
 
     function getAlertClasses() {
-        $('#alertClassDiv').html('');
+        $('#alertClassDiv').html("");
         var _url = 'getAlertClasses';
         var _data = ''
         $.ajax({
@@ -160,35 +161,30 @@
 
     function getAlertClassesSuccess(data) {
         if (data.length > 0) {
-            var markup = '';
-
             for (var i = 0; i < data.length; i++) {
-                markup = '';
+                var markup;
 
                 switch (data[i].AlertClassName) {
                     case "LAST POSITION":
-                        markup += '<div class="col-lg-3"><div class="panel panel-info text-center classTN "><div class="panel-heading"><strong>' + data[i].AlertClassName + '</strong></div><div class="panel-body next" id="' + data[i].AlertClassID + '" name="' + data[i].AlertClassName + '"><i class="material-icons md-48">all_out</i><br><small>Vehicle will trigger an alert upon startup, if last known position was inside a polygon.</small></div></div></div>'
+                        markup = '<div class="col-lg-3"><div class="panel panel-info text-center classTN "><div class="panel-heading"><strong>' + data[i].AlertClassName + '</strong></div><div class="panel-body next" id="' + data[i].AlertClassID + '" name="' + data[i].AlertClassName + '"><i class="material-icons md-48">all_out</i><br><small>Vehicle will trigger an alert upon startup, if last known position was inside a polygon.</small></div></div></div>'
                         break;
                     case "SPEEDING":
-                        markup += '<div class="col-lg-3"><div class="panel panel-info text-center classTN"><div class="panel-heading"><strong>' + data[i].AlertClassName + '</strong></div><div class="panel-body next"  id="' + data[i].AlertClassID + '" name="' + data[i].AlertClassName + '"><i class="material-icons md-48">network_check</i><br><small>Vehicle will trigger an alert upon startup, if last known position was inside a polygon.</small></div></div></div>'
+                        markup = '<div class="col-lg-3"><div class="panel panel-info text-center classTN"><div class="panel-heading"><strong>' + data[i].AlertClassName + '</strong></div><div class="panel-body next"  id="' + data[i].AlertClassID + '" name="' + data[i].AlertClassName + '"><i class="material-icons md-48">network_check</i><br><small>Vehicle will trigger an alert upon startup, if last known position was inside a polygon.</small></div></div></div>'
                         break;
-                    //case "SCHEDULE":
-                    //    markup += '<div class="col-md-3"><div class="thumbnail text-center"><i class="material-icons md-48">event_available</i><div class="caption"><h4>' + data[i].AlertClassName + '</h4><small><p>Vehicle will trigger an alert when it is active outside of an assigned schedule.<br /><br /></p></small><p><a href="#" id="' + data[i].AlertClassID + '" name="' + data[i].AlertClassName + '" class="btn btn-info btn-sm next" role="button">Select</a></div></div></div></div>';
-                    //    break;
                     case "STATIONARY":
-                        markup += '<div class="col-lg-3"><div class="panel panel-info text-center classTN"><div class="panel-heading"><strong>' + data[i].AlertClassName + '</strong></div><div class="panel-body next" id="' + data[i].AlertClassID + '" name="' + data[i].AlertClassName + '"><i class="material-icons md-48">gps_fixed</i><br><small>Vehicle will trigger an alert upon startup, if last known position was inside a polygon.</small></div></div></div>'
+                        markup = '<div class="col-lg-3"><div class="panel panel-info text-center classTN"><div class="panel-heading"><strong>' + data[i].AlertClassName + '</strong></div><div class="panel-body next" id="' + data[i].AlertClassID + '" name="' + data[i].AlertClassName + '"><i class="material-icons md-48">gps_fixed</i><br><small>Vehicle will trigger an alert upon startup, if last known position was inside a polygon.</small></div></div></div>'
                         break;
                     case "STARTUP":
-                        markup += '<div class="col-lg-3"><div class="panel panel-info text-center classTN"><div class="panel-heading"><strong>' + data[i].AlertClassName + '</strong></div><div class="panel-body next" id="' + data[i].AlertClassID + '" name="' + data[i].AlertClassName + '"><i class="material-icons md-48">power_settings_new</i><br><small>Vehicle will trigger an alert upon startup, if last known position was inside a polygon.</small></div></div></div>'
+                        markup = '<div class="col-lg-3"><div class="panel panel-info text-center classTN"><div class="panel-heading"><strong>' + data[i].AlertClassName + '</strong></div><div class="panel-body next" id="' + data[i].AlertClassID + '" name="' + data[i].AlertClassName + '"><i class="material-icons md-48">power_settings_new</i><br><small>Vehicle will trigger an alert upon startup, if last known position was inside a polygon.</small></div></div></div>'
                         break;
                     case "ENTER POLYGON":
-                        markup += '<div class="col-lg-3"><div class="panel panel-info text-center classTN"><div class="panel-heading"><strong>' + data[i].AlertClassName + '</strong></div><div class="panel-body next" id="' + data[i].AlertClassID + '" name="' + data[i].AlertClassName + '"><i class="material-icons md-48">input</i><br><small>Vehicle will trigger an alert upon startup, if last known position was inside a polygon.</small></div></div></div>'
+                        markup = '<div class="col-lg-3"><div class="panel panel-info text-center classTN"><div class="panel-heading"><strong>' + data[i].AlertClassName + '</strong></div><div class="panel-body next" id="' + data[i].AlertClassID + '" name="' + data[i].AlertClassName + '"><i class="material-icons md-48">input</i><br><small>Vehicle will trigger an alert upon startup, if last known position was inside a polygon.</small></div></div></div>'
                         break;
                     case "EXIT POLYGON":
-                        markup += '<div class="col-lg-3"><div class="panel panel-info text-center classTN"><div class="panel-heading"><strong>' + data[i].AlertClassName + '</strong></div><div class="panel-body next" id="' + data[i].AlertClassID + '" name="' + data[i].AlertClassName + '"><i class="material-icons md-48">open_in_new</i><br><small>Vehicle will trigger an alert upon startup, if last known position was inside a polygon.</small></div></div></div>'
+                        markup = '<div class="col-lg-3"><div class="panel panel-info text-center classTN"><div class="panel-heading"><strong>' + data[i].AlertClassName + '</strong></div><div class="panel-body next" id="' + data[i].AlertClassID + '" name="' + data[i].AlertClassName + '"><i class="material-icons md-48">open_in_new</i><br><small>Vehicle will trigger an alert upon startup, if last known position was inside a polygon.</small></div></div></div>'
                         break;
                     default:
-                        markup += "";
+                        markup = "";
                 }
                 $('#alertClassDiv').append(markup);
             }
@@ -263,6 +259,8 @@
 
     function getPolygonsSuccess(data) {
         if (data.length > 0) {
+            $('#thumbnails').append('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="" id="allPolys" type="checkbox" data-toggle="toggle"><hr>');
+
             for (var i = 0; i < data.length; i++) {
                 var markup = '';
                 switch (data[i].geoType) {
@@ -277,6 +275,26 @@
                 }
                 $('#thumbnails').append(markup);
             }
+
+            $('#allPolys').bootstrapToggle({
+                on: 'Select All',
+                off: 'Single Select',
+                width: '100px',
+                onstyle: 'info',
+                size: 'small'
+            });
+
+            $("#allPolys").change(function () {
+                if (this.checked) {
+                    $('.pgSelect').each(function () {
+                        $(this).bootstrapToggle('on');
+                    });
+                } else {
+                    $('.pgSelect').each(function () {
+                        $(this).bootstrapToggle('off');
+                    });
+                }
+            });
 
             $('.pgSelect').bootstrapToggle({
                 on: 'Yes',
@@ -568,7 +586,7 @@
 
     function submitAlert() {
         var _url = 'updateAlertData';
-        var _data = JSON.stringify({ 'alertClassID': alertClassID, 'alertClassName': alertClassName, 'alertName': alertName, 'startDate': alertStart, 'endDate': alertEnd, 'polygonIDs': polygonIDs, 'polygonNames': polygonNames, 'alertVehicles': alertVehicles, 'alertValue': alertValue });
+        var _data = JSON.stringify({ 'alertClassID': alertClassID, 'alertClassName': alertClassName, 'alertName': alertName, 'editAlertID': editAlertID.AlertID, 'startDate': alertStart, 'endDate': alertEnd, 'polygonIDs': polygonIDs, 'polygonNames': polygonNames, 'alertVehicles': alertVehicles, 'alertValue': alertValue });
         //var _data = "alertClassID=" + alertClassID + "&AlertClassName=" + alertClassName + "&alertName=" + alertName + "&startDate=" + alertStart + "&endDate=" + alertEnd + "&polygonIDs=" + JSON.stringify(polygonIDs) + "&polygonNames=" + polygonNames + "&alertVehicles=" + alertVehicles + "&alertValue=" + alertValue;
 
         $.ajax({

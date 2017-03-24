@@ -283,6 +283,7 @@
     <Content Include="Content\Logo\Logo.png" />
     <Content Include="Content\Logo\Logo2.png" />
     <Content Include="Content\Logo\MapIcon.png" />
+    <Content Include="Content\Logo\Scheduling.png" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
     <Content Include="Content\themes\base\autocomplete.css" />

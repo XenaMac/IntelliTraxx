@@ -174,7 +174,7 @@ namespace IntelliTraxx.Controllers
         }
 
         [HttpPost]
-        public ActionResult updateAlertData(string alertClassID, string alertClassName, string alertName, string startDate, string endDate, List<polygonID> polygonIDs, List<polygonNames> polygonNames, List<AV> alertVehicles, string alertValue)
+        public ActionResult updateAlertData(string alertClassID, string alertClassName, string alertName, string editAlertID, string startDate, string endDate, List<polygonID> polygonIDs, List<polygonNames> polygonNames, List<AV> alertVehicles, string alertValue)
         {
             DateTime s = DateTime.Now;
             DateTime e = DateTime.Now.AddYears(5);
@@ -191,7 +191,13 @@ namespace IntelliTraxx.Controllers
 
             //create alert class
             dbAlert alert = new dbAlert();
-            alert.AlertID = Guid.NewGuid();
+            if(editAlertID == null)
+            {
+                alert.AlertID = Guid.NewGuid();
+            } else
+            {
+                alert.AlertID = new Guid(editAlertID);
+            }
             alert.AlertActive = true;
             alert.AlertStartTime = s;
             alert.AlertEndTime = e;
