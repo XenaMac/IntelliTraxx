@@ -16,22 +16,6 @@
 
     $('[data-toggle="tooltip"]').tooltip()
 
-    //#region Menu scripts
-
-    $('#mapIcon').click(function () {
-        window.location.href = '../Fleet/index';
-    });
-
-    $('#alertsIcon').click(function () {
-        window.location.href = '../Alerts/Index';
-    });
-
-    $('#diagnosticsIcon').click(function () {
-        window.location.href = '../Scheduling/Index';
-    });
-
-    //#endregion
-
     getAlerts();
 
     //#region getAlerts Functions

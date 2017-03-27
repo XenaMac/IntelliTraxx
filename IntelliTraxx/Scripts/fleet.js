@@ -1274,7 +1274,15 @@
     //#endregion
 
 
+    $('#appsIcon').click(function () {
+        openNav();
+    });
 
+    $('#geofenceIcon').click(function () {
+        openNav();
+        $('#collapseTwo').collapse('show');
+        $('#gd_show').bootstrapToggle('on')
+    });
 
 
     //#region get monthly alerts
@@ -1924,30 +1932,4 @@
     $('#closebtn').click(function () {
         closeNav();
     });
-
-    //#region Menu scripts
-
-    $('#appsIcon').click(function () {
-        openNav();
-    });
-
-    $('#mapIcon').click(function () {
-        window.location.href = '../Fleet/index';
-    });
-
-    $('#geofenceIcon').click(function () {
-        openNav();
-        $('#collapseTwo').collapse('show');
-        $('#gd_show').bootstrapToggle('on')
-    });
-
-    $('#alertsIcon').click(function () {
-        window.location.href = '../Alerts/Index';
-    });
-
-    $('#diagnosticsIcon').click(function () {
-        window.location.href = '../Scheduling/Index';
-    });
-
-    //#endregion
 });

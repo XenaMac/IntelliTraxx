@@ -4,6 +4,10 @@
     Layout = "~/Views/Shared/_LayoutScheduling.cshtml";
 }
 
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+{
+    @Html.AntiForgeryToken()
+}
 
 <div id="nav" class="container-fluid center-block">
     <div id="logo"></div>
@@ -18,12 +22,14 @@
         @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
             {
             @Html.AntiForgeryToken()
-            <ul class="list-group small">
-                <li class="list-group-item"><a href="" class="text-left" style="padding: 5px;"><i class="glyphicons glyphicons-user"></i> Jon McKinley (Administrator)</a><br /></li>
-                <li class="list-group-item"><a href="" class="text-left" style="padding: 5px;"><i class="glyphicons glyphicons-bell"></i> Notifications<span class="badge" style="margin-left: 5px;">3</span></a><br /></li>
-                <li class="list-group-item"><a href="" class="text-left" style="padding: 5px;"><i class="glyphicons glyphicons-question-sign"></i> Help</a></li>
-                <li class="list-group-item"><a href="javascript:document.getElementById('logoutForm').submit()" style="padding: 5px;"><i class="glyphicons glyphicons-exit"></i> Log off</a></li>
-            </ul>
+            <small>
+                <ul class="list-group">
+                    <li class="list-group-item"><a href="" class="text-left" style="padding: 5px;"><i class="glyphicons glyphicons-user"></i> Jon McKinley (Administrator)</a><br /></li>
+                    <li class="list-group-item"><a href="" class="text-left" style="padding: 5px;"><i class="glyphicons glyphicons-bell"></i> Notifications<span class="badge" style="margin-left: 5px;">3</span></a><br /></li>
+                    <li class="list-group-item"><a href="" class="text-left" style="padding: 5px;"><i class="glyphicons glyphicons-question-sign"></i> Help</a></li>
+                    <li class="list-group-item"><a href="javascript:document.getElementById('logoutForm').submit()" id="logOff" style="padding: 5px;"><i class="glyphicons glyphicons-exit"></i> Log off</a></li>
+                </ul>
+            </small>
         }
     </div>
 </div>
@@ -33,7 +39,103 @@
     <div id="schedules" class="container-fluid">
         <img src="../Content/Images/preloader.gif" width="200" class="center-block hidden" id="loader"/>
         <div class="col-lg-3 list-group" id="scheduleList"></div>
-        <div class="col-lg-9 alert alert-info"></div>
+        <div class="col-lg-9" id="scheduleInfo">
+            <button class="btn btn-success pull-right" id="newSchedule"><i class="glyphicons glyphicons-plus"></i>Create Alert</button>
+            <hr />
+            <form class="form-horizontal" id="scheduleForm">
+                <div class="form-group">
+                    <input type="hidden" id="scheduleID"/>
+                    <label for="tbScheduleName" class="col-sm-3 control-label">Schedule Name:</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="tbScheduleName" placeholder="Schedule Name" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="tbEffStDt" class="col-sm-3 control-label">Start Date:</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="tbEffStDt" placeholder="Effective Start Date" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="tbEffEndDt" class="col-sm-3 control-label">End Date:</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="tbEffEndDt" placeholder="Effective End Date" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-3 control-label">Day of Week:</label>
+                    <div class="col-sm-9">
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-primary">
+                                <input type="radio" name="options" id="1" autocomplete="off"> Sun
+                            </label>
+                            <label class="btn btn-primary">
+                                <input type="radio" name="options" id="2" autocomplete="off"> Mon
+                            </label>
+                            <label class="btn btn-primary">
+                                <input type="radio" name="options" id="3" autocomplete="off"> Tues
+                            </label>
+                            <label class="btn btn-primary">
+                                <input type="radio" name="options" id="4" autocomplete="off"> Wed
+                            </label>
+                            <label class="btn btn-primary">
+                                <input type="radio" name="options" id="5" autocomplete="off"> Thur
+                            </label>
+                            <label class="btn btn-primary">
+                                <input type="radio" name="options" id="6" autocomplete="off"> Fri
+                            </label>
+                            <label class="btn btn-primary">
+                                <input type="radio" name="options" id="7" autocomplete="off"> Sat
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Schedule Times:</label>
+                    <div class="col-sm-2">
+                        <input class="form-control" id="timeFrom" placeholder="From" required>
+                    </div>
+                    <label class="col-sm-1 control-label">to</label>
+                    <div class="col-sm-2">
+                        <input class="form-control" id="timeTo" placeholder="To" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Schedule Vehicles:</label>
+                    <div class="col-sm-9">
+                        <img src="../Content/Images/preloader.gif" width="50" class="center-block hidden" id="vehicleLoader" />
+                        <select id="vehicleList" multiple="multiple" required></select>
+                    </div>
+                </div>
+                @*<div class="form-group">
+                    <label class="col-sm-3 control-label">Off-Schedule Alert:</label>
+                    <div class="col-sm-9">
+                        <input id="alert" type="checkbox" checked data-toggle="toggle" data-on="Alert" data-off="No Alert" data-onstyle="primary">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Alert Email(s):</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" id="alertEmails" placeholder="email1; email2; etc... blank if none">
+                    </div>
+                </div>*@
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Schedule Active:</label>
+                    <div class="col-sm-9">
+                        <input id="active" type="checkbox" checked data-toggle="toggle" data-on="Active" data-off="In-Active" data-onstyle="primary">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <hr />
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" id="createSchedule" class="btn btn-info">Create New Schedule</button>
+                        <button type="submit" id="modifySchedule" class="btn btn-primary hidden">Modify Schedule</button>
+                        <button type="button" id="deleteSchedule" class="btn btn-danger hidden">Delete Schedule</button>
+                        <img src="../Content/Images/preloader.gif" width="50" class="center-block hidden" id="submitter"/>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 

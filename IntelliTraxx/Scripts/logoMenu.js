@@ -1,21 +1,33 @@
 ﻿$(function () {
     var menuOpen = false;
     var menuInterval = null;
+    var dragging = false;
 
-    $('#nav').draggable();
-    $('#logo').click(function () {
-        if (!menuOpen) {
-            openMenu();
-            menuOpen = true;
-            menuInterval = setInterval(function () {
+    $('#nav').draggable({
+        containment: "window",
+        start: function () {
+            dragging = true;
+        },
+        stop: function () {
+            dragging = false;
+        }
+    });
+
+    $('#logo').mouseup(function () {
+        if (!dragging) {
+            if (!menuOpen) {
+                openMenu();
+                menuOpen = true;
+                menuInterval = setInterval(function () {
+                    closeMenu();
+                    menuOpen = false;
+                    clearInterval(menuInterval);
+                }, 10000);
+            } else {
+                clearInterval(menuInterval);
                 closeMenu();
                 menuOpen = false;
-                clearInterval(menuInterval);
-            }, 10000);
-        } else {
-            clearInterval(menuInterval);
-            closeMenu();
-            menuOpen = false;
+            }
         }
     })
 
@@ -45,4 +57,16 @@
         $("#geofenceIcon").addClass("wrapper");
         $("#appsIcon").addClass("wrapper");
     }
+
+    $('#mapIcon').click(function () {
+        window.location.href = '../Fleet/index';
+    });
+
+    $('#alertsIcon').click(function () {
+        window.location.href = '../Alerts/Index';
+    });
+
+    $('#diagnosticsIcon').click(function () {
+        window.location.href = '../Scheduling/Index';
+    });
 });

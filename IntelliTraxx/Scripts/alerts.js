@@ -3,28 +3,6 @@
 
     $('[data-toggle="tooltip"]').tooltip()
 
-    //#region Menu scripts
-
-    $('#appsIcon').click(function () {
-        openNav();
-    });
-
-    $('#mapIcon').click(function () {
-        window.location.href = '../Fleet/index';
-    });
-
-    $('#alertsIcon').click(function () {
-        window.location.href = '../Alerts/Index';
-    });
-
-    $('#geofenceIcon').click(function () { });
-
-    $('#diagnosticsIcon').click(function () {
-        window.location.href = '../Scheduling/Index';
-    });
-
-    //#endregion
-
     $('#filter').click(function () {
         getVehicleAlerts(_alertName);
     });

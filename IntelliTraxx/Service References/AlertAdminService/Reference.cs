@@ -590,7 +590,7 @@ namespace IntelliTraxx.AlertAdminService {
         private bool activeField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string companyField;
+        private System.Guid companyidField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string createdByField;
@@ -679,14 +679,14 @@ namespace IntelliTraxx.AlertAdminService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string company {
+        public System.Guid companyid {
             get {
-                return this.companyField;
+                return this.companyidField;
             }
             set {
-                if ((object.ReferenceEquals(this.companyField, value) != true)) {
-                    this.companyField = value;
-                    this.RaisePropertyChanged("company");
+                if ((this.companyidField.Equals(value) != true)) {
+                    this.companyidField = value;
+                    this.RaisePropertyChanged("companyid");
                 }
             }
         }
@@ -824,6 +824,9 @@ namespace IntelliTraxx.AlertAdminService {
         private System.DateTime startTimeField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Guid vIDField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string vehicleIDField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
@@ -871,6 +874,19 @@ namespace IntelliTraxx.AlertAdminService {
                 if ((this.startTimeField.Equals(value) != true)) {
                     this.startTimeField = value;
                     this.RaisePropertyChanged("startTime");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Guid vID {
+            get {
+                return this.vIDField;
+            }
+            set {
+                if ((this.vIDField.Equals(value) != true)) {
+                    this.vIDField = value;
+                    this.RaisePropertyChanged("vID");
                 }
             }
         }

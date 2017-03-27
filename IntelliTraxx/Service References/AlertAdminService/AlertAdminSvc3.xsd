@@ -106,7 +106,7 @@
       <xs:element minOccurs="0" name="EffDtEnd" type="xs:dateTime" />
       <xs:element minOccurs="0" name="EffDtStart" type="xs:dateTime" />
       <xs:element minOccurs="0" name="active" type="xs:boolean" />
-      <xs:element minOccurs="0" name="company" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="companyid" type="ser:guid" />
       <xs:element minOccurs="0" name="createdBy" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="createdOn" type="xs:dateTime" />
       <xs:element minOccurs="0" name="endTime" type="xs:dateTime" />
@@ -129,6 +129,7 @@
       <xs:element minOccurs="0" name="endTime" type="xs:dateTime" />
       <xs:element minOccurs="0" name="scheduleName" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="startTime" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="vID" type="ser:guid" />
       <xs:element minOccurs="0" name="vehicleID" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>

@@ -290,3 +290,9 @@ table .header {
     color: #fff;
     cursor: pointer;
 }
+
+#scheduleList {
+    max-height: 600px;
+    overflow-y: hidden;
+    overflow-y: auto;
+}
