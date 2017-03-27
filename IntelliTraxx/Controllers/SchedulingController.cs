@@ -26,7 +26,7 @@ namespace IntelliTraxx.Controllers
         public ActionResult getAllSchedules()
         {
             List<schedule> schedules = alertService.getAllSchedules();
-            return Json(schedules, JsonRequestBehavior.AllowGet);
+            return Json(schedules.OrderBy(v => v.scheduleName), JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult getAllVehicles(bool loadHistorical)
@@ -43,20 +43,30 @@ namespace IntelliTraxx.Controllers
         }
 
         [HttpPost]
-        public ActionResult updateSchedules(List<schedule> schedules)
+        public ActionResult updateSchedules(List<schedule> schedules, bool knew)
         {
             var claimsIdentity = User.Identity as System.Security.Claims.ClaimsIdentity;
             var identity = (ClaimsPrincipal)Thread.CurrentPrincipal;
             var userID = identity.Claims.Where(c => c.Type == ClaimTypes.Sid).Select(c => c.Value).SingleOrDefault();
             Company company = truckService.getUserCompaniesFull(new Guid(userID)).FirstOrDefault();
 
-            foreach (schedule s in schedules)
+            if (knew)
             {
-                s.companyid = company.CompanyID;
-                s.createdOn = DateTime.Now;
-                s.createdBy = User.Identity.Name;
-                s.modifiedOn = DateTime.Now;
-                s.modifiedBy = User.Identity.Name;
+                foreach (schedule s in schedules)
+                {
+                    s.companyid = company.CompanyID;
+                    s.createdOn = DateTime.Now;
+                    s.createdBy = User.Identity.Name;
+                    s.modifiedOn = DateTime.Now;
+                    s.modifiedBy = User.Identity.Name;
+                }
+            } else {
+                foreach (schedule s in schedules)
+                {
+                    s.companyid = company.CompanyID;
+                    s.modifiedOn = DateTime.Now;
+                    s.modifiedBy = User.Identity.Name;
+                }
             }
 
             string success = alertService.updateSchedules(schedules);
@@ -67,6 +77,13 @@ namespace IntelliTraxx.Controllers
         public ActionResult addVehicleToSchedule(string scheduleID, List<string> vehicleIDs)
         {
             string success = alertService.addVehicleToSchedule(new Guid(scheduleID), vehicleIDs);
+            return Json(success, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public  ActionResult deleteSchedules(List<schedule> dSchedules)
+        {
+            string success = alertService.deleteSchedules(dSchedules);
             return Json(success, JsonRequestBehavior.AllowGet);
         }
     }

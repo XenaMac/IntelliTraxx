@@ -130,10 +130,11 @@
 
     function editSchedule(scheduleID) {
         if (scheduleID != null) {
+            scheduleVehicles = [];
             $('.btn-group label').removeClass('active');
 
             var schedule = findSchedule(scheduleID);
-
+            $('#scheduleID').val(schedule[0].scheduleID);
             $('#tbScheduleName').val(schedule[0].scheduleName);
             $('#tbEffStDt').datetimepicker({
                 value: moment(schedule[0].EffDtStart).format('YYYY-MM-DD HH:mm')
@@ -171,7 +172,7 @@
     //#region getAllVehiclesBySchedule
 
     function getAllVehiclesBySchedule(scheduleID) {
-        $('#vehicleList').multiselect('deselect', scheduleVehicles);
+        $('#vehicleList').multiselect('deselectAll', false);
         var _url = 'getAllVehiclesBySchedule';
         var _data = "scheduleID=" + scheduleID;
 
@@ -228,6 +229,7 @@
 
     $('#newSchedule').click(function () {
         $('.btn-group label').removeClass('active');
+        $('#scheduleID').val('');
         $('#tbScheduleName').val('');
         $('#tbEffStDt').val('');
         $('#tbEffEndDt').val('');
@@ -265,6 +267,7 @@
 
     $('#scheduleForm').submit(function (e) {
         e.preventDefault();
+        var $btn = $(document.activeElement);
         $('#submitter').removeClass('hidden');
         var scheduleList = [];
         var DOW = null;
@@ -279,8 +282,19 @@
             updateVehicles.push($(this).val());
         });
 
+        var scheduleid = null;
+        var knew = null;
+
+        if ($btn.prop('id') == "modifySchedule") {
+            var scheduleid = $('#scheduleID').val();
+            var knew = false;
+        } else {
+            scheduleid = createGuid();
+            var knew = true;
+        }
+
         scheduleList.push({
-            scheduleID: createGuid(),
+            scheduleID: scheduleid,
             scheduleName: $('#tbScheduleName').val(),
             company: null,
             startTime: $('#timeFrom').val(),
@@ -295,14 +309,14 @@
             active: $('#active').prop('checked')
         });
 
-        updateSchedule(scheduleList);
+        updateSchedule(scheduleList, knew);
     });
 
     //#region udpateSchedule
 
-    function updateSchedule(scheduleList) {
+    function updateSchedule(scheduleList, knew) {
         var _url = 'updateSchedules';
-        var _data = JSON.stringify({ 'schedules': scheduleList });
+        var _data = JSON.stringify({ 'schedules': scheduleList, 'knew': knew });
 
         $.ajax({
             type: "POST",
@@ -336,8 +350,7 @@
     //#region add/Update Vehicles in schedule
 
     function addVehiclesToSchedule(scheduleID) {
-        if (!arraysEqual(scheduleVehicles, updateVehicles)) {
-            var _url = 'addVehicleToSchedule';
+        var _url = 'addVehicleToSchedule';
             var _data = JSON.stringify({ 'scheduleID': scheduleID, 'vehicleIDs': updateVehicles });
 
             $.ajax({
@@ -349,7 +362,6 @@
                 success: addVehiclesToScheduleSuccess,
                 error: addVehiclesToScheduleError
             });
-        }
     }
 
     function addVehiclesToScheduleSuccess(data) {
@@ -360,6 +372,24 @@
             initVehicleDropDown();
             getAllSchedules();
             $('#newSchedule').click();
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-bottom-left",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+            Command: toastr["success"]("Schedule was successfully Updated/Created");
         } else {
             alert('There was an issue saving the vehicles.  Please try again or contact the administrator');
         }
@@ -371,4 +401,91 @@
     }
 
     //#endregion
+
+    //#region deleteSchedule
+
+    $('#deleteSchedule').click(function () {
+        if (confirm("Are you sure? This will delete this schedule from the database. There is no retrieving deleted schedules.")) {
+            $('#submitter').removeClass('hidden');
+            var scheduleList = [];
+            var DOW = null;
+
+            for (var i = 1; i < 6; i++) {
+                if ($('#' + i).prop('checked')) {
+                    DOW = i;
+                }
+            }
+
+            scheduleList.push({
+                scheduleID: $('#scheduleID').val(),
+                scheduleName: $('#tbScheduleName').val(),
+                company: null,
+                startTime: $('#timeFrom').val(),
+                endTime: $('#timeTo').val(),
+                createdBy: null,
+                createdOn: null,
+                modifiedBy: null,
+                modifiedOn: null,
+                DOW: DOW,
+                EffDtStart: $('#tbEffStDt').val(),
+                EffDtEnd: $('#tbEffEndDt').val(),
+                active: $('#active').prop('checked')
+            });
+
+            deleteSchedules(scheduleList);
+        }
+    });
+
+    function deleteSchedules(schedule) {
+        var _url = 'deleteSchedules';
+        var _data = JSON.stringify({ 'dSchedules': schedule });
+
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: _url,
+            data: _data,
+            contentType: "application/json; charset=utf-8",
+            success: deleteSchedulesSuccess,
+            error: deleteSchedulesError
+        });
+    }
+
+    function deleteSchedulesSuccess(data) {
+        if (data == "OK") {
+            $('#submitter').addClass('hidden');
+            scheduleVehicles = [];
+            updateVehicles = [];
+            initVehicleDropDown();
+            getAllSchedules();
+            $('#newSchedule').click(); toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-bottom-left",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+            Command: toastr["success"]("Schedule was deleted");
+        } else {
+            alert('There was an issue deleting the schedule.  Please try again or contact the administrator');
+        }
+    }
+
+    function deleteSchedulesError(data, error) {
+        var err = error;
+        alert('A problem occurred deleting the schedule, please reload or contact the administrator. Error: ' + data.html);
+    }
+
+    //#endregion
+
 });
