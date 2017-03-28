@@ -191,7 +191,7 @@ namespace IntelliTraxx.Controllers
 
             //create alert class
             dbAlert alert = new dbAlert();
-            if(editAlertID == null)
+            if(editAlertID == null || editAlertID == "")
             {
                 alert.AlertID = Guid.NewGuid();
             } else
@@ -208,12 +208,15 @@ namespace IntelliTraxx.Controllers
 
             //create polygon list
             List<alertGeoFence> fences = new List<alertGeoFence>();
-            foreach (polygonID pg in polygonIDs)
+            if (polygonIDs != null)
             {
-                alertGeoFence fence = new alertGeoFence();
-                fence.AlertID = alert.AlertID;
-                fence.GeoFenceID = new Guid(pg.id);
-                fences.Add(fence);
+                foreach (polygonID pg in polygonIDs)
+                {
+                    alertGeoFence fence = new alertGeoFence();
+                    fence.AlertID = alert.AlertID;
+                    fence.GeoFenceID = new Guid(pg.id);
+                    fences.Add(fence);
+                }
             }
 
             //list of vehicles

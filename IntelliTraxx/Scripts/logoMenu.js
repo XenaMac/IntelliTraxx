@@ -69,4 +69,8 @@
     $('#diagnosticsIcon').click(function () {
         window.location.href = '../Scheduling/Index';
     });
+
+    $('#analyticsIcon').click(function () {
+        window.location.href = '../Analytics/Index';
+    });
 });

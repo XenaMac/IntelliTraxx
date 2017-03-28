@@ -14,7 +14,7 @@
     var copy = '';
     var editAlertID = null;
 
-    $('[data-toggle="tooltip"]').tooltip()
+    $('[data-toggle="tooltip"]').tooltip();
 
     getAlerts();
 
@@ -171,6 +171,9 @@
                     case "EXIT POLYGON":
                         markup = '<div class="col-lg-3"><div class="panel panel-info text-center classTN"><div class="panel-heading"><strong>' + data[i].AlertClassName + '</strong></div><div class="panel-body next" id="' + data[i].AlertClassID + '" name="' + data[i].AlertClassName + '"><i class="material-icons md-48">open_in_new</i><br><small>Vehicle will trigger an alert upon startup, if last known position was inside a polygon.</small></div></div></div>'
                         break;
+                    case "SCHEDULE":
+                        markup = '<div class="col-lg-3"><div class="panel panel-info text-center classTN"><div class="panel-heading"><strong>' + data[i].AlertClassName + '</strong></div><div class="panel-body next" id="' + data[i].AlertClassID + '" name="' + data[i].AlertClassName + '"><i class="material-icons md-48">date_range</i><br><small>Vehicle will trigger an alert when actively broadcasting OFF ANY assigned schedule. </small></div></div></div>'
+                        break;
                     default:
                         markup = "";
                 }
@@ -188,9 +191,17 @@
                     alertClassID = $(this).attr('id');
                     alertClassName = $(this).attr('name');
                     alertName = $('#alertName').val();
-                    alertStart = $('#startDate').val();
-                    alertEnd = $('#endDate').val();
-
+                    if ($('#startDate').val() == "") {
+                        alertStart = new moment().format('MM/DD/YYYY HH:mm');
+                    } else {
+                        alertStart = $('#startDate').val();
+                    }
+                    if ($('#endDate').val() == "") {
+                        alertEnd = new moment().add(5, 'years').format('MM/DD/YYYY HH:mm');
+                    } else {
+                        alertEnd = $('#endDate').val();
+                    }
+                    
                     if (isInArray(polygonAlerts, alertClassName)) {
                         var nextId = $(this).parents('.tab-pane').next().attr("id");
                         $(this).parents('.thumbnail').css("background-color", "#81B944");
@@ -440,6 +451,7 @@
     //#region reviewAndSubmit()
 
     function reviewAndSubmit() {
+        $('#step5Div').html('');
         var markup = '';
 
         switch (alertClassName) {
@@ -557,6 +569,23 @@
                     }
                 }
                 break;
+            case "SCHEDULE":
+                markup += '<p class="lead">Alert Class: <strong>' + alertClassName + '</strong></p>';
+                markup += '<p class="lead">Alert Name: <strong>' + $('#alertName').val() + '</strong></p>';
+                if (startDate != null && endDate != null) {
+                    markup += '<p class="lead">Start Date/Time: <strong>' + alertStart + '</strong></p>';
+                    markup += '<p class="lead">End Date/Time: <strong>' + alertEnd + '</strong></p>';
+                }
+                markup += '<p class="lead">Description: <strong>This alert will trigger when any of these vehicles: ';
+                for (var i = 0; i < alertVehicles.length; i++) {
+                    if (i != alertVehicles.length - 1) {
+                        markup += alertVehicles[i].name + ', ';
+                    } else {
+                        markup += alertVehicles[i].name;
+                    }
+                }
+                markup += ' are broadcasting OFF ANY schedule: ';
+                break;
             default:
                 markup += "";
         }
@@ -573,9 +602,14 @@
     });
 
     function submitAlert() {
+        var alertID = null
+        if (editAlertID != null)
+        {
+            alertID = editAlertID.AlertID;
+        }
+
         var _url = 'updateAlertData';
-        var _data = JSON.stringify({ 'alertClassID': alertClassID, 'alertClassName': alertClassName, 'alertName': alertName, 'editAlertID': editAlertID.AlertID, 'startDate': alertStart, 'endDate': alertEnd, 'polygonIDs': polygonIDs, 'polygonNames': polygonNames, 'alertVehicles': alertVehicles, 'alertValue': alertValue });
-        //var _data = "alertClassID=" + alertClassID + "&AlertClassName=" + alertClassName + "&alertName=" + alertName + "&startDate=" + alertStart + "&endDate=" + alertEnd + "&polygonIDs=" + JSON.stringify(polygonIDs) + "&polygonNames=" + polygonNames + "&alertVehicles=" + alertVehicles + "&alertValue=" + alertValue;
+        var _data = JSON.stringify({ 'alertClassID': alertClassID, 'alertClassName': alertClassName, 'alertName': alertName, 'editAlertID': alertID, 'startDate': alertStart, 'endDate': alertEnd, 'polygonIDs': polygonIDs, 'polygonNames': polygonNames, 'alertVehicles': alertVehicles, 'alertValue': alertValue });
 
         $.ajax({
             type: "POST",
@@ -650,15 +684,15 @@
         return (arr.indexOf(obj) != -1);
     }
 
-    $('#cancelCreateAlert').click(function () {
-        clearVars();
-        $('#coAlertsTable').bootstrapTable('refresh');
-    });
+    //$('#cancelCreateAlert').click(function () {
+    //    clearVars();
+    //    $('#coAlertsTable').bootstrapTable('refresh');
+    //});
 
     $('#myModal').on('hidden.bs.modal', function (e) {
         clearVars();
         $('#coAlertsTable').bootstrapTable('refresh');
-    })
+    });
 
     function clearVars() {
         alertName;

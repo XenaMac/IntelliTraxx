@@ -217,6 +217,7 @@
     <Compile Include="Common\Utilities.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AlertsController.cs" />
+    <Compile Include="Controllers\AnalyticsController.cs" />
     <Compile Include="Controllers\FleetController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -351,6 +352,7 @@
     <Content Include="Scripts\alertMap.js" />
     <Content Include="Scripts\alerts.js" />
     <Content Include="Scripts\alertsadmin.js" />
+    <Content Include="Scripts\analytics.js" />
     <Content Include="Scripts\bootstrap-table-export.min.js" />
     <Content Include="Scripts\bootstrap-table.js" />
     <Content Include="Scripts\bootstrap-toggle.min.js" />
@@ -613,6 +615,8 @@
     <Content Include="Views\Alerts\Admin.cshtml" />
     <Content Include="Views\Scheduling\Index.cshtml" />
     <Content Include="Views\Shared\_LayoutScheduling.cshtml" />
+    <Content Include="Views\Analytics\Index.cshtml" />
+    <Content Include="Views\Shared\_LayoutAnalytics.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
