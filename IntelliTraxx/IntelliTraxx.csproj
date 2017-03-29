@@ -216,6 +216,7 @@
     <Compile Include="Common\EmailManager.cs" />
     <Compile Include="Common\Utilities.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AlertsController.cs" />
     <Compile Include="Controllers\AnalyticsController.cs" />
     <Compile Include="Controllers\FleetController.cs" />
@@ -349,6 +350,7 @@
     <Content Include="fonts\glyphicons-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\admin.js" />
     <Content Include="Scripts\alertMap.js" />
     <Content Include="Scripts\alerts.js" />
     <Content Include="Scripts\alertsadmin.js" />
@@ -617,6 +619,22 @@
     <Content Include="Views\Shared\_LayoutScheduling.cshtml" />
     <Content Include="Views\Analytics\Index.cshtml" />
     <Content Include="Views\Shared\_LayoutAnalytics.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Shared\_LayoutAdmin.cshtml" />
+    <Content Include="Views\Admin\AddUser.cshtml" />
+    <Content Include="Views\Admin\EditUser.cshtml" />
+    <Content Include="Views\Admin\AddRole.cshtml" />
+    <Content Include="Views\Admin\EditRole.cshtml" />
+    <Content Include="Views\Admin\AddCompany.cshtml" />
+    <Content Include="Views\Admin\EditCompany.cshtml" />
+    <Content Include="Views\Admin\AddVehicleClass.cshtml" />
+    <Content Include="Views\Admin\EditVehicleClass.cshtml" />
+    <Content Include="Views\Admin\AddVehicle.cshtml" />
+    <Content Include="Views\Admin\EditVehicle.cshtml" />
+    <Content Include="Views\Admin\AddDriver.cshtml" />
+    <Content Include="Views\Admin\EditDriver.cshtml" />
+    <Content Include="Views\Admin\AddSetting.cshtml" />
+    <Content Include="Views\Admin\EditSetting.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

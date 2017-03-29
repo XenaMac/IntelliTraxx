@@ -1,0 +1,167 @@
+﻿@model IntelliTraxx.Controllers.VehicleVM
+@{
+    ViewBag.Title = "EditVehicle";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div id="nav" class="container-fluid center-block">
+    <div id="logo"></div>
+    <div id="mapIcon" class="mapIcon_in" data-toggle="tooltip" data-placement="left" title="Map"></div>
+    <div id="alertsIcon" class="alertsIcon_in" data-toggle="tooltip" data-placement="left" title="Alerts"></div>
+    <div id="geofenceIcon" class="geofenceIcon_in" data-toggle="tooltip" data-placement="left" title="Disabled"></div>
+    <div id="appsIcon" class="appsIcon_in" data-toggle="tooltip" data-placement="bottom" title="Disabled"></div>
+    <div id="diagnosticsIcon" class="diagnosticsIcon_in" data-toggle="tooltip" data-placement="right" title="Scheduling"></div>
+    <div id="analyticsIcon" class="analyticsIcon_in" data-toggle="tooltip" data-placement="right" title="Analytics"></div>
+    <div id="adminIcon" class="adminIcon_in" data-toggle="tooltip" data-placement="right" title="Administration"></div>
+    <div id="profileDiv" class="profileDiv_in">
+        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+            {
+            @Html.AntiForgeryToken()
+            <small>
+                <ul class="list-group">
+                    <li class="list-group-item"><a href="" class="text-left" style="padding: 5px;"><i class="glyphicons glyphicons-user"></i> Jon McKinley (Administrator)</a><br /></li>
+                    <li class="list-group-item"><a href="" class="text-left" style="padding: 5px;"><i class="glyphicons glyphicons-bell"></i> Notifications<span class="badge" style="margin-left: 5px;">3</span></a><br /></li>
+                    <li class="list-group-item"><a href="" class="text-left" style="padding: 5px;"><i class="glyphicons glyphicons-question-sign"></i> Help</a></li>
+                    <li class="list-group-item"><a href="javascript:document.getElementById('logoutForm').submit()" style="padding: 5px;"><i class="glyphicons glyphicons-exit"></i> Log off</a></li>
+                </ul>
+            </small>
+        }
+    </div>
+</div>
+
+<div class="container-fluid col-lg-10 col-lg-offset-1">
+    <h1 class="text-right alertsPageHeader"><strong>Administration</strong></h1>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.ID)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.VehicleIdentification, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.VehicleIdentification, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.VehicleIdentification, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.VehicleMACAddress, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.VehicleMACAddress, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.VehicleMACAddress, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.RouterID, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.RouterID, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.RouterID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            @*<div class="form-group">
+                    @Html.LabelFor(model => model.VehicleClass, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.VehicleClass, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.VehicleClass, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.VehicleClassID, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.VehicleClassID, Utilities.GetVehicleClasses(), "-- Select a Class --", new { @class = "form-control" })
+                    @*@Html.EditorFor(model => model.VehicleClassID, new { htmlAttributes = new { @class = "form-control" } })*@
+                    @Html.ValidationMessageFor(model => model.VehicleClassID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            @*<div class="form-group">
+                    @Html.LabelFor(model => model.Company, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Company, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Company, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.CompanyID, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.CompanyID, Utilities.GetCompanies(), "-- Select a Company --", new { @class = "form-control" })
+                    @*@Html.EditorFor(model => model.CompanyID, new { htmlAttributes = new { @class = "form-control" } })*@
+                    @Html.ValidationMessageFor(model => model.CompanyID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.LicensePlate, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.LicensePlate, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.LicensePlate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Make, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Make, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Make, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.VehicleModel, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.VehicleModel, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.VehicleModel, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Year, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Year, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Year, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.HaulLimit, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.HaulLimit, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.HaulLimit, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.VehicleFriendlyName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.VehicleFriendlyName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.VehicleFriendlyName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    }
+
+    <div>
+        @Html.ActionLink("Back to Vehicles", "Index", new { tab = "V" })
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        @Ajax.ActionLink("Delete Vehicle", "DeleteVehicle", "Admin", new { VehicleID = Model.ID },
+            new AjaxOptions()
+            {
+                HttpMethod = "POST"
+            },
+            new { onclick = "return confirm('Are you sure you wish to delete this vehicle?')" })
+    </div>
+</div>

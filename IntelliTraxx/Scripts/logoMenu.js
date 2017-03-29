@@ -73,4 +73,8 @@
     $('#analyticsIcon').click(function () {
         window.location.href = '../Analytics/Index';
     });
+
+    $('#adminIcon').click(function () {
+        window.location.href = '../Admin/Index';
+    });
 });

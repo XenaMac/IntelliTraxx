@@ -1,0 +1,411 @@
+﻿@model IntelliTraxx.Controllers.Admin
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@{
+    string uClass = "", rClass = "", cClass = "", vClass = "", dClass = "", vcClass = "", appClass = "", varClass = "";
+    string tab = ViewBag.Tab;
+    switch (tab)
+    {
+        case "U":
+            uClass = "active";
+            break;
+        case "R":
+            rClass = "active";
+            break;
+        case "C":
+            cClass = "active";
+            break;
+        case "V":
+            vClass = "active";
+            break;
+        case "VC":
+            vcClass = "active";
+            break;
+        case "D":
+            dClass = "active";
+            break;
+        case "A":
+            appClass = "active";
+            break;
+        case "VAR":
+            varClass = "active";
+            break;
+        default:
+            uClass = "active";
+            break;
+    }
+}
+
+<div id="nav" class="container-fluid center-block">
+    <div id="logo"></div>
+    <div id="mapIcon" class="mapIcon_in" data-toggle="tooltip" data-placement="left" title="Map"></div>
+    <div id="alertsIcon" class="alertsIcon_in" data-toggle="tooltip" data-placement="left" title="Alerts"></div>
+    <div id="geofenceIcon" class="geofenceIcon_in" data-toggle="tooltip" data-placement="left" title="Disabled"></div>
+    <div id="appsIcon" class="appsIcon_in" data-toggle="tooltip" data-placement="bottom" title="Disabled"></div>
+    <div id="diagnosticsIcon" class="diagnosticsIcon_in" data-toggle="tooltip" data-placement="right" title="Scheduling"></div>
+    <div id="analyticsIcon" class="analyticsIcon_in" data-toggle="tooltip" data-placement="right" title="Analytics"></div>
+    <div id="adminIcon" class="adminIcon_in" data-toggle="tooltip" data-placement="right" title="Administration"></div>
+    <div id="profileDiv" class="profileDiv_in">
+        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+            {
+        @Html.AntiForgeryToken()
+        <small>
+            <ul class="list-group">
+                <li class="list-group-item"><a href="" class="text-left" style="padding: 5px;"><i class="glyphicons glyphicons-user"></i> Jon McKinley (Administrator)</a><br /></li>
+                <li class="list-group-item"><a href="" class="text-left" style="padding: 5px;"><i class="glyphicons glyphicons-bell"></i> Notifications<span class="badge" style="margin-left: 5px;">3</span></a><br /></li>
+                <li class="list-group-item"><a href="" class="text-left" style="padding: 5px;"><i class="glyphicons glyphicons-question-sign"></i> Help</a></li>
+                <li class="list-group-item"><a href="javascript:document.getElementById('logoutForm').submit()" style="padding: 5px;"><i class="glyphicons glyphicons-exit"></i> Log off</a></li>
+            </ul>
+        </small>
+        }
+    </div>
+</div>
+
+<div class="container-fluid col-lg-10 col-lg-offset-1">
+    <h1 class="text-right alertsPageHeader"><strong>Administration</strong></h1>
+
+    <div class="col-lg-10">
+        <div class="tab-content">
+            <div id="usersSection" class="tab-pane fade in @uClass">
+                @*<h3 class="text-right">Users<span ng-bind="header"></span></h3>*@
+                <div id="toolbar" class="pull-right">
+                    &nbsp;&nbsp;&nbsp;<a href="@Url.Action("AddUser", "Admin")" class="btn btn-success" title="New User" id="addUser">
+                        <i class="glyphicon glyphicon-plus"></i> User
+                    </a>
+                </div>
+                <table id="userTable"
+                       data-toggle="table"
+                       data-search="true"
+                       data-show-refresh="false"
+                       data-show-columns="true"
+                       data-query-params="queryParams"
+                       data-pagination="true"
+                       data-show-export="true"
+                       data-toolbar="#toolbar">
+                    <thead>
+                        <tr>
+                            <th data-sortable="true">Last Name</th>
+                            <th data-sortable="true">First Name</th>
+                            <th data-sortable="true">Email</th>
+                            <th data-sortable="true">Office</th>
+                            <th data-sortable="true">Phone</th>
+                            <th data-sortable="true">Companies</th>
+                            <th data-sortable="true">Roles</th>
+                            <th>Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var user in Model.Users)
+                        {
+                        <tr>
+                            <td>@user.user.UserLastName</td>
+                            <td>@user.user.UserFirstName</td>
+                            <td>
+                                <a href="mailto:@{@user.user.UserEmail}">@user.user.UserEmail</a>
+                            </td>
+                            <td>@user.user.UserOffice</td>
+                            <td>@user.user.UserPhone</td>
+                            <td>
+                                @foreach (var role in @user.Roles)
+                                    {
+                                    <p> @role.roleName</p>
+                                    }
+                            </td>
+                            <td>
+                                @foreach (var company in @user.Companies)
+                                    {
+                                    <p>@company.CompanyName</p>
+                                    }
+                            </td>
+                            <td>
+                                <a href="@Url.Action("EditUser", new { userID = @user.user.UserID })" class="btn btn-info">
+                                    <i class="glyphicon glyphicon-pencil"></i>
+                                </a>
+                            </td>
+                        </tr>
+    }
+                    </tbody>
+                </table>
+            </div>
+            <div id="rolesSection" class="tab-pane fade in @rClass">
+                <div id="toolbar2">
+                    &nbsp;&nbsp;&nbsp;<a href="@Url.Action("AddRole", "Admin" )" class="btn btn-success" title="New Role" id="addRole">
+                        <i class="glyphicon glyphicon-plus"></i> Role
+                    </a>
+                </div>
+                <table id="rolesTable"
+                       data-toggle="table"
+                       data-search="true"
+                       data-show-refresh="false"
+                       data-show-columns="true"
+                       data-query-params="queryParams"
+                       data-pagination="true"
+                       data-show-export="true"
+                       data-toolbar="#toolbar2">
+                    <thead>
+                        <tr>
+                            <th data-sortable="true">Role Name</th>
+                            <th data-sortable="true">Role Description</th>
+                            <th data-sortable="true">Is Admin</th>
+                            <th>Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var role in Model.Roles)
+                        {
+                            <tr>
+                                <td>@role.roleName</td>
+                                <td>@role.roleDescription</td>
+                                <td>@role.isAdmin</td>
+                                <td>
+                                    <a href="@Url.Action("EditRole", new { roleID = @role.RoleID })" class="btn btn-info">
+                                        <i class="glyphicon glyphicon-pencil"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div id="companiesSection" class="tab-pane fade in @cClass">
+                <div id="toolbar3">
+                    &nbsp;&nbsp;&nbsp;<a href="@Url.Action("AddCompany", "Admin" )" class="btn btn-success" title="New Company" id="addCompany">
+                        <i class=" glyphicon glyphicon-plus"></i> Company
+                    </a>
+                </div>
+                <table id="companiesTable"
+                       data-toggle="table"
+                       data-search="true"
+                       data-show-refresh="false"
+                       data-show-columns="true"
+                       data-query-params="queryParams"
+                       data-pagination="true"
+                       data-show-export="true"
+                       data-toolbar="#toolbar3">
+                    <thead>
+                        <tr>
+                            <th data-sortable="true">Company Name</th>
+                            <th data-sortable="true">Addess</th>
+                            <th data-sortable="true">City</th>
+                            <th data-sortable="true">State</th>
+                            <th data-sortable="true">Country</th>
+                            <th data-sortable="true">Is Parent</th>
+                            <th data-sortable="true">Contact</th>
+                            <th>Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var company in Model.Companies)
+                        {
+                            <tr>
+                                <td>@company.CompanyName</td>
+                                <td>@company.CompanyAddress</td>
+                                <td>@company.CompanyCity</td>
+                                <td>@company.CompanyState</td>
+                                <td>@company.CompanyCountry</td>
+                                <td>@company.isParent</td>
+                                <td>@Html.ActionLink(@company.CompanyContact.UserFirstName + " " + @company.CompanyContact.UserLastName, "EditUser", "Admin", new { userID = @company.CompanyContact.UserID }, null)</td>
+                                <td>
+                                    <a href="@Url.Action("EditCompany", new { companyID = @company.CompanyID })" class="btn btn-info">
+                                        <i class="glyphicon glyphicon-pencil"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div id="vehicleClassesSection" class="tab-pane fade in @vcClass">
+                <div id="toolbar4">
+                    &nbsp;&nbsp;&nbsp;<a href="@Url.Action("addVehicleClass", "Admin" )" class="btn btn-success" title="New Vehicle Class" id="addVehicleClass">
+                        <i class=" glyphicon glyphicon-plus"></i> Vehicle Class
+                    </a>
+                </div>
+                <table id="vehicleClassTable"
+                       data-toggle="table"
+                       data-search="true"
+                       data-show-refresh="false"
+                       data-show-columns="true"
+                       data-query-params="queryParams"
+                       data-pagination="true"
+                       data-show-export="true"
+                       data-toolbar="#toolbar4">
+                    <thead>
+                        <tr>
+                            <th data-sortable="true">Vehicle Class Name</th>
+                            <th data-sortable="true">Vehicle Class Representation</th>
+                            <th data-sortable="true">Vehicle Class Description</th>
+                            <th>Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var vc in Model.VehicleClasses)
+                        {
+                            <tr>
+                                <td>@vc.VehicleClassName</td>
+                                <td><img class="img" src="@Url.Content("~/Content/VClasses/" + vc.VehicleClassImage.ToString())" /></td>
+                                <td>@vc.VehicleClassDescription</td>
+                                <td>
+                                    <a href="@Url.Action("EditVehicleClass", new { vehicleClassID = @vc.VehicleClassID })" class="btn btn-info">
+                                        <i class="glyphicon glyphicon-pencil"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div id="vehicleSection" class="tab-pane fade in @vClass">
+                <div id="toolbar5">
+                    &nbsp;&nbsp;&nbsp;<a href="@Url.Action("addVehicle", "Admin" )" class="btn btn-success" title="New Vehicle" id="addVehicle">
+                        <i class=" glyphicon glyphicon-plus"></i> Vehicle
+                    </a>
+                </div>
+                <table id="vehiclesTable"
+                       data-toggle="table"
+                       data-search="true"
+                       data-show-refresh="false"
+                       data-show-columns="true"
+                       data-query-params="queryParams"
+                       data-pagination="true"
+                       data-show-export="true"
+                       data-toolbar="#toolbar5">
+                    <thead>
+                        <tr>
+                            <th data-sortable="true">ID</th>
+                            <th data-sortable="true">Class</th>
+                            <th data-sortable="true">Company</th>
+                            <th data-sortable="true">License</th>
+                            <th data-sortable="true">Make</th>
+                            <th data-sortable="true">Model</th>
+                            <th data-sortable="true">Year</th>
+                            <th data-sortable="true">Haul Limit</th>
+                            <th data-sortable="true">Friendly Name</th>
+                            <th>Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var v in Model.Vehicles)
+                        {
+                            <tr>
+                                <td>@v.VehicleIdentification</td>
+                                <td>@v.VehicleClass</td>
+                                <td>@v.Company</td>
+                                <td>@v.LicensePlate</td>
+                                <td>@v.Make</td>
+                                <td>@v.VehicleModel</td>
+                                <td>@v.Year</td>
+                                <td>@v.HaulLimit</td>
+                                <td>@v.VehicleFriendlyName</td>
+                                <td>
+                                    <a href="@Url.Action("EditVehicle", new { VehicleID = @v.ID })" class="btn btn-info">
+                                        <i class="glyphicon glyphicon-pencil"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div id="driversSection" class="tab-pane fade in @dClass">
+                <div id="toolbar6">
+                    &nbsp;&nbsp;&nbsp;<a href="@Url.Action("addDriver", "Admin" )" class="btn btn-success" title="New Driver" id="addDriver">
+                        <i class=" glyphicon glyphicon-plus"></i> Drivers
+                    </a>
+                </div>
+                <table id="driverTable"
+                       data-toggle="table"
+                       data-search="true"
+                       data-show-refresh="false"
+                       data-show-columns="true"
+                       data-query-params="queryParams"
+                       data-pagination="true"
+                       data-show-export="true"
+                       data-toolbar="#toolbar6">
+                    <thead>
+                        <tr>
+                            <th data-sortable="false">Profile Pic</th>
+                            <th data-sortable="true">First Name</th>
+                            <th data-sortable="true">Last Name</th>
+                            <th data-sortable="true">Company</th>
+                            <th data-sortable="true">PIN</th>
+                            <th>Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var dr in Model.Drivers)
+                        {
+                            var base64 = Convert.ToBase64String(dr.imageDataField);
+                            var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+
+                            <tr>
+                                <td><img class="img" src="@imgSrc" width="65" /></td>
+                                <td>@dr.DriverFirstName</td>
+                                <td>@dr.DriverLastName</td>
+                                <td>@dr.CompanyName</td>
+                                <td>@dr.PIN</td>
+                                <td>
+                                    <a href="@Url.Action("EditDriver", new { driverID=@dr.DriverID })" class="btn btn-info">
+                                        <i class="glyphicon glyphicon-pencil"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div id="appSettingsSection" class="tab-pane fade in @appClass">
+                <div id="toolbar8">
+                    &nbsp;&nbsp;&nbsp;<a href="@Url.Action("AddSetting", "Admin" )" class="btn btn-success" title="New App Setting" id="addAppSetting">
+                        <i class=" glyphicon glyphicon-plus"></i> Application Setting
+                    </a>
+                </div>
+                <table id="driverTable"
+                       data-toggle="table"
+                       data-search="true"
+                       data-show-refresh="false"
+                       data-show-columns="true"
+                       data-query-params="queryParams"
+                       data-pagination="true"
+                       data-show-export="true"
+                       data-toolbar="#toolbar8">
+                    <thead>
+                        <tr>
+                            <th data-sortable="true">Setting Name</th>
+                            <th data-sortable="true">Setting value</th>
+                            <th>Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var appSett in Model.AppVariables)
+                        {
+                            <tr>
+                                <td>@appSett.varName</td>
+                                <td>@appSett.varValue</td>
+                                <td>
+                                    <a href="@Url.Action("EditSetting", new { settingID=@appSett.ID})" class="btn btn-info">
+                                        <i class="glyphicon glyphicon-pencil"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-2">
+        <ul class="nav nav-pills nav-stacked">
+            <li role="presentation" class="@uClass"><a data-toggle="tab" href="#usersSection">Users</a></li>
+            <li role="presentation" class="@rClass"><a data-toggle="tab" href="#rolesSection">Roles</a></li>
+            <li role="presentation" class="@cClass"><a data-toggle="tab" href="#companiesSection">Companies</a></li>
+            <li role="presentation" class="@vcClass"><a data-toggle="tab" href="#vehicleClassesSection">Vehicle Classes</a></li>
+            <li role="presentation" class="@vClass"><a data-toggle="tab" href="#vehicleSection">Vehicles</a></li>
+            <li role="presentation" class="@dClass"><a data-toggle="tab" href="#driversSection">Drivers</a></li>
+            <li role="presentation" class="@appClass"><a data-toggle="tab" href="#appSettingsSection">App Settings</a></li>
+        </ul>
+    </div></div>
