@@ -3,6 +3,8 @@
     var menuInterval = null;
     var dragging = false;
 
+    getUserProfile();
+
     $('#nav').draggable({
         containment: "window",
         start: function () {
@@ -77,4 +79,34 @@
     $('#adminIcon').click(function () {
         window.location.href = '../Admin/Index';
     });
+
+    //GetUserProfile
+    function getUserProfile() {
+        var _url = '../Admin/getUserProfile';
+        var _data = "";
+
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: _url,
+            data: _data,
+            contentType: "application/json; charset=utf-8",
+            success: getUserProfileSuccess,
+            error: getUserProfileError
+        });
+    }
+
+    function getUserProfileSuccess(data) {
+        if (data) {
+            $("#userNameRole").attr("href", "http://localhost/IntelliTraxx/Admin/EditUser?userID=" + data.UserID)
+            $('#userNameRole').html('<i class="glyphicons glyphicons-user"></i>' + data.UserFirstName + ' ' + data.UserLastName + ' (' + data.UserRole + ')');
+        } else {
+            alert('A problem occurred getting the user profile, please reload or contact the administrator.');
+        }
+    }
+
+    function getUserProfileError(data, error) {
+        var err = error;
+        alert('A problem occurred getting the user profile, please reload or contact the administrator.');
+    }
 });

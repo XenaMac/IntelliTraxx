@@ -563,7 +563,25 @@ namespace IntelliTraxx.Controllers
 
             return Json(parentCompany.CompanyCity + ", " + parentCompany.CompanyState, JsonRequestBehavior.AllowGet);
         }
-        
+
+        public ActionResult getUserProfile()
+        {
+            //get current identity and claims
+            var identity = (ClaimsPrincipal)Thread.CurrentPrincipal;
+            var sid = identity.Claims.Where(c => c.Type == ClaimTypes.Sid).Select(c => c.Value).SingleOrDefault();
+            User user = truckService.getUserProfile(new Guid(sid));
+            List<Role> roles = truckService.getUserRolesFull(new Guid(sid));
+            return Json(new {
+                UserEmail = user.UserEmail,
+                UserFirstName = user.UserFirstName,
+                UserLastName = user.UserLastName,
+                UserID = user.UserID,
+                UserOffice = user.UserOffice,
+                UserPhone = user.UserPhone,
+                UserRole = roles[0].roleName
+            }, JsonRequestBehavior.AllowGet);
+        }
+
         [CustomAuthorize(Roles = "Administrator")]
         public ActionResult AddVehicleClass()
         {
