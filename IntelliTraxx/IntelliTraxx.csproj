@@ -638,8 +638,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\MessageActionFilter\" />
-    <Folder Include="Views\MessageControllerBase\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

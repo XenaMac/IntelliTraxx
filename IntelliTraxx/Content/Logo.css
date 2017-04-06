@@ -3,7 +3,7 @@
     height: 115px;
     background-color: #ffffff;
     position: absolute;
-    left: 0;
+    left: 1em;
     top: 3em;
     transition: margin-left .5s;
 }
@@ -73,9 +73,9 @@
     position: absolute;
     height: 35px;
     width: 35px;
-    left: 4.3em;
-    top: 10em;
-    z-index: 302;
+    left: 7.7em;
+    top: 14em;
+    z-index: 304;
     cursor: pointer;
     opacity: 1;
 }
@@ -102,9 +102,9 @@
     position: absolute;
     height: 35px;
     width: 35px;
-    left: 5.5em;
-    top: 12.5em;
-    z-index: 303;
+    left: 4.3em;
+    top: 10em;
+    z-index: 302;
     cursor: pointer;
     opacity: 1;
 }
@@ -131,9 +131,9 @@
     position: absolute;
     height: 35px;
     width: 35px;
-    left: 7.7em;
-    top: 14em;
-    z-index: 304;
+    left: 5.5em;
+    top: 12.5em;
+    z-index: 303;
     cursor: pointer;
     opacity: 1;
 }
