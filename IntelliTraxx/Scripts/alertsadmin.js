@@ -202,16 +202,10 @@
                         alertEnd = $('#endDate').val();
                     }
                     
-                    if (isInArray(polygonAlerts, alertClassName)) {
-                        var nextId = $(this).parents('.tab-pane').next().attr("id");
-                        $(this).parents('.thumbnail').css("background-color", "#81B944");
-                        getPolygons();
-                        $('[href=\\#' + nextId + ']').tab('show');
-                    } else {
-                        $('#step2well').html('Polygons can not be used for the alert class.');
-                        $('[href=\\#step3]').tab('show');
-                        getAllVehicles();
-                    }
+                    var nextId = $(this).parents('.tab-pane').next().attr("id");
+                    $(this).parents('.thumbnail').css("background-color", "#81B944");
+                    getPolygons();
+                    $('[href=\\#' + nextId + ']').tab('show');
                 }
 
                 return false;
@@ -242,7 +236,6 @@
     //#region getPolygons
 
     function getPolygons() {
-        $('#step2well').html('<div class="row" id="thumbnails"></div>');
         var _url = 'GetAllFences';
         var _data = ''
         $.ajax({
@@ -258,64 +251,33 @@
 
     function getPolygonsSuccess(data) {
         if (data.length > 0) {
-            $('#thumbnails').append('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="" id="allPolys" type="checkbox" data-toggle="toggle"><hr>');
-
+            $('#polyList').empty();
             for (var i = 0; i < data.length; i++) {
-                var markup = '';
-                switch (data[i].geoType) {
-                    case "circle":
-                        markup += '<div class="col-sm-6 col-md-4"><div class="thumbnail text-center"><i class="material-icons md-48">adjust</i><div class="caption"><h3>' + data[i].polyName + '</h3><p>' + data[i].notes + '</p><p><input class="pgSelect" id="' + data[i].geoFenceID + '" name="' + data[i].polyName + '" type="checkbox" data-toggle="toggle" data-onstyle="success" data-size="small"></p></div></div></div>';
-                        break;
-                    case "polygon":
-                        markup += '<div class="col-sm-6 col-md-4"><div class="thumbnail text-center""><i class="material-icons md-48">center_focus_strong</i><div class="caption"><h3>' + data[i].polyName + '</h3><p>' + data[i].notes + '</p><p><input class="pgSelect" id="' + data[i].geoFenceID + '" name="' + data[i].polyName + '" type="checkbox" data-toggle="toggle" data-onstyle="success" data-size="small"></p></div></div></div>';
-                        break;
-                    default:
-                        markup += "";
-                }
-                $('#thumbnails').append(markup);
+                $('#polyList').append('<option value="' + data[i].geoFenceID + '">' + data[i].polyName + '</option>')
             }
 
-            $('#allPolys').bootstrapToggle({
-                on: 'Select All',
-                off: 'Single Select',
-                width: '100px',
-                onstyle: 'info',
-                size: 'small'
-            });
-
-            $("#allPolys").change(function () {
-                if (this.checked) {
-                    $('.pgSelect').each(function () {
-                        $(this).bootstrapToggle('on');
-                    });
-                } else {
-                    $('.pgSelect').each(function () {
-                        $(this).bootstrapToggle('off');
-                    });
-                }
-            });
-
-            $('.pgSelect').bootstrapToggle({
-                on: 'Yes',
-                off: 'No'
+            $('#polyList').multiselect({
+                includeSelectAllOption: true,
+                enableFiltering: true,
+                buttonClass: 'btn btn-primary',
+                numberDisplayed: 50,
+                buttonWidth: '300px'
             });
 
             $('.nnext').click(function () {
                 polygonIDs = [];
                 polygonNames = [];
-                $(".pgSelect").each(function () {
-                    if (this.checked) {
-                        polygonIDs.push({ id: $(this).attr('id') });
-                        polygonNames.push({ name: $(this).attr('name') });
-                    }
+                $('#polyList > option:selected').each(function () {
+                    polygonIDs.push({ id: $(this).val() });
+                    polygonNames.push({ name: $(this).text() });
                 });
 
-                if (polygonIDs.length != 0) {
+                if (polygonIDs.length == 0 && isInArray(polygonAlerts, alertClassName)) {
+                    alert("Please choose one or more polygons for this alert class.");;
+                } else {
                     var nextId = $(this).parents('.tab-pane').next().attr("id");
                     $('[href=\\#' + nextId + ']').tab('show');
                     getAllVehicles();
-                } else {
-                    alert("Please choose one or more polygons for this alert.")
                 }
 
                 return false;
@@ -335,6 +297,8 @@
     //#region gelAllVehicles(true)
 
     function getAllVehicles() {
+        $('#vehicTableLoading').html('<img src=\'../Content/Images/preloader.gif\' width=\'100\' />');
+        $('#vehicTable').addClass('hidden');
         $('#vehicTable').html('');
         var _url = 'getAllVehicles';
         var _data = 'loadHistorical=true'
@@ -365,6 +329,9 @@
             $('[data-toggle="tooltip"]').tooltip()
 
             $("[class='vehicleActive']").bootstrapToggle();
+            
+            $('#vehicTableLoading').addClass('hidden');
+            $('#vehicTable').removeClass('hidden');
 
             $('#selectAll').click(function () {
                 if ($(this).text() == "Unselect All") {
@@ -431,7 +398,7 @@
                 $('#step4Div').append('<div class="form-group"><label for="maxValue">Maximum Stationary Time (minutes): </label><input type="number" class="form-control" id="alertValue" value="15"></div>');
                 break;
             default:
-                $('#step4Div').append('The Alert Classes chosen does not require a max or min value.');
+                $('#step4Div').append('The Alert Class chosen does not require a max or min value.');
         }
 
         $('[href=\\#step4]').tab('show');
@@ -451,7 +418,7 @@
     //#region reviewAndSubmit()
 
     function reviewAndSubmit() {
-        $('#step5Div').html('');
+        $('#step4Div').html('');
         var markup = '';
 
         switch (alertClassName) {
@@ -462,11 +429,23 @@
                     markup += '<p class="lead">Start Date/Time: <strong>' + alertStart + '</strong></p>';
                     markup += '<p class="lead">End Date/Time: <strong>' + alertEnd + '</strong></p>';
                 }
-                markup += '<p class="lead">Description: <strong>This alert will trigger when any of the below vehicles start up and its last known position was inside of a polygon.</strong></p><ul>';
+                markup += '<p class="lead">Description: <strong>This alert will trigger when any of these vehicles: <span style="color: navyblue;">';
                 for (var i = 0; i < alertVehicles.length; i++) {
-                    markup += '<li><strong>' + alertVehicles[i].name + '</strong></li>';
+                    if (i != polygonNames.length - 1) {
+                        markup += alertVehicles[i].name + ', ';
+                    } else {
+                        markup += alertVehicles[i].name + ', ';
+                    }
                 }
-                markup += '</ul><hr  style="height:1px;border:none;color:#000;background-color:#000;">';
+                markup += '</span> start up and thier last known position was inside any of the below polygon(s): <span style="color: red;">'
+                for (var i = 0; i < polygonNames.length; i++) {
+                    if (i != polygonNames.length - 1) {
+                        markup += polygonNames[i].name + ', ';
+                    } else {
+                        markup += polygonNames[i].name;
+                    }
+                }
+                markup += '</span></p><hr  style="height:1px;border:none;color:#000;background-color:#000;">';
                 break;
             case "SPEEDING":
                 markup += '<p class="lead">Alert Class: <strong>' + alertClassName + '</strong></p>';
@@ -710,6 +689,8 @@
         $('#endDate').val('');
         editAlertID = null;
         $('#deleteAlert').addClass('hidden');
+        $('#polyList').multiselect('deselectAll', false);
+        $('#polyList').multiselect('updateButtonText');
     }
 
     //#region EDIT ALERT: getAlert()

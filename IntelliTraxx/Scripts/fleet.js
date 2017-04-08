@@ -346,6 +346,7 @@
             var to = moment.utc().format('YYYY-MM-DD HH:mm');
             var from = moment.utc().add(-2, "hours").format('YYYY-MM-DD HH:mm');
             getVehicleHistoryData(selectedVehicle.VehicleID, from, to);
+            $("#vehicleList").val(selectedVehicle.ID);
 
             //if driver is not null then show driver panel
             //if no driver then no interface so then no dispatch
@@ -374,6 +375,7 @@
             }
             selectedVehicle = null;
             mapLogEntry("unselected", selected);
+            $("#vehicleList").val('None');
             closeNav();
         }
     }
@@ -1273,7 +1275,6 @@
 
     //#endregion
 
-
     $('#appsIcon').click(function () {
         openNav();
     });
@@ -1283,7 +1284,6 @@
         $('#collapseTwo').collapse('show');
         $('#gd_show').bootstrapToggle('on')
     });
-
 
     //#region get monthly alerts
     function getMonthsAlerts() { //Get a download of the vehicle for ID
