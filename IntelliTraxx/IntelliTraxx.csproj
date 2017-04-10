@@ -259,7 +259,6 @@
     <Content Include="Content\bootstrap-toggle.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\BootStrapWizard\material-bootstrap-wizard.css" />
     <Content Include="Content\BootStrap_MultiSelect\bootstrap-multiselect.css" />
     <Content Include="Content\glyphicons-bootstrap.css" />
     <Content Include="Content\glyphicons.css" />
@@ -276,6 +275,7 @@
     <Content Include="Content\Images\SN.png" />
     <Content Include="Content\Images\yellow.png" />
     <Content Include="Content\jquery.datetimepicker.min.css" />
+    <Content Include="Content\jquery.steps.css" />
     <Content Include="Content\Logo.css" />
     <Content Include="Content\Logo\AdminIcon.png" />
     <Content Include="Content\Logo\AlertsIcon.png" />

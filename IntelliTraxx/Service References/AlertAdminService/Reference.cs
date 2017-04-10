@@ -228,6 +228,9 @@ namespace IntelliTraxx.AlertAdminService {
         private System.Guid AlertClassIDField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string AlertClassNameField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.DateTime AlertEndTimeField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -277,6 +280,19 @@ namespace IntelliTraxx.AlertAdminService {
                 if ((this.AlertClassIDField.Equals(value) != true)) {
                     this.AlertClassIDField = value;
                     this.RaisePropertyChanged("AlertClassID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string AlertClassName {
+            get {
+                return this.AlertClassNameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.AlertClassNameField, value) != true)) {
+                    this.AlertClassNameField = value;
+                    this.RaisePropertyChanged("AlertClassName");
                 }
             }
         }

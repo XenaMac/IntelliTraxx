@@ -51,6 +51,7 @@
     <xs:sequence>
       <xs:element minOccurs="0" name="AlertActive" type="xs:boolean" />
       <xs:element minOccurs="0" name="AlertClassID" type="ser:guid" />
+      <xs:element minOccurs="0" name="AlertClassName" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="AlertEndTime" type="xs:dateTime" />
       <xs:element minOccurs="0" name="AlertFriendlyName" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="AlertID" type="ser:guid" />
