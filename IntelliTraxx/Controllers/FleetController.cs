@@ -105,15 +105,7 @@ namespace IntelliTraxx.Controllers
         {
             string result = "";
 
-            if(from != "null")
-            {
-                result = truckService.changeDrivers(from, to, vehicleID);
-            } else {
-                Guid ID = new Guid(to);
-                Driver driver = truckService.getDrivers().Where(d => d.DriverID == ID).FirstOrDefault();
-                TabletDriver td = new TabletDriver();
-                td = tabletService.DriverAutoLogon(driver.PIN, vehicleID);
-            }
+            result = truckService.changeDrivers(from, to, vehicleID, User.Identity.Name);
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }

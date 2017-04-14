@@ -3987,6 +3987,12 @@ namespace IntelliTraxx.TruckService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/killVehicle", ReplyAction="http://tempuri.org/ITruckService/killVehicleResponse")]
         System.Threading.Tasks.Task<string> killVehicleAsync(string vehicleID);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/getAvailableVehicles", ReplyAction="http://tempuri.org/ITruckService/getAvailableVehiclesResponse")]
+        System.Collections.Generic.List<IntelliTraxx.TruckService.VehicleExtendedData> getAvailableVehicles();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/getAvailableVehicles", ReplyAction="http://tempuri.org/ITruckService/getAvailableVehiclesResponse")]
+        System.Threading.Tasks.Task<System.Collections.Generic.List<IntelliTraxx.TruckService.VehicleExtendedData>> getAvailableVehiclesAsync();
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/logonUser", ReplyAction="http://tempuri.org/ITruckService/logonUserResponse")]
         System.Guid logonUser(string userEmail, string userPassword);
         
@@ -4354,10 +4360,10 @@ namespace IntelliTraxx.TruckService {
         System.Threading.Tasks.Task<string> logoffDriverAsync(string PIN, System.Guid operatorID);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/changeDrivers", ReplyAction="http://tempuri.org/ITruckService/changeDriversResponse")]
-        string changeDrivers(string from, string to, string vehicleID);
+        string changeDrivers(string from, string to, string vehicleID, string modifiedBy);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/changeDrivers", ReplyAction="http://tempuri.org/ITruckService/changeDriversResponse")]
-        System.Threading.Tasks.Task<string> changeDriversAsync(string from, string to, string vehicleID);
+        System.Threading.Tasks.Task<string> changeDriversAsync(string from, string to, string vehicleID, string modifiedBy);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -4457,6 +4463,14 @@ namespace IntelliTraxx.TruckService {
         
         public System.Threading.Tasks.Task<string> killVehicleAsync(string vehicleID) {
             return base.Channel.killVehicleAsync(vehicleID);
+        }
+        
+        public System.Collections.Generic.List<IntelliTraxx.TruckService.VehicleExtendedData> getAvailableVehicles() {
+            return base.Channel.getAvailableVehicles();
+        }
+        
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<IntelliTraxx.TruckService.VehicleExtendedData>> getAvailableVehiclesAsync() {
+            return base.Channel.getAvailableVehiclesAsync();
         }
         
         public System.Guid logonUser(string userEmail, string userPassword) {
@@ -4947,12 +4961,12 @@ namespace IntelliTraxx.TruckService {
             return base.Channel.logoffDriverAsync(PIN, operatorID);
         }
         
-        public string changeDrivers(string from, string to, string vehicleID) {
-            return base.Channel.changeDrivers(from, to, vehicleID);
+        public string changeDrivers(string from, string to, string vehicleID, string modifiedBy) {
+            return base.Channel.changeDrivers(from, to, vehicleID, modifiedBy);
         }
         
-        public System.Threading.Tasks.Task<string> changeDriversAsync(string from, string to, string vehicleID) {
-            return base.Channel.changeDriversAsync(from, to, vehicleID);
+        public System.Threading.Tasks.Task<string> changeDriversAsync(string from, string to, string vehicleID, string modifiedBy) {
+            return base.Channel.changeDriversAsync(from, to, vehicleID, modifiedBy);
         }
     }
 }

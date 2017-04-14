@@ -64,6 +64,12 @@
   <wsdl:message name="ITruckService_killVehicle_OutputMessage">
     <wsdl:part name="parameters" element="tns:killVehicleResponse" />
   </wsdl:message>
+  <wsdl:message name="ITruckService_getAvailableVehicles_InputMessage">
+    <wsdl:part name="parameters" element="tns:getAvailableVehicles" />
+  </wsdl:message>
+  <wsdl:message name="ITruckService_getAvailableVehicles_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getAvailableVehiclesResponse" />
+  </wsdl:message>
   <wsdl:message name="ITruckService_logonUser_InputMessage">
     <wsdl:part name="parameters" element="tns:logonUser" />
   </wsdl:message>
@@ -473,6 +479,10 @@
       <wsdl:input wsaw:Action="http://tempuri.org/ITruckService/killVehicle" message="tns:ITruckService_killVehicle_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ITruckService/killVehicleResponse" message="tns:ITruckService_killVehicle_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="getAvailableVehicles">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITruckService/getAvailableVehicles" message="tns:ITruckService_getAvailableVehicles_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITruckService/getAvailableVehiclesResponse" message="tns:ITruckService_getAvailableVehicles_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="logonUser">
       <wsdl:input wsaw:Action="http://tempuri.org/ITruckService/logonUser" message="tns:ITruckService_logonUser_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ITruckService/logonUserResponse" message="tns:ITruckService_logonUser_OutputMessage" />
@@ -798,6 +808,15 @@
     </wsdl:operation>
     <wsdl:operation name="killVehicle">
       <soap:operation soapAction="http://tempuri.org/ITruckService/killVehicle" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAvailableVehicles">
+      <soap:operation soapAction="http://tempuri.org/ITruckService/getAvailableVehicles" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

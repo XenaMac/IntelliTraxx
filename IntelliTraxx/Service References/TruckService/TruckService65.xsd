@@ -130,6 +130,12 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="VehicleGPSRecord" nillable="true" type="tns:VehicleGPSRecord" />
+  <xs:complexType name="ArrayOfVehicleExtendedData">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="VehicleExtendedData" nillable="true" type="tns:VehicleExtendedData" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfVehicleExtendedData" nillable="true" type="tns:ArrayOfVehicleExtendedData" />
   <xs:complexType name="User">
     <xs:sequence>
       <xs:element minOccurs="0" name="UserEmail" nillable="true" type="xs:string" />
@@ -209,12 +215,6 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="UserCompany" nillable="true" type="tns:UserCompany" />
-  <xs:complexType name="ArrayOfVehicleExtendedData">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="VehicleExtendedData" nillable="true" type="tns:VehicleExtendedData" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfVehicleExtendedData" nillable="true" type="tns:ArrayOfVehicleExtendedData" />
   <xs:complexType name="ArrayOfVehicleClass">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="VehicleClass" nillable="true" type="tns:VehicleClass" />
