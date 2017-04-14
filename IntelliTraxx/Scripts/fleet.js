@@ -347,17 +347,33 @@
             var from = moment.utc().add(-2, "hours").format('YYYY-MM-DD HH:mm');
             getVehicleHistoryData(selectedVehicle.VehicleID, from, to);
             $("#vehicleList").val(selectedVehicle.ID);
+            getAvailableDrivers();
 
             //if driver is not null then show driver panel
             //if no driver then no interface so then no dispatch
+            $('#collapseSixPanel').show();
+            $('#collapseSix').collapse('show');
             if (selectedVehicle.driver != null && selectedVehicle.driver.DriverID != "00000000-0000-0000-0000-000000000000") {
-                $('#collapseSixPanel').show();
-                alert('Need to bind driver data')
+                var src = base64ArrayBuffer(selectedVehicle.driver.imageData);
+                $('#driverPic').html('<img id="ItemPreview" src="data:image/gif;base64,' + src + '"  width="150" class="vertical- align: top;"/>');
+                $('#driverName').html(selectedVehicle.driver.DriverFirstName + " " + selectedVehicle.driver.DriverLastName);
+                $('#driverEmail').html(selectedVehicle.driver.DriverEmail);
+                if (selectedVehicle.driver.currentStatus.statusName == null) {
+                    $('#driverStatus').html("Administrative Log On");
+                } else {
+
+                    $('#driverStatus').html(selectedVehicle.driver.currentStatus.statusName);
+                }
+                $('#behaviorsDiv').show();
                 $('#collapseEightPanel').show();
-                $('#SubmitDispatch').append(' ' + selectedvehicle.Name);
+                $('#SubmitDispatch').append(' ' + selectedVehicle.Name);
             } else {
-                $('#collapseSixPanel').hide();
-                $('#collapseEightPanel').hide();
+                $('#driverPic').html('<span class="glyphicons glyphicons-user-key" style="font-size: 150px;" id="driverIcon"></span>');
+                $('#driverName').html('No Driver Assigned');
+                $('#driverEmail').html('');
+                $('#driverStatus').html('');
+                $('#behaviorsDiv').hide();
+                $('#collapseSix').collapse('hide');
             }
 
             //if ODB codes are null then ADD module not present
@@ -537,7 +553,7 @@
             });
 
 
-            $('#playBackVehicleID').html("<strong>" + selectedVehicle.VehicleID + "</strong>");
+            $('#playBackVehicleID').html("<strong>" + selectedVehicle.vehicleID + "</strong>");
             $('#datetime').text(moment(start).format('MM/DD/YYYY HH:mm'));
             $('#lat').text("");
             $('#lon').text("");
@@ -1846,7 +1862,98 @@
     }
     //#endregion
 
+    //#region getAvailableDrivers Functions
+    function getAvailableDrivers() { //Get a download of the vehicle for ID
+        $('#availableDrivers').empty();
+        var _url = 'getAvailableDrivers';
+        var _data = "";
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: _url,
+            data: _data,
+            contentType: "application/json; charset=utf-8",
+            success: getAvailableDriversSuccess,
+            error: getAvailableDriversError
+        });
+    }
 
+    function getAvailableDriversSuccess(data) {
+        if (data.length > 0)
+        {
+            $('#availableDrivers').append($('<option>', { value: '' }).text('-- New Driver --'));
+            for (var i = 0; i < data.length; i++) {
+                var name = data[i].DriverFirstName + " " + data[i].DriverLastName;
+
+                if (selectedVehicle.status == "NA") {
+                    $('#availableDrivers').prop('disabled', 'disabled')
+                    $('#availableDrivers').append($('<option>', { value: data[i].DriverID }).text(name));
+                    $('#availDriverText').html("<em>The selected vehicle is not active. Please assign drivers to inactive vehicles using the Drivers -> Vehicles Module inside administration.</em>")
+                } else {
+                    $('#availableDrivers').prop('disabled', false)
+                    $('#availableDrivers').append($('<option>', { value: data[i].DriverID }).text(name));
+                    $('#availDriverText').html("<em>Changing a driver is permanent until you change drivers again.</em>")
+                }
+            }
+        } else {
+            alert('A problem occurred getting the pulling the avilable drivers, please reload or contact the administrator');
+        }
+    }
+
+    function getAvailableDriversError(result, error) {
+        var err = error;
+        alert('A problem occurred getting the pulling the avilable drivers, please reload or contact the administrator');
+    }
+    //#endregion
+
+    //#region changeDrivers Functions
+    function changeDrivers(from, to) { //Get a download of the vehicle for ID
+        var _url = 'changeDrivers';
+        var _data = "from=" + from + "&to=" + to + "&vehicleID=" + selectedVehicle.ID;
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: _url,
+            data: _data,
+            contentType: "application/json; charset=utf-8",
+            success: changeDriversSuccess,
+            error: changeDriversError
+        });
+    }
+
+    function changeDriversSuccess(data) {
+        if (data == "OK") {
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-bottom-left",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+            Command: toastr["success"]("New Driver Assigned. We need to refresh the map now.");
+            selectedVehicle = null;
+            closeNav();
+            getVehicles();
+        } else {
+            alert('A problem occurred changing the drivers, please reload or contact the administrator');
+        }
+    }
+
+    function changeDriversError(result, error) {
+        var err = error;
+        alert('A problem occurred changing the drivers, please reload or contact the administrator');
+    }
+    //#endregion
 
 
 
@@ -1927,9 +2034,85 @@
         $('#collapseSixPanel').show();
         $('#collapseSevenPanel').show();
         $('#collapseEightPanel').show();
+
+        //driver panel changes back... need to find more elegant way to do this
+        $('#driverPic').html('<span class="glyphicons glyphicons-user-key" style="font-size: 150px;" id="driverIcon"></span>');
+        $('#driverName').html('No Driver Assigned');
+        $('#driverEmail').html('');
+        $('#driverStatus').html('');
+        $('#behaviorsDiv').hide();
+        $('#collapseSix').collapse('hide');
+        $('#availableDrivers').empty();
     }
 
     $('#closebtn').click(function () {
         closeNav();
+    });
+
+    function base64ArrayBuffer(arrayBuffer) {
+        var base64 = ''
+        var encodings = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+
+        var bytes = new Uint8Array(arrayBuffer)
+        var byteLength = bytes.byteLength
+        var byteRemainder = byteLength % 3
+        var mainLength = byteLength - byteRemainder
+
+        var a, b, c, d
+        var chunk
+
+        // Main loop deals with bytes in chunks of 3
+        for (var i = 0; i < mainLength; i = i + 3) {
+            // Combine the three bytes into a single integer
+            chunk = (bytes[i] << 16) | (bytes[i + 1] << 8) | bytes[i + 2]
+
+            // Use bitmasks to extract 6-bit segments from the triplet
+            a = (chunk & 16515072) >> 18 // 16515072 = (2^6 - 1) << 18
+            b = (chunk & 258048) >> 12 // 258048   = (2^6 - 1) << 12
+            c = (chunk & 4032) >> 6 // 4032     = (2^6 - 1) << 6
+            d = chunk & 63               // 63       = 2^6 - 1
+
+            // Convert the raw binary segments to the appropriate ASCII encoding
+            base64 += encodings[a] + encodings[b] + encodings[c] + encodings[d]
+        }
+
+        // Deal with the remaining bytes and padding
+        if (byteRemainder == 1) {
+            chunk = bytes[mainLength]
+
+            a = (chunk & 252) >> 2 // 252 = (2^6 - 1) << 2
+
+            // Set the 4 least significant bits to zero
+            b = (chunk & 3) << 4 // 3   = 2^2 - 1
+
+            base64 += encodings[a] + encodings[b] + '=='
+        } else if (byteRemainder == 2) {
+            chunk = (bytes[mainLength] << 8) | bytes[mainLength + 1]
+
+            a = (chunk & 64512) >> 10 // 64512 = (2^6 - 1) << 10
+            b = (chunk & 1008) >> 4 // 1008  = (2^6 - 1) << 4
+
+            // Set the 2 least significant bits to zero
+            c = (chunk & 15) << 2 // 15    = 2^4 - 1
+
+            base64 += encodings[a] + encodings[b] + encodings[c] + '='
+        }
+
+        return base64
+    }
+
+    $('#availableDrivers').change(function() {
+        if (confirm('Change assigned driver for this vehilce to: ' + $('#availableDrivers option:selected').text() + '?')) {
+            if (selectedVehicle.driver != null) {
+                if (selectedVehicle.driver.DriverID != "00000000-0000-0000-0000-000000000000") {
+                    changeDrivers(selectedVehicle.driver.DriverID, $(this).val());
+                } else {
+
+                    changeDrivers(null, $(this).val());
+                }
+            } else {
+                changeDrivers(null, $(this).val());
+            }
+        }
     });
 });

@@ -1,6 +1,7 @@
 ﻿using IntelliTraxx.AlertAdminService;
 using IntelliTraxx.PolygonService;
 using IntelliTraxx.TruckService;
+using IntelliTraxx.TabletService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace IntelliTraxx.Controllers
         TruckServiceClient truckService = new TruckServiceClient();
         PolygonServiceClient polygonService = new PolygonServiceClient();
         AlertAdminSvcClient alertAdminService = new AlertAdminSvcClient();
+        TabletInterfaceClient tabletService = new TabletInterfaceClient();
 
         // GET: Fleet
         [Authorize]
@@ -53,7 +55,7 @@ namespace IntelliTraxx.Controllers
 
         public ActionResult getAllVehicles(bool loadHistorical)
         {
-            var allVehicles = truckService.getAllVehicles(loadHistorical);
+            List<Vehicle> allVehicles = truckService.getAllVehicles(loadHistorical);
 
             return Json(allVehicles, JsonRequestBehavior.AllowGet);
         }
@@ -77,12 +79,12 @@ namespace IntelliTraxx.Controllers
 
             var vehicleData = truckService.getVehicleData(new Guid(id));
 
-            if(vehicleData == null)
+            if (vehicleData == null)
             {
                 var allVehicles = truckService.getAllVehicles(true);
-                foreach(Vehicle v in allVehicles)
+                foreach (Vehicle v in allVehicles)
                 {
-                    if(v.extendedData.ID == new Guid(id))
+                    if (v.extendedData.ID == new Guid(id))
                     {
                         vehicleData = v;
                     }
@@ -90,6 +92,30 @@ namespace IntelliTraxx.Controllers
             }
 
             return Json(vehicleData, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult getAvailableDrivers()
+        {
+            List<Driver> availableDrivers = truckService.getAvailableDrivers();
+            
+            return Json(availableDrivers, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult changeDrivers(string from, string to, string vehicleID)
+        {
+            string result = "";
+
+            if(from != "null")
+            {
+                result = truckService.changeDrivers(from, to, vehicleID);
+            } else {
+                Guid ID = new Guid(to);
+                Driver driver = truckService.getDrivers().Where(d => d.DriverID == ID).FirstOrDefault();
+                TabletDriver td = new TabletDriver();
+                td = tabletService.DriverAutoLogon(driver.PIN, vehicleID);
+            }
+
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         #region Polygon Functions
@@ -236,9 +262,9 @@ namespace IntelliTraxx.Controllers
 
             foreach (alertGeoFence agf in fences)
             {
-                foreach(dbAlert dbalert in alerts)
+                foreach (dbAlert dbalert in alerts)
                 {
-                    if(dbalert.AlertID == agf.AlertID)
+                    if (dbalert.AlertID == agf.AlertID)
                     {
                         GFAlerts.Add(dbalert);
                     }
@@ -284,6 +310,12 @@ namespace IntelliTraxx.Controllers
         public class GridAlerts
         {
             public List<GridAlert> GridAlertList { get; set; }
+        }
+
+        public class availableDriver
+        {
+            public Guid DriverID { get; set; }
+            public string DriverName { get; set; }
         }
     }
 }

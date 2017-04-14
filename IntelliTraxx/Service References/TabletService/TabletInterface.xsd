@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://tabletinterface.com" elementFormDefault="qualified" targetNamespace="http://tabletinterface.com" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost/TraxxCloudService/TabletInterface.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/LATATrax" />
+  <xs:import schemaLocation="http://localhost/TraxxCloudService/TabletInterface.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:element name="LogonDriver">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="DriverNumber" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="Password" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="VehicleID" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="LogonDriverResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="LogonDriverResult" nillable="true" type="q1:TabletDriver" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DriverAutoLogon">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="PIN" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="VehicleID" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DriverAutoLogonResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="DriverAutoLogonResult" nillable="true" type="q2:TabletDriver" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="LogoffDriver">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="DriverID" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="VehicleID" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="LogoffDriverResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="LogoffDriverResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="LogonDriverByPin">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="PIN" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="VehicleID" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="LogonDriverByPinResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="LogonDriverByPinResult" nillable="true" type="q3:TabletDriver" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="getPosition">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="VehicleID" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="getPositionResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="getPositionResult" nillable="true" type="q4:tabletGPS" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="setStatus">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="statusID" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="statusName" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="vehicleNumber" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="driverID" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="statusStart" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="statusEnd" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="setStatusResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="setStatusResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="getDispatches">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="routerID" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="getDispatchesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="getDispatchesResult" nillable="true" type="q5:dispatch" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ackDispatch">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q6="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="dispatchID" type="q6:guid" />
+        <xs:element minOccurs="0" name="note" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="driverPIN" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ackDispatchResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="closeDispatch">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="dispatchID" type="q7:guid" />
+        <xs:element minOccurs="0" name="note" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="closeDispatchResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="createNewVehicle">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="vehicleID" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="MACAddress" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="vehicleFriendlyName" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="licensePlate" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="createNewVehicleResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="createNewVehicleResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

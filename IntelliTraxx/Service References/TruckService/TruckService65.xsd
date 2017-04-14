@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/LATATrax" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/LATATrax" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost/TraxxCloudService/TruckService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/LATATrax.Messages" />
+  <xs:import schemaLocation="http://localhost/TraxxCloudService/TruckService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:complexType name="ArrayOfretVehicle">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="retVehicle" nillable="true" type="tns:retVehicle" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfretVehicle" nillable="true" type="tns:ArrayOfretVehicle" />
+  <xs:complexType name="retVehicle">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="VehicleID" nillable="true" type="xs:string" />
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/LATATrax.Messages" minOccurs="0" name="gpsData" nillable="true" type="q1:GPSData" />
+      <xs:element minOccurs="0" name="message" nillable="true" type="xs:string" />
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/LATATrax.Messages" minOccurs="0" name="status" nillable="true" type="q2:ArrayOfStatus" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="retVehicle" nillable="true" type="tns:retVehicle" />
+  <xs:complexType name="ArrayOfOBD2Data">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="OBD2Data" nillable="true" type="tns:OBD2Data" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfOBD2Data" nillable="true" type="tns:ArrayOfOBD2Data" />
+  <xs:complexType name="OBD2Data">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="val" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="OBD2Data" nillable="true" type="tns:OBD2Data" />
+  <xs:complexType name="ArrayOfdriverBehavior">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="driverBehavior" nillable="true" type="tns:driverBehavior" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfdriverBehavior" nillable="true" type="tns:ArrayOfdriverBehavior" />
+  <xs:complexType name="driverBehavior">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="behavior" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="driverID" type="ser:guid" />
+      <xs:element minOccurs="0" name="timeStamp" type="xs:dateTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="driverBehavior" nillable="true" type="tns:driverBehavior" />
+  <xs:complexType name="ArrayOfCompanyAlerts">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CompanyAlerts" nillable="true" type="tns:CompanyAlerts" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCompanyAlerts" nillable="true" type="tns:ArrayOfCompanyAlerts" />
+  <xs:complexType name="CompanyAlerts">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AlertID" type="ser:guid" />
+      <xs:element minOccurs="0" name="AlertName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Email" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CompanyAlerts" nillable="true" type="tns:CompanyAlerts" />
+  <xs:complexType name="Driver">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CompanyID" type="ser:guid" />
+      <xs:element minOccurs="0" name="DriverEmail" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DriverFirstName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DriverID" type="ser:guid" />
+      <xs:element minOccurs="0" name="DriverLastName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DriverNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DriverPassword" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PIN" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ProfilePic" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="currentStatus" nillable="true" type="tns:statusObject" />
+      <xs:element minOccurs="0" name="imageData" nillable="true" type="xs:base64Binary" />
+      <xs:element minOccurs="0" name="imageType" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Driver" nillable="true" type="tns:Driver" />
+  <xs:complexType name="statusObject">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="driverID" type="ser:guid" />
+      <xs:element minOccurs="0" name="runID" type="ser:guid" />
+      <xs:element minOccurs="0" name="statusEnd" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="statusID" type="ser:guid" />
+      <xs:element minOccurs="0" name="statusName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="statusStart" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="vehicleID" type="ser:guid" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="statusObject" nillable="true" type="tns:statusObject" />
+  <xs:complexType name="VehicleExtendedData">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ID" type="ser:guid" />
+      <xs:element minOccurs="0" name="MACAddress" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Make" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Model" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RouterID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="VehicleFriendlyName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Year" type="xs:int" />
+      <xs:element minOccurs="0" name="companyID" type="ser:guid" />
+      <xs:element minOccurs="0" name="companyName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="haulLimit" type="xs:int" />
+      <xs:element minOccurs="0" name="licensePlate" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="vehicleClass" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="vehicleClassID" type="ser:guid" />
+      <xs:element minOccurs="0" name="vehicleClassImage" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="vehicleID" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="VehicleExtendedData" nillable="true" type="tns:VehicleExtendedData" />
+  <xs:complexType name="ArrayOfVehicleGPSRecord">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="VehicleGPSRecord" nillable="true" type="tns:VehicleGPSRecord" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfVehicleGPSRecord" nillable="true" type="tns:ArrayOfVehicleGPSRecord" />
+  <xs:complexType name="VehicleGPSRecord">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Direction" type="xs:float" />
+      <xs:element minOccurs="0" name="ID" type="ser:guid" />
+      <xs:element minOccurs="0" name="InPolygon" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Lat" type="xs:float" />
+      <xs:element minOccurs="0" name="Lon" type="xs:float" />
+      <xs:element minOccurs="0" name="PolyName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Speed" type="xs:float" />
+      <xs:element minOccurs="0" name="VehicleID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="lastMessageReceived" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="runID" type="ser:guid" />
+      <xs:element minOccurs="0" name="status" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="timestamp" type="xs:dateTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="VehicleGPSRecord" nillable="true" type="tns:VehicleGPSRecord" />
+  <xs:complexType name="User">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="UserEmail" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UserFirstName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UserID" type="ser:guid" />
+      <xs:element minOccurs="0" name="UserLastName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UserOffice" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UserPassword" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UserPhone" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UserSalt" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="User" nillable="true" type="tns:User" />
+  <xs:complexType name="ArrayOfUser">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="User" nillable="true" type="tns:User" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfUser" nillable="true" type="tns:ArrayOfUser" />
+  <xs:complexType name="ArrayOfCompany">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Company" nillable="true" type="tns:Company" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCompany" nillable="true" type="tns:ArrayOfCompany" />
+  <xs:complexType name="Company">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CompanyAddress" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CompanyCity" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CompanyContact" nillable="true" type="tns:User" />
+      <xs:element minOccurs="0" name="CompanyCountry" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CompanyID" type="ser:guid" />
+      <xs:element minOccurs="0" name="CompanyName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CompanyState" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="isParent" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Company" nillable="true" type="tns:Company" />
+  <xs:complexType name="ArrayOfRole">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Role" nillable="true" type="tns:Role" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfRole" nillable="true" type="tns:ArrayOfRole" />
+  <xs:complexType name="Role">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="RoleID" type="ser:guid" />
+      <xs:element minOccurs="0" name="isAdmin" type="xs:boolean" />
+      <xs:element minOccurs="0" name="roleDescription" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="roleName" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Role" nillable="true" type="tns:Role" />
+  <xs:complexType name="ArrayOfUserRole">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="UserRole" nillable="true" type="tns:UserRole" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfUserRole" nillable="true" type="tns:ArrayOfUserRole" />
+  <xs:complexType name="UserRole">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="RoleID" type="ser:guid" />
+      <xs:element minOccurs="0" name="UserID" type="ser:guid" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UserRole" nillable="true" type="tns:UserRole" />
+  <xs:complexType name="ArrayOfUserCompany">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="UserCompany" nillable="true" type="tns:UserCompany" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfUserCompany" nillable="true" type="tns:ArrayOfUserCompany" />
+  <xs:complexType name="UserCompany">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CompanyID" type="ser:guid" />
+      <xs:element minOccurs="0" name="UserID" type="ser:guid" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UserCompany" nillable="true" type="tns:UserCompany" />
+  <xs:complexType name="ArrayOfVehicleExtendedData">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="VehicleExtendedData" nillable="true" type="tns:VehicleExtendedData" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfVehicleExtendedData" nillable="true" type="tns:ArrayOfVehicleExtendedData" />
+  <xs:complexType name="ArrayOfVehicleClass">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="VehicleClass" nillable="true" type="tns:VehicleClass" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfVehicleClass" nillable="true" type="tns:ArrayOfVehicleClass" />
+  <xs:complexType name="VehicleClass">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="VehicleClassDescription" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="VehicleClassID" type="ser:guid" />
+      <xs:element minOccurs="0" name="VehicleClassImage" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="VehicleClassName" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="VehicleClass" nillable="true" type="tns:VehicleClass" />
+  <xs:complexType name="ArrayOfDriver">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Driver" nillable="true" type="tns:Driver" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfDriver" nillable="true" type="tns:ArrayOfDriver" />
+  <xs:complexType name="ArrayOfsystemvar">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="systemvar" nillable="true" type="tns:systemvar" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfsystemvar" nillable="true" type="tns:ArrayOfsystemvar" />
+  <xs:complexType name="systemvar">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Email" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="minValue" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="varID" type="ser:guid" />
+      <xs:element minOccurs="0" name="varName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="varType" type="xs:int" />
+      <xs:element minOccurs="0" name="varVal" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="systemvar" nillable="true" type="tns:systemvar" />
+  <xs:complexType name="ArrayOfstatusObjectReturn">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="statusObjectReturn" nillable="true" type="tns:statusObjectReturn" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfstatusObjectReturn" nillable="true" type="tns:ArrayOfstatusObjectReturn" />
+  <xs:complexType name="statusObjectReturn">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="DriverName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="StatusName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="VehicleNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="statusEnd" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="statusStart" nillable="true" type="xs:dateTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="statusObjectReturn" nillable="true" type="tns:statusObjectReturn" />
+  <xs:complexType name="dispatch">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ID" type="ser:guid" />
+      <xs:element minOccurs="0" name="MACAddress" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UserEmail" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ackMessage" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ackTime" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="acked" type="xs:boolean" />
+      <xs:element minOccurs="0" name="address" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="city" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="completedMessage" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="completedTime" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="driverPIN" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="note" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="routerID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="runID" nillable="true" type="ser:guid" />
+      <xs:element minOccurs="0" name="sentToVehicle" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="state" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="timeStamp" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="vehicleID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="zip" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="dispatch" nillable="true" type="tns:dispatch" />
+  <xs:complexType name="ArrayOfdispatch">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="dispatch" nillable="true" type="tns:dispatch" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfdispatch" nillable="true" type="tns:ArrayOfdispatch" />
+  <xs:complexType name="ArrayOfalertReturn">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="alertReturn" nillable="true" type="tns:alertReturn" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfalertReturn" nillable="true" type="tns:ArrayOfalertReturn" />
+  <xs:complexType name="alertReturn">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="alertActive" type="xs:boolean" />
+      <xs:element minOccurs="0" name="alertEnd" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="alertID" type="ser:guid" />
+      <xs:element minOccurs="0" name="alertName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="alertStart" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="alertType" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="latLonEnd" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="latLonStart" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="maxVal" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="runID" type="ser:guid" />
+      <xs:element minOccurs="0" name="vehicleID" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="alertReturn" nillable="true" type="tns:alertReturn" />
+</xs:schema>

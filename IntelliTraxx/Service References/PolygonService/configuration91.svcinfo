@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="Ze5bMc4eysQTf7ehMuE8fkA4lk8=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="3onKWAUnkCngF4Onaar5l6w7Psc=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="basicHttpBinding" name="BasicHttpBinding_IPolygonService">
       <properties>
@@ -112,10 +112,10 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="BasicHttpBinding_IPolygonService" contract="PolygonService.IPolygonService" bindingType="basicHttpBinding" address="http://localhost/LATATraxxService/PolygonService.svc" bindingConfiguration="BasicHttpBinding_IPolygonService">
+    <endpoint name="BasicHttpBinding_IPolygonService" contract="PolygonService.IPolygonService" bindingType="basicHttpBinding" address="http://localhost/TraxxCloudService/PolygonService.svc" bindingConfiguration="BasicHttpBinding_IPolygonService">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>http://localhost/LATATraxxService/PolygonService.svc</serializedValue>
+          <serializedValue>http://localhost/TraxxCloudService/PolygonService.svc</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />

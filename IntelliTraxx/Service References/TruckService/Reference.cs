@@ -4173,6 +4173,12 @@ namespace IntelliTraxx.TruckService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/getDrivers", ReplyAction="http://tempuri.org/ITruckService/getDriversResponse")]
         System.Threading.Tasks.Task<System.Collections.Generic.List<IntelliTraxx.TruckService.Driver>> getDriversAsync();
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/getAvailableDrivers", ReplyAction="http://tempuri.org/ITruckService/getAvailableDriversResponse")]
+        System.Collections.Generic.List<IntelliTraxx.TruckService.Driver> getAvailableDrivers();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/getAvailableDrivers", ReplyAction="http://tempuri.org/ITruckService/getAvailableDriversResponse")]
+        System.Threading.Tasks.Task<System.Collections.Generic.List<IntelliTraxx.TruckService.Driver>> getAvailableDriversAsync();
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/updateDriver", ReplyAction="http://tempuri.org/ITruckService/updateDriverResponse")]
         void updateDriver(IntelliTraxx.TruckService.Driver d, System.Guid operatorID);
         
@@ -4346,6 +4352,12 @@ namespace IntelliTraxx.TruckService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/logoffDriver", ReplyAction="http://tempuri.org/ITruckService/logoffDriverResponse")]
         System.Threading.Tasks.Task<string> logoffDriverAsync(string PIN, System.Guid operatorID);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/changeDrivers", ReplyAction="http://tempuri.org/ITruckService/changeDriversResponse")]
+        string changeDrivers(string from, string to, string vehicleID);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/changeDrivers", ReplyAction="http://tempuri.org/ITruckService/changeDriversResponse")]
+        System.Threading.Tasks.Task<string> changeDriversAsync(string from, string to, string vehicleID);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -4695,6 +4707,14 @@ namespace IntelliTraxx.TruckService {
             return base.Channel.getDriversAsync();
         }
         
+        public System.Collections.Generic.List<IntelliTraxx.TruckService.Driver> getAvailableDrivers() {
+            return base.Channel.getAvailableDrivers();
+        }
+        
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<IntelliTraxx.TruckService.Driver>> getAvailableDriversAsync() {
+            return base.Channel.getAvailableDriversAsync();
+        }
+        
         public void updateDriver(IntelliTraxx.TruckService.Driver d, System.Guid operatorID) {
             base.Channel.updateDriver(d, operatorID);
         }
@@ -4925,6 +4945,14 @@ namespace IntelliTraxx.TruckService {
         
         public System.Threading.Tasks.Task<string> logoffDriverAsync(string PIN, System.Guid operatorID) {
             return base.Channel.logoffDriverAsync(PIN, operatorID);
+        }
+        
+        public string changeDrivers(string from, string to, string vehicleID) {
+            return base.Channel.changeDrivers(from, to, vehicleID);
+        }
+        
+        public System.Threading.Tasks.Task<string> changeDriversAsync(string from, string to, string vehicleID) {
+            return base.Channel.changeDriversAsync(from, to, vehicleID);
         }
     }
 }

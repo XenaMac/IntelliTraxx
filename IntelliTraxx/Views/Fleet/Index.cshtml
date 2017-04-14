@@ -127,58 +127,63 @@
             </div>
             <div id="collapseSix" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSix">
                 <div class="panel-body" id="driver_panel">
+                    <div class="col-sm-4" id="driverPic"></div>
                     <div class="col-sm-4">
-                        <span class="glyphicons glyphicons-user-key" style="font-size: 146px;"></span>
+                        <h5 id="driverName"></h5>
+                        <i class="glyphicons glyphicons-star" id="star1"></i>
+                        <i class="glyphicons glyphicons-star" id="star2"></i>
+                        <i class="glyphicons glyphicons-star" id="star3"></i>
+                        <i class="glyphicons glyphicons-star" id="star4"></i>
+                        <i class="glyphicons glyphicons-star" id="star5"></i>
                     </div>
-                    <div class="col-sm-8">
-                        <h5>Driver Name</h5>
-                        <i class="glyphicons glyphicons-star"></i>
-                        <i class="glyphicons glyphicons-star"></i>
-                        <i class="glyphicons glyphicons-star"></i>
-                        <i class="glyphicons glyphicons-star"></i>
-                        <i class="glyphicons glyphicons-star"></i>
+                    <div class="col-sm-4">
+                        <strong><span style="color: red;">Assign/Change Driver:</span></strong><br />
+                        <select id="availableDrivers" class="form-control"></select>
+                        <p class="small" id="availDriverText"></p>
                     </div>
                     <div class="col-sm-12 text-left">
                         <dl class="dl-horizontal text-left" id="driverInfo">
                             <dt>E-mail:</dt>
-                            <dd>drivername@company.com</dd>
+                            <dd id="driverEmail">drivername@company.com</dd>
                             <dt>Status:</dt>
-                            <dd>Driver Status</dd>
+                            <dd id="driverStatus">Driver Status</dd>
                         </dl>
                         <hr />
-                        <p>Negative Driver Behavior Triggers</p>
-                        <table id='dbTable' class='table table-hover table-bordered table-responsive table-striped table-condensed'>
-                            <thead>
-                                <tr>
-                                    <td class='header'>Trigger</td>
-                                    <td class='header'>Date/Time</td>
-                                    <td class="header">Edit</td>
-                                </tr>
-                            </thead>
-                            @*These are just placeholders. Need to be removed*@
-                            <tbody>
-                                <tr>
-                                    <td>Hard Acceleration</td>
-                                    <td>2/27/2017  07:43</td>
-                                    <td class="text-center"><button type="button" class="btn btn-default btn-xs glyphicons glyphicons-pencil" id=""></button></td>
-                                </tr>
-                                <tr>
-                                    <td>Hard Braking</td>
-                                    <td>2/27/2017  07:40</td>
-                                    <td class="text-center"><button type="button" class="btn btn-default btn-xs glyphicons glyphicons-pencil" id=""></button></td>
-                                </tr>
-                                <tr>
-                                    <td>Hard Right Turn</td>
-                                    <td>2/27/2017  07:33</td>
-                                    <td class="text-center"><button type="button" class="btn btn-default btn-xs glyphicons glyphicons-pencil" id=""></button></td>
-                                </tr>
-                                <tr>
-                                    <td>Hard Left Turn</td>
-                                    <td>2/27/2017  07:12</td>
-                                    <td class="text-center"><button type="button" class="btn btn-default btn-xs glyphicons glyphicons-pencil" id=""></button></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="" id="behaviorsDiv">
+                            <p>Negative Driver Behavior Triggers</p>
+                            <table id='dbTable' class='table table-hover table-bordered table-responsive table-striped table-condensed'>
+                                <thead>
+                                    <tr>
+                                        <td class='header'>Trigger</td>
+                                        <td class='header'>Date/Time</td>
+                                        <td class="header">Edit</td>
+                                    </tr>
+                                </thead>
+                                @*These are just placeholders. Need to be removed*@
+                                <tbody>
+                                    <tr>
+                                        <td>Hard Acceleration</td>
+                                        <td>2/27/2017  07:43</td>
+                                        <td class="text-center"><button type="button" class="btn btn-default btn-xs glyphicons glyphicons-pencil" id=""></button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Hard Braking</td>
+                                        <td>2/27/2017  07:40</td>
+                                        <td class="text-center"><button type="button" class="btn btn-default btn-xs glyphicons glyphicons-pencil" id=""></button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Hard Right Turn</td>
+                                        <td>2/27/2017  07:33</td>
+                                        <td class="text-center"><button type="button" class="btn btn-default btn-xs glyphicons glyphicons-pencil" id=""></button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Hard Left Turn</td>
+                                        <td>2/27/2017  07:12</td>
+                                        <td class="text-center"><button type="button" class="btn btn-default btn-xs glyphicons glyphicons-pencil" id=""></button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -311,7 +316,7 @@
                 </div>
             </div>
         </div>
-        <div class="panel panel-purple" id="collapseEightPanel">
+        <div class="panel panel-purple hidden" id="collapseEightPanel"> @*undo this eventually*@
             <div class="panel-heading" role="tab" id="headingEight">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" href="#collapseEight" aria-expanded="true" aria-controls="collapseEight">

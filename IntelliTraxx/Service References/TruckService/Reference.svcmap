@@ -21,17 +21,17 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://localhost/LATATraxxService/TruckService.svc" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://localhost/TraxxCloudService/TruckService.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="TruckService.xsd" MetadataType="Schema" ID="a83a639e-758c-4461-b1d6-a577b6f76605" SourceId="1" SourceUrl="http://localhost/LATATraxxService/TruckService.svc?xsd=xsd3" />
-    <MetadataFile FileName="TruckService.wsdl" MetadataType="Wsdl" ID="b80dfd70-8c8d-45de-9e38-5caebe4b9a25" SourceId="1" SourceUrl="http://localhost/LATATraxxService/TruckService.svc?wsdl" />
-    <MetadataFile FileName="TruckService1.xsd" MetadataType="Schema" ID="c38d1b19-ad40-456b-87e6-4240349cd419" SourceId="1" SourceUrl="http://localhost/LATATraxxService/TruckService.svc?xsd=xsd5" />
-    <MetadataFile FileName="TruckService2.xsd" MetadataType="Schema" ID="500f2cd5-c5ae-428c-a61b-a4567f8648a8" SourceId="1" SourceUrl="http://localhost/LATATraxxService/TruckService.svc?xsd=xsd4" />
-    <MetadataFile FileName="TruckService.disco" MetadataType="Disco" ID="20cb3bf0-0a3c-4419-9bce-b87f73eceef5" SourceId="1" SourceUrl="http://localhost/LATATraxxService/TruckService.svc?disco" />
-    <MetadataFile FileName="TruckService3.xsd" MetadataType="Schema" ID="ed4883e4-a668-4087-a66d-8ad25e25a908" SourceId="1" SourceUrl="http://localhost/LATATraxxService/TruckService.svc?xsd=xsd1" />
-    <MetadataFile FileName="TruckService4.xsd" MetadataType="Schema" ID="b9ad1f9b-c2a4-46f6-856c-c7eecad0644f" SourceId="1" SourceUrl="http://localhost/LATATraxxService/TruckService.svc?xsd=xsd2" />
-    <MetadataFile FileName="TruckService5.xsd" MetadataType="Schema" ID="1feb7cf5-dc25-4016-bb79-a40a13141267" SourceId="1" SourceUrl="http://localhost/LATATraxxService/TruckService.svc?xsd=xsd0" />
+    <MetadataFile FileName="TruckService1.wsdl" MetadataType="Wsdl" ID="d493ae55-5069-4613-b586-8b2e3953071d" SourceId="1" SourceUrl="http://localhost/TraxxCloudService/TruckService.svc?wsdl" />
+    <MetadataFile FileName="TruckService6.xsd" MetadataType="Schema" ID="ae968a91-2697-435d-9c04-2896d79f8002" SourceId="1" SourceUrl="http://localhost/TraxxCloudService/TruckService.svc?xsd=xsd4" />
+    <MetadataFile FileName="TruckService61.xsd" MetadataType="Schema" ID="f4607d0b-7da0-4640-bab3-85e774466d01" SourceId="1" SourceUrl="http://localhost/TraxxCloudService/TruckService.svc?xsd=xsd0" />
+    <MetadataFile FileName="TruckService62.xsd" MetadataType="Schema" ID="7c569653-bd78-48fd-bf9e-a55458ee4e04" SourceId="1" SourceUrl="http://localhost/TraxxCloudService/TruckService.svc?xsd=xsd1" />
+    <MetadataFile FileName="TruckService63.xsd" MetadataType="Schema" ID="5d662448-40fd-4d84-9c02-29fbd492a3c8" SourceId="1" SourceUrl="http://localhost/TraxxCloudService/TruckService.svc?xsd=xsd3" />
+    <MetadataFile FileName="TruckService64.xsd" MetadataType="Schema" ID="8f753615-b8ef-46cf-9a08-73145b152fc2" SourceId="1" SourceUrl="http://localhost/TraxxCloudService/TruckService.svc?xsd=xsd5" />
+    <MetadataFile FileName="TruckService1.disco" MetadataType="Disco" ID="e5c582f2-82ab-4793-b9b0-cf930670cad1" SourceId="1" SourceUrl="http://localhost/TraxxCloudService/TruckService.svc?disco" />
+    <MetadataFile FileName="TruckService65.xsd" MetadataType="Schema" ID="a5a6dee8-0257-484e-b796-05b352b8f88f" SourceId="1" SourceUrl="http://localhost/TraxxCloudService/TruckService.svc?xsd=xsd2" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

@@ -21,14 +21,14 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://localhost/LATATraxxService/PolygonService.svc" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://localhost/TraxxCloudService/PolygonService.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="PolygonService.wsdl" MetadataType="Wsdl" ID="835c9906-0840-44ed-b0d8-9a127aef796a" SourceId="1" SourceUrl="http://localhost/LATATraxxService/PolygonService.svc?wsdl" />
-    <MetadataFile FileName="PolygonService.disco" MetadataType="Disco" ID="884667ac-53ba-4393-9887-40e965771818" SourceId="1" SourceUrl="http://localhost/LATATraxxService/PolygonService.svc?disco" />
-    <MetadataFile FileName="PolygonService.xsd" MetadataType="Schema" ID="49d36548-afb8-4b69-bacb-8c9809daa402" SourceId="1" SourceUrl="http://localhost/LATATraxxService/PolygonService.svc?xsd=xsd2" />
-    <MetadataFile FileName="PolygonService1.xsd" MetadataType="Schema" ID="7cf2da83-200e-4e5a-a8cf-ee26b3cbc07d" SourceId="1" SourceUrl="http://localhost/LATATraxxService/PolygonService.svc?xsd=xsd1" />
-    <MetadataFile FileName="PolygonService2.xsd" MetadataType="Schema" ID="6ed6e457-c9d8-483b-9552-58b66b79ce46" SourceId="1" SourceUrl="http://localhost/LATATraxxService/PolygonService.svc?xsd=xsd0" />
+    <MetadataFile FileName="PolygonService3.xsd" MetadataType="Schema" ID="582d8424-0c9f-445b-9a3f-2d494f644049" SourceId="1" SourceUrl="http://localhost/TraxxCloudService/PolygonService.svc?xsd=xsd0" />
+    <MetadataFile FileName="PolygonService31.xsd" MetadataType="Schema" ID="d4671dd8-6003-4b81-827c-67030c0f1640" SourceId="1" SourceUrl="http://localhost/TraxxCloudService/PolygonService.svc?xsd=xsd1" />
+    <MetadataFile FileName="PolygonService1.wsdl" MetadataType="Wsdl" ID="925ef55e-9ffd-4841-af0e-200bb47ffc5a" SourceId="1" SourceUrl="http://localhost/TraxxCloudService/PolygonService.svc?wsdl" />
+    <MetadataFile FileName="PolygonService1.disco" MetadataType="Disco" ID="27bcb77a-1fde-49ec-a0d6-8299734c58fd" SourceId="1" SourceUrl="http://localhost/TraxxCloudService/PolygonService.svc?disco" />
+    <MetadataFile FileName="PolygonService32.xsd" MetadataType="Schema" ID="163dc786-8e6f-4114-ace0-ca01778cd425" SourceId="1" SourceUrl="http://localhost/TraxxCloudService/PolygonService.svc?xsd=xsd2" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
