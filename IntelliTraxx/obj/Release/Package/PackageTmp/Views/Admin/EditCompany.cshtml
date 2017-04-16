@@ -1,0 +1,114 @@
+﻿@model IntelliTraxx.Controllers.Companies
+@using IntelliTraxx.Common
+@{
+    ViewBag.Title = "EditCompany";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div id="nav" class="container-fluid center-block">
+    <div id="logo"></div>
+    <div id="mapIcon" class="mapIcon_in" data-toggle="tooltip" data-placement="left" title="Map"></div>
+    <div id="alertsIcon" class="alertsIcon_in" data-toggle="tooltip" data-placement="bottom" title="Alerts"></div>
+    <div id="geofenceIcon" class="geofenceIcon_in" data-toggle="tooltip" data-placement="left" title="Disabled"></div>
+    <div id="appsIcon" class="appsIcon_in" data-toggle="tooltip" data-placement="top" title="Disabled"></div>
+    <div id="diagnosticsIcon" class="diagnosticsIcon_in" data-toggle="tooltip" data-placement="right" title="Scheduling"></div>
+    <div id="analyticsIcon" class="analyticsIcon_in" data-toggle="tooltip" data-placement="right" title="Analytics"></div>
+    <div id="adminIcon" class="adminIcon_in" data-toggle="tooltip" data-placement="right" title="Administration"></div>
+    <div id="profileDiv" class="profileDiv_in">
+        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+            {
+            @Html.AntiForgeryToken()
+            <small>
+                <ul class="list-group">
+                    <li class="list-group-item"><a href="" class="text-left" style="padding: 5px;" id="userNameRole"></a><br /></li>
+                    <li class="list-group-item"><a href="" class="text-left" style="padding: 5px;"><i class="glyphicons glyphicons-bell"></i> Notifications<span class="badge" style="margin-left: 5px;">3</span></a><br /></li>
+                    <li class="list-group-item"><a href="" class="text-left" style="padding: 5px;"><i class="glyphicons glyphicons-question-sign"></i> Help</a></li>
+                    <li class="list-group-item"><a href="javascript:document.getElementById('logoutForm').submit()" style="padding: 5px;"><i class="glyphicons glyphicons-exit"></i> Log off</a></li>
+                </ul>
+            </small>
+        }
+    </div>
+</div>
+
+<div class="container-fluid col-lg-10 col-lg-offset-1">
+    <h1 class="text-right alertsPageHeader"><strong>Administration</strong></h1>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <hr />
+            @Html.HiddenFor(model => model.CompanyID)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.CompanyName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.CompanyAddress, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.CompanyAddress, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.CompanyAddress, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.CompanyCity, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.CompanyCity, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.CompanyCity, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.CompanyState, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.CompanyState, Utilities.GetStateList(), "-- Select a Country --", new { @class = "form-control" })
+                    @*@Html.EditorFor(model => model.CompanyState, new { htmlAttributes = new { @class = "form-control" } })*@
+                    @Html.ValidationMessageFor(model => model.CompanyState, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.CompanyCountry, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.CompanyCountry, Utilities.GetCountryList(), "-- Select a Country --", new { @class = "form-control" })
+                    @*@Html.EditorFor(model => model.CompanyCountry, new { htmlAttributes = new { @class = "form-control" } })*@
+                    @Html.ValidationMessageFor(model => model.CompanyCountry, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            @Html.HiddenFor(model => model.IsParent)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Contact, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.Contact, Utilities.GetUserList(), new { @class = "form-control" })
+                    @*@Html.EditorFor(model => model.Contact, new { htmlAttributes = new { @class = "form-control" } })*@
+                    @Html.ValidationMessageFor(model => model.Contact, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    }
+
+    <div>
+        @Html.ActionLink("Back to Companies", "Index", new { tab = "C" })
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        @Ajax.ActionLink("Delete Company", "DeleteCompany", "Admin", new { companyID = Model.CompanyID },
+            new AjaxOptions()
+            {
+                HttpMethod = "POST"
+            },
+            new { onclick = "return confirm('Are you sure you wish to delete this company?')" })
+    </div>
+</div>

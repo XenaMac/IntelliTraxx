@@ -1,0 +1,298 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 3px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists
+   will truncate terms that are too long to fit in the left column
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+#loginbg {
+    background-image: url('Images/IT_FleetImage.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position-y: 75%;
+    background-position-x: center;
+}
+
+#loginForm {
+    background-color: rgba(248, 248, 248, 0.85);
+    border-color: #000;
+    border: solid;
+    border-width: thin;
+    border-radius: 25px;
+    padding: 10px;
+    margin-top: -1em;
+}
+
+#map {
+    /*background: #10096a;*/
+    display: block;
+    position: absolute;
+    height: auto;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin-top: 0px; /* adjust top margin to your header height */
+    height: 100vh;
+    width: 100%;
+    z-index: 0;
+}
+
+#alertMap {
+    /*background: #10096a;*/
+    border: 1px solid black;
+    display: block;
+    position: fixed;
+    height: 350px;
+    margin-top: 0px; /* adjust top margin to your header height */
+    z-index: 0;
+    padding-left: 0;
+}
+
+.vehicleAlertInfo {
+    padding: 0.1em;
+    width: 40em;
+    height: 150px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    font-size: 1em;
+}
+
+.devider {
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 10px;
+}
+
+.loading {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -50px; /* -1 * image width / 2 */
+    margin-top: -40px; /* -1 * image height / 2 */
+}
+
+table .header {
+    font-weight: bold;
+    text-align: center;
+}
+
+#alertsTable tr {
+    cursor: pointer;
+}
+
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+    background-color: rgba(30,87,153,1);
+    color: #fff;
+}
+
+#playBackFrom {
+    font-size: 0.8em;
+    border-radius: 4px;
+    border-style: solid;
+    border-color: #bab8b8;
+    border-width: 1px;
+}
+
+#playBackFrom_M {
+    font-size: 2em;
+    border-radius: 4px;
+    border-style: solid;
+    border-color: #bab8b8;
+    border-width: 1px;
+    margin-right: 25px;
+}
+
+#vehicleHistoryList {
+    font-size: 0.8em;
+    border-radius: 4px;
+    border-style: solid;
+    border-width: 1px;
+}
+
+#vehicleHistoryList_M {
+    font-size: 2em;
+    border-radius: 4px;
+    border-style: solid;
+    border-width: 1px;
+    margin-right: 25px;
+}
+
+#increments {
+    font-size: 0.8em;
+    border-radius: 4px;
+    border-style: solid;
+    border-width: 1px;
+}
+
+#increments_M {
+    font-size: 2em;
+    border-radius: 4px;
+    border-style: solid;
+    border-width: 1px;
+    margin-right: 25px;
+}
+
+.mapText {
+    font-size: 10px;
+    margin-left: 3px;
+    font-weight: bold;
+    color: #4800ff;
+}
+
+.mapText_M {
+    font-size: 14px;
+    margin-left: 3px;
+    font-weight: bold;
+    color: #4800ff;
+}
+
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    background: rgba(25, 25, 25, .5);
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+    box-shadow: 3px 3px 20px #888888;
+}
+
+#closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 35px;
+    color: #fff;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidenav .vList {
+    position: absolute;
+    top: 0;
+    left: 0px;
+    font-size: 16px;
+    margin: 10px;
+}
+
+.greenText {
+    background-color: green;
+}
+
+.blueText {
+    background-color: blue;
+}
+
+.redText {
+    background-color: red;
+}
+
+.panel-black > .panel-heading {
+    color: #fff;
+    background-color: #000;
+    border-color: #dddddd;
+}
+
+.panel-purple > .panel-heading {
+    color: #fff;
+    background-color: #4b036b;
+    border-color: #dddddd;
+}
+
+#alert_panel {
+    max-height: 250px;
+    overflow-x: scroll;
+}
+
+#log_panel {
+    max-height: 250px;
+    overflow-x: scroll;
+}
+
+#geofence_panel {
+    max-height: 500px;
+    overflow-x: scroll;
+}
+
+#driver_panel {
+    max-height: 350px;
+    overflow-x: scroll;
+}
+
+
+.badge-middle {
+    vertical-align: middle;
+}
+
+.ah {
+    background-color: #cf0404;
+    color: white;
+}
+
+.alertsPageHeader {
+    background: -moz-linear-gradient(right, rgba(30,87,153,1) 0%,); /* FF3.6-15 */
+    background: -webkit-linear-gradient(right, rgba(30,87,153,1) 0%,rgba(125,185,232,0) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to left, rgba(30,87,153,1) 0%,rgba(125,185,232,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#007db9e8', endColorstr='#1e5799',GradientType=1 ); /* IE6-9 */
+    color: #fff;
+    padding: 3px;
+    margin: 10px;
+}
+
+.schedulingPageHeader {
+    background: -moz-linear-gradient(right, rgba(30,87,153,1) 0%,); /* FF3.6-15 */
+    background: -webkit-linear-gradient(right, rgba(30,87,153,1) 0%,rgba(125,185,232,0) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to left, rgba(30,87,153,1) 0%,rgba(125,185,232,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#007db9e8', endColorstr='#1e5799',GradientType=1 ); /* IE6-9 */
+    color: #fff;
+    padding: 3px;
+    margin: 10px;
+}
+
+.material-icons.md-18 { font-size: 18px; }
+.material-icons.md-24 { font-size: 24px; }
+.material-icons.md-36 { font-size: 36px; }
+.material-icons.md-48 { font-size: 48px; }
+
+#vehicTable {
+    max-height: 400px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.classTN:hover {
+    background-color: #2FA4E7;
+    color: #fff;
+    cursor: pointer;
+}
+
+#scheduleList {
+    max-height: 600px;
+    overflow-y: hidden;
+    overflow-y: auto;
+}

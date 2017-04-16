@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Company = @System.Configuration.ConfigurationManager.AppSettings["companyName"];
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkyxzsMHs1COuqcUEkPKiHY2289J0LG-4&libraries=drawing" async defer></script>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/themes/base/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/logoMenu")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/logoMenu")
+    <script src="~/Scripts/alerts.js"></script>
+
+</head>
+<body>
+    <div class="body-content">
+        @RenderBody()
+        <footer class="col-lg-12">
+            <br /><br />
+            <hr />
+            <div class="col-lg-6">
+                <p>&copy; @DateTime.Now.Year - <a href="http://www.xenatech.com" target="_blank">XenaTech, LLC.</a></p>
+            </div>
+            <div class="col-lg-6">
+                <em><p class="pull-right"><a href="~/Home/TermsAndConditions">Terms and Conditions</a> | <a href="~/Home/PrivacyStatement">Privacy Policy</a> </p></em>
+            </div>
+        </footer>
+    </div>
+    @RenderSection("scripts", required: false)
+    @Html.Partial("_Toastr")
+</body>
+</html>

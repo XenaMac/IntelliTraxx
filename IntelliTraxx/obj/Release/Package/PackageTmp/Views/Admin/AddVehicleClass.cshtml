@@ -1,0 +1,107 @@
+﻿@model IntelliTraxx.Controllers.VehicleClasses
+@{
+    ViewBag.Title = "AddVehicleClass";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div id="nav" class="container-fluid center-block">
+    <div id="logo"></div>
+    <div id="mapIcon" class="mapIcon_in" data-toggle="tooltip" data-placement="left" title="Map"></div>
+    <div id="alertsIcon" class="alertsIcon_in" data-toggle="tooltip" data-placement="bottom" title="Alerts"></div>
+    <div id="geofenceIcon" class="geofenceIcon_in" data-toggle="tooltip" data-placement="left" title="Disabled"></div>
+    <div id="appsIcon" class="appsIcon_in" data-toggle="tooltip" data-placement="top" title="Disabled"></div>
+    <div id="diagnosticsIcon" class="diagnosticsIcon_in" data-toggle="tooltip" data-placement="right" title="Scheduling"></div>
+    <div id="analyticsIcon" class="analyticsIcon_in" data-toggle="tooltip" data-placement="right" title="Analytics"></div>
+    <div id="adminIcon" class="adminIcon_in" data-toggle="tooltip" data-placement="right" title="Administration"></div>
+    <div id="profileDiv" class="profileDiv_in">
+        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+            {
+            @Html.AntiForgeryToken()
+            <small>
+                <ul class="list-group">
+                    <li class="list-group-item"><a href="" class="text-left" style="padding: 5px;" id="userNameRole"></a><br /></li>
+                    <li class="list-group-item"><a href="" class="text-left" style="padding: 5px;"><i class="glyphicons glyphicons-bell"></i> Notifications<span class="badge" style="margin-left: 5px;">3</span></a><br /></li>
+                    <li class="list-group-item"><a href="" class="text-left" style="padding: 5px;"><i class="glyphicons glyphicons-question-sign"></i> Help</a></li>
+                    <li class="list-group-item"><a href="javascript:document.getElementById('logoutForm').submit()" style="padding: 5px;"><i class="glyphicons glyphicons-exit"></i> Log off</a></li>
+                </ul>
+            </small>
+        }
+    </div>
+</div>
+
+<div class="container-fluid col-lg-10 col-lg-offset-1">
+    <h1 class="text-right alertsPageHeader"><strong>Administration</strong></h1>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <hr />
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.VehicleClassName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.VehicleClassName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.VehicleClassName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.VehicleClassImage, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <div class="dropdown">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            Choose Class Image
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                            <li><img src="~/Content/VClasses/00001.png" class="classImage" /></li>
+                            <li><img src="~/Content/VClasses/00002.png" class="classImage" /></li>
+                            <li><img src="~/Content/VClasses/00003.png" class="classImage" /></li>
+                            <li><img src="~/Content/VClasses/00004.png" class="classImage" /></li>
+                            <li><img src="~/Content/VClasses/00005.png" class="classImage" /></li>
+                            <li><img src="~/Content/VClasses/00006.png" class="classImage" /></li>
+                            <li><img src="~/Content/VClasses/00007.png" class="classImage" /></li>
+                            <li><img src="~/Content/VClasses/00008.png" class="classImage" /></li>
+                        </ul>
+                    </div><br />
+                    <img class="img" src="~/Content/VClasses/00001.png" />
+                    @Html.EditorFor(model => model.VehicleClassImage, new { htmlAttributes = new { @class = "form-control", @id = "src" } })
+                    @Html.ValidationMessageFor(model => model.VehicleClassImage, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.VehicleClassDescription, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.VehicleClassDescription, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.VehicleClassDescription, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    }
+
+    <div>
+        @Html.ActionLink("Back to Vehicle Classes", "Index", new { tab = "VC" })
+    </div>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+        $(function () {
+            $('.classImage').click(function () {
+                $('.img').attr('src', $(this).attr('src'));
+                var image = $(this).attr('src').split('/');
+                $('#src').val(image[4]);
+            });
+        });
+    </script>
+}

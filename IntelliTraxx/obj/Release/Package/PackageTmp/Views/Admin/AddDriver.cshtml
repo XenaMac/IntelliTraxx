@@ -1,0 +1,165 @@
+﻿@model IntelliTraxx.Controllers.DriverVM
+@using IntelliTraxx.Common
+@{
+    ViewBag.Title = "AddDriver";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div id="nav" class="container-fluid center-block">
+    <div id="logo"></div>
+    <div id="mapIcon" class="mapIcon_in" data-toggle="tooltip" data-placement="left" title="Map"></div>
+    <div id="alertsIcon" class="alertsIcon_in" data-toggle="tooltip" data-placement="bottom" title="Alerts"></div>
+    <div id="geofenceIcon" class="geofenceIcon_in" data-toggle="tooltip" data-placement="left" title="Disabled"></div>
+    <div id="appsIcon" class="appsIcon_in" data-toggle="tooltip" data-placement="top" title="Disabled"></div>
+    <div id="diagnosticsIcon" class="diagnosticsIcon_in" data-toggle="tooltip" data-placement="right" title="Scheduling"></div>
+    <div id="analyticsIcon" class="analyticsIcon_in" data-toggle="tooltip" data-placement="right" title="Analytics"></div>
+    <div id="adminIcon" class="adminIcon_in" data-toggle="tooltip" data-placement="right" title="Administration"></div>
+    <div id="profileDiv" class="profileDiv_in">
+        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+            {
+            @Html.AntiForgeryToken()
+            <small>
+                <ul class="list-group">
+                    <li class="list-group-item"><a href="" class="text-left" style="padding: 5px;" id="userNameRole"></a><br /></li>
+                    <li class="list-group-item"><a href="" class="text-left" style="padding: 5px;"><i class="glyphicons glyphicons-bell"></i> Notifications<span class="badge" style="margin-left: 5px;">3</span></a><br /></li>
+                    <li class="list-group-item"><a href="" class="text-left" style="padding: 5px;"><i class="glyphicons glyphicons-question-sign"></i> Help</a></li>
+                    <li class="list-group-item"><a href="javascript:document.getElementById('logoutForm').submit()" style="padding: 5px;"><i class="glyphicons glyphicons-exit"></i> Log off</a></li>
+                </ul>
+            </small>
+        }
+    </div>
+</div>
+
+<div class="container-fluid col-lg-10 col-lg-offset-1">
+    <h1 class="text-right alertsPageHeader"><strong>Administration</strong></h1>
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <hr />
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.DriverLastName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.DriverLastName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.DriverLastName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.DriverFirstName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.DriverFirstName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.DriverFirstName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.DriverEmail, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.DriverEmail, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.DriverEmail, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.DriverNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.DriverNumber, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.DriverNumber, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.PIN, htmlAttributes: new { @class = "control-label col-md-2", @maxlength = "4", @type = "number" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.PIN, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.PIN, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            @*<div class="form-group">
+                    @Html.LabelFor(model => model.DriverPassword, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.DriverPassword, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.DriverPassword, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.VerifyDriverPassword, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.VerifyDriverPassword, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.VerifyDriverPassword, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.CompanyID, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.CompanyID, Utilities.GetCompanies(), "-- Select a Company --", new { @class = "form-control" })
+                    @*@Html.EditorFor(model => model.CompanyID, new { htmlAttributes = new { @class = "form-control" } })*@
+                    @Html.ValidationMessageFor(model => model.CompanyID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.DriverPicture, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input name="fileUpload" id="fileUpload" type="file" />
+                    <div id="image-holder"></div>
+                    @*@Html.EditorFor(model => model.DriverPicture, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.DriverPicture, "", new { @class = "text-danger" })*@
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    }
+
+    <div>
+        @Html.ActionLink("Back to Drivers", "Index", new { tab = "D" })
+    </div>
+</div>
+
+@section scripts {
+    <script>
+    $(document).ready(function() {
+            $("#fileUpload").on('change', function() {
+              //Get count of selected files
+              var countFiles = $(this)[0].files.length;
+              var imgPath = $(this)[0].value;
+              var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
+              var image_holder = $("#image-holder");
+              image_holder.empty();
+              if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
+                if (typeof(FileReader) != "undefined") {
+                  //loop for each file selected for uploaded.
+                  for (var i = 0; i < countFiles; i++)
+                  {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                      $("<img />", {
+                        "src": e.target.result,
+                        "class": "thumb-image img-responsive",
+                        "width": "85px"
+                      }).appendTo(image_holder);
+                    }
+                    image_holder.show();
+                    reader.readAsDataURL($(this)[0].files[i]);
+                  }
+                } else {
+                  alert("This browser does not support FileReader.");
+                }
+              } else {
+                alert("Pls select only images");
+              }
+            });
+          });
+    </script>
+}
