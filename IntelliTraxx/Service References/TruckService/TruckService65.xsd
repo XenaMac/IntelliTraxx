@@ -115,6 +115,7 @@
   <xs:element name="ArrayOfVehicleGPSRecord" nillable="true" type="tns:ArrayOfVehicleGPSRecord" />
   <xs:complexType name="VehicleGPSRecord">
     <xs:sequence>
+      <xs:element minOccurs="0" name="ABI" type="xs:int" />
       <xs:element minOccurs="0" name="Direction" type="xs:float" />
       <xs:element minOccurs="0" name="ID" type="ser:guid" />
       <xs:element minOccurs="0" name="InPolygon" type="xs:boolean" />
@@ -236,6 +237,26 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ArrayOfDriver" nillable="true" type="tns:ArrayOfDriver" />
+  <xs:complexType name="ArrayOfdriverVehicleReturn">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="driverVehicleReturn" nillable="true" type="tns:driverVehicleReturn" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfdriverVehicleReturn" nillable="true" type="tns:ArrayOfdriverVehicleReturn" />
+  <xs:complexType name="driverVehicleReturn">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CreatedBy" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CreatedDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="DriverID" type="ser:guid" />
+      <xs:element minOccurs="0" name="ID" type="ser:guid" />
+      <xs:element minOccurs="0" name="ModifiedBy" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ModifiedDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Vehicle" nillable="true" type="tns:VehicleExtendedData" />
+      <xs:element minOccurs="0" name="VehicleID" type="ser:guid" />
+      <xs:element minOccurs="0" name="driver" nillable="true" type="tns:Driver" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="driverVehicleReturn" nillable="true" type="tns:driverVehicleReturn" />
   <xs:complexType name="ArrayOfsystemvar">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="systemvar" nillable="true" type="tns:systemvar" />

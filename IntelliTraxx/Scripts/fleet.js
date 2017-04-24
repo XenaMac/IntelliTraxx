@@ -17,6 +17,7 @@
     var historyVehicle = null;
     var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     var searchDate = new Date();
+    var getHistorical = false;
 
     $('[data-toggle="tooltip"]').tooltip()
 
@@ -36,6 +37,7 @@
         this.behaviors = data.behaviors;
         this.driver = data.driver;
         this.lastMessageReceived = data.lastMessageReceived;
+        this.ABI = data.ABI;
 
         var LMRTimeDiff = moment().diff(moment(this.lastMessageReceived), 'minutes');
         if (LMRTimeDiff > 5) {
@@ -61,8 +63,8 @@
                 position: { lat: this.lat, lng: this.lon },
                 map: map,
                 title: this.Name,
-                duration: 1000,
-                easing: "easeOutExpo"
+                duration: this.ABI * 1000,
+                easing: "linear"
             });
             mapLogEntry("alert", _this);
         } else if (this.status == "NA") {
@@ -76,8 +78,8 @@
                 position: { lat: this.lat, lng: this.lon },
                 map: map,
                 title: this.Name,
-                duration: 1000,
-                easing: "easeOutExpo"
+                duration: this.ABI * 1000,
+                easing: "linear"
             });
             mapLogEntry("alert", _this);
         } else {
@@ -91,8 +93,8 @@
                 position: { lat: this.lat, lng: this.lon },
                 map: map,
                 title: this.Name + " (" + this.spd + ")",
-                duration: 1000,
-                easing: "easeOutExpo"
+                duration: this.ABI * 1000,
+                easing: "linear"
             });
         }
 
@@ -104,10 +106,11 @@
 
         mapLogEntry("position", this);
 
-        setInterval(function () {
-            if (_this.status != "NA") {
+        if (this.status != "NA") {
+
+            setInterval(function () {
                 $.post("getGPS?id=" + _this.ID, null, function (data) {
-                    if (data) {
+                    if (data.length != 0) {
                         _this.status = data[0].status;
                         _this.lat = data[0].Lat;
                         _this.lon = data[0].Lon;
@@ -144,8 +147,9 @@
                         mapLogEntry("position", _this);
                     }
                 });
-            }
-        }, 10000);
+            }, this.ABI * 1000);
+        }
+
 
         this.modifyIcon = function (icon) {
             if (icon == "normal") {
@@ -319,7 +323,7 @@
                 vehicles[i].Marker.setMap(null);
             }
 
-            $.post("getAllVehicles?loadHistorical=true", null, function (data) {
+            $.post("getAllVehicles?loadHistorical=" + getHistorical, null, function (data) {
                 $("#vehicleList").append($('<option>', { value: 'None' }).text('-- Select Vehicle ID --'));
 
                 for (var i = 0; i < data.length; i++) {
@@ -553,7 +557,7 @@
             });
 
 
-            $('#playBackVehicleID').html("<strong>" + selectedVehicle.vehicleID + "</strong>");
+            $('#playBackVehicleID').html("<strong>" + selectedVehicle.VehicleID + "</strong>");
             $('#datetime').text(moment(start).format('MM/DD/YYYY HH:mm'));
             $('#lat').text("");
             $('#lon').text("");
@@ -881,6 +885,17 @@
             }
             $('#fenceAlertInfo').html('');
         }
+    });
+
+    //#region show historical functionality
+    $('#historical').change(function () {
+        if (this.checked) {
+            getHistorical = true;
+        } else {
+            getHistorical = false;
+        }
+
+        getVehicles();
     });
 
     function showPolygons() {

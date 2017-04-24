@@ -31,8 +31,11 @@
 </div>
 
 <div id="mySidenav" class="sidenav">
+    <div class="vList col-lg-12">
+        <select id="vehicleList" class="form-control input-sm"></select><br />
+        <input id="historical" type="checkbox" data-toggle="toggle" data-size="small" checked data-on="Active Vehicles" data-off="All Vehicles" data-onstyle="primary" data-width="150">
+    </div><br /><br />
     <a href="#" id="closebtn">&times;</a>
-    <select id="vehicleList" class="form-control vList"></select>
     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="false" style="padding-left: 5px; padding-right: 5px;">
         <div class="panel panel-black">
             <div class="panel-heading" role="tab" id="headingFive">
@@ -316,7 +319,8 @@
                 </div>
             </div>
         </div>
-        <div class="panel panel-purple hidden" id="collapseEightPanel"> @*undo this eventually*@
+        <div class="panel panel-purple hidden" id="collapseEightPanel">
+            @*undo this eventually*@
             <div class="panel-heading" role="tab" id="headingEight">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" href="#collapseEight" aria-expanded="true" aria-controls="collapseEight">

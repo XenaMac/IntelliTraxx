@@ -1,11 +1,12 @@
 ﻿@model IntelliTraxx.Controllers.Admin
+@using IntelliTraxx.Models
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
 @{
-    string uClass = "", rClass = "", cClass = "", vClass = "", dClass = "", vcClass = "", appClass = "", varClass = "";
+    string uClass = "", rClass = "", cClass = "", vClass = "", dClass = "", vcClass = "", appClass = "", varClass = "", dtvClass = "";
     string tab = ViewBag.Tab;
     switch (tab)
     {
@@ -32,6 +33,9 @@
             break;
         case "VAR":
             varClass = "active";
+            break;
+        case "DTV":
+            dtvClass = "active";
             break;
         default:
             uClass = "active";
@@ -357,6 +361,61 @@
                     </tbody>
                 </table>
             </div>
+            @*<div id="driversToVehiclesSection" class="tab-pane fade in @dtvClass">
+                <div id="addVDRecord" class="col-lg-12">
+                    <div class="dropdown">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Available rivers
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                            @foreach(var d in Model.availableDrivers)
+                            {
+                                var base64D = Convert.ToBase64String(@d.imageData);
+                                var imgSrcD = String.Format("data:image/gif;base64,{0}", base64D);
+                                <li><img class="img" src="@imgSrcD" width="65" />@d.DriverFirstName @d.DriverLastName</li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+                <table id="driverToVehicleTable"
+                       data-toggle="table"
+                       data-search="true"
+                       data-show-refresh="false"
+                       data-show-columns="true"
+                       data-query-params="queryParams"
+                       data-pagination="true"
+                       data-show-export="true">
+                    <thead>
+                        <tr>
+                            <th class="text-center" data-sortable="true">Driver</th>
+                            <th class="text-center" data-sortable="true">Vehicle</th>
+                            <th class="text-center" data-sortable="true">Last Modified</th>
+                            <th class="text-center" data-sortable="true">Modified By</th>
+                            <th class="text-center">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var dToV in Model.DriversToVehicles)
+                        {
+                            var base64Driver = Convert.ToBase64String(dToV.driver.imageData);
+                            var imgSrcDriver = String.Format("data:image/gif;base64,{0}", base64Driver);
+                            var imgSrcVehicleClass = "Content/VClasses/" + dToV.Vehicle.vehicleClassImage;
+                            <tr>
+                                <td class="text-center"><img class="img" src="@imgSrcDriver" width="65" /><br /> @dToV.driver.DriverFirstName @dToV.driver.DriverLastName</td>
+                                <td class="text-center"><img class="img" src="@imgSrcVehicleClass" width="200" /><br />@dToV.Vehicle.vehicleID</td>
+                                <td class="text-center">@dToV.ModifiedDate</td>
+                                <td class="text-center">@dToV.ModifiedBy</td>
+                                <td class="text-center">
+                                    <a href="@Url.Action("Delete", new { id=@dToV.ID })" class="btn btn-danger">
+                                        <i class="glyphicons glyphicons-user-remove"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>*@
             <div id="appSettingsSection" class="tab-pane fade in @appClass">
                 <div id="toolbar8">
                     &nbsp;&nbsp;&nbsp;<a href="@Url.Action("AddSetting", "Admin" )" class="btn btn-success" title="New App Setting" id="addAppSetting">
@@ -406,6 +465,7 @@
             <li role="presentation" class="@vcClass"><a data-toggle="tab" href="#vehicleClassesSection">Vehicle Classes</a></li>
             <li role="presentation" class="@vClass"><a data-toggle="tab" href="#vehicleSection">Vehicles</a></li>
             <li role="presentation" class="@dClass"><a data-toggle="tab" href="#driversSection">Drivers</a></li>
+            <li role="presentation" class="@dtvClass"><a data-toggle="tab" href="#driversToVehiclesSection">Drivers -> Vehicles</a></li>
             <li role="presentation" class="@appClass"><a data-toggle="tab" href="#appSettingsSection">App Settings</a></li>
         </ul>
     </div></div>

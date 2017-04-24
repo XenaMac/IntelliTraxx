@@ -274,6 +274,12 @@
   <wsdl:message name="ITruckService_deleteDriver_OutputMessage">
     <wsdl:part name="parameters" element="tns:deleteDriverResponse" />
   </wsdl:message>
+  <wsdl:message name="ITruckService_driverVehicleReturn_InputMessage">
+    <wsdl:part name="parameters" element="tns:driverVehicleReturn" />
+  </wsdl:message>
+  <wsdl:message name="ITruckService_driverVehicleReturn_OutputMessage">
+    <wsdl:part name="parameters" element="tns:driverVehicleReturnResponse" />
+  </wsdl:message>
   <wsdl:message name="ITruckService_getAppVars_InputMessage">
     <wsdl:part name="parameters" element="tns:getAppVars" />
   </wsdl:message>
@@ -618,6 +624,10 @@
     <wsdl:operation name="deleteDriver">
       <wsdl:input wsaw:Action="http://tempuri.org/ITruckService/deleteDriver" message="tns:ITruckService_deleteDriver_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ITruckService/deleteDriverResponse" message="tns:ITruckService_deleteDriver_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="driverVehicleReturn">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITruckService/driverVehicleReturn" message="tns:ITruckService_driverVehicleReturn_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITruckService/driverVehicleReturnResponse" message="tns:ITruckService_driverVehicleReturn_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="getAppVars">
       <wsdl:input wsaw:Action="http://tempuri.org/ITruckService/getAppVars" message="tns:ITruckService_getAppVars_InputMessage" />
@@ -1123,6 +1133,15 @@
     </wsdl:operation>
     <wsdl:operation name="deleteDriver">
       <soap:operation soapAction="http://tempuri.org/ITruckService/deleteDriver" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="driverVehicleReturn">
+      <soap:operation soapAction="http://tempuri.org/ITruckService/driverVehicleReturn" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

@@ -1,11 +1,12 @@
 ﻿@model IntelliTraxx.Controllers.Admin
+@using IntelliTraxx.Models
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
 @{
-    string uClass = "", rClass = "", cClass = "", vClass = "", dClass = "", vcClass = "", appClass = "", varClass = "";
+    string uClass = "", rClass = "", cClass = "", vClass = "", dClass = "", vcClass = "", appClass = "", varClass = "", dtvClass = "";
     string tab = ViewBag.Tab;
     switch (tab)
     {
@@ -32,6 +33,9 @@
             break;
         case "VAR":
             varClass = "active";
+            break;
+        case "DTV":
+            dtvClass = "active";
             break;
         default:
             uClass = "active";
@@ -357,6 +361,51 @@
                     </tbody>
                 </table>
             </div>
+            @*<div id="driversToVehiclesSection" class="tab-pane fade in @dtvClass">
+                <div id="toolbar6">
+                    &nbsp;&nbsp;&nbsp;<a href="@Url.Action("addDriver", "Admin" )" class="btn btn-success" title="New Driver" id="addDriver">
+                        <i class=" glyphicon glyphicon-plus"></i> Assign Driver to Vehicle
+                    </a>
+                </div>
+                <table id="driverToVehicleTable"
+                       data-toggle="table"
+                       data-search="true"
+                       data-show-refresh="false"
+                       data-show-columns="true"
+                       data-query-params="queryParams"
+                       data-pagination="true"
+                       data-show-export="true"
+                       data-toolbar="#toolbar6">
+                    <thead>
+                        <tr>
+                            <th data-sortable="true">Driver</th>
+                            <th data-sortable="true">Vehicle</th>
+                            <th data-sortable="true">Last Modified</th>
+                            <th data-sortable="true">Modified By</th>
+                            <th>Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var dToV in Model.DriversToVehicles)
+                        {
+                            var base64Driver = Convert.ToBase64String(dToV.driver.imageData);
+                            var imgSrcDriver = String.Format("data:image/gif;base64,{0}", base64Driver);
+                            var imgSrcVehicleClass = "~/Content/VClasses/" + dToV.Vehicle.vehicleClassImage;
+                            <tr>
+                                <td><img class="img" src="@imgSrcDriver" width="65" /> @dToV.driver.DriverFirstName @dToV.driver.DriverLastName</td>
+                                <td><img class="img" src="@imgSrcVehicleClass" width="65" /> @dToV.VehicleID</td>
+                                <td>@dToV.ModifiedDate</td>
+                                <td>@dToV.ModifiedBy</td>
+                                <td>
+                                    <a href="@Url.Action("Delete", new { id=@dToV.ID })" class="btn btn-info">
+                                        <i class="glyphicons glyphicons-delete"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>*@
             <div id="appSettingsSection" class="tab-pane fade in @appClass">
                 <div id="toolbar8">
                     &nbsp;&nbsp;&nbsp;<a href="@Url.Action("AddSetting", "Admin" )" class="btn btn-success" title="New App Setting" id="addAppSetting">
@@ -406,6 +455,7 @@
             <li role="presentation" class="@vcClass"><a data-toggle="tab" href="#vehicleClassesSection">Vehicle Classes</a></li>
             <li role="presentation" class="@vClass"><a data-toggle="tab" href="#vehicleSection">Vehicles</a></li>
             <li role="presentation" class="@dClass"><a data-toggle="tab" href="#driversSection">Drivers</a></li>
+            @*<li role="presentation" class="@dtvClass"><a data-toggle="tab" href="#driversToVehiclesSection">Drivers -> Vehicles</a></li>*@
             <li role="presentation" class="@appClass"><a data-toggle="tab" href="#appSettingsSection">App Settings</a></li>
         </ul>
     </div></div>

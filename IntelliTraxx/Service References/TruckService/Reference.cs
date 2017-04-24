@@ -302,6 +302,9 @@ namespace IntelliTraxx.TruckService {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int ABIField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.Generic.List<IntelliTraxx.TruckService.OBD2Data> OBDValsField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -359,6 +362,19 @@ namespace IntelliTraxx.TruckService {
             }
             set {
                 this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int ABI {
+            get {
+                return this.ABIField;
+            }
+            set {
+                if ((this.ABIField.Equals(value) != true)) {
+                    this.ABIField = value;
+                    this.RaisePropertyChanged("ABI");
+                }
             }
         }
         
@@ -2324,6 +2340,9 @@ namespace IntelliTraxx.TruckService {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int ABIField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private float DirectionField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -2366,6 +2385,19 @@ namespace IntelliTraxx.TruckService {
             }
             set {
                 this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int ABI {
+            get {
+                return this.ABIField;
+            }
+            set {
+                if ((this.ABIField.Equals(value) != true)) {
+                    this.ABIField = value;
+                    this.RaisePropertyChanged("ABI");
+                }
             }
         }
         
@@ -3143,6 +3175,179 @@ namespace IntelliTraxx.TruckService {
                 if ((object.ReferenceEquals(this.VehicleClassNameField, value) != true)) {
                     this.VehicleClassNameField = value;
                     this.RaisePropertyChanged("VehicleClassName");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="driverVehicleReturn", Namespace="http://schemas.datacontract.org/2004/07/LATATrax")]
+    [System.SerializableAttribute()]
+    public partial class driverVehicleReturn : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string CreatedByField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.DateTime CreatedDateField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Guid DriverIDField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Guid IDField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string ModifiedByField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.DateTime ModifiedDateField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private IntelliTraxx.TruckService.VehicleExtendedData VehicleField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Guid VehicleIDField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private IntelliTraxx.TruckService.Driver driverField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string CreatedBy {
+            get {
+                return this.CreatedByField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CreatedByField, value) != true)) {
+                    this.CreatedByField = value;
+                    this.RaisePropertyChanged("CreatedBy");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.DateTime CreatedDate {
+            get {
+                return this.CreatedDateField;
+            }
+            set {
+                if ((this.CreatedDateField.Equals(value) != true)) {
+                    this.CreatedDateField = value;
+                    this.RaisePropertyChanged("CreatedDate");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Guid DriverID {
+            get {
+                return this.DriverIDField;
+            }
+            set {
+                if ((this.DriverIDField.Equals(value) != true)) {
+                    this.DriverIDField = value;
+                    this.RaisePropertyChanged("DriverID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Guid ID {
+            get {
+                return this.IDField;
+            }
+            set {
+                if ((this.IDField.Equals(value) != true)) {
+                    this.IDField = value;
+                    this.RaisePropertyChanged("ID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string ModifiedBy {
+            get {
+                return this.ModifiedByField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ModifiedByField, value) != true)) {
+                    this.ModifiedByField = value;
+                    this.RaisePropertyChanged("ModifiedBy");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.DateTime ModifiedDate {
+            get {
+                return this.ModifiedDateField;
+            }
+            set {
+                if ((this.ModifiedDateField.Equals(value) != true)) {
+                    this.ModifiedDateField = value;
+                    this.RaisePropertyChanged("ModifiedDate");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public IntelliTraxx.TruckService.VehicleExtendedData Vehicle {
+            get {
+                return this.VehicleField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.VehicleField, value) != true)) {
+                    this.VehicleField = value;
+                    this.RaisePropertyChanged("Vehicle");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Guid VehicleID {
+            get {
+                return this.VehicleIDField;
+            }
+            set {
+                if ((this.VehicleIDField.Equals(value) != true)) {
+                    this.VehicleIDField = value;
+                    this.RaisePropertyChanged("VehicleID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public IntelliTraxx.TruckService.Driver driver {
+            get {
+                return this.driverField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.driverField, value) != true)) {
+                    this.driverField = value;
+                    this.RaisePropertyChanged("driver");
                 }
             }
         }
@@ -4197,6 +4402,12 @@ namespace IntelliTraxx.TruckService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/deleteDriver", ReplyAction="http://tempuri.org/ITruckService/deleteDriverResponse")]
         System.Threading.Tasks.Task deleteDriverAsync(IntelliTraxx.TruckService.Driver d, System.Guid operatorID);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/driverVehicleReturn", ReplyAction="http://tempuri.org/ITruckService/driverVehicleReturnResponse")]
+        System.Collections.Generic.List<IntelliTraxx.TruckService.driverVehicleReturn> driverVehicleReturn();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/driverVehicleReturn", ReplyAction="http://tempuri.org/ITruckService/driverVehicleReturnResponse")]
+        System.Threading.Tasks.Task<System.Collections.Generic.List<IntelliTraxx.TruckService.driverVehicleReturn>> driverVehicleReturnAsync();
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/getAppVars", ReplyAction="http://tempuri.org/ITruckService/getAppVarsResponse")]
         System.Collections.Generic.List<IntelliTraxx.TruckService.systemvar> getAppVars();
         
@@ -4743,6 +4954,14 @@ namespace IntelliTraxx.TruckService {
         
         public System.Threading.Tasks.Task deleteDriverAsync(IntelliTraxx.TruckService.Driver d, System.Guid operatorID) {
             return base.Channel.deleteDriverAsync(d, operatorID);
+        }
+        
+        public System.Collections.Generic.List<IntelliTraxx.TruckService.driverVehicleReturn> driverVehicleReturn() {
+            return base.Channel.driverVehicleReturn();
+        }
+        
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<IntelliTraxx.TruckService.driverVehicleReturn>> driverVehicleReturnAsync() {
+            return base.Channel.driverVehicleReturnAsync();
         }
         
         public System.Collections.Generic.List<IntelliTraxx.TruckService.systemvar> getAppVars() {

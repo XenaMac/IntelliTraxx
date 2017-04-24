@@ -614,6 +614,18 @@
       <xs:sequence />
     </xs:complexType>
   </xs:element>
+  <xs:element name="driverVehicleReturn">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="driverVehicleReturnResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q76="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="driverVehicleReturnResult" nillable="true" type="q76:ArrayOfdriverVehicleReturn" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="getAppVars">
     <xs:complexType>
       <xs:sequence />
@@ -622,15 +634,15 @@
   <xs:element name="getAppVarsResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q76="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="getAppVarsResult" nillable="true" type="q76:ArrayOfsystemvar" />
+        <xs:element xmlns:q77="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="getAppVarsResult" nillable="true" type="q77:ArrayOfsystemvar" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="updateAppVar">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q77="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="appVar" nillable="true" type="q77:systemvar" />
-        <xs:element xmlns:q78="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="operatorID" type="q78:guid" />
+        <xs:element xmlns:q78="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="appVar" nillable="true" type="q78:systemvar" />
+        <xs:element xmlns:q79="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="operatorID" type="q79:guid" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -642,8 +654,8 @@
   <xs:element name="deleteAppVar">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q79="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="appVar" nillable="true" type="q79:systemvar" />
-        <xs:element xmlns:q80="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="operatorID" type="q80:guid" />
+        <xs:element xmlns:q80="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="appVar" nillable="true" type="q80:systemvar" />
+        <xs:element xmlns:q81="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="operatorID" type="q81:guid" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -660,15 +672,15 @@
   <xs:element name="getServiceVarsResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q81="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="getServiceVarsResult" nillable="true" type="q81:ArrayOfsystemvar" />
+        <xs:element xmlns:q82="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="getServiceVarsResult" nillable="true" type="q82:ArrayOfsystemvar" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="updateServiceVar">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q82="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="v" nillable="true" type="q82:systemvar" />
-        <xs:element xmlns:q83="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="operatorid" type="q83:guid" />
+        <xs:element xmlns:q83="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="v" nillable="true" type="q83:systemvar" />
+        <xs:element xmlns:q84="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="operatorid" type="q84:guid" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -680,8 +692,8 @@
   <xs:element name="deleteServiceVar">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q84="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="v" nillable="true" type="q84:systemvar" />
-        <xs:element xmlns:q85="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="operatorID" type="q85:guid" />
+        <xs:element xmlns:q85="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="v" nillable="true" type="q85:systemvar" />
+        <xs:element xmlns:q86="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="operatorID" type="q86:guid" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -698,7 +710,7 @@
   <xs:element name="getVarsResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q86="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="getVarsResult" nillable="true" type="q86:ArrayOfsystemvar" />
+        <xs:element xmlns:q87="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="getVarsResult" nillable="true" type="q87:ArrayOfsystemvar" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -713,15 +725,15 @@
   <xs:element name="getSpecificVarResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q87="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="getSpecificVarResult" nillable="true" type="q87:systemvar" />
+        <xs:element xmlns:q88="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="getSpecificVarResult" nillable="true" type="q88:systemvar" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="updateVar">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q88="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="v" nillable="true" type="q88:systemvar" />
-        <xs:element xmlns:q89="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="operatorID" type="q89:guid" />
+        <xs:element xmlns:q89="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="v" nillable="true" type="q89:systemvar" />
+        <xs:element xmlns:q90="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="operatorID" type="q90:guid" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -733,8 +745,8 @@
   <xs:element name="deleteVar">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q90="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="v" nillable="true" type="q90:systemvar" />
-        <xs:element xmlns:q91="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="operatorID" type="q91:guid" />
+        <xs:element xmlns:q91="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="v" nillable="true" type="q91:systemvar" />
+        <xs:element xmlns:q92="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="operatorID" type="q92:guid" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -751,7 +763,7 @@
   <xs:element name="getAllStatusResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q92="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="getAllStatusResult" nillable="true" type="q92:ArrayOfstatusObjectReturn" />
+        <xs:element xmlns:q93="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="getAllStatusResult" nillable="true" type="q93:ArrayOfstatusObjectReturn" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -765,14 +777,14 @@
   <xs:element name="getTruckStatusResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q93="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="getTruckStatusResult" nillable="true" type="q93:ArrayOfstatusObjectReturn" />
+        <xs:element xmlns:q94="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="getTruckStatusResult" nillable="true" type="q94:ArrayOfstatusObjectReturn" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="dispatchVehicle">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q94="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="d" nillable="true" type="q94:dispatch" />
+        <xs:element xmlns:q95="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="d" nillable="true" type="q95:dispatch" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -791,7 +803,7 @@
   <xs:element name="getAllDispatchesResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q95="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="getAllDispatchesResult" nillable="true" type="q95:ArrayOfdispatch" />
+        <xs:element xmlns:q96="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="getAllDispatchesResult" nillable="true" type="q96:ArrayOfdispatch" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -805,7 +817,7 @@
   <xs:element name="getDispatchesByVehicleResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q96="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="getDispatchesByVehicleResult" nillable="true" type="q96:ArrayOfdispatch" />
+        <xs:element xmlns:q97="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="getDispatchesByVehicleResult" nillable="true" type="q97:ArrayOfdispatch" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -820,21 +832,21 @@
   <xs:element name="getDispatchesByRangeResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q97="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="getDispatchesByRangeResult" nillable="true" type="q97:ArrayOfdispatch" />
+        <xs:element xmlns:q98="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="getDispatchesByRangeResult" nillable="true" type="q98:ArrayOfdispatch" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="getDispatchesByID">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q98="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="dispatchID" type="q98:guid" />
+        <xs:element xmlns:q99="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="dispatchID" type="q99:guid" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="getDispatchesByIDResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q99="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="getDispatchesByIDResult" nillable="true" type="q99:dispatch" />
+        <xs:element xmlns:q100="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="getDispatchesByIDResult" nillable="true" type="q100:dispatch" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -846,7 +858,7 @@
   <xs:element name="getAllAlertsResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q100="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="getAllAlertsResult" nillable="true" type="q100:ArrayOfalertReturn" />
+        <xs:element xmlns:q101="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="getAllAlertsResult" nillable="true" type="q101:ArrayOfalertReturn" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -860,7 +872,7 @@
   <xs:element name="getAllAlertsByVehicleResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q101="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="getAllAlertsByVehicleResult" nillable="true" type="q101:ArrayOfalertReturn" />
+        <xs:element xmlns:q102="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="getAllAlertsByVehicleResult" nillable="true" type="q102:ArrayOfalertReturn" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -875,7 +887,7 @@
   <xs:element name="getAllAlertsByRangeResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q102="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="getAllAlertsByRangeResult" nillable="true" type="q102:ArrayOfalertReturn" />
+        <xs:element xmlns:q103="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="getAllAlertsByRangeResult" nillable="true" type="q103:ArrayOfalertReturn" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -891,21 +903,21 @@
   <xs:element name="getAllAlertsByRangeByTypeResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q103="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="getAllAlertsByRangeByTypeResult" nillable="true" type="q103:ArrayOfalertReturn" />
+        <xs:element xmlns:q104="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="getAllAlertsByRangeByTypeResult" nillable="true" type="q104:ArrayOfalertReturn" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="getAllAlertByID">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q104="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="ID" type="q104:guid" />
+        <xs:element xmlns:q105="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="ID" type="q105:guid" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="getAllAlertByIDResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q105="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="getAllAlertByIDResult" nillable="true" type="q105:alertReturn" />
+        <xs:element xmlns:q106="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="getAllAlertByIDResult" nillable="true" type="q106:alertReturn" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -921,7 +933,7 @@
   <xs:element name="getAllAlertsByRangeByVehicleResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q106="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="getAllAlertsByRangeByVehicleResult" nillable="true" type="q106:ArrayOfalertReturn" />
+        <xs:element xmlns:q107="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="getAllAlertsByRangeByVehicleResult" nillable="true" type="q107:ArrayOfalertReturn" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -937,7 +949,7 @@
   <xs:element name="getGPSTrackingResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q107="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="getGPSTrackingResult" nillable="true" type="q107:ArrayOfVehicleGPSRecord" />
+        <xs:element xmlns:q108="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="getGPSTrackingResult" nillable="true" type="q108:ArrayOfVehicleGPSRecord" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -970,7 +982,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="PIN" nillable="true" type="xs:string" />
-        <xs:element xmlns:q108="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="operatorID" type="q108:guid" />
+        <xs:element xmlns:q109="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="operatorID" type="q109:guid" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

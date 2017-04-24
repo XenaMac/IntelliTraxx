@@ -11,6 +11,7 @@
   <xs:element name="ArrayOfVehicle" nillable="true" type="tns:ArrayOfVehicle" />
   <xs:complexType name="Vehicle">
     <xs:sequence>
+      <xs:element minOccurs="0" name="ABI" type="xs:int" />
       <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="OBDVals" nillable="true" type="q1:ArrayOfOBD2Data" />
       <xs:element minOccurs="0" name="VehicleID" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="alerts" nillable="true" type="tns:ArrayOfalert" />
