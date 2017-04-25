@@ -21,6 +21,11 @@
 
     $('[data-toggle="tooltip"]').tooltip()
 
+    $('#startSim').click(function () {
+        window.open('http://38.124.164.213:9098/Index.aspx', 'IntellliTraxx Vehicle Simulator', '');
+        return false;
+    });
+
     initiate();
 
     //#region Vehicle class
@@ -177,7 +182,7 @@
                     origin: new google.maps.Point(0, 0), // origin
                     anchor: new google.maps.Point(16, 50) // anchor
                 });
-                _this.Marker.setAnimation(google.maps.Animation.BOUNCE);
+                _this.Marker.setAnimation(null);
                 map.setCenter(_this.Marker.getPosition());
                 _this.selected = true;
             }
@@ -397,10 +402,10 @@
                 $('#collapseSevenPanel').hide();
             }
         } else {
-            if (selected.status == "NA") {
-                selected.modifyIcon("NA");
+            if (selected.status == "Inactive") {
+                selected.modifyIcon("Inactive");
             } else {
-                selected.modifyIcon("normal");
+                selected.modifyIcon("Active");
             }
             selectedVehicle = null;
             mapLogEntry("unselected", selected);

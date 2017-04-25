@@ -21,6 +21,11 @@
 
     $('[data-toggle="tooltip"]').tooltip()
 
+    $('#startSim').click(function () {
+        window.open('http://38.124.164.213:9098/Index.aspx', 'IntellliTraxx Vehicle Simulator', '');
+        return false;
+    });
+
     initiate();
 
     //#region Vehicle class
