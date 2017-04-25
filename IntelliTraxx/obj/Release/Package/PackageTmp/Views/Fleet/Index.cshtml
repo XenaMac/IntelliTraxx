@@ -32,8 +32,28 @@
 
 <div id="mySidenav" class="sidenav">
     <a href="#" id="closebtn">&times;</a>
-    <select id="vehicleList" class="form-control vList"></select>
     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="false" style="padding-left: 5px; padding-right: 5px;">
+        <div class="panel panel-yellow">
+            <div class="panel-heading" role="tab" id="headingNine">
+                <h4 class="panel-title">
+                    <a class="collapsed" role="button" data-toggle="collapse" href="#collapseNine" aria-expanded="false" aria-controls="collapseNine">
+                        <span class="glyphicons glyphicons-cogwheels" style="margin: 0px 15px 0px 0px; font-size:1.2em; color: #000000;"></span>Map Controls
+                    </a>
+                </h4>
+            </div>
+            <div id="collapseNine" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingNine">
+                <div class="panel-body" id="controlsPanel">
+                    <div class="form-group">
+                        <label for="vehicleList">Vehicle List: </label>
+                        <select id="vehicleList" class="form-control input-sm"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="vehicleList">View Active/All Vehicles: </label>
+                        <input id="historical" type="checkbox" data-toggle="toggle" data-size="small" checked data-on="Active Vehicles" data-off="All Vehicles" data-onstyle="info" data-width="125">
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="panel panel-black">
             <div class="panel-heading" role="tab" id="headingFive">
                 <h4 class="panel-title">
@@ -316,7 +336,8 @@
                 </div>
             </div>
         </div>
-        <div class="panel panel-purple hidden" id="collapseEightPanel"> @*undo this eventually*@
+        <div class="panel panel-purple hidden" id="collapseEightPanel">
+            @*undo this eventually*@
             <div class="panel-heading" role="tab" id="headingEight">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" href="#collapseEight" aria-expanded="true" aria-controls="collapseEight">

@@ -17,6 +17,7 @@
     var historyVehicle = null;
     var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     var searchDate = new Date();
+    var getHistorical = false;
 
     $('[data-toggle="tooltip"]').tooltip()
 
@@ -27,7 +28,12 @@
         this.ID = data.extendedData.ID
         this.VehicleID = data.VehicleID;
         this.Name = data.extendedData.VehicleFriendlyName;
-        this.status = "Normal";
+        if (data.status[0] != null && data.status[0].statusName == "Active") {
+            if(data.status[0].statusVal == "Inactive")
+            this.status = "Inactive";
+        } else {
+            this.status = "Active";
+        }
         this.lat = data.gps.lat;
         this.lon = data.gps.lon;
         this.dir = data.gps.dir;
@@ -36,11 +42,7 @@
         this.behaviors = data.behaviors;
         this.driver = data.driver;
         this.lastMessageReceived = data.lastMessageReceived;
-
-        var LMRTimeDiff = moment().diff(moment(this.lastMessageReceived), 'minutes');
-        if (LMRTimeDiff > 5) {
-            this.status = "NA";
-        }
+        this.ABI = data.ABI;
 
         for (var a = 0; a < data.alerts.length; a++) {
             if (data.alerts[a].alertActive == true) {
@@ -61,11 +63,11 @@
                 position: { lat: this.lat, lng: this.lon },
                 map: map,
                 title: this.Name,
-                duration: 1000,
-                easing: "easeOutExpo"
+                duration: this.ABI * 1000,
+                easing: "linear"
             });
             mapLogEntry("alert", _this);
-        } else if (this.status == "NA") {
+        } else if (this.status == "Inactive") {
             this.Marker = new SlidingMarker({
                 icon: {
                     url: '../Content/Images/grey.png', // url
@@ -76,8 +78,8 @@
                 position: { lat: this.lat, lng: this.lon },
                 map: map,
                 title: this.Name,
-                duration: 1000,
-                easing: "easeOutExpo"
+                duration: this.ABI * 1000,
+                easing: "linear"
             });
             mapLogEntry("alert", _this);
         } else {
@@ -91,8 +93,8 @@
                 position: { lat: this.lat, lng: this.lon },
                 map: map,
                 title: this.Name + " (" + this.spd + ")",
-                duration: 1000,
-                easing: "easeOutExpo"
+                duration: this.ABI * 1000,
+                easing: "linear"
             });
         }
 
@@ -104,10 +106,11 @@
 
         mapLogEntry("position", this);
 
-        setInterval(function () {
-            if (_this.status != "NA") {
+        if (this.status != "Inactive") {
+
+            setInterval(function () {
                 $.post("getGPS?id=" + _this.ID, null, function (data) {
-                    if (data) {
+                    if (data.length != 0) {
                         _this.status = data[0].status;
                         _this.lat = data[0].Lat;
                         _this.lon = data[0].Lon;
@@ -144,8 +147,9 @@
                         mapLogEntry("position", _this);
                     }
                 });
-            }
-        }, 10000);
+            }, this.ABI * 1000);
+        }
+
 
         this.modifyIcon = function (icon) {
             if (icon == "normal") {
@@ -299,32 +303,41 @@
                     }
                 });
 
-                getVehicles();
+                getVehicles(true);
                 setInterval(function () {
-                    getVehicles();
-                }, 59150);
+                    getVehicles(false);
+                }, 60000);
             } else {
                 alert('Geocode was not successful for the following reason: ' + status);
             }
         });
     }
 
-    function getVehicles() {
+    function getVehicles(reload) {
         if (selectedVehicle == null) {
-            $("#vehicleList").html('');
             SlidingMarker.initializeGlobally();
 
-            //alert("Remove All markers");
-            for (i = 0; i < vehicles.length; i++) {
-                vehicles[i].Marker.setMap(null);
+            //on if reload = true
+            if (reload == true) {    
+                for (i = 0; i < vehicles.length; i++) {
+                    vehicles[i].Marker.setMap(null);
+                }
+                vehicles = [];
+                $("#vehicleList").html('');
+                $("#vehicleList").append($('<option>', { value: 'None' }).text('-- Select Vehicle ID --'));
+            } else {
+                $("#vehicleList").html('');
+                $("#vehicleList").append($('<option>', { value: 'None' }).text('-- Select Vehicle ID --'));
             }
 
-            $.post("getAllVehicles?loadHistorical=true", null, function (data) {
-                $("#vehicleList").append($('<option>', { value: 'None' }).text('-- Select Vehicle ID --'));
-
-                for (var i = 0; i < data.length; i++) {
-                    $("#vehicleList").append($('<option>', { value: data[i].extendedData.ID }).text(data[i].VehicleID));
-                    vehicles.push(new Vehicle(data[i], false));
+            $.post("getAllVehicles?loadHistorical=" + getHistorical, null, function (data) {
+                if (data.length != vehicles.length) {
+                    for (var i = 0; i < data.length; i++) {
+                        $("#vehicleList").append($('<option>', { value: data[i].extendedData.ID }).text(data[i].VehicleID));
+                        if (!containsVehicle(data[i].extendedData.sID)) {
+                            vehicles.push(new Vehicle(data[i], false));
+                        }
+                    }
                 }
             });
         }
@@ -512,32 +525,32 @@
             $('#playback_panel').html('No location elements returned for that search criteria. Please enter new criteria and try again.');
             //paint the panel
             var pbcontent = '<div id="vehicleHistoryDiv" class="hiddden">' +
-                            '<div id="historyCriteria" class="row col-sm-12" style="margin-bottom: 3px;">' +
-                            //'<select id="vehicleHistoryList" class="col-sm-3" style="margin-right: 3px;">' +
-                            //'<option value="None">-- Vehicle ID --</option>' +
-                            //'</select>' +
-                            '<div class="col-sm-3" id="playBackVehicleID"></div>' +
-                            '<input type="text" id="playBackFrom" class="col-sm-4" aria-label="From" placeholder="From Date:">' +
-                            '<select id="increments" class="col-sm-3" style="margin-left: 3px;">' +
-                            '<option value="2">2 Hours</option>' +
-                            '<option value="6">6 Hours</option>' +
-                            '<option value="8">8 Hours</option>' +
-                            '<option value="12">12 Hours</option>' +
-                            '</select>' +
-                            '<button id="historySearch" class="glyphicons glyphicons-search x05" style="margin-left: 3px;"></button>' +
-                            '<button id="historyDownload" class="glyphicons glyphicons-download x05"></button>' +
-                            '</div>' +
-                            '<div id="historySlider" class="col-sm-9"></div>' +
-                            '<div id="slidernumbers" class="col-sm-3 text-right"><span id="gpsRecordNumb" class="mapText"></span></div>' +
-                            '<div id="historyMap" class="col-sm-12" style="height: 200px; border: 1px solid #000; z-index: 1; padding-left: 0px;"></div>' +
-                            '<div id="historyInfo" class="col-sm-12 small">' +
-                            '<label>Date: </label><span id="datetime" class="mapText"></span>' +
-                            '<label>&nbsp;&nbsp;Lat: </label><span id="lat" class="mapText"></span>' +
-                            '<label>&nbsp;&nbsp;Lng:  </label><span id="lon" class="mapText"></span>' +
-                            '<label>&nbsp;&nbsp;Dir: </label><span id="dir" class="mapText"></span>' +
-                            '<label>&nbsp;&nbsp;Spd: </label><span id="speed" class="mapText"></span>' +
-                            '</div>' +
-                            '</div>';
+                '<div id="historyCriteria" class="row col-sm-12" style="margin-bottom: 3px;">' +
+                //'<select id="vehicleHistoryList" class="col-sm-3" style="margin-right: 3px;">' +
+                //'<option value="None">-- Vehicle ID --</option>' +
+                //'</select>' +
+                '<div class="col-sm-3" id="playBackVehicleID"></div>' +
+                '<input type="text" id="playBackFrom" class="col-sm-4" aria-label="From" placeholder="From Date:">' +
+                '<select id="increments" class="col-sm-3" style="margin-left: 3px;">' +
+                '<option value="2">2 Hours</option>' +
+                '<option value="6">6 Hours</option>' +
+                '<option value="8">8 Hours</option>' +
+                '<option value="12">12 Hours</option>' +
+                '</select>' +
+                '<button id="historySearch" class="glyphicons glyphicons-search x05" style="margin-left: 3px;"></button>' +
+                '<button id="historyDownload" class="glyphicons glyphicons-download x05"></button>' +
+                '</div>' +
+                '<div id="historySlider" class="col-sm-9"></div>' +
+                '<div id="slidernumbers" class="col-sm-3 text-right"><span id="gpsRecordNumb" class="mapText"></span></div>' +
+                '<div id="historyMap" class="col-sm-12" style="height: 200px; border: 1px solid #000; z-index: 1; padding-left: 0px;"></div>' +
+                '<div id="historyInfo" class="col-sm-12 small">' +
+                '<label>Date: </label><span id="datetime" class="mapText"></span>' +
+                '<label>&nbsp;&nbsp;Lat: </label><span id="lat" class="mapText"></span>' +
+                '<label>&nbsp;&nbsp;Lng:  </label><span id="lon" class="mapText"></span>' +
+                '<label>&nbsp;&nbsp;Dir: </label><span id="dir" class="mapText"></span>' +
+                '<label>&nbsp;&nbsp;Spd: </label><span id="speed" class="mapText"></span>' +
+                '</div>' +
+                '</div>';
 
             $('#playback_panel').append(pbcontent);
 
@@ -553,7 +566,7 @@
             });
 
 
-            $('#playBackVehicleID').html("<strong>" + selectedVehicle.vehicleID + "</strong>");
+            $('#playBackVehicleID').html("<strong>" + selectedVehicle.VehicleID + "</strong>");
             $('#datetime').text(moment(start).format('MM/DD/YYYY HH:mm'));
             $('#lat').text("");
             $('#lon').text("");
@@ -587,32 +600,32 @@
         } else {
             //paint the panel
             var pbcontent = '<div id="vehicleHistoryDiv" class="hiddden">' +
-                            '<div id="historyCriteria" class="row col-sm-12" style="margin-bottom: 3px;">' +
-                            //'<select id="vehicleHistoryList" class="col-sm-3" style="margin-right: 3px;">' +
-                            //'<option value="None">-- Vehicle ID --</option>' +
-                            //'</select>' +
-                            '<div class="col-sm-3" id="playBackVehicleID"></div>' +
-                            '<input type="text" id="playBackFrom" class="col-sm-4" aria-label="From" placeholder="From Date:">' +
-                            '<select id="increments" class="col-sm-3" style="margin-left: 3px;">' +
-                            '<option value="2">2 Hours</option>' +
-                            '<option value="6">6 Hours</option>' +
-                            '<option value="8">8 Hours</option>' +
-                            '<option value="12">12 Hours</option>' +
-                            '</select>' +
-                            '<button id="historySearch" class="glyphicons glyphicons-search x05" style="margin-left: 3px;"></button>' +
-                            '<button id="historyDownload" class="glyphicons glyphicons-download x05"></button>' +
-                            '</div>' +
-                            '<div id="historySlider" class="col-sm-9"></div>' +
-                            '<div id="slidernumbers" class="col-sm-3 text-right"><span id="gpsRecordNumb" class="mapText"></span></div>' +
-                            '<div id="historyMap" class="col-sm-12" style="height: 200px; border: 1px solid #000; z-index: 1; padding-left: 0px;"></div>' +
-                            '<div id="historyInfo" class="col-sm-12 small">' +
-                            '<label>Date: </label><span id="datetime" class="mapText"></span>' +
-                            '<label>&nbsp;&nbsp;Lat: </label><span id="lat" class="mapText"></span>' +
-                            '<label>&nbsp;&nbsp;Lng:  </label><span id="lon" class="mapText"></span>' +
-                            '<label>&nbsp;&nbsp;Dir: </label><span id="dir" class="mapText"></span>' +
-                            '<label>&nbsp;&nbsp;Spd: </label><span id="speed" class="mapText"></span>' +
-                            '</div>' +
-                            '</div>';
+                '<div id="historyCriteria" class="row col-sm-12" style="margin-bottom: 3px;">' +
+                //'<select id="vehicleHistoryList" class="col-sm-3" style="margin-right: 3px;">' +
+                //'<option value="None">-- Vehicle ID --</option>' +
+                //'</select>' +
+                '<div class="col-sm-3" id="playBackVehicleID"></div>' +
+                '<input type="text" id="playBackFrom" class="col-sm-4" aria-label="From" placeholder="From Date:">' +
+                '<select id="increments" class="col-sm-3" style="margin-left: 3px;">' +
+                '<option value="2">2 Hours</option>' +
+                '<option value="6">6 Hours</option>' +
+                '<option value="8">8 Hours</option>' +
+                '<option value="12">12 Hours</option>' +
+                '</select>' +
+                '<button id="historySearch" class="glyphicons glyphicons-search x05" style="margin-left: 3px;"></button>' +
+                '<button id="historyDownload" class="glyphicons glyphicons-download x05"></button>' +
+                '</div>' +
+                '<div id="historySlider" class="col-sm-9"></div>' +
+                '<div id="slidernumbers" class="col-sm-3 text-right"><span id="gpsRecordNumb" class="mapText"></span></div>' +
+                '<div id="historyMap" class="col-sm-12" style="height: 200px; border: 1px solid #000; z-index: 1; padding-left: 0px;"></div>' +
+                '<div id="historyInfo" class="col-sm-12 small">' +
+                '<label>Date: </label><span id="datetime" class="mapText"></span>' +
+                '<label>&nbsp;&nbsp;Lat: </label><span id="lat" class="mapText"></span>' +
+                '<label>&nbsp;&nbsp;Lng:  </label><span id="lon" class="mapText"></span>' +
+                '<label>&nbsp;&nbsp;Dir: </label><span id="dir" class="mapText"></span>' +
+                '<label>&nbsp;&nbsp;Spd: </label><span id="speed" class="mapText"></span>' +
+                '</div>' +
+                '</div>';
             //jsPanel.activePanels.getPanel("playBackPanel").content.append(pbcontent);
             $('#playback_panel').html(pbcontent);
 
@@ -883,6 +896,17 @@
         }
     });
 
+    //#region show historical functionality
+    $('#historical').change(function () {
+        if (this.checked) {
+            getHistorical = false;
+            getVehicles(true);
+        } else {
+            getHistorical = true;
+            getVehicles(true);
+        }
+    });
+
     function showPolygons() {
         shapes = [];
 
@@ -966,8 +990,8 @@
                         fillColor: '#000000', //getRandomColor() ,
                         fillOpacity: 0.25,
                         bounds: new google.maps.LatLngBounds(
-                           new google.maps.LatLng(triangleCoords[1]),
-                           new google.maps.LatLng(triangleCoords[0])
+                            new google.maps.LatLng(triangleCoords[1]),
+                            new google.maps.LatLng(triangleCoords[0])
                         )
                     });
 
@@ -1176,7 +1200,7 @@
             var vertices = selectedShape.getPath();
             var coordinates = [];
 
-            for (var i = 0; i < vertices.getLength() ; i++) {
+            for (var i = 0; i < vertices.getLength(); i++) {
                 var xy = vertices.getAt(i);
                 coordinates.push(xy.lat() + "^" + xy.lng());
             }
@@ -1236,7 +1260,7 @@
             var vertices = selectedShape.getPath();
             var coordinates = [];
 
-            for (var i = 0; i < vertices.getLength() ; i++) {
+            for (var i = 0; i < vertices.getLength(); i++) {
                 var xy = vertices.getAt(i);
                 coordinates.push(xy.lat() + "^" + xy.lng());
             }
@@ -1494,33 +1518,33 @@
                 smallify: 'remove'
             },
             content: '<div id=\'alertLoader\' class=\'loading hidden\'><img src=\'../Content/Images/preloader.gif\' width=\'100\' /></div>' +
-                        '<div id="specificAlertPane">' +
-                        '<h2>View Alert</h2>' +
-                        '<hr />' +
-                        '<input type="hidden" id=alertID />' +
-                        '<input type="hidden" id=vehicleID />' +
-                        '<div class="col-md-12">' +
-                        '<p id="alertDesc"></p>' +
-                        '<div class="col-md-12 pull-left">' +
-                        '<strong>As of: </strong><label id="LC" class="mapText"></label>&nbsp;&nbsp;' +
-                        '<strong>Lat: </strong><label id="Lat" class="mapText"></label>&nbsp;&nbsp;' +
-                        '<strong>Long: </strong><label id="Long" class="mapText"></label>&nbsp;&nbsp;' +
-                        '<strong>Direction: </strong><label id="Dir" class="mapText"></label>&nbsp;&nbsp;' +
-                        '<strong>Speed: </strong><label id="SPD" class="mapText"></label><br />' +
-                        '</div>' +
-                        '<div class="col-md-12" id="alertMap"><br /><br /></div>' +
-                        '<div class="col-md-12"></div>' +
-                        '<div class="col-md-12 text-center sliderDiv">' +
-                        '<br />' +
-                        '<div id="alertMapSlider"></div>' +
-                        '<div id="broadcastNum"></div>' +
-                        '<br />' +
-                        '</div>' +
-                        '<div class="col-md-2 sliderDiv"><label id="ST" class="sm pull-left"></label></div>' +
-                        '<div class="col-md-8 sliderDiv text-center"></div>' +
-                        '<div class="col-md-2 sliderDiv"><label id="ET" class="small pull-right"></label></div>' +
-                        '</div>' +
-                        '</div>',
+            '<div id="specificAlertPane">' +
+            '<h2>View Alert</h2>' +
+            '<hr />' +
+            '<input type="hidden" id=alertID />' +
+            '<input type="hidden" id=vehicleID />' +
+            '<div class="col-md-12">' +
+            '<p id="alertDesc"></p>' +
+            '<div class="col-md-12 pull-left">' +
+            '<strong>As of: </strong><label id="LC" class="mapText"></label>&nbsp;&nbsp;' +
+            '<strong>Lat: </strong><label id="Lat" class="mapText"></label>&nbsp;&nbsp;' +
+            '<strong>Long: </strong><label id="Long" class="mapText"></label>&nbsp;&nbsp;' +
+            '<strong>Direction: </strong><label id="Dir" class="mapText"></label>&nbsp;&nbsp;' +
+            '<strong>Speed: </strong><label id="SPD" class="mapText"></label><br />' +
+            '</div>' +
+            '<div class="col-md-12" id="alertMap"><br /><br /></div>' +
+            '<div class="col-md-12"></div>' +
+            '<div class="col-md-12 text-center sliderDiv">' +
+            '<br />' +
+            '<div id="alertMapSlider"></div>' +
+            '<div id="broadcastNum"></div>' +
+            '<br />' +
+            '</div>' +
+            '<div class="col-md-2 sliderDiv"><label id="ST" class="sm pull-left"></label></div>' +
+            '<div class="col-md-8 sliderDiv text-center"></div>' +
+            '<div class="col-md-2 sliderDiv"><label id="ET" class="small pull-right"></label></div>' +
+            '</div>' +
+            '</div>',
             contentSize: {
                 width: function () { return $(window).width() / 1.5 },
                 height: function () { return $(window).height() / 1.5 },
@@ -1721,33 +1745,33 @@
 
         //paint the panel
         var pbcontent = '<br /><br /><br />' +
-                        '<div id="vehicleHistoryDiv" class="hiddden">' +
-                        '<div id="historyCriteria" class="row col-sm-12 center-block">' +
-                        '<select id="vehicleHistoryList_M" class="col-sm-3">' +
-                        '<option value="None">-- Vehicle ID --</option>' +
-                        '</select>' +
-                        //'<div class="col-sm-3" id="playBackVehicleID"></div>' +
-                        '<input type="text" id="playBackFrom_M" class="col-sm-4" aria-label="From" placeholder="From Date:">' +
-                        '<select id="increments_M" class="col-sm-3">' +
-                        '<option value="2">2 Hours</option>' +
-                        '<option value="6">6 Hours</option>' +
-                        '<option value="8">8 Hours</option>' +
-                        '<option value="12">12 Hours</option>' +
-                        '</select>' +
-                        '<button id="historySearch_M" class="btn btn-primary glyphicons glyphicons-search" style="margin-left: 3px; margin-right: 3px;" alt="Search"></button>' +
-                        '<button id="historyDownload_M" class="btn btn-primary glyphicons glyphicons-download" alt="download"></button>' +
-                        '</div>' +
-                        '<div id="historySlider" class="col-sm-12" style="margin-top: 15px; margin-bottom: 15px;"></div>' +
-                        '<div id="historyMap" class="col-sm-12" style="height: 55.0em; border: 1px solid #000; z-index: 1; padding-left: 0px;"></div>' +
-                        '<div id="historyInfo" class="col-sm-12">' +
-                        '<label>Date: </label><span id="datetime" class="mapText_M"></span>' +
-                        '<label>&nbsp;&nbsp;Lat: </label><span id="lat" class="mapText_M"></span>' +
-                        '<label>&nbsp;&nbsp;Lng:  </label><span id="lon" class="mapText_M"></span>' +
-                        '<label>&nbsp;&nbsp;Dir: </label><span id="dir" class="mapText_M"></span>' +
-                        '<label>&nbsp;&nbsp;Spd: </label><span id="speed" class="mapText_M"></span>' +
-                        '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="gpsRecordNumb" class="mapText_M"></span>' +
-                        '</div>' +
-                        '</div>';
+            '<div id="vehicleHistoryDiv" class="hiddden">' +
+            '<div id="historyCriteria" class="row col-sm-12 center-block">' +
+            '<select id="vehicleHistoryList_M" class="col-sm-3">' +
+            '<option value="None">-- Vehicle ID --</option>' +
+            '</select>' +
+            //'<div class="col-sm-3" id="playBackVehicleID"></div>' +
+            '<input type="text" id="playBackFrom_M" class="col-sm-4" aria-label="From" placeholder="From Date:">' +
+            '<select id="increments_M" class="col-sm-3">' +
+            '<option value="2">2 Hours</option>' +
+            '<option value="6">6 Hours</option>' +
+            '<option value="8">8 Hours</option>' +
+            '<option value="12">12 Hours</option>' +
+            '</select>' +
+            '<button id="historySearch_M" class="btn btn-primary glyphicons glyphicons-search" style="margin-left: 3px; margin-right: 3px;" alt="Search"></button>' +
+            '<button id="historyDownload_M" class="btn btn-primary glyphicons glyphicons-download" alt="download"></button>' +
+            '</div>' +
+            '<div id="historySlider" class="col-sm-12" style="margin-top: 15px; margin-bottom: 15px;"></div>' +
+            '<div id="historyMap" class="col-sm-12" style="height: 55.0em; border: 1px solid #000; z-index: 1; padding-left: 0px;"></div>' +
+            '<div id="historyInfo" class="col-sm-12">' +
+            '<label>Date: </label><span id="datetime" class="mapText_M"></span>' +
+            '<label>&nbsp;&nbsp;Lat: </label><span id="lat" class="mapText_M"></span>' +
+            '<label>&nbsp;&nbsp;Lng:  </label><span id="lon" class="mapText_M"></span>' +
+            '<label>&nbsp;&nbsp;Dir: </label><span id="dir" class="mapText_M"></span>' +
+            '<label>&nbsp;&nbsp;Spd: </label><span id="speed" class="mapText_M"></span>' +
+            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="gpsRecordNumb" class="mapText_M"></span>' +
+            '</div>' +
+            '</div>';
         jsPanel.activePanels.getPanel("playBackPanel").content.append(pbcontent);
 
         //work drop down box of vehicles
@@ -1879,8 +1903,7 @@
     }
 
     function getAvailableDriversSuccess(data) {
-        if (data.length > 0)
-        {
+        if (data.length > 0) {
             $('#availableDrivers').append($('<option>', { value: '' }).text('-- New Driver --'));
             for (var i = 0; i < data.length; i++) {
                 var name = data[i].DriverFirstName + " " + data[i].DriverLastName;
@@ -1943,7 +1966,7 @@
             Command: toastr["success"]("New Driver Assigned. We need to refresh the map now.");
             selectedVehicle = null;
             closeNav();
-            getVehicles();
+            getVehicles(false);
         } else {
             alert('A problem occurred changing the drivers, please reload or contact the administrator');
         }
@@ -2000,6 +2023,17 @@
         } else if (type == "alert") {
             $('#log_panel').append("<strong>" + moment().format('MM/DD/YYYY hh:mm') + "</strong> -- " + vehicle.VehicleID + " -- Alert: [" + vehicle.lat + ", " + vehicle.lon + "]<br />");
         }
+    }
+
+    function containsVehicle(ID) {
+        var i;
+        for (i = 0; i < vehicles.length; i++) {
+            if (vehicles[i].ID == ID) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     function containsObject(obj, list) {
@@ -2101,7 +2135,7 @@
         return base64
     }
 
-    $('#availableDrivers').change(function() {
+    $('#availableDrivers').change(function () {
         if (confirm('Change assigned driver for this vehilce to: ' + $('#availableDrivers option:selected').text() + '?')) {
             if (selectedVehicle.driver != null) {
                 if (selectedVehicle.driver.DriverID != "00000000-0000-0000-0000-000000000000") {

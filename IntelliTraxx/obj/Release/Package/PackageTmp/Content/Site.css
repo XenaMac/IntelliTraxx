@@ -224,6 +224,12 @@ table .header {
     border-color: #dddddd;
 }
 
+.panel-yellow > .panel-heading {
+    color: #000;
+    background-color: #ffd800;
+    border-color: #dddddd;
+}
+
 #alert_panel {
     max-height: 250px;
     overflow-x: scroll;
