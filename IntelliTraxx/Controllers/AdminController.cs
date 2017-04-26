@@ -125,6 +125,11 @@ namespace IntelliTraxx.Controllers
             }
             #endregion
 
+            #region Vehicles->to->Drivers
+            admin.availableDrivers = truckService.getAvailableDrivers();
+            admin.availableVehicles = truckService.getAvailableVehicles();
+            admin.DriversToVehicles = truckService.driverVehicleReturn();
+            #endregion
             return View(admin);
         }
 
@@ -1177,6 +1182,16 @@ namespace IntelliTraxx.Controllers
             
             return RedirectToAction("Index", new { tab = "VAR" });
         }
+
+
+        [CustomAuthorize(Roles = "Administrator")]
+        public ActionResult deleteVehicleDriver(string ID)
+        {
+            //deleteVehicleDriver
+            truckService.deleteVehicleDriver(ID);
+
+            return Json("OK", JsonRequestBehavior.AllowGet);
+        }
     }
     
 
@@ -1198,6 +1213,9 @@ namespace IntelliTraxx.Controllers
         public List<DriverVM> Drivers { get; set; }
         public List<Vars> AppVariables { get; set; }
         public List<Vars> ServiceVariables { get; set; }
+        public List<Driver> availableDrivers { get; set; }
+        public List<driverVehicleReturn> DriversToVehicles { get; set; }
+        public List<VehicleExtendedData> availableVehicles { get; set; }
     }
 
     public class VehicleVM

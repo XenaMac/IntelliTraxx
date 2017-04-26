@@ -601,6 +601,20 @@
       <xs:sequence />
     </xs:complexType>
   </xs:element>
+  <xs:element name="deleteVehicleDriver">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ID" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="deleteVehicleDriverResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="deleteVehicleDriverResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="deleteDriver">
     <xs:complexType>
       <xs:sequence>

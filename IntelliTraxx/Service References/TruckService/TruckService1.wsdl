@@ -268,6 +268,12 @@
   <wsdl:message name="ITruckService_updateDriver_OutputMessage">
     <wsdl:part name="parameters" element="tns:updateDriverResponse" />
   </wsdl:message>
+  <wsdl:message name="ITruckService_deleteVehicleDriver_InputMessage">
+    <wsdl:part name="parameters" element="tns:deleteVehicleDriver" />
+  </wsdl:message>
+  <wsdl:message name="ITruckService_deleteVehicleDriver_OutputMessage">
+    <wsdl:part name="parameters" element="tns:deleteVehicleDriverResponse" />
+  </wsdl:message>
   <wsdl:message name="ITruckService_deleteDriver_InputMessage">
     <wsdl:part name="parameters" element="tns:deleteDriver" />
   </wsdl:message>
@@ -620,6 +626,10 @@
     <wsdl:operation name="updateDriver">
       <wsdl:input wsaw:Action="http://tempuri.org/ITruckService/updateDriver" message="tns:ITruckService_updateDriver_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ITruckService/updateDriverResponse" message="tns:ITruckService_updateDriver_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="deleteVehicleDriver">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITruckService/deleteVehicleDriver" message="tns:ITruckService_deleteVehicleDriver_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITruckService/deleteVehicleDriverResponse" message="tns:ITruckService_deleteVehicleDriver_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="deleteDriver">
       <wsdl:input wsaw:Action="http://tempuri.org/ITruckService/deleteDriver" message="tns:ITruckService_deleteDriver_InputMessage" />
@@ -1124,6 +1134,15 @@
     </wsdl:operation>
     <wsdl:operation name="updateDriver">
       <soap:operation soapAction="http://tempuri.org/ITruckService/updateDriver" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteVehicleDriver">
+      <soap:operation soapAction="http://tempuri.org/ITruckService/deleteVehicleDriver" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

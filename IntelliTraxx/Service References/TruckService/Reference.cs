@@ -4396,6 +4396,12 @@ namespace IntelliTraxx.TruckService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/updateDriver", ReplyAction="http://tempuri.org/ITruckService/updateDriverResponse")]
         System.Threading.Tasks.Task updateDriverAsync(IntelliTraxx.TruckService.Driver d, System.Guid operatorID);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/deleteVehicleDriver", ReplyAction="http://tempuri.org/ITruckService/deleteVehicleDriverResponse")]
+        string deleteVehicleDriver(string ID);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/deleteVehicleDriver", ReplyAction="http://tempuri.org/ITruckService/deleteVehicleDriverResponse")]
+        System.Threading.Tasks.Task<string> deleteVehicleDriverAsync(string ID);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/deleteDriver", ReplyAction="http://tempuri.org/ITruckService/deleteDriverResponse")]
         void deleteDriver(IntelliTraxx.TruckService.Driver d, System.Guid operatorID);
         
@@ -4946,6 +4952,14 @@ namespace IntelliTraxx.TruckService {
         
         public System.Threading.Tasks.Task updateDriverAsync(IntelliTraxx.TruckService.Driver d, System.Guid operatorID) {
             return base.Channel.updateDriverAsync(d, operatorID);
+        }
+        
+        public string deleteVehicleDriver(string ID) {
+            return base.Channel.deleteVehicleDriver(ID);
+        }
+        
+        public System.Threading.Tasks.Task<string> deleteVehicleDriverAsync(string ID) {
+            return base.Channel.deleteVehicleDriverAsync(ID);
         }
         
         public void deleteDriver(IntelliTraxx.TruckService.Driver d, System.Guid operatorID) {
