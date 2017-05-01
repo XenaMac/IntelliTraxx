@@ -19,6 +19,7 @@
     var searchDate = new Date();
     var getHistorical = false;
     var polysVisible = false;
+    var currentD2V = 0;
 
     $('[data-toggle="tooltip"]').tooltip()
 
@@ -339,6 +340,7 @@
                     vehicles[i].Marker.setMap(null);
                 }
                 vehicles = [];
+                currentD2V = 0
                 $("#vehicleList").html('');
                 $("#vehicleList").append($('<option>', { value: 'None' }).text('-- Select Vehicle ID --'));
             } else {
@@ -351,10 +353,15 @@
                     for (var i = 0; i < data.length; i++) {
                         $("#vehicleList").append($('<option>', { value: data[i].extendedData.ID }).text(data[i].VehicleID));
                         if (!containsVehicle(data[i].extendedData.sID)) {
+                            if (data[i].driver.driverID != "00000000-0000-0000-0000-000000000000") {
+                                currentD2V += 1;
+                            }
                             vehicles.push(new Vehicle(data[i], false));
                         }
                     }
                 }
+
+                $('#currentD2V').html('Current Active Vehicles without Assigned Drivers: <strong>' + (data.length - currentD2V)+ "</strong><hr />")
             });
         }
     };

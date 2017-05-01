@@ -45,10 +45,14 @@
             $('#byAlertDiv').html('There were no alerts found. Does that seem right to you?');
         } else {
             for (var a = 0; a < data.length; a++) {
-                $('#byAlertDD').append($('<option>', { value:  data[a].AlertFriendlyName }).text(data[a].AlertFriendlyName));
+                $('#byAlertDD').append($('<option>', { value: data[a].AlertFriendlyName }).text(data[a].AlertFriendlyName));
+
+                if (a == 0) {
+                    getVehicleAlerts(data[a].AlertFriendlyName);
+                }
             };
         }
-
+        
         $('#byAlertDD').on('change', function () {
             var $this = $(this);
             getVehicleAlerts($this.val());

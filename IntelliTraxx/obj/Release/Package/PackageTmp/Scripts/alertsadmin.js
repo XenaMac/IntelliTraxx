@@ -14,6 +14,7 @@
     var copy = '';
     var editAlertID = null;
     var createAlert = false;
+    var TNDB = false;
 
     $('[data-toggle="tooltip"]').tooltip();
 
@@ -44,7 +45,7 @@
         if (data.length == 0) {
             $('#alertsDiv').html('There were no alerts found. Does that seem right to you?');
         } else {
-            $('#alertsDiv').html('<div id="toolbar" class="btn-group"><button id="newAlert" type="button" class="btn btn-success" style="margin-left: 30px;"><i class="glyphicons glyphicons-plus"></i>Create Alert</button></div><table id="coAlertsTable" data-toggle="table" data-striped="true" data-query-params="queryParams" data-pagination="true" data-page-size="15" data-page-list="[5, 10, 20, 50]" data-classes="table table-hover table-condensed" data-sort-name="alertStart" data-sort-order="desc" data-search="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#toolbar" data-show-export="true" data-url="' + _url + _data + '"><thead><tr><th data-field="AlertID" class="hidden">Alert ID</th><th data-halign="center" data-sortable="true" data-field="AlertFriendlyName">Alert</th><th data-halign="center" data-sortable="true" data-field="AlertClassName">Alert Class</th><th data-halign="center" data-sortable="true" data-field="AlertActive" data-formatter="toggler" class="text-center">Enabled</th><th data-halign="center" data-sortable="true" data-field="AlertStartTime" data-formatter="dateFormat">Start</th><th data-halign="center" data-sortable="true" data-field="AlertEndTime" data-formatter="dateFormat">End</th><th data-halign="center" data-sortable="true" data-field="minVal">Min Value</th><th data-halign="center" data-sortable="true" data-field="minVal" data-formatter="editBtn" class="text-center">Edit</th></tr></thead><tbody></tbody></table><br />');
+            $('#alertsDiv').html('<div id="toolbar" class="btn-group"><button id="newAlert" type="button" class="btn btn-success" style="margin-left: 30px;"><i class="glyphicons glyphicons-plus"></i>Create Alert</button></div><table id="coAlertsTable" data-toggle="table" data-striped="true" data-query-params="queryParams" data-pagination="true" data-page-size="15" data-page-list="[5, 10, 20, 50]" data-classes="table table-hover table-condensed" data-sort-name="alertStart" data-sort-order="desc" data-search="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#toolbar" data-show-export="true" data-url="' + _url + _data + '"><thead><tr><th data-field="AlertID" class="hidden">Alert ID</th><th data-halign="center" data-sortable="true" data-field="AlertFriendlyName">Alert</th><th data-halign="center" data-sortable="true" data-field="AlertClassName">Alert Class</th><th data-halign="center" data-sortable="true" data-field="AlertActive" data-formatter="toggler" class="text-center">Enabled</th><th data-halign="center" data-sortable="true" data-field="AlertStartTime" data-formatter="dateFormat">Start</th><th data-halign="center" data-sortable="true" data-field="AlertEndTime" data-formatter="dateFormat">End</th><th data-halign="center" data-sortable="true" data-field="minVal">Min Value</th><th data-halign="center" data-sortable="true" data-field="NDB">NDB</th><th data-halign="center" data-sortable="true" data-field="minVal" data-formatter="editBtn" class="text-center">Edit</th></tr></thead><tbody></tbody></table><br />');
 
             $('#coAlertsTable').bootstrapTable({
                 onLoadSuccess: function () {
@@ -151,6 +152,7 @@
 
     function getAlertClassesSuccess(data) {
         if (data.length > 0) {
+            $('#alertClassDiv').html('');
             for (var i = 0; i < data.length; i++) {
                 var markup;
 
@@ -358,11 +360,19 @@
 
                 $('.vehicleActive').each(function () {
                     if (this.checked) {
-                        alertVehicles.push({
-                            id: $(this).attr('id').substring(3, $(this).attr('id').length),
-                            name: $(this).attr('name'),
-                            email: "EMAIL:" + $('#em_' + $(this).attr('id').substring(3, $(this).attr('id').length)).val()
-                        });
+                        if ($('#em_' + $(this).attr('id').substring(3, $(this).attr('id').length)).val() != "") {
+                            alertVehicles.push({
+                                id: $(this).attr('id').substring(3, $(this).attr('id').length),
+                                name: $(this).attr('name'),
+                                email: "EMAIL:" + $('#em_' + $(this).attr('id').substring(3, $(this).attr('id').length)).val()
+                            });
+                        } else {
+                            alertVehicles.push({
+                                id: $(this).attr('id').substring(3, $(this).attr('id').length),
+                                name: $(this).attr('name'),
+                                email: ""
+                            });
+                        }
                     }
                 });
 
@@ -592,8 +602,10 @@
             alertID = editAlertID.AlertID;
         }
 
+        TNDB = $('#TNDB').prop('checked');
+        
         var _url = 'updateAlertData';
-        var _data = JSON.stringify({ 'alertClassID': alertClassID, 'alertClassName': alertClassName, 'alertName': alertName, 'editAlertID': alertID, 'startDate': alertStart, 'endDate': alertEnd, 'polygonIDs': polygonIDs, 'polygonNames': polygonNames, 'alertVehicles': alertVehicles, 'alertValue': alertValue });
+        var _data = JSON.stringify({ 'alertClassID': alertClassID, 'alertClassName': alertClassName, 'alertName': alertName, 'editAlertID': alertID, 'startDate': alertStart, 'endDate': alertEnd, 'polygonIDs': polygonIDs, 'polygonNames': polygonNames, 'alertVehicles': alertVehicles, 'alertValue': alertValue, 'TNDB': TNDB});
 
         $.ajax({
             type: "POST",
@@ -721,6 +733,7 @@
             alertClassName = data.alert.AlertClassName;
             alertName = data.alert.AlertFriendlyName;
             alertValue = data.alert.minVal;
+            TNDB = data.alert.NDB;
             alertStart = moment(data.alert.AlertStartTime).format('MM/DD/YYYY HH:mm');
             alertEnd = moment(data.alert.AlertEndTime).format('MM/DD/YYYY HH:mm');
             getAllVehicles();
@@ -746,8 +759,8 @@
                 });
             }
 
-            getAlertClasses()
-            $('[href=\\#step1]').tab('show');
+            getAlertClasses();
+            //$('[href=\\#step1]').tab('show');
             $('#deleteAlert').removeClass('hidden');
 
             $('#myModal').on('shown.bs.modal', function () {
@@ -788,6 +801,12 @@
                         }, 1000);
                     } else if (e.target.toString().indexOf('#step5') !== -1) {
                         reviewAndSubmit();
+
+                        if (TNDB == true) {
+                            $('#TNDB').bootstrapToggle('on');
+                        } else {
+                            $('#TNDB').bootstrapToggle('off');
+                        }
                     }
                 };
             });

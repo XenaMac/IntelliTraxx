@@ -246,6 +246,9 @@ namespace IntelliTraxx.AlertAdminService {
         private string AlertTypeField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool NDBField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string minValField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
@@ -358,6 +361,19 @@ namespace IntelliTraxx.AlertAdminService {
                 if ((object.ReferenceEquals(this.AlertTypeField, value) != true)) {
                     this.AlertTypeField = value;
                     this.RaisePropertyChanged("AlertType");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool NDB {
+            get {
+                return this.NDBField;
+            }
+            set {
+                if ((this.NDBField.Equals(value) != true)) {
+                    this.NDBField = value;
+                    this.RaisePropertyChanged("NDB");
                 }
             }
         }

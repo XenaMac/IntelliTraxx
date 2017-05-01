@@ -28,7 +28,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/02/2015 10:32:26</publishTime>
     </File>
     <File Include="bin/IntelliTraxx.dll">
-      <publishTime>04/25/2017 07:35:22</publishTime>
+      <publishTime>05/01/2017 12:43:18</publishTime>
     </File>
     <File Include="bin/Microsoft.AI.Agent.Intercept.dll">
       <publishTime>12/09/2016 21:37:14</publishTime>
@@ -100,148 +100,148 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/27/2012 14:00:52</publishTime>
     </File>
     <File Include="bin/roslyn/csc.exe">
-      <publishTime>03/07/2017 10:56:08</publishTime>
+      <publishTime>04/13/2017 15:47:48</publishTime>
     </File>
     <File Include="bin/roslyn/csc.exe.config">
-      <publishTime>03/07/2017 10:56:08</publishTime>
+      <publishTime>04/13/2017 15:47:48</publishTime>
     </File>
     <File Include="bin/roslyn/csc.rsp">
-      <publishTime>03/07/2017 10:56:08</publishTime>
+      <publishTime>04/13/2017 15:47:48</publishTime>
     </File>
     <File Include="bin/roslyn/csi.exe">
-      <publishTime>03/07/2017 10:56:10</publishTime>
+      <publishTime>04/13/2017 15:47:48</publishTime>
     </File>
     <File Include="bin/roslyn/csi.exe.config">
-      <publishTime>03/07/2017 10:56:10</publishTime>
+      <publishTime>04/13/2017 15:47:48</publishTime>
     </File>
     <File Include="bin/roslyn/csi.rsp">
-      <publishTime>03/07/2017 10:56:10</publishTime>
+      <publishTime>04/13/2017 15:47:48</publishTime>
     </File>
     <File Include="bin/roslyn/Microsoft.Build.Tasks.CodeAnalysis.dll">
-      <publishTime>03/07/2017 10:56:10</publishTime>
+      <publishTime>04/13/2017 15:47:48</publishTime>
     </File>
     <File Include="bin/roslyn/Microsoft.CodeAnalysis.CSharp.dll">
-      <publishTime>03/07/2017 10:56:08</publishTime>
+      <publishTime>04/13/2017 15:47:46</publishTime>
     </File>
     <File Include="bin/roslyn/Microsoft.CodeAnalysis.CSharp.Scripting.dll">
-      <publishTime>03/07/2017 10:56:08</publishTime>
+      <publishTime>04/13/2017 15:47:46</publishTime>
     </File>
     <File Include="bin/roslyn/Microsoft.CodeAnalysis.dll">
-      <publishTime>03/07/2017 10:56:06</publishTime>
+      <publishTime>04/13/2017 15:47:46</publishTime>
     </File>
     <File Include="bin/roslyn/Microsoft.CodeAnalysis.Scripting.dll">
-      <publishTime>03/07/2017 10:56:08</publishTime>
+      <publishTime>04/13/2017 15:47:46</publishTime>
     </File>
     <File Include="bin/roslyn/Microsoft.CodeAnalysis.VisualBasic.dll">
-      <publishTime>03/07/2017 10:56:08</publishTime>
+      <publishTime>04/13/2017 15:47:46</publishTime>
     </File>
     <File Include="bin/roslyn/Microsoft.CSharp.Core.targets">
-      <publishTime>03/07/2017 10:56:10</publishTime>
+      <publishTime>04/13/2017 15:47:48</publishTime>
     </File>
     <File Include="bin/roslyn/Microsoft.DiaSymReader.Native.amd64.dll">
-      <publishTime>03/07/2017 10:56:08</publishTime>
+      <publishTime>04/13/2017 15:47:46</publishTime>
     </File>
     <File Include="bin/roslyn/Microsoft.DiaSymReader.Native.x86.dll">
-      <publishTime>03/07/2017 10:56:08</publishTime>
+      <publishTime>04/13/2017 15:47:46</publishTime>
     </File>
     <File Include="bin/roslyn/Microsoft.VisualBasic.Core.targets">
-      <publishTime>03/07/2017 10:56:10</publishTime>
+      <publishTime>04/13/2017 15:47:48</publishTime>
     </File>
     <File Include="bin/roslyn/Microsoft.Win32.Primitives.dll">
-      <publishTime>03/07/2017 10:56:10</publishTime>
+      <publishTime>04/13/2017 15:47:48</publishTime>
     </File>
     <File Include="bin/roslyn/System.AppContext.dll">
-      <publishTime>03/07/2017 10:56:10</publishTime>
+      <publishTime>04/13/2017 15:47:48</publishTime>
     </File>
     <File Include="bin/roslyn/System.Collections.Immutable.dll">
-      <publishTime>03/07/2017 10:56:10</publishTime>
+      <publishTime>04/13/2017 15:47:48</publishTime>
     </File>
     <File Include="bin/roslyn/System.Console.dll">
-      <publishTime>03/07/2017 10:56:10</publishTime>
+      <publishTime>04/13/2017 15:47:48</publishTime>
     </File>
     <File Include="bin/roslyn/System.Diagnostics.FileVersionInfo.dll">
-      <publishTime>03/07/2017 10:56:10</publishTime>
+      <publishTime>04/13/2017 15:47:48</publishTime>
     </File>
     <File Include="bin/roslyn/System.Diagnostics.Process.dll">
-      <publishTime>03/07/2017 10:56:10</publishTime>
+      <publishTime>04/13/2017 15:47:48</publishTime>
     </File>
     <File Include="bin/roslyn/System.Diagnostics.StackTrace.dll">
-      <publishTime>03/07/2017 10:56:10</publishTime>
+      <publishTime>04/13/2017 15:47:48</publishTime>
     </File>
     <File Include="bin/roslyn/System.IO.Compression.dll">
-      <publishTime>03/07/2017 10:56:10</publishTime>
+      <publishTime>04/13/2017 15:47:48</publishTime>
     </File>
     <File Include="bin/roslyn/System.IO.FileSystem.dll">
-      <publishTime>03/07/2017 10:56:12</publishTime>
+      <publishTime>04/13/2017 15:47:48</publishTime>
     </File>
     <File Include="bin/roslyn/System.IO.FileSystem.DriveInfo.dll">
-      <publishTime>03/07/2017 10:56:12</publishTime>
+      <publishTime>04/13/2017 15:47:48</publishTime>
     </File>
     <File Include="bin/roslyn/System.IO.FileSystem.Primitives.dll">
-      <publishTime>03/07/2017 10:56:12</publishTime>
+      <publishTime>04/13/2017 15:47:48</publishTime>
     </File>
     <File Include="bin/roslyn/System.IO.Pipes.dll">
-      <publishTime>03/07/2017 10:56:12</publishTime>
+      <publishTime>04/13/2017 15:47:48</publishTime>
     </File>
     <File Include="bin/roslyn/System.Reflection.Metadata.dll">
-      <publishTime>03/07/2017 10:56:12</publishTime>
+      <publishTime>04/13/2017 15:47:48</publishTime>
     </File>
     <File Include="bin/roslyn/System.Security.AccessControl.dll">
-      <publishTime>03/07/2017 10:56:12</publishTime>
+      <publishTime>04/13/2017 15:47:48</publishTime>
     </File>
     <File Include="bin/roslyn/System.Security.Claims.dll">
-      <publishTime>03/07/2017 10:56:12</publishTime>
+      <publishTime>04/13/2017 15:47:48</publishTime>
     </File>
     <File Include="bin/roslyn/System.Security.Cryptography.Algorithms.dll">
-      <publishTime>03/07/2017 10:56:12</publishTime>
+      <publishTime>04/13/2017 15:47:48</publishTime>
     </File>
     <File Include="bin/roslyn/System.Security.Cryptography.Encoding.dll">
-      <publishTime>03/07/2017 10:56:12</publishTime>
+      <publishTime>04/13/2017 15:47:48</publishTime>
     </File>
     <File Include="bin/roslyn/System.Security.Cryptography.Primitives.dll">
-      <publishTime>03/07/2017 10:56:12</publishTime>
+      <publishTime>04/13/2017 15:47:48</publishTime>
     </File>
     <File Include="bin/roslyn/System.Security.Cryptography.X509Certificates.dll">
-      <publishTime>03/07/2017 10:56:12</publishTime>
+      <publishTime>04/13/2017 15:47:48</publishTime>
     </File>
     <File Include="bin/roslyn/System.Security.Principal.Windows.dll">
-      <publishTime>03/07/2017 10:56:12</publishTime>
+      <publishTime>04/13/2017 15:47:48</publishTime>
     </File>
     <File Include="bin/roslyn/System.Text.Encoding.CodePages.dll">
-      <publishTime>03/07/2017 10:56:12</publishTime>
+      <publishTime>04/13/2017 15:47:48</publishTime>
     </File>
     <File Include="bin/roslyn/System.Threading.Thread.dll">
-      <publishTime>03/07/2017 10:56:12</publishTime>
+      <publishTime>04/13/2017 15:47:48</publishTime>
     </File>
     <File Include="bin/roslyn/System.ValueTuple.dll">
-      <publishTime>03/07/2017 10:56:12</publishTime>
+      <publishTime>04/13/2017 15:47:48</publishTime>
     </File>
     <File Include="bin/roslyn/System.Xml.ReaderWriter.dll">
-      <publishTime>03/07/2017 10:56:12</publishTime>
+      <publishTime>04/13/2017 15:47:48</publishTime>
     </File>
     <File Include="bin/roslyn/System.Xml.XmlDocument.dll">
-      <publishTime>03/07/2017 10:56:12</publishTime>
+      <publishTime>04/13/2017 15:47:48</publishTime>
     </File>
     <File Include="bin/roslyn/System.Xml.XPath.dll">
-      <publishTime>03/07/2017 10:56:14</publishTime>
+      <publishTime>04/13/2017 15:47:48</publishTime>
     </File>
     <File Include="bin/roslyn/System.Xml.XPath.XDocument.dll">
-      <publishTime>03/07/2017 10:56:14</publishTime>
+      <publishTime>04/13/2017 15:47:48</publishTime>
     </File>
     <File Include="bin/roslyn/vbc.exe">
-      <publishTime>03/07/2017 10:56:10</publishTime>
+      <publishTime>04/13/2017 15:47:48</publishTime>
     </File>
     <File Include="bin/roslyn/vbc.exe.config">
-      <publishTime>03/07/2017 10:56:10</publishTime>
+      <publishTime>04/13/2017 15:47:48</publishTime>
     </File>
     <File Include="bin/roslyn/vbc.rsp">
-      <publishTime>03/07/2017 10:56:10</publishTime>
+      <publishTime>04/13/2017 15:47:48</publishTime>
     </File>
     <File Include="bin/roslyn/VBCSCompiler.exe">
-      <publishTime>03/07/2017 10:56:10</publishTime>
+      <publishTime>04/13/2017 15:47:48</publishTime>
     </File>
     <File Include="bin/roslyn/VBCSCompiler.exe.config">
-      <publishTime>03/07/2017 10:56:10</publishTime>
+      <publishTime>04/13/2017 15:47:48</publishTime>
     </File>
     <File Include="bin/System.Net.Http.Formatting.dll">
       <publishTime>01/28/2015 05:02:42</publishTime>
@@ -607,19 +607,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/11/2016 09:36:19</publishTime>
     </File>
     <File Include="packages.config">
-      <publishTime>04/11/2017 13:32:17</publishTime>
+      <publishTime>04/25/2017 14:16:20</publishTime>
     </File>
     <File Include="Scripts/admin.js">
-      <publishTime>03/28/2017 16:07:20</publishTime>
+      <publishTime>04/26/2017 08:23:53</publishTime>
     </File>
     <File Include="Scripts/alertMap.js">
       <publishTime>01/28/2017 09:48:18</publishTime>
     </File>
     <File Include="Scripts/alerts.js">
-      <publishTime>03/25/2017 07:48:06</publishTime>
+      <publishTime>05/01/2017 08:00:33</publishTime>
     </File>
     <File Include="Scripts/alertsadmin.js">
-      <publishTime>04/10/2017 08:03:12</publishTime>
+      <publishTime>05/01/2017 10:08:41</publishTime>
     </File>
     <File Include="Scripts/analytics.js">
       <publishTime>03/28/2017 15:44:14</publishTime>
@@ -643,7 +643,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/13/2017 08:07:13</publishTime>
     </File>
     <File Include="Scripts/fleet.js">
-      <publishTime>04/25/2017 09:22:35</publishTime>
+      <publishTime>04/26/2017 07:47:29</publishTime>
     </File>
     <File Include="Scripts/Highcharts/highcharts-3d.js">
       <publishTime>01/23/2017 15:46:45</publishTime>
@@ -796,31 +796,31 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/08/2017 16:37:10</publishTime>
     </File>
     <File Include="Service References/AlertAdminService/IntelliTraxx.AlertAdminService.alertClass.datasource">
-      <publishTime>04/12/2017 13:34:27</publishTime>
+      <publishTime>04/28/2017 06:22:27</publishTime>
     </File>
     <File Include="Service References/AlertAdminService/IntelliTraxx.AlertAdminService.alertData.datasource">
-      <publishTime>04/12/2017 13:34:27</publishTime>
+      <publishTime>04/28/2017 06:22:27</publishTime>
     </File>
     <File Include="Service References/AlertAdminService/IntelliTraxx.AlertAdminService.alertGeoFence.datasource">
-      <publishTime>04/12/2017 13:34:27</publishTime>
+      <publishTime>04/28/2017 06:22:27</publishTime>
     </File>
     <File Include="Service References/AlertAdminService/IntelliTraxx.AlertAdminService.alertVehicle.datasource">
-      <publishTime>04/12/2017 13:34:27</publishTime>
+      <publishTime>04/28/2017 06:22:27</publishTime>
     </File>
     <File Include="Service References/AlertAdminService/IntelliTraxx.AlertAdminService.dbAlert.datasource">
-      <publishTime>04/12/2017 13:34:27</publishTime>
+      <publishTime>04/28/2017 06:22:27</publishTime>
     </File>
     <File Include="Service References/AlertAdminService/IntelliTraxx.AlertAdminService.linkVehicle.datasource">
-      <publishTime>04/12/2017 13:34:27</publishTime>
+      <publishTime>04/28/2017 06:22:27</publishTime>
     </File>
     <File Include="Service References/AlertAdminService/IntelliTraxx.AlertAdminService.polyData.datasource">
-      <publishTime>04/12/2017 13:34:27</publishTime>
+      <publishTime>04/28/2017 06:22:27</publishTime>
     </File>
     <File Include="Service References/AlertAdminService/IntelliTraxx.AlertAdminService.schedule.datasource">
-      <publishTime>04/12/2017 13:34:27</publishTime>
+      <publishTime>04/28/2017 06:22:27</publishTime>
     </File>
     <File Include="Service References/AlertAdminService/IntelliTraxx.AlertAdminService.vsLink.datasource">
-      <publishTime>04/12/2017 13:34:27</publishTime>
+      <publishTime>04/28/2017 06:22:27</publishTime>
     </File>
     <File Include="Service References/PolygonService/IntelliTraxx.PolygonService.polygonData.datasource">
       <publishTime>04/12/2017 13:34:11</publishTime>
@@ -835,52 +835,52 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/12/2017 14:49:49</publishTime>
     </File>
     <File Include="Service References/TruckService/IntelliTraxx.TruckService.alertReturn.datasource">
-      <publishTime>04/25/2017 06:43:50</publishTime>
+      <publishTime>04/27/2017 16:35:07</publishTime>
     </File>
     <File Include="Service References/TruckService/IntelliTraxx.TruckService.Company.datasource">
-      <publishTime>04/25/2017 06:43:50</publishTime>
+      <publishTime>04/27/2017 16:35:07</publishTime>
     </File>
     <File Include="Service References/TruckService/IntelliTraxx.TruckService.dispatch.datasource">
-      <publishTime>04/25/2017 06:43:50</publishTime>
+      <publishTime>04/27/2017 16:35:07</publishTime>
     </File>
     <File Include="Service References/TruckService/IntelliTraxx.TruckService.Driver.datasource">
-      <publishTime>04/25/2017 06:43:50</publishTime>
+      <publishTime>04/27/2017 16:35:07</publishTime>
     </File>
     <File Include="Service References/TruckService/IntelliTraxx.TruckService.driverVehicleReturn.datasource">
-      <publishTime>04/25/2017 06:43:50</publishTime>
+      <publishTime>04/27/2017 16:35:07</publishTime>
     </File>
     <File Include="Service References/TruckService/IntelliTraxx.TruckService.retVehicle.datasource">
-      <publishTime>04/25/2017 06:43:50</publishTime>
+      <publishTime>04/27/2017 16:35:06</publishTime>
     </File>
     <File Include="Service References/TruckService/IntelliTraxx.TruckService.Role.datasource">
-      <publishTime>04/25/2017 06:43:50</publishTime>
+      <publishTime>04/27/2017 16:35:07</publishTime>
     </File>
     <File Include="Service References/TruckService/IntelliTraxx.TruckService.statusObjectReturn.datasource">
-      <publishTime>04/25/2017 06:43:50</publishTime>
+      <publishTime>04/27/2017 16:35:07</publishTime>
     </File>
     <File Include="Service References/TruckService/IntelliTraxx.TruckService.systemvar.datasource">
-      <publishTime>04/25/2017 06:43:50</publishTime>
+      <publishTime>04/27/2017 16:35:07</publishTime>
     </File>
     <File Include="Service References/TruckService/IntelliTraxx.TruckService.User.datasource">
-      <publishTime>04/25/2017 06:43:50</publishTime>
+      <publishTime>04/27/2017 16:35:07</publishTime>
     </File>
     <File Include="Service References/TruckService/IntelliTraxx.TruckService.UserCompany.datasource">
-      <publishTime>04/25/2017 06:43:50</publishTime>
+      <publishTime>04/27/2017 16:35:07</publishTime>
     </File>
     <File Include="Service References/TruckService/IntelliTraxx.TruckService.UserRole.datasource">
-      <publishTime>04/25/2017 06:43:50</publishTime>
+      <publishTime>04/27/2017 16:35:07</publishTime>
     </File>
     <File Include="Service References/TruckService/IntelliTraxx.TruckService.Vehicle.datasource">
-      <publishTime>04/25/2017 06:43:50</publishTime>
+      <publishTime>04/27/2017 16:35:07</publishTime>
     </File>
     <File Include="Service References/TruckService/IntelliTraxx.TruckService.VehicleClass.datasource">
-      <publishTime>04/25/2017 06:43:50</publishTime>
+      <publishTime>04/27/2017 16:35:07</publishTime>
     </File>
     <File Include="Service References/TruckService/IntelliTraxx.TruckService.VehicleExtendedData.datasource">
-      <publishTime>04/25/2017 06:43:50</publishTime>
+      <publishTime>04/27/2017 16:35:07</publishTime>
     </File>
     <File Include="Service References/TruckService/IntelliTraxx.TruckService.VehicleGPSRecord.datasource">
-      <publishTime>04/25/2017 06:43:50</publishTime>
+      <publishTime>04/27/2017 16:35:07</publishTime>
     </File>
     <File Include="Views/Account/ConfirmEmail.cshtml">
       <publishTime>12/11/2016 09:36:32</publishTime>
@@ -964,10 +964,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/30/2017 09:07:20</publishTime>
     </File>
     <File Include="Views/Admin/Index.cshtml">
-      <publishTime>04/24/2017 15:22:58</publishTime>
+      <publishTime>04/26/2017 08:20:34</publishTime>
     </File>
     <File Include="Views/Alerts/Admin.cshtml">
-      <publishTime>04/10/2017 09:42:09</publishTime>
+      <publishTime>05/01/2017 09:49:42</publishTime>
     </File>
     <File Include="Views/Alerts/Index.cshtml">
       <publishTime>04/09/2017 07:07:00</publishTime>
@@ -1009,7 +1009,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/11/2016 09:36:32</publishTime>
     </File>
     <File Include="Views/Scheduling/Index.cshtml">
-      <publishTime>04/08/2017 07:33:36</publishTime>
+      <publishTime>04/25/2017 11:01:33</publishTime>
     </File>
     <File Include="Views/Shared/Error.cshtml">
       <publishTime>12/11/2016 09:36:32</publishTime>
@@ -1057,7 +1057,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/11/2016 09:36:19</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>04/25/2017 09:26:39</publishTime>
+      <publishTime>05/01/2017 12:43:21</publishTime>
     </File>
   </ItemGroup>
 </Project>

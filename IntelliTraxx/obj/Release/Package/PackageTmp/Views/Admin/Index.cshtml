@@ -55,15 +55,15 @@
     <div id="profileDiv" class="profileDiv_in">
         @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
             {
-        @Html.AntiForgeryToken()
-        <small>
-            <ul class="list-group">
-                <li class="list-group-item"><a href="" class="text-left" style="padding: 5px;" id="userNameRole"></a><br /></li>
-                <li class="list-group-item"><a href="" class="text-left" style="padding: 5px;"><i class="glyphicons glyphicons-bell"></i> Notifications<span class="badge" style="margin-left: 5px;">3</span></a><br /></li>
-                <li class="list-group-item"><a href="" class="text-left" style="padding: 5px;"><i class="glyphicons glyphicons-question-sign"></i> Help</a></li>
-                <li class="list-group-item"><a href="javascript:document.getElementById('logoutForm').submit()" style="padding: 5px;"><i class="glyphicons glyphicons-exit"></i> Log off</a></li>
-            </ul>
-        </small>
+            @Html.AntiForgeryToken()
+            <small>
+                <ul class="list-group">
+                    <li class="list-group-item"><a href="" class="text-left" style="padding: 5px;" id="userNameRole"></a><br /></li>
+                    <li class="list-group-item"><a href="" class="text-left" style="padding: 5px;"><i class="glyphicons glyphicons-bell"></i> Notifications<span class="badge" style="margin-left: 5px;">3</span></a><br /></li>
+                    <li class="list-group-item"><a href="" class="text-left" style="padding: 5px;"><i class="glyphicons glyphicons-question-sign"></i> Help</a></li>
+                    <li class="list-group-item"><a href="javascript:document.getElementById('logoutForm').submit()" style="padding: 5px;"><i class="glyphicons glyphicons-exit"></i> Log off</a></li>
+                </ul>
+            </small>
         }
     </div>
 </div>
@@ -115,13 +115,13 @@
                             <td>
                                 @foreach (var role in @user.Roles)
                                     {
-                                    <p> @role.roleName</p>
+                                <p> @role.roleName</p>
                                     }
                             </td>
                             <td>
                                 @foreach (var company in @user.Companies)
                                     {
-                                    <p>@company.CompanyName</p>
+                                <p>@company.CompanyName</p>
                                     }
                             </td>
                             <td>
@@ -160,16 +160,16 @@
                     <tbody>
                         @foreach (var role in Model.Roles)
                         {
-                            <tr>
-                                <td>@role.roleName</td>
-                                <td>@role.roleDescription</td>
-                                <td>@role.isAdmin</td>
-                                <td>
-                                    <a href="@Url.Action("EditRole", new { roleID = @role.RoleID })" class="btn btn-info">
-                                        <i class="glyphicon glyphicon-pencil"></i>
-                                    </a>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td>@role.roleName</td>
+                            <td>@role.roleDescription</td>
+                            <td>@role.isAdmin</td>
+                            <td>
+                                <a href="@Url.Action("EditRole", new { roleID = @role.RoleID })" class="btn btn-info">
+                                    <i class="glyphicon glyphicon-pencil"></i>
+                                </a>
+                            </td>
+                        </tr>
                         }
                     </tbody>
                 </table>
@@ -204,20 +204,20 @@
                     <tbody>
                         @foreach (var company in Model.Companies)
                         {
-                            <tr>
-                                <td>@company.CompanyName</td>
-                                <td>@company.CompanyAddress</td>
-                                <td>@company.CompanyCity</td>
-                                <td>@company.CompanyState</td>
-                                <td>@company.CompanyCountry</td>
-                                <td>@company.isParent</td>
-                                <td>@Html.ActionLink(@company.CompanyContact.UserFirstName + " " + @company.CompanyContact.UserLastName, "EditUser", "Admin", new { userID = @company.CompanyContact.UserID }, null)</td>
-                                <td>
-                                    <a href="@Url.Action("EditCompany", new { companyID = @company.CompanyID })" class="btn btn-info">
-                                        <i class="glyphicon glyphicon-pencil"></i>
-                                    </a>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td>@company.CompanyName</td>
+                            <td>@company.CompanyAddress</td>
+                            <td>@company.CompanyCity</td>
+                            <td>@company.CompanyState</td>
+                            <td>@company.CompanyCountry</td>
+                            <td>@company.isParent</td>
+                            <td>@Html.ActionLink(@company.CompanyContact.UserFirstName + " " + @company.CompanyContact.UserLastName, "EditUser", "Admin", new { userID = @company.CompanyContact.UserID }, null)</td>
+                            <td>
+                                <a href="@Url.Action("EditCompany", new { companyID = @company.CompanyID })" class="btn btn-info">
+                                    <i class="glyphicon glyphicon-pencil"></i>
+                                </a>
+                            </td>
+                        </tr>
                         }
                     </tbody>
                 </table>
@@ -248,16 +248,16 @@
                     <tbody>
                         @foreach (var vc in Model.VehicleClasses)
                         {
-                            <tr>
-                                <td>@vc.VehicleClassName</td>
-                                <td><img class="img" src="@Url.Content("~/Content/VClasses/" + vc.VehicleClassImage.ToString())" /></td>
-                                <td>@vc.VehicleClassDescription</td>
-                                <td>
-                                    <a href="@Url.Action("EditVehicleClass", new { vehicleClassID = @vc.VehicleClassID })" class="btn btn-info">
-                                        <i class="glyphicon glyphicon-pencil"></i>
-                                    </a>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td>@vc.VehicleClassName</td>
+                            <td><img class="img" src="@Url.Content("~/Content/VClasses/" + vc.VehicleClassImage.ToString())" /></td>
+                            <td>@vc.VehicleClassDescription</td>
+                            <td>
+                                <a href="@Url.Action("EditVehicleClass", new { vehicleClassID = @vc.VehicleClassID })" class="btn btn-info">
+                                    <i class="glyphicon glyphicon-pencil"></i>
+                                </a>
+                            </td>
+                        </tr>
                         }
                     </tbody>
                 </table>
@@ -294,22 +294,22 @@
                     <tbody>
                         @foreach (var v in Model.Vehicles)
                         {
-                            <tr>
-                                <td>@v.VehicleIdentification</td>
-                                <td>@v.VehicleClass</td>
-                                <td>@v.Company</td>
-                                <td>@v.LicensePlate</td>
-                                <td>@v.Make</td>
-                                <td>@v.VehicleModel</td>
-                                <td>@v.Year</td>
-                                <td>@v.HaulLimit</td>
-                                <td>@v.VehicleFriendlyName</td>
-                                <td>
-                                    <a href="@Url.Action("EditVehicle", new { VehicleID = @v.ID })" class="btn btn-info">
-                                        <i class="glyphicon glyphicon-pencil"></i>
-                                    </a>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td>@v.VehicleIdentification</td>
+                            <td>@v.VehicleClass</td>
+                            <td>@v.Company</td>
+                            <td>@v.LicensePlate</td>
+                            <td>@v.Make</td>
+                            <td>@v.VehicleModel</td>
+                            <td>@v.Year</td>
+                            <td>@v.HaulLimit</td>
+                            <td>@v.VehicleFriendlyName</td>
+                            <td>
+                                <a href="@Url.Action("EditVehicle", new { VehicleID = @v.ID })" class="btn btn-info">
+                                    <i class="glyphicon glyphicon-pencil"></i>
+                                </a>
+                            </td>
+                        </tr>
                         }
                     </tbody>
                 </table>
@@ -345,37 +345,50 @@
                             var base64 = Convert.ToBase64String(dr.imageDataField);
                             var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
 
-                            <tr>
-                                <td><img class="img" src="@imgSrc" width="65" /></td>
-                                <td>@dr.DriverFirstName</td>
-                                <td>@dr.DriverLastName</td>
-                                <td>@dr.CompanyName</td>
-                                <td>@dr.PIN</td>
-                                <td>
-                                    <a href="@Url.Action("EditDriver", new { driverID=@dr.DriverID })" class="btn btn-info">
-                                        <i class="glyphicon glyphicon-pencil"></i>
-                                    </a>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td><img class="img" src="@imgSrc" width="65" /></td>
+                            <td>@dr.DriverFirstName</td>
+                            <td>@dr.DriverLastName</td>
+                            <td>@dr.CompanyName</td>
+                            <td>@dr.PIN</td>
+                            <td>
+                                <a href="@Url.Action("EditDriver", new { driverID=@dr.DriverID })" class="btn btn-info">
+                                    <i class="glyphicon glyphicon-pencil"></i>
+                                </a>
+                            </td>
+                        </tr>
                         }
                     </tbody>
                 </table>
             </div>
-            @*<div id="driversToVehiclesSection" class="tab-pane fade in @dtvClass">
+            <div id="driversToVehiclesSection" class="tab-pane fade in @dtvClass">
                 <div id="addVDRecord" class="col-lg-12">
-                    <div class="dropdown">
-                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Available rivers
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                            @foreach(var d in Model.availableDrivers)
-                            {
-                                var base64D = Convert.ToBase64String(@d.imageData);
-                                var imgSrcD = String.Format("data:image/gif;base64,{0}", base64D);
-                                <li><img class="img" src="@imgSrcD" width="65" />@d.DriverFirstName @d.DriverLastName</li>
-                            }
-                        </ul>
+                    <br /><br />
+                    <div class="col-lg-12">
+                        <table class="table">
+                            <tr>
+                                <td align="right" valign="middle"><strong>Assign:</strong></td>
+                                <td>
+                                    <select class="form-control input-sm" id="driver">
+                                        @foreach (var d in Model.availableDrivers)
+                                        {
+                                            <option value="@d.DriverID">@d.DriverFirstName @d.DriverLastName</option>
+                                        }
+                                    </select>
+                                </td>
+                                <td align="left" valign="middle"><strong>To:</strong></td>
+                                <td>
+                                    <select class="form-control input-sm" id="vehicle">
+                                        @foreach (var v in Model.availableVehicles)
+                                        {
+                                            <option value="@v.ID">@v.VehicleFriendlyName</option>
+                                        }
+                                    </select>
+                                </td>
+                                <td><button class="btn btn-success" id="assignDriver"><i class="glyphicon glyphicon-plus"></i> Submit</button></td>
+                            </tr>
+                        </table>
+
                     </div>
                 </div>
                 <table id="driverToVehicleTable"
@@ -400,14 +413,14 @@
                         {
                             var base64Driver = Convert.ToBase64String(dToV.driver.imageData);
                             var imgSrcDriver = String.Format("data:image/gif;base64,{0}", base64Driver);
-                            var imgSrcVehicleClass = "Content/VClasses/" + dToV.Vehicle.vehicleClassImage;
+                            var imgSrcVehicleClass = "../Content/VClasses/" + dToV.Vehicle.vehicleClassImage;
                             <tr>
                                 <td class="text-center"><img class="img" src="@imgSrcDriver" width="65" /><br /> @dToV.driver.DriverFirstName @dToV.driver.DriverLastName</td>
                                 <td class="text-center"><img class="img" src="@imgSrcVehicleClass" width="200" /><br />@dToV.Vehicle.vehicleID</td>
                                 <td class="text-center">@dToV.ModifiedDate</td>
                                 <td class="text-center">@dToV.ModifiedBy</td>
                                 <td class="text-center">
-                                    <a href="@Url.Action("Delete", new { id=@dToV.ID })" class="btn btn-danger">
+                                    <a href="#" id="@dToV.ID" class="btn btn-danger DVR">
                                         <i class="glyphicons glyphicons-user-remove"></i>
                                     </a>
                                 </td>
@@ -415,7 +428,7 @@
                         }
                     </tbody>
                 </table>
-            </div>*@
+            </div>
             <div id="appSettingsSection" class="tab-pane fade in @appClass">
                 <div id="toolbar8">
                     &nbsp;&nbsp;&nbsp;<a href="@Url.Action("AddSetting", "Admin" )" class="btn btn-success" title="New App Setting" id="addAppSetting">
@@ -468,4 +481,5 @@
             <li role="presentation" class="@dtvClass"><a data-toggle="tab" href="#driversToVehiclesSection">Drivers -> Vehicles</a></li>
             <li role="presentation" class="@appClass"><a data-toggle="tab" href="#appSettingsSection">App Settings</a></li>
         </ul>
-    </div></div>
+    </div>
+</div>

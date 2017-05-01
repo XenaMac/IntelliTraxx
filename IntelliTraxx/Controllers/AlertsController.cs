@@ -49,6 +49,7 @@ namespace IntelliTraxx.Controllers
                 newAlert.AlertType = a.AlertType;
                 newAlert.ExtensionData = a.ExtensionData;
                 newAlert.minVal = a.minVal;
+                newAlert.NDB = a.NDB;
                 Alerts.Add(newAlert);
             }
 
@@ -174,7 +175,7 @@ namespace IntelliTraxx.Controllers
         }
 
         [HttpPost]
-        public ActionResult updateAlertData(string alertClassID, string alertClassName, string alertName, string editAlertID, string startDate, string endDate, List<polygonID> polygonIDs, List<polygonNames> polygonNames, List<AV> alertVehicles, string alertValue)
+        public ActionResult updateAlertData(string alertClassID, string alertClassName, string alertName, string editAlertID, string startDate, string endDate, List<polygonID> polygonIDs, List<polygonNames> polygonNames, List<AV> alertVehicles, string alertValue, bool TNDB)
         {
             DateTime s = DateTime.Now;
             DateTime e = DateTime.Now.AddYears(5);
@@ -205,6 +206,7 @@ namespace IntelliTraxx.Controllers
             alert.AlertClassID = new Guid(alertClassID);
             alert.AlertFriendlyName = alertName;
             alert.minVal = alertValue;
+            alert.NDB = TNDB;
 
             //create polygon list
             List<alertGeoFence> fences = new List<alertGeoFence>();
