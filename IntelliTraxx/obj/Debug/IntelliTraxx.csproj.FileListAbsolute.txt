@@ -223,4 +223,5 @@ C:\GitHub\XenaTech\IntellilTraxx\IntelliTraxx\bin\Microsoft.AspNet.Identity.Owin
 C:\GitHub\XenaTech\IntellilTraxx\IntelliTraxx\bin\Microsoft.AspNet.Identity.EntityFramework.xml
 C:\GitHub\XenaTech\IntellilTraxx\IntelliTraxx\obj\Debug\IntelliTraxx.dll
 C:\GitHub\XenaTech\IntellilTraxx\IntelliTraxx\obj\Debug\IntelliTraxx.pdb
-C:\GitHub\XenaTech\IntellilTraxx\IntelliTraxx\obj\Debug\IntelliTraxx.csprojResolveAssemblyReference.cache
+C:\GitHub\XenaTech\IntellilTraxx\IntelliTraxx\bin\RestSharp.dll
+C:\GitHub\XenaTech\IntellilTraxx\IntelliTraxx\bin\RestSharp.xml

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using RestSharp;
 
 namespace IntelliTraxx.Controllers
 {
@@ -282,7 +283,21 @@ namespace IntelliTraxx.Controllers
             return Json(tracking, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult getAllRouters()
+        {
+            var client = new RestClient("https://www.cradlepointecm.com/api/v2/routers/");
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("postman-token", "a4586ada-91c0-b9a3-c93b-fba498301e98");
+            request.AddHeader("cache-control", "no-cache");
+            request.AddHeader("x-ecm-api-key", "b9e2467d6913a936b59334c5c091cc17b349cbf1");
+            request.AddHeader("x-ecm-api-id", "00218660-47fc-431e-a569-b49d61d7a7b9");
+            request.AddHeader("x-cp-api-key", "8bbe2a520e19f8d28c668a32d47dd44c");
+            request.AddHeader("x-cp-api-id", "a73571e3");
+            request.AddHeader("content-type", "application/json");
+            var response = client.Execute<JsonResult>(request);
 
+            return Json(response.Data.Data, JsonRequestBehavior.AllowGet);
+        }
 
 
 

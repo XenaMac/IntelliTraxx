@@ -98,7 +98,7 @@
 
     function getUserProfileSuccess(data) {
         if (data) {
-            $("#userNameRole").attr("href", "http://localhost/IntelliTraxx/Admin/EditUser?userID=" + data.UserID)
+            $("#userNameRole").attr("href", "../Admin/EditUser?userID=" + data.UserID)
             $('#userNameRole').html('<i class="glyphicons glyphicons-user"></i>' + data.UserFirstName + ' ' + data.UserLastName + ' (' + data.UserRole + ')');
         } else {
             alert('A problem occurred getting the user profile, please reload or contact the administrator.');

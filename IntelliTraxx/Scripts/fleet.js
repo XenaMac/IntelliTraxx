@@ -30,27 +30,12 @@
     });
 
     initiate();
-    
+    ECMAPITest();
+
     //#region ECMAPITest
 
     function ECMAPITest() {
-        var _url = 'https://www.cradlepointecm.com/api/v2/routers/';
-        var _data = "";
-        $.ajax({
-            type: "GET",
-            crossDomain: true,
-            dataType: 'json',
-            headers: {
-                'X-CP-API-ID': 'a73571e3',
-                'X-CP-API-KEY': '8bbe2a520e19f8d28c668a32d47dd44c',
-                'X-ECM-API-ID': '00218660-47fc-431e-a569-b49d61d7a7b9',
-                'X-ECM-API-KEY': 'b9e2467d6913a936b59334c5c091cc17b349cbf1'
-            },
-            url: _url,
-            data: _data,
-            success: ECMAPITestSuccess,
-            error: ECMAPITestError
-        });
+        
     }
 
     function ECMAPITestSuccess(data) {
