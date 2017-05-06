@@ -30,27 +30,6 @@
     });
 
     initiate();
-    ECMAPITest();
-
-    //#region ECMAPITest
-
-    function ECMAPITest() {
-        
-    }
-
-    function ECMAPITestSuccess(data) {
-        if (data.length > 0) {
-
-        } else {
-            alert('A problem occurred getting the ECM router data, please reload or contact the administrator.');
-        }
-    }
-
-    function ECMAPITestError(result, error) {
-        alert('A problem occurred getting the ECM router data, please reload or contact the administrator.');
-    }
-
-    //#endregion
 
     //#region Vehicle class
     function Vehicle(data, selected) {

@@ -1,76 +1,8 @@
 ﻿$(function () {
-    $('#vehicles').highcharts({
-        chart: {
-            type: 'pie',
-            options3d: {
-                enabled: true,
-                alpha: 45,
-                beta: 0
-            }
-        },
-        title: {
-            text: 'Active/Inactive Vehicles'
-        },
-        tooltip: {
-            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-        },
-        plotOptions: {
-            pie: {
-                allowPointSelect: true,
-                cursor: 'pointer',
-                depth: 35,
-                dataLabels: {
-                    enabled: true,
-                    format: '{point.name}'
-                }
-            }
-        },
-        series: [{
-            type: 'pie',
-            name: 'Browser share',
-            data: [
-                ['Active', 85.0],
-                {
-                    name: 'Inactive',
-                    y: 14.3,
-                    sliced: true,
-                    selected: true
-                },
-                ['Non Communicative', 0.7]
-            ]
-        }]
-    });
 
-    $('#drivers').highcharts({
-        chart: {
-            type: 'pie',
-            options3d: {
-                enabled: true,
-                alpha: 45
-            }
-        },
-        title: {
-            text: 'Driver Status'
-        },
-        subtitle: {
-            text: ''
-        },
-        plotOptions: {
-            pie: {
-                innerSize: 100,
-                depth: 45
-            }
-        },
-        series: [{
-            name: 'Status',
-            data: [
-                ['Working', 38],
-                ['Driving', 13],
-                ['Sleeping', 21],
-                ['Off', 6]
-            ]
-        }]
-    });
+    AIVehicles();
+    getDriverAnalytics();
+    
 
     $('#fleetUtilization').highcharts({
         chart: {
@@ -314,4 +246,156 @@
             ]
         }]
     });
+
+
+    //#region Active/Inactive Vehicles
+    function AIVehicles() {
+        var _url = 'getAllVehicles';
+        var _data = "loadHistorical=true";
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: _url,
+            data: _data,
+            contentType: "application/json; charset=utf-8",
+            success: AIVehiclesSuccess,
+            error: AIVehiclesError
+        });
+    }
+
+    function AIVehiclesSuccess(result) {
+        var active = 0;
+        var inactive = 0;
+        if (result.length > 0) {
+            for (var i = 0; i < result.length; i++) {
+                if (result[i].status.length > 0) {
+                    inactive++;
+                } else {
+                    active++;
+                }
+            }
+            Highcharts.getOptions().colors = Highcharts.map(Highcharts.getOptions().colors, function (color) {
+                return {
+                    radialGradient: {
+                        cx: 0.5,
+                        cy: 0.3,
+                        r: 0.7
+                    },
+                    stops: [
+                        [0, color],
+                        [1, Highcharts.Color(color).brighten(-0.3).get('rgb')] // darken
+                    ]
+                };
+            });
+            $('#vehicles').highcharts({
+                chart: {
+                    borderColor: '#cecece',
+                    borderRadius: 10,
+                    borderWidth: 1,
+                    type: 'pie',
+                    options3d: {
+                        enabled: true,
+                        alpha: 45,
+                        beta: 0
+                    }
+                },
+                title: {
+                    style: { "fontSize": "1.5em" },
+                    text: 'Active/Inactive Vehicles:<br />' + moment().format("MM/DD/YYYY hh:mm")
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.y}</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        dataLabels: {
+                            enabled: false,
+                        }
+                    }
+                },
+                series: [{
+                    type: 'pie',
+                    name: 'Vehicles',
+                    data: [
+                        ['Active', active],
+                        {
+                            name: 'Inactive',
+                            y: inactive,
+                            sliced: true,
+                            selected: true
+                        }
+                    ]
+                }]
+            });
+
+        } else {
+            alert('A problem occurred getting the Active/Inactive Vehicles, please reload or contact the administrator.');
+        }
+    }
+
+    function AIVehiclesError(result, error) {
+        alert('A problem occurred getting the Active/Inactive Vehicles, please reload or contact the administrator. Error: ' + error.message);
+    }
+    //#endregion
+
+    //#region Active/Inactive Vehicles
+    function getDriverAnalytics() {
+        var _url = 'getDriverAnalytics';
+        var _data = "";
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: _url,
+            data: _data,
+            contentType: "application/json; charset=utf-8",
+            success: getDriverAnalyticsSuccess,
+            error: getDriverAnalyticsError
+        });
+    }
+
+    function getDriverAnalyticsSuccess(result) {
+        $('#drivers').highcharts({
+            chart: {
+                type: 'pie',
+                borderColor: '#cecece',
+                borderRadius: 10,
+                borderWidth: 1,
+                options3d: {
+                    enabled: true,
+                    alpha: 45
+                }
+            },
+            title: {
+                text: 'Driver Status<br />' + moment().format("MM/DD/YYYY hh:mm")
+            },
+            subtitle: {
+                text: ''
+            },
+            plotOptions: {
+                pie: {
+                    innerSize: 100,
+                    depth: 65,
+                    allowPointSelect: true,
+                    dataLabels: {
+                        enabled: false,
+                    }
+                }
+            },
+            series: [{
+                name: 'Status',
+                data: [
+                    ['Driving', result.driving],
+                    ['Not Driving', result.notDriving],
+                    ['Unassigned', result.notAssigned],
+                    ['Vehicles WO/Driver', result.vehiclesWithoutDrivers]
+                ]
+            }]
+        });
+    }
+
+    function getDriverAnalyticsError(result, error) {
+        alert('A problem occurred getting the Driver Analytics, please reload or contact the administrator. Error: ' + error.message);
+    }
+    //#endregion
 });
