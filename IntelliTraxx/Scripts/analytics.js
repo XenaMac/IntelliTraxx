@@ -1,255 +1,19 @@
 ﻿$(function () {
+    var start = moment().startOf('month').format('YYYY-MM-DD hh:mm');
+    var end = moment().endOf('month').format('YYYY-MM-DD hh:mm');
+
+    $('#startDtTm').datetimepicker();
+    $('#startDtTm').val(start);
+    $('#endDtTm').datetimepicker();
+    $('#endDtTm').val(end);
 
     AIVehicles();
     getDriverAnalytics();
-    
-
-    $('#fleetUtilization').highcharts({
-        chart: {
-            type: 'column',
-            options3d: {
-                enabled: true,
-                alpha: 15,
-                beta: 15,
-                viewDistance: 25,
-                depth: 40
-            }
-        },
-
-        title: {
-            text: 'Alerts'
-        },
-
-        xAxis: {
-            categories: ['Inbound', 'On Time', 'Late', 'Off Course', 'Other']
-        },
-
-        yAxis: {
-            allowDecimals: false,
-            min: 0,
-            title: {
-                text: 'Number of Alerts'
-            }
-        },
-
-        tooltip: {
-            headerFormat: '<b>{point.key}</b><br>',
-            pointFormat: '<span style="color:{series.color}">\u25CF</span> {series.name}: {point.y} / {point.stackTotal}'
-        },
-
-        plotOptions: {
-            column: {
-                stacking: 'normal',
-                depth: 40
-            }
-        },
-
-        series: [{
-            name: 'Inbound',
-            data: [5, 3, 4, 7, 2],
-            stack: 'male'
-        }, {
-            name: 'On Time',
-            data: [3, 4, 4, 2, 5],
-            stack: 'male'
-        }, {
-            name: 'Off Course',
-            data: [2, 5, 6, 2, 1],
-            stack: 'female'
-        }, {
-            name: 'Other',
-            data: [3, 0, 4, 4, 3],
-            stack: 'female'
-        }]
-    });
-
-    var gaugeOptions = {
-
-        chart: {
-            type: 'solidgauge'
-        },
-
-        title: null,
-
-        pane: {
-            center: ['50%', '85%'],
-            size: '140%',
-            startAngle: -90,
-            endAngle: 90,
-            background: {
-                backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || '#EEE',
-                innerRadius: '60%',
-                outerRadius: '100%',
-                shape: 'arc'
-            }
-        },
-
-        tooltip: {
-            enabled: false
-        },
-
-        // the value axis
-        yAxis: {
-            stops: [
-                [0.1, '#55BF3B'], // green
-                [0.5, '#DDDF0D'], // yellow
-                [0.9, '#DF5353'] // red
-            ],
-            lineWidth: 0,
-            minorTickInterval: null,
-            tickPixelInterval: 400,
-            tickWidth: 0,
-            title: {
-                y: -70
-            },
-            labels: {
-                y: 16
-            }
-        },
-
-        plotOptions: {
-            solidgauge: {
-                dataLabels: {
-                    y: 5,
-                    borderWidth: 0,
-                    useHTML: true
-                }
-            }
-        }
-    };
-
-    $('#gasAverage').highcharts({
-
-        chart: {
-            type: 'gauge',
-            plotBackgroundColor: null,
-            plotBackgroundImage: null,
-            plotBorderWidth: 0,
-            plotShadow: false
-        },
-
-        title: {
-            text: 'Average Gas Price Paid'
-        },
-
-        pane: {
-            startAngle: -150,
-            endAngle: 150,
-            background: [{
-                backgroundColor: {
-                    linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-                    stops: [
-                        [0, '#FFF'],
-                        [1, '#333']
-                    ]
-                },
-                borderWidth: 0,
-                outerRadius: '109%'
-            }, {
-                backgroundColor: {
-                    linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-                    stops: [
-                        [0, '#333'],
-                        [1, '#FFF']
-                    ]
-                },
-                borderWidth: 1,
-                outerRadius: '107%'
-            }, {
-                // default background
-            }, {
-                backgroundColor: '#DDD',
-                borderWidth: 0,
-                outerRadius: '105%',
-                innerRadius: '103%'
-            }]
-        },
-
-        // the value axis
-        yAxis: {
-            min: 1.50,
-            max: 5.50,
-
-            minorTickInterval: 'auto',
-            minorTickWidth: 1,
-            minorTickLength: 10,
-            minorTickPosition: 'inside',
-            minorTickColor: '#666',
-
-            tickPixelInterval: 30,
-            tickWidth: 2,
-            tickPosition: 'inside',
-            tickLength: 10,
-            tickColor: '#666',
-            labels: {
-                step: 2,
-                rotation: 'auto'
-            },
-            title: {
-                text: '$/Gallon'
-            },
-            plotBands: [{
-                from: 1.50,
-                to: 2.50,
-                color: '#55BF3B' // green
-            }, {
-                from: 2.51,
-                to: 4.50,
-                color: '#DDDF0D' // yellow
-            }, {
-                from: 4.51,
-                to: 5.50,
-                color: '#DF5353' // red
-            }]
-        },
-
-        series: [{
-            name: 'Average',
-            data: [80],
-            tooltip: {
-                valueSuffix: ' $/gallon'
-            }
-        }]
-    });
-
-    $('#hos').highcharts({
-        chart: {
-            type: 'pie',
-            options3d: {
-                enabled: true,
-                alpha: 45
-            }
-        },
-        title: {
-            text: 'Drivers HOS'
-        },
-        subtitle: {
-            text: ''
-        },
-        plotOptions: {
-            pie: {
-                innerSize: 100,
-                depth: 45
-            }
-        },
-        series: [{
-            name: 'HOS',
-            data: [
-                ['IN', 38],
-                {
-                    name: 'OUT',
-                    y: 12,
-                    sliced: true,
-                    selected: true,
-                    color: 'Red'
-                }
-            ]
-        }]
-    });
-
+    getAlertsByRange(start, end);
 
     //#region Active/Inactive Vehicles
     function AIVehicles() {
+        $('#vehicles').html("<img src=\'../Content/Images/preloader.gif\' width=\'200\' />");
         var _url = 'getAllVehicles';
         var _data = "loadHistorical=true";
         $.ajax({
@@ -267,6 +31,7 @@
         var active = 0;
         var inactive = 0;
         if (result.length > 0) {
+            $('#vehicles').html("");
             for (var i = 0; i < result.length; i++) {
                 if (result[i].status.length > 0) {
                     inactive++;
@@ -341,6 +106,7 @@
 
     //#region Active/Inactive Vehicles
     function getDriverAnalytics() {
+        $('#drivers').html("<img src=\'../Content/Images/preloader.gif\' width=\'200\' />");
         var _url = 'getDriverAnalytics';
         var _data = "";
         $.ajax({
@@ -355,6 +121,7 @@
     }
 
     function getDriverAnalyticsSuccess(result) {
+        $('#drivers').html("");
         $('#drivers').highcharts({
             chart: {
                 type: 'pie',
@@ -398,4 +165,120 @@
         alert('A problem occurred getting the Driver Analytics, please reload or contact the administrator. Error: ' + error.message);
     }
     //#endregion
+
+
+    //#region Active/Inactive Vehicles
+    function getAlertsByRange(start, end) {
+        $('#alerts').html("<img src=\'../Content/Images/preloader.gif\' width=\'200\' />");
+        var _url = 'getAlertsByRange';
+        var _data = "start=" + start + "&end=" + end;
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: _url,
+            data: _data,
+            contentType: "application/json; charset=utf-8",
+            success: getAlertsByRangeSuccess,
+            error: getAlertsByRangeError
+        });
+    }
+
+    function getAlertsByRangeSuccess(result) {
+        $('#alerts').html("");
+        var series = [];
+        var drilldown = [];
+
+        for (var i = 0; i < result.length; i++) {
+
+            var SeriesObj = {
+                'name': result[i].alertName,
+                'y': 1,
+                'drilldown': result[i].alertName
+            };
+
+            if (containsObject(SeriesObj, series)) {
+                for (var a in series) {
+                    if (series[a].name == result[i].alertName) {
+                        series[a].y ++;
+                        break; //Stop this loop, we found it!
+                    }
+                }
+            } else {
+                series.push(SeriesObj);
+            }
+        }
+
+        Highcharts.chart('alerts', {
+            chart: {
+                type: 'column',
+                options3d: {
+                    enabled: true,
+                    alpha: 45
+                }
+            },
+            title: {
+                text: 'Number of alerts between ' + start + " - " + end 
+            },
+            subtitle: {
+                //text: 'Click the columns to drill down'
+            },
+            xAxis: {
+                type: 'category'
+            },
+            yAxis: {
+                title: {
+                    text: 'Total alert type for the fleet'
+                }
+
+            },
+            legend: {
+                enabled: false
+            },
+            plotOptions: {
+                series: {
+                    borderWidth: 0,
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.y}'
+                    }
+                }
+            },
+
+            tooltip: {
+                headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b><br/>'
+            },
+
+            series: [{
+                name: 'Alerts',
+                colorByPoint: true,
+                data: series
+            }]
+        });
+    }
+
+    function getAlertsByRangeError(result, error) {
+        alert('A problem occurred getting the Alert Analytics, please reload or contact the administrator.');
+    }
+    //#endregion
+
+    //reload alerts with date range
+    $('#alertsReload').click(function () {
+        start = $('#startDtTm').val();
+        end = $('#endDtTm').val();
+
+        getAlertsByRange(start, end);
+    });
+
+    //does array contain object function
+    function containsObject(obj, list) {
+        var i;
+        for (i = 0; i < list.length; i++) {
+            if (list[i].name == obj.name) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 });

@@ -16,6 +16,7 @@ namespace IntelliTraxx.Controllers
         {
             return View();
         }
+
         public ActionResult getAllVehicles(bool loadHistorical)
         {
             List<Vehicle> allVehicles = truckService.getAllVehicles(loadHistorical);
@@ -39,6 +40,12 @@ namespace IntelliTraxx.Controllers
             da.notAssigned = truckService.getAvailableDrivers().Count();
             da.vehiclesWithoutDrivers = truckService.getAvailableVehicles().Count();
             return Json(da, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult getAlertsByRange(DateTime start, DateTime end)
+        {
+            List<alertReturn> alerts = truckService.getAllAlertsByRange(start, end);
+            return Json(alerts, JsonRequestBehavior.AllowGet);
         }
     }
 

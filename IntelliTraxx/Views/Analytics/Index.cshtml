@@ -38,21 +38,34 @@
                     <div class="col-md-12 container-fluid">
                         <div class="col-md-6 text-center"><div id="vehicles" style="height: 400px"></div></div>
                         <div class="col-md-6 text-center"><div id="drivers" style="height: 400px"></div></div>
-                        <div class="col-md-12 text-center"><br /><div id="fleetUtilization" style="height: 400px"></div></div>
-                        <div class="col-md-6 text-center"><div id="gasAverage" style="height: 400px"></div></div>
-                        <div class="col-md-6 text-center"><div id="hos" style="height: 400px"></div></div>
+                        <div class="col-md-12 text-center" style="height: 500px; border: 1px solid #cecece; border-radius: 10px; margin: 15px; margin-right: 25px; padding: 10px;">
+                            <div class="form-group col-md-12">
+                                <div class="col-sm-3">
+                                    <input type="text" class="form-control" id="startDtTm" placeholder="Start">
+                                </div>
+                                <div class="col-sm-3">
+                                    <input type="text" class="form-control" id="endDtTm" placeholder="End">
+                                </div>
+                                <div class="col-sm-=3 pull-left">
+                                    <input class="btn btn-info" type="button" value="Submit" id="alertsReload">
+                                </div>
+                            </div>
+                            <br /><div id="alerts" style="height: 400px"></div>
+                        </div>
+                        @*<div class="col-md-6 text-center"><div id="gasAverage" style="height: 400px"></div></div>
+                        <div class="col-md-6 text-center"><div id="hos" style="height: 400px"></div></div>*@
                     </div>
                 </div>
-                <div role="tabpanel" class="tab-pane" id="driversTab">...</div>
-                <div role="tabpanel" class="tab-pane" id="vehiclesTab">...</div>
+                @*<div role="tabpanel" class="tab-pane" id="driversTab">...</div>
+                <div role="tabpanel" class="tab-pane" id="vehiclesTab">...</div>*@
             </div>
         </div>
 
         <div class="col-lg-2">
             <ul class="nav nav-pills nav-stacked">
                 <li role="presentation" class="active"><a href="#dashboard" aria-controls="home" role="tab" data-toggle="tab">Dash Board</a></li>
-                <li role="presentation"><a href="#driversTab" aria-controls="profile" role="tab" data-toggle="tab">Drivers</a></li>
-                <li role="presentation"><a href="#vehiclesTab" aria-controls="messages" role="tab" data-toggle="tab">Vehicles</a></li>
+                @*<li role="presentation"><a href="#driversTab" aria-controls="profile" role="tab" data-toggle="tab">Drivers</a></li>
+                <li role="presentation"><a href="#vehiclesTab" aria-controls="messages" role="tab" data-toggle="tab">Vehicles</a></li>*@
             </ul>
         </div>
     </div>
