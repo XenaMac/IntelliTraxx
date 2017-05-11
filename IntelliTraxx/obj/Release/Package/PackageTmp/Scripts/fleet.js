@@ -19,14 +19,16 @@
     var searchDate = new Date();
     var getHistorical = false;
     var polysVisible = false;
+    var currentD2V = 0;
 
     $('[data-toggle="tooltip"]').tooltip()
 
-    //REMOVE FOR PROD ROLL!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //#region REMOVE FOR PROD ROLL!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     $('#startSim').click(function () {
         window.open('http://38.124.164.213:9098/Index.aspx', 'IntellliTraxx Vehicle Simulator', '');
         return false;
     });
+    //---------------------------------------------------
 
     initiate();
 
@@ -339,10 +341,11 @@
                     vehicles[i].Marker.setMap(null);
                 }
                 vehicles = [];
-                $("#vehicleList").html('');
+                currentD2V = 0
+                $("#vehicleList").empty();
                 $("#vehicleList").append($('<option>', { value: 'None' }).text('-- Select Vehicle ID --'));
             } else {
-                $("#vehicleList").html('');
+                $("#vehicleList").empty();
                 $("#vehicleList").append($('<option>', { value: 'None' }).text('-- Select Vehicle ID --'));
             }
 
@@ -350,11 +353,16 @@
                 if (data.length != vehicles.length) {
                     for (var i = 0; i < data.length; i++) {
                         $("#vehicleList").append($('<option>', { value: data[i].extendedData.ID }).text(data[i].VehicleID));
-                        if (!containsVehicle(data[i].extendedData.sID)) {
+                        if (!containsVehicle(data[i].extendedData.ID)) {
+                            if (data[i].driver != null) {
+                                currentD2V += 1;
+                            }
                             vehicles.push(new Vehicle(data[i], false));
                         }
                     }
                 }
+
+                $('#currentD2V').html('Current Active Vehicles without Assigned Drivers: <strong>' + (data.length - currentD2V)+ "</strong><hr />")
             });
         }
     };
@@ -422,7 +430,6 @@
             }
             selectedVehicle = null;
             mapLogEntry("unselected", selected);
-            $("#vehicleList").val('None');
             closeNav();
         }
     }

@@ -26,5 +26,11 @@ namespace IntelliTraxx.Controllers
 
             return View();
         }
+
+        public ActionResult TermsAndConditions()
+        {
+
+            return View();
+        }
     }
 }
