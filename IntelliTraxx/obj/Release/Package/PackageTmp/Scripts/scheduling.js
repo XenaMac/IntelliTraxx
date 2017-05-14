@@ -3,6 +3,7 @@
     var vehicles = [];
     var scheduleVehicles = [];
     var updateVehicles = [];
+    var days = ['Sun','Mon','Tues','Wed','Thurs','Fri','Sat'];
 
     $('[data-toggle="tooltip"]').tooltip()
     $('#tbEffStDt').datetimepicker();
@@ -27,6 +28,10 @@
         $('#loader').removeClass('hidden');
         $('#scheduleInfo').addClass('hidden');
         $('#scheduleList').html('');
+        for (var i = 1; i <= 7; i++) {
+            $('#' + i).button('reset');
+        }
+
         var _url = 'getAllSchedules';
         var _data = "";
 
@@ -44,7 +49,9 @@
     function getAllSchedulesSuccess(data) {
 
         if (data.length == 0) {
-            $('#alertsDiv').html('There were no schedules found. Does that seem right to you?');
+            $('#loader').addClass('hidden');
+            $('#scheduleInfo').removeClass('hidden');
+            $('#scheduleList').html('There were no schedules found.<br />Does that seem right to you?');
         } else {
             schedules = data;
             var markup = '<div class="list-group">';
@@ -270,51 +277,52 @@
         var $btn = $(document.activeElement);
         $('#submitter').removeClass('hidden');
         var scheduleList = [];
+        updateVehicles = [];
         var DOW = null;
-
-        for (var i = 1; i < 6; i++) {
-            if ($('#' + i).prop('checked')) {
-                DOW = i;
-            }
-        }
-
+        
+        updateVehicles = [];
         $('#vehicleList option:selected').each(function (index, brand) {
             updateVehicles.push($(this).val());
         });
+        
+        for (var i = 1; i <= 7; i++) {
+            if ($('#' + i).prop('checked')) {
 
-        var scheduleid = null;
-        var knew = null;
+                var scheduleid = null;
+                var knew = null;
 
-        if ($btn.prop('id') == "modifySchedule") {
-            var scheduleid = $('#scheduleID').val();
-            var knew = false;
-        } else {
-            scheduleid = createGuid();
-            var knew = true;
+                if ($btn.prop('id') == "modifySchedule") {
+                    var scheduleid = $('#scheduleID').val();
+                    var knew = false;
+                } else {
+                    scheduleid = createGuid();
+                    var knew = true;
+                }
+
+                scheduleList.push({
+                    scheduleID: scheduleid,
+                    scheduleName: $('#tbScheduleName').val(),
+                    company: null,
+                    startTime: $('#timeFrom').val(),
+                    endTime: $('#timeTo').val(),
+                    createdBy: null,
+                    createdOn: null,
+                    modifiedBy: null,
+                    modifiedOn: null,
+                    DOW: i,
+                    EffDtStart: $('#tbEffStDt').val(),
+                    EffDtEnd: $('#tbEffEndDt').val(),
+                    active: $('#active').prop('checked')
+                });
+            }
         }
 
-        scheduleList.push({
-            scheduleID: scheduleid,
-            scheduleName: $('#tbScheduleName').val(),
-            company: null,
-            startTime: $('#timeFrom').val(),
-            endTime: $('#timeTo').val(),
-            createdBy: null,
-            createdOn: null,
-            modifiedBy: null,
-            modifiedOn: null,
-            DOW: DOW,
-            EffDtStart: $('#tbEffStDt').val(),
-            EffDtEnd: $('#tbEffEndDt').val(),
-            active: $('#active').prop('checked')
-        });
-
-        updateSchedule(scheduleList, knew);
+        updateSchedule(scheduleList, knew, updateVehicles);        
     });
 
     //#region udpateSchedule
 
-    function updateSchedule(scheduleList, knew) {
+    function updateSchedule(scheduleList, knew, updateVehicles) {
         var _url = 'updateSchedules';
         var _data = JSON.stringify({ 'schedules': scheduleList, 'knew': knew });
 
@@ -325,16 +333,22 @@
             data: _data,
             contentType: "application/json; charset=utf-8",
             success: function (data) {
-                updateScheduleSuccess(data, scheduleList);
+                updateScheduleSuccess(data, scheduleList, updateVehicles);
             },
             error: updateScheduleError
         });
     }
 
-    function updateScheduleSuccess(data, schedueList) {
+    function updateScheduleSuccess(data, schedueList, updateVehicles) {
         if (data == "OK") {
+            var reload = false;
             //send list of vehicles to bind to schedule.
-            addVehiclesToSchedule(schedueList[0].scheduleID);
+            for (var i = 0; i < schedueList.length; i++) {
+                if (i == schedueList.length - 1) {
+                    reload = true;
+                }
+                addVehiclesToSchedule(schedueList[i].scheduleID, updateVehicles, reload);
+            }
         } else {
             alert('There was an issue saving the schedule.  Please try again or contact the administrator');
         }
@@ -349,9 +363,9 @@
 
     //#region add/Update Vehicles in schedule
 
-    function addVehiclesToSchedule(scheduleID) {
+    function addVehiclesToSchedule(scheduleID, updateVehicles, reload) {
         var _url = 'addVehicleToSchedule';
-            var _data = JSON.stringify({ 'scheduleID': scheduleID, 'vehicleIDs': updateVehicles });
+        var _data = JSON.stringify({ 'scheduleID': scheduleID, 'vehicleIDs': updateVehicles });
 
             $.ajax({
                 type: "POST",
@@ -359,18 +373,17 @@
                 url: _url,
                 data: _data,
                 contentType: "application/json; charset=utf-8",
-                success: addVehiclesToScheduleSuccess,
+                success: function (data) {
+                    addVehiclesToScheduleSuccess(data, reload);
+                },
                 error: addVehiclesToScheduleError
             });
     }
 
-    function addVehiclesToScheduleSuccess(data) {
+    function addVehiclesToScheduleSuccess(data, reload) {
         if (data == "OK") {
             $('#submitter').addClass('hidden');
             scheduleVehicles = [];
-            updateVehicles = [];
-            initVehicleDropDown();
-            getAllSchedules();
             $('#newSchedule').click();
             toastr.options = {
                 "closeButton": false,
@@ -390,6 +403,10 @@
                 "hideMethod": "fadeOut"
             }
             Command: toastr["success"]("Schedule was successfully Updated/Created");
+            if (reload) {
+                initVehicleDropDown();
+                getAllSchedules();
+            }
         } else {
             alert('There was an issue saving the vehicles.  Please try again or contact the administrator');
         }
