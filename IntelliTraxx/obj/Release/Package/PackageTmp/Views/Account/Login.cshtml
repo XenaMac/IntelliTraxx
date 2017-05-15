@@ -6,25 +6,24 @@
 
 <h2>@*ViewBag.Title*@</h2>
 <div class="container-fluid">
-    <div class="col-md-4 col-lg-offset-4 text">
+    <div class="col-md-4 col-lg-offset-4">
         <br>
         <section id="loginForm">
             @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
                 @Html.AntiForgeryToken()
-                <h4 class="col-lg-offset-2">Log in</h4>
                 <br />
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <div class="form-group">
                     @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
+                    <div class="col-md-9 pull-right">
                         @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group">
                     @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
+                    <div class="col-md-9 pull-right">
                         @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
                     </div>
@@ -49,8 +48,7 @@
             }
         </section>
         <br /><br /><br /><br /><br /><br />
-        <br /><br /><br /><br /><br /><br />
-        <small>IntelliTraxx solutions are available from any <A href="https://cradlepoint.com/partners/partner-locator" target="_blank">Authorized Cradlepoint Reseller</A></small>
+        <br /><br /><br />
     </div>
 </div>
 
