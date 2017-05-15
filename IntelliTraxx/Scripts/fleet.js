@@ -1948,7 +1948,7 @@ function getAvailableDriversSuccess(data) {
             }
         }
     } else {
-        alert('A problem occurred getting the pulling the avilable drivers, please reload or contact the administrator');
+        $('#availDriverText').html("<em>There are no available drivers in teh sytem. Please add and assign drivers using the administration module.</em>")
     }
 }
 
