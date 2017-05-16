@@ -152,6 +152,7 @@
                         _this.Marker.setPosition({ lat: _this.lat, lng: _this.lon });
                         if (_this.selected == true) {
                             map.setCenter(_this.Marker.getPosition());
+                            getVehicleData(_this.ID);
                         }
                         mapLogEntry("position", _this);
                     }
@@ -451,7 +452,7 @@
 
     function getVehicleDataSuccess(result) {
         $('#collapseFive').collapse('show');
-        $('#info_panel').html("<div class='vehicleInfo'><div class=\"col-sm-12\" id=\"vehicleInfoDiv\"><img id='vehicleClassImage' class='img-responsive' src='../Content/VClasses/" + result.extendedData.vehicleClassImage + "' align='right'><h3>" + result.extendedData.VehicleFriendlyName + "</h3><br /><p>This vehicle is a " + result.extendedData.Year + ", " + result.extendedData.Make + "-" + result.extendedData.Model + ". Plate Number: " + result.extendedData.licensePlate + ", has a Haul Limit of: " + result.extendedData.haulLimit + "/lbs and has ID Number: " + result.extendedData.vehicleID + ".</p></div></div>");
+        $('#info_panel').html("<div class='vehicleInfo'><div class=\"col-sm-12\" id=\"vehicleInfoDiv\"><img id='vehicleClassImage' class='img-responsive' src='../Content/VClasses/" + result.extendedData.vehicleClassImage + "' align='right'><h3>" + result.extendedData.VehicleFriendlyName + "</h3><br /><p>This vehicle is a " + result.extendedData.Year + ", " + result.extendedData.Make + "-" + result.extendedData.Model + ". Plate Number: " + result.extendedData.licensePlate + ", has a Haul Limit of: " + result.extendedData.haulLimit + "/lbs and has ID Number: " + result.extendedData.vehicleID + ". The most recent broadcast from this vehicle was at: <strong>" + moment(result.lastMessageReceived).format('MM/DD/YYYY HH:mm') + "</strong> at Latitude: <strong>" + result.gps.lat + "</strong>, Longitude: <strong>" + result.gps.lon + "</strong> moving in a direction of: <strong>" + result.gps.dir + " degrees at a speed of: <strong>" + result.gps.spd + "</strong>.</div></div>");
     }
 
     function getVehicleDataError(result, error) {
@@ -1948,7 +1949,7 @@ function getAvailableDriversSuccess(data) {
             }
         }
     } else {
-        $('#availDriverText').html("<em>There are no available drivers in teh sytem. Please add and assign drivers using the administration module.</em>")
+        $('#availDriverText').html("<em>There are no available drivers in the sytem. Please add and assign drivers using the administration module.</em>")
     }
 }
 
