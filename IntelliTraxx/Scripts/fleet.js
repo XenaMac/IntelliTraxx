@@ -333,6 +333,8 @@
     }
 
     function getVehicles(reload) {
+        $('#vehicleListDiv').addClass('hidden');
+        $('#listLoader').removeClass('hidden');
         if (selectedVehicle == null) {
             SlidingMarker.initializeGlobally();
 
@@ -363,7 +365,10 @@
                     }
                 }
 
-                $('#currentD2V').html('Current Active Vehicles without Assigned Drivers: <strong>' + (data.length - currentD2V)+ "</strong><hr />")
+                $('#currentD2V').html('Current Active Vehicles without Assigned Drivers: <strong>' + (data.length - currentD2V) + "</strong><hr />")
+
+                $('#vehicleListDiv').removeClass('hidden');
+                $('#listLoader').addClass('hidden');
             });
         }
     };
