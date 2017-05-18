@@ -603,8 +603,11 @@
             $('#historySlider').slider();
             $('#historySlider').slider("value", 1);
 
+            var month = moment().get('month') - 2;
             $('#playBackFrom').datetimepicker({
-                dayOfWeekStart: 1
+                dayOfWeekStart: 1,
+                minDate: '2017/' + month + '/1',
+                maxDate: '+1970/01/01'//tomorrow is maximum date calendar
             });
 
             $('#playBackFrom').val(moment(start).add(moment().utcOffset(), 'minutes').format('YYYY-MM-DD HH:mm'));
@@ -733,8 +736,11 @@
 
             $('#historySlider').slider("value", 1);
 
+            var month = moment().get('month') - 2;
             $('#playBackFrom').datetimepicker({
-                dayOfWeekStart: 1
+                dayOfWeekStart: 1,
+                minDate: '2017/' + month + '/1',
+                maxDate: '+1970/01/01'//tomorrow is maximum date calendar
             });
 
             $('#playBackFrom').val(moment(start).add(moment().utcOffset(), 'minutes').format('YYYY-MM-DD HH:mm'));
@@ -1887,9 +1893,12 @@ function OpenPlaybackSuccess(result, ID, start, end) {
     });
 
     $('#historySlider').slider("value", 1);
-
+    
+    var month = moment().get('month') - 2;
     $('#playBackFrom_M').datetimepicker({
-        dayOfWeekStart: 1
+        dayOfWeekStart: 1,
+        minDate: '2017/' + month + '/1',
+        maxDate: '+1970/01/01'//tomorrow is maximum date calendar
     });
 
     $('#playBackFrom_M').val(moment(start).add(moment().utcOffset(), 'minutes').format('YYYY-MM-DD HH:mm'));
