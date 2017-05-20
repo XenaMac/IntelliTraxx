@@ -294,6 +294,67 @@ namespace IntelliTraxx.TruckService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="linkVehicle", Namespace="http://schemas.datacontract.org/2004/07/LATATrax")]
+    [System.SerializableAttribute()]
+    public partial class linkVehicle : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Guid IDField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string vehicleIDField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Guid ID {
+            get {
+                return this.IDField;
+            }
+            set {
+                if ((this.IDField.Equals(value) != true)) {
+                    this.IDField = value;
+                    this.RaisePropertyChanged("ID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string vehicleID {
+            get {
+                return this.vehicleIDField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.vehicleIDField, value) != true)) {
+                    this.vehicleIDField = value;
+                    this.RaisePropertyChanged("vehicleID");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="Vehicle", Namespace="http://schemas.datacontract.org/2004/07/LATATrax.Models")]
     [System.SerializableAttribute()]
     public partial class Vehicle : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
@@ -1758,6 +1819,9 @@ namespace IntelliTraxx.TruckService {
         private string AlertTypeField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool NDBField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string minValField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
@@ -1870,6 +1934,19 @@ namespace IntelliTraxx.TruckService {
                 if ((object.ReferenceEquals(this.AlertTypeField, value) != true)) {
                     this.AlertTypeField = value;
                     this.RaisePropertyChanged("AlertType");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool NDB {
+            get {
+                return this.NDBField;
+            }
+            set {
+                if ((this.NDBField.Equals(value) != true)) {
+                    this.NDBField = value;
+                    this.RaisePropertyChanged("NDB");
                 }
             }
         }
@@ -3372,7 +3449,13 @@ namespace IntelliTraxx.TruckService {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool EditableField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string EmailField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool RequiredField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string minValueField;
@@ -3400,6 +3483,19 @@ namespace IntelliTraxx.TruckService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool Editable {
+            get {
+                return this.EditableField;
+            }
+            set {
+                if ((this.EditableField.Equals(value) != true)) {
+                    this.EditableField = value;
+                    this.RaisePropertyChanged("Editable");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public string Email {
             get {
                 return this.EmailField;
@@ -3408,6 +3504,19 @@ namespace IntelliTraxx.TruckService {
                 if ((object.ReferenceEquals(this.EmailField, value) != true)) {
                     this.EmailField = value;
                     this.RaisePropertyChanged("Email");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool Required {
+            get {
+                return this.RequiredField;
+            }
+            set {
+                if ((this.RequiredField.Equals(value) != true)) {
+                    this.RequiredField = value;
+                    this.RaisePropertyChanged("Required");
                 }
             }
         }
@@ -3582,6 +3691,131 @@ namespace IntelliTraxx.TruckService {
                 if ((this.statusStartField.Equals(value) != true)) {
                     this.statusStartField = value;
                     this.RaisePropertyChanged("statusStart");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="customStatus", Namespace="http://schemas.datacontract.org/2004/07/LATATrax")]
+    [System.SerializableAttribute()]
+    public partial class customStatus : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Guid companyIDField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string companyNameField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Guid customStatusIDField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string vehicleStatusColorField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string vehicleStatusDescriptionField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string vehicleStatusNameField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Guid companyID {
+            get {
+                return this.companyIDField;
+            }
+            set {
+                if ((this.companyIDField.Equals(value) != true)) {
+                    this.companyIDField = value;
+                    this.RaisePropertyChanged("companyID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string companyName {
+            get {
+                return this.companyNameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.companyNameField, value) != true)) {
+                    this.companyNameField = value;
+                    this.RaisePropertyChanged("companyName");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Guid customStatusID {
+            get {
+                return this.customStatusIDField;
+            }
+            set {
+                if ((this.customStatusIDField.Equals(value) != true)) {
+                    this.customStatusIDField = value;
+                    this.RaisePropertyChanged("customStatusID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string vehicleStatusColor {
+            get {
+                return this.vehicleStatusColorField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.vehicleStatusColorField, value) != true)) {
+                    this.vehicleStatusColorField = value;
+                    this.RaisePropertyChanged("vehicleStatusColor");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string vehicleStatusDescription {
+            get {
+                return this.vehicleStatusDescriptionField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.vehicleStatusDescriptionField, value) != true)) {
+                    this.vehicleStatusDescriptionField = value;
+                    this.RaisePropertyChanged("vehicleStatusDescription");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string vehicleStatusName {
+            get {
+                return this.vehicleStatusNameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.vehicleStatusNameField, value) != true)) {
+                    this.vehicleStatusNameField = value;
+                    this.RaisePropertyChanged("vehicleStatusName");
                 }
             }
         }
@@ -4150,6 +4384,12 @@ namespace IntelliTraxx.TruckService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/getVehicleList", ReplyAction="http://tempuri.org/ITruckService/getVehicleListResponse")]
         System.Threading.Tasks.Task<System.Collections.Generic.List<IntelliTraxx.TruckService.retVehicle>> getVehicleListAsync();
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/getVehicleListBasic", ReplyAction="http://tempuri.org/ITruckService/getVehicleListBasicResponse")]
+        System.Collections.Generic.List<IntelliTraxx.TruckService.linkVehicle> getVehicleListBasic();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/getVehicleListBasic", ReplyAction="http://tempuri.org/ITruckService/getVehicleListBasicResponse")]
+        System.Threading.Tasks.Task<System.Collections.Generic.List<IntelliTraxx.TruckService.linkVehicle>> getVehicleListBasicAsync();
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/getAllVehicles", ReplyAction="http://tempuri.org/ITruckService/getAllVehiclesResponse")]
         System.Collections.Generic.List<IntelliTraxx.TruckService.Vehicle> getAllVehicles(bool loadHistorical);
         
@@ -4486,6 +4726,18 @@ namespace IntelliTraxx.TruckService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/getTruckStatus", ReplyAction="http://tempuri.org/ITruckService/getTruckStatusResponse")]
         System.Threading.Tasks.Task<System.Collections.Generic.List<IntelliTraxx.TruckService.statusObjectReturn>> getTruckStatusAsync(string truckID);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/getCustomStatuses", ReplyAction="http://tempuri.org/ITruckService/getCustomStatusesResponse")]
+        System.Collections.Generic.List<IntelliTraxx.TruckService.customStatus> getCustomStatuses(System.Guid companyID);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/getCustomStatuses", ReplyAction="http://tempuri.org/ITruckService/getCustomStatusesResponse")]
+        System.Threading.Tasks.Task<System.Collections.Generic.List<IntelliTraxx.TruckService.customStatus>> getCustomStatusesAsync(System.Guid companyID);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/updateCustomStatus", ReplyAction="http://tempuri.org/ITruckService/updateCustomStatusResponse")]
+        void updateCustomStatus(IntelliTraxx.TruckService.customStatus c);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/updateCustomStatus", ReplyAction="http://tempuri.org/ITruckService/updateCustomStatusResponse")]
+        System.Threading.Tasks.Task updateCustomStatusAsync(IntelliTraxx.TruckService.customStatus c);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/dispatchVehicle", ReplyAction="http://tempuri.org/ITruckService/dispatchVehicleResponse")]
         string dispatchVehicle(IntelliTraxx.TruckService.dispatch d);
         
@@ -4624,6 +4876,14 @@ namespace IntelliTraxx.TruckService {
         
         public System.Threading.Tasks.Task<System.Collections.Generic.List<IntelliTraxx.TruckService.retVehicle>> getVehicleListAsync() {
             return base.Channel.getVehicleListAsync();
+        }
+        
+        public System.Collections.Generic.List<IntelliTraxx.TruckService.linkVehicle> getVehicleListBasic() {
+            return base.Channel.getVehicleListBasic();
+        }
+        
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<IntelliTraxx.TruckService.linkVehicle>> getVehicleListBasicAsync() {
+            return base.Channel.getVehicleListBasicAsync();
         }
         
         public System.Collections.Generic.List<IntelliTraxx.TruckService.Vehicle> getAllVehicles(bool loadHistorical) {
@@ -5072,6 +5332,22 @@ namespace IntelliTraxx.TruckService {
         
         public System.Threading.Tasks.Task<System.Collections.Generic.List<IntelliTraxx.TruckService.statusObjectReturn>> getTruckStatusAsync(string truckID) {
             return base.Channel.getTruckStatusAsync(truckID);
+        }
+        
+        public System.Collections.Generic.List<IntelliTraxx.TruckService.customStatus> getCustomStatuses(System.Guid companyID) {
+            return base.Channel.getCustomStatuses(companyID);
+        }
+        
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<IntelliTraxx.TruckService.customStatus>> getCustomStatusesAsync(System.Guid companyID) {
+            return base.Channel.getCustomStatusesAsync(companyID);
+        }
+        
+        public void updateCustomStatus(IntelliTraxx.TruckService.customStatus c) {
+            base.Channel.updateCustomStatus(c);
+        }
+        
+        public System.Threading.Tasks.Task updateCustomStatusAsync(IntelliTraxx.TruckService.customStatus c) {
+            return base.Channel.updateCustomStatusAsync(c);
         }
         
         public string dispatchVehicle(IntelliTraxx.TruckService.dispatch d) {

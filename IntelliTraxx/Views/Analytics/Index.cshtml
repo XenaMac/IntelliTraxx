@@ -36,9 +36,9 @@
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane active" id="dashboard">
                     <div class="col-md-12 container-fluid">
-                        <div class="col-md-6 text-center"><div id="vehicles" style="height: 400px"></div></div>
-                        <div class="col-md-6 text-center"><div id="drivers" style="height: 400px"></div></div>
-                        <div class="col-md-12 text-center" style="height: 500px; border: 1px solid #cecece; border-radius: 10px; margin: 15px; margin-right: 25px; padding: 10px;">
+                        <div class="col-md-6 text-center"><div id="vehicles" style="height: 400px;"></div></div>
+                        <div class="col-md-6 text-center"><div id="drivers" style="height: 400px;"></div></div>
+                        <div class="col-md-12 text-center" style="height: 500px; border: 1px solid #cecece; border-radius: 10px; margin: 15px; padding: 10px;">
                             <div class="form-group col-md-12">
                                 <div class="col-sm-3">
                                     <input type="text" class="form-control" id="startDtTm" placeholder="Start">
@@ -53,19 +53,140 @@
                             <br /><div id="alerts" style="height: 400px"></div>
                         </div>
                         @*<div class="col-md-6 text-center"><div id="gasAverage" style="height: 400px"></div></div>
-                        <div class="col-md-6 text-center"><div id="hos" style="height: 400px"></div></div>*@
+                            <div class="col-md-6 text-center"><div id="hos" style="height: 400px"></div></div>*@
                     </div>
                 </div>
-                @*<div role="tabpanel" class="tab-pane" id="driversTab">...</div>
-                <div role="tabpanel" class="tab-pane" id="vehiclesTab">...</div>*@
+                @*<div role="tabpanel" class="tab-pane" id="driversTab">...</div>*@
+                <div role="tabpanel" class="tab-pane" id="vehiclesTab">
+                    <div id="VFTNavigation" class="col-lg-12 analDevider">
+                        <div id="vehicleListDiv" class="col-lg-3">
+                            <div id="vlPreloader" class="hidden"><img id="preloader" src="~/Content/Images/preloader.gif" width="75" class="pull-right"/></div>
+                            <select id="vehicleList" class="form-control">
+                            </select>
+                        </div>
+                        <div id="fromDateDiv" class="col-lg-3">
+                            <input type="text" id="vFromDate" class="form-control" placeholder="From Date:"/>
+                        </div>
+                        <div id="toDateDiv" class="col-lg-3">
+                            <input type="text" id="vToDate" class="form-control" placeholder="To Date:"/>
+                        </div>
+                        <div id="toDateDiv" class="col-lg-3">
+                            <button class="btn btn-info glyphicon glyphicon-refresh"></button>
+                        </div>
+                    </div> 
+                    <div id="vehicleSummaries" class="col-lg-12 container-fluid analDevider">
+                        <div class="col-lg-3 col-md-6">
+                            <div class="panel panel-warning">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <i class="material-icons md-48">router</i>
+                                        </div>
+                                        <div class="col-xs-9 text-right">
+                                            <div class="huge">26</div>
+                                            <div class="">Communications</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a data-toggle="collapse" href="#communications">
+                                    <div class="panel-footer">
+                                        <span class="pull-left">Toggle Details</span>
+                                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <i class="material-icons md-48"><i class="material-icons"><i class="material-icons">settings_input_hdmi</i></i></i>
+                                        </div>
+                                        <div class="col-xs-9 text-right">
+                                            <div class="huge">26</div>
+                                            <div class="">Diagnostics</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a data-toggle="collapse" href="#diagnostics">
+                                    <div class="panel-footer">
+                                        <span class="pull-left">Toggle Details</span>
+                                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <i class="material-icons md-48">timeline</i>
+                                        </div>
+                                        <div class="col-xs-9 text-right">
+                                            <div class="huge">26</div>
+                                            <div class="">Activity</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a data-toggle="collapse" href="#activity">
+                                    <div class="panel-footer">
+                                        <span class="pull-left">Toggle Details</span>
+                                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="panel panel-danger">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <i class="material-icons md-48">warning</i>
+                                        </div>
+                                        <div class="col-xs-9 text-right">
+                                            <div class="huge">26</div>
+                                            <div class="">Alerts</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a data-toggle="collapse" href="#alertDiv">
+                                    <div class="panel-footer">
+                                        <span class="pull-left">Toggle Details</span>
+                                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="vehicleAnalytics" class="col-lg-12">
+                        <div class="collapse devider" id="communications">
+                            Communications Information
+                        </div>
+                        <div class="collapse devider" id="diagnostics">
+                            Diagnostics Information
+                        </div>
+                        <div class="collapse devider" id="activity">
+                            Activity Information
+                        </div>
+                        <div class="collapse devider" id="alertDiv">
+                            Alerts Information
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
         <div class="col-lg-2">
             <ul class="nav nav-pills nav-stacked">
                 <li role="presentation" class="active"><a href="#dashboard" aria-controls="home" role="tab" data-toggle="tab">Dash Board</a></li>
-                @*<li role="presentation"><a href="#driversTab" aria-controls="profile" role="tab" data-toggle="tab">Drivers</a></li>
-                <li role="presentation"><a href="#vehiclesTab" aria-controls="messages" role="tab" data-toggle="tab">Vehicles</a></li>*@
+                @*<li role="presentation"><a href="#driversTab" aria-controls="profile" role="tab" data-toggle="tab">Drivers</a></li>*@
+                <li role="presentation"><a href="#vehiclesTab" aria-controls="messages" role="tab" data-toggle="tab" id="showVehicles">Vehicles</a></li>
             </ul>
         </div>
     </div>

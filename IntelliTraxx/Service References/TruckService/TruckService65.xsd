@@ -17,6 +17,19 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="retVehicle" nillable="true" type="tns:retVehicle" />
+  <xs:complexType name="ArrayOflinkVehicle">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="linkVehicle" nillable="true" type="tns:linkVehicle" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOflinkVehicle" nillable="true" type="tns:ArrayOflinkVehicle" />
+  <xs:complexType name="linkVehicle">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ID" type="ser:guid" />
+      <xs:element minOccurs="0" name="vehicleID" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="linkVehicle" nillable="true" type="tns:linkVehicle" />
   <xs:complexType name="ArrayOfOBD2Data">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="OBD2Data" nillable="true" type="tns:OBD2Data" />
@@ -265,7 +278,9 @@
   <xs:element name="ArrayOfsystemvar" nillable="true" type="tns:ArrayOfsystemvar" />
   <xs:complexType name="systemvar">
     <xs:sequence>
+      <xs:element minOccurs="0" name="Editable" type="xs:boolean" />
       <xs:element minOccurs="0" name="Email" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Required" type="xs:boolean" />
       <xs:element minOccurs="0" name="minValue" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="varID" type="ser:guid" />
       <xs:element minOccurs="0" name="varName" nillable="true" type="xs:string" />
@@ -290,6 +305,23 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="statusObjectReturn" nillable="true" type="tns:statusObjectReturn" />
+  <xs:complexType name="ArrayOfcustomStatus">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="customStatus" nillable="true" type="tns:customStatus" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfcustomStatus" nillable="true" type="tns:ArrayOfcustomStatus" />
+  <xs:complexType name="customStatus">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="companyID" type="ser:guid" />
+      <xs:element minOccurs="0" name="companyName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="customStatusID" type="ser:guid" />
+      <xs:element minOccurs="0" name="vehicleStatusColor" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="vehicleStatusDescription" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="vehicleStatusName" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="customStatus" nillable="true" type="tns:customStatus" />
   <xs:complexType name="dispatch">
     <xs:sequence>
       <xs:element minOccurs="0" name="ID" type="ser:guid" />

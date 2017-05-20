@@ -47,6 +47,12 @@ namespace IntelliTraxx.Controllers
             List<alertReturn> alerts = truckService.getAllAlertsByRange(start, end);
             return Json(alerts, JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult getVehicleListBasic()
+        {
+            List<linkVehicle> vehicles = truckService.getVehicleListBasic();
+            return Json(vehicles, JsonRequestBehavior.AllowGet);
+        }
     }
 
     //------------------------------ Classes ----------------------------------------//

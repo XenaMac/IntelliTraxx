@@ -131,7 +131,7 @@
                         }
 
     <div>
-        @Html.ActionLink("Back to Drivers", "Index", new { tab = "D" })
+        @Html.ActionLink("Back to Drivers", "/Index", new { tab = "D" })
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         @Ajax.ActionLink("Delete Driver", "DeleteDriver", "Admin", new { driverID = Model.DriverID },
             new AjaxOptions()

@@ -90,7 +90,7 @@
     }
 
     <div>
-        @Html.ActionLink("Back to Vehicle Classes", "Index", new { tab = "VC" })
+        @Html.ActionLink("Back to Vehicle Classes", "/Index", new { tab = "VC" })
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         @Ajax.ActionLink("Delete Vehicle Class", "DeleteVehicleClass", "Admin", new { vehicleClassID = Model.VehicleClassID },
             new AjaxOptions()

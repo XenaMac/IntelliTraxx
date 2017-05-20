@@ -22,6 +22,12 @@
   <wsdl:message name="ITruckService_getVehicleList_OutputMessage">
     <wsdl:part name="parameters" element="tns:getVehicleListResponse" />
   </wsdl:message>
+  <wsdl:message name="ITruckService_getVehicleListBasic_InputMessage">
+    <wsdl:part name="parameters" element="tns:getVehicleListBasic" />
+  </wsdl:message>
+  <wsdl:message name="ITruckService_getVehicleListBasic_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getVehicleListBasicResponse" />
+  </wsdl:message>
   <wsdl:message name="ITruckService_getAllVehicles_InputMessage">
     <wsdl:part name="parameters" element="tns:getAllVehicles" />
   </wsdl:message>
@@ -358,6 +364,18 @@
   <wsdl:message name="ITruckService_getTruckStatus_OutputMessage">
     <wsdl:part name="parameters" element="tns:getTruckStatusResponse" />
   </wsdl:message>
+  <wsdl:message name="ITruckService_getCustomStatuses_InputMessage">
+    <wsdl:part name="parameters" element="tns:getCustomStatuses" />
+  </wsdl:message>
+  <wsdl:message name="ITruckService_getCustomStatuses_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getCustomStatusesResponse" />
+  </wsdl:message>
+  <wsdl:message name="ITruckService_updateCustomStatus_InputMessage">
+    <wsdl:part name="parameters" element="tns:updateCustomStatus" />
+  </wsdl:message>
+  <wsdl:message name="ITruckService_updateCustomStatus_OutputMessage">
+    <wsdl:part name="parameters" element="tns:updateCustomStatusResponse" />
+  </wsdl:message>
   <wsdl:message name="ITruckService_dispatchVehicle_InputMessage">
     <wsdl:part name="parameters" element="tns:dispatchVehicle" />
   </wsdl:message>
@@ -462,6 +480,10 @@
     <wsdl:operation name="getVehicleList">
       <wsdl:input wsaw:Action="http://tempuri.org/ITruckService/getVehicleList" message="tns:ITruckService_getVehicleList_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ITruckService/getVehicleListResponse" message="tns:ITruckService_getVehicleList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getVehicleListBasic">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITruckService/getVehicleListBasic" message="tns:ITruckService_getVehicleListBasic_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITruckService/getVehicleListBasicResponse" message="tns:ITruckService_getVehicleListBasic_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="getAllVehicles">
       <wsdl:input wsaw:Action="http://tempuri.org/ITruckService/getAllVehicles" message="tns:ITruckService_getAllVehicles_InputMessage" />
@@ -687,6 +709,14 @@
       <wsdl:input wsaw:Action="http://tempuri.org/ITruckService/getTruckStatus" message="tns:ITruckService_getTruckStatus_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ITruckService/getTruckStatusResponse" message="tns:ITruckService_getTruckStatus_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="getCustomStatuses">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITruckService/getCustomStatuses" message="tns:ITruckService_getCustomStatuses_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITruckService/getCustomStatusesResponse" message="tns:ITruckService_getCustomStatuses_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="updateCustomStatus">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITruckService/updateCustomStatus" message="tns:ITruckService_updateCustomStatus_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITruckService/updateCustomStatusResponse" message="tns:ITruckService_updateCustomStatus_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="dispatchVehicle">
       <wsdl:input wsaw:Action="http://tempuri.org/ITruckService/dispatchVehicle" message="tns:ITruckService_dispatchVehicle_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ITruckService/dispatchVehicleResponse" message="tns:ITruckService_dispatchVehicle_OutputMessage" />
@@ -765,6 +795,15 @@
     </wsdl:operation>
     <wsdl:operation name="getVehicleList">
       <soap:operation soapAction="http://tempuri.org/ITruckService/getVehicleList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getVehicleListBasic">
+      <soap:operation soapAction="http://tempuri.org/ITruckService/getVehicleListBasic" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -1269,6 +1308,24 @@
     </wsdl:operation>
     <wsdl:operation name="getTruckStatus">
       <soap:operation soapAction="http://tempuri.org/ITruckService/getTruckStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getCustomStatuses">
+      <soap:operation soapAction="http://tempuri.org/ITruckService/getCustomStatuses" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updateCustomStatus">
+      <soap:operation soapAction="http://tempuri.org/ITruckService/updateCustomStatus" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

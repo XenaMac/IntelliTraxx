@@ -69,6 +69,7 @@
       <xs:element minOccurs="0" name="AlertID" type="ser:guid" />
       <xs:element minOccurs="0" name="AlertStartTime" type="xs:dateTime" />
       <xs:element minOccurs="0" name="AlertType" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NDB" type="xs:boolean" />
       <xs:element minOccurs="0" name="minVal" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>

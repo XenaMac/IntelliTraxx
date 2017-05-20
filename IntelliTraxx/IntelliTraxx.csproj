@@ -576,6 +576,12 @@
     <Content Include="Service References\TruckService\IntelliTraxx.TruckService.driverVehicleReturn.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
+    <Content Include="Service References\TruckService\IntelliTraxx.TruckService.customStatus.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\TruckService\IntelliTraxx.TruckService.linkVehicle.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
     <None Include="Service References\TruckService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>

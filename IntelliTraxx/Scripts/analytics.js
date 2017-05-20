@@ -281,4 +281,54 @@
 
         return false;
     }
+
+    $('#showVehicles').click(function () {
+        $('#vehicleList').addClass('hidden');
+        $('#vlPreloader').removeClass('hidden');
+        getVehicleList();
+        var month = moment().get('month') - 2;
+        $('#vFromDate').datetimepicker({
+            dayOfWeekStart: 1,
+            minDate: '2017/' + month + '/1',
+            maxDate: '+1970/01/01'//tomorrow is maximum date calendar
+        });
+        $('#vToDate').datetimepicker({
+            dayOfWeekStart: 1,
+            minDate: '2017/' + month + '/1',
+            maxDate: '+1970/01/01'//tomorrow is maximum date calendar
+        });
+    })
+
+    //#region GetVehicleData Functions
+    function getVehicleList() { //Get a download of the vehicle for ID
+        var _url = 'getVehicleListBasic';
+        var _data = "";
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: _url,
+            data: _data,
+            contentType: "application/json; charset=utf-8",
+            success: getVehicleListSuccess,
+            error: getVehicleListError
+        });
+    }
+
+    function getVehicleListSuccess(result) {
+        if (result) {
+            $('#vehicleList').empty();
+            for (var i = 0; i < result.length; i++) {
+                $("#vehicleList").append($('<option>', { value: result[i].ID }).text(result[i].vehicleID));
+            }
+            $('#vehicleList').removeClass('hidden');
+            $('#vlPreloader').addClass('hidden');
+        } else {
+            alert('A problem occurred getting vehicles, please reload or contact the administrator');
+        }
+    }
+
+    function getVehicleListError(result, error) {
+        alert('A problem occurred getting vehicles, please reload or contact the administrator');
+    }
+    //#endregion
 });

@@ -130,6 +130,7 @@ namespace IntelliTraxx.Controllers
             admin.availableVehicles = truckService.getAvailableVehicles();
             admin.DriversToVehicles = truckService.driverVehicleReturn();
             #endregion
+
             return View(admin);
         }
 

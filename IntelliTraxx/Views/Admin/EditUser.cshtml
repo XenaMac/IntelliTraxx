@@ -140,7 +140,7 @@
     }
 
     <div>
-        @Html.ActionLink("Back to Users", "Index", new { tab = "U" })
+        @Html.ActionLink("Back to Users", "/Index", new { tab = "U" })
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         @Ajax.ActionLink("Delete User", "DeleteUser", "Admin", new { userID = Model.UserID },
             new AjaxOptions()
