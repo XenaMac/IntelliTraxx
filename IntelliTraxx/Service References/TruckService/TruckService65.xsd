@@ -30,6 +30,20 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="linkVehicle" nillable="true" type="tns:linkVehicle" />
+  <xs:complexType name="ArrayOfmacVehicle">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="macVehicle" nillable="true" type="tns:macVehicle" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfmacVehicle" nillable="true" type="tns:ArrayOfmacVehicle" />
+  <xs:complexType name="macVehicle">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ID" type="ser:guid" />
+      <xs:element minOccurs="0" name="macAddress" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="vehicleID" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="macVehicle" nillable="true" type="tns:macVehicle" />
   <xs:complexType name="ArrayOfOBD2Data">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="OBD2Data" nillable="true" type="tns:OBD2Data" />

@@ -28,6 +28,12 @@
   <wsdl:message name="ITruckService_getVehicleListBasic_OutputMessage">
     <wsdl:part name="parameters" element="tns:getVehicleListBasicResponse" />
   </wsdl:message>
+  <wsdl:message name="ITruckService_getVehicleListMac_InputMessage">
+    <wsdl:part name="parameters" element="tns:getVehicleListMac" />
+  </wsdl:message>
+  <wsdl:message name="ITruckService_getVehicleListMac_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getVehicleListMacResponse" />
+  </wsdl:message>
   <wsdl:message name="ITruckService_getAllVehicles_InputMessage">
     <wsdl:part name="parameters" element="tns:getAllVehicles" />
   </wsdl:message>
@@ -485,6 +491,10 @@
       <wsdl:input wsaw:Action="http://tempuri.org/ITruckService/getVehicleListBasic" message="tns:ITruckService_getVehicleListBasic_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ITruckService/getVehicleListBasicResponse" message="tns:ITruckService_getVehicleListBasic_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="getVehicleListMac">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITruckService/getVehicleListMac" message="tns:ITruckService_getVehicleListMac_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITruckService/getVehicleListMacResponse" message="tns:ITruckService_getVehicleListMac_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="getAllVehicles">
       <wsdl:input wsaw:Action="http://tempuri.org/ITruckService/getAllVehicles" message="tns:ITruckService_getAllVehicles_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ITruckService/getAllVehiclesResponse" message="tns:ITruckService_getAllVehicles_OutputMessage" />
@@ -804,6 +814,15 @@
     </wsdl:operation>
     <wsdl:operation name="getVehicleListBasic">
       <soap:operation soapAction="http://tempuri.org/ITruckService/getVehicleListBasic" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getVehicleListMac">
+      <soap:operation soapAction="http://tempuri.org/ITruckService/getVehicleListMac" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

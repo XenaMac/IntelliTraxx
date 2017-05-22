@@ -60,21 +60,20 @@
                 <div role="tabpanel" class="tab-pane" id="vehiclesTab">
                     <div id="VFTNavigation" class="col-lg-12 analDevider">
                         <div id="vehicleListDiv" class="col-lg-3">
-                            <div id="vlPreloader" class="hidden"><img id="preloader" src="~/Content/Images/preloader.gif" width="75" class="pull-right"/></div>
-                            <select id="vehicleList" class="form-control">
-                            </select>
+                            <div id="vlPreloader" class="hidden"><img id="preloader" src="~/Content/Images/preloader.gif" width="75" class="pull-right" /></div>
+                            <select id="vehicleList" class="form-control"></select>
                         </div>
                         <div id="fromDateDiv" class="col-lg-3">
-                            <input type="text" id="vFromDate" class="form-control" placeholder="From Date:"/>
+                            <input type="text" id="vFromDate" class="form-control" placeholder="From Date:" />
                         </div>
                         <div id="toDateDiv" class="col-lg-3">
-                            <input type="text" id="vToDate" class="form-control" placeholder="To Date:"/>
+                            <input type="text" id="vToDate" class="form-control" placeholder="To Date:" />
                         </div>
                         <div id="toDateDiv" class="col-lg-3">
-                            <button class="btn btn-info glyphicon glyphicon-refresh"></button>
+                            <button class="btn btn-info glyphicon glyphicon-refresh" id="reload"></button>
                         </div>
-                    </div> 
-                    <div id="vehicleSummaries" class="col-lg-12 container-fluid analDevider">
+                    </div>
+                    <div id="vehicleSummaries" class="col-lg-12 container-fluid analDevider" hidden>
                         <div class="col-lg-3 col-md-6">
                             <div class="panel panel-warning">
                                 <div class="panel-heading">
@@ -88,7 +87,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <a data-toggle="collapse" href="#communications">
+                                <a data-toggle="collapse" href="#communications" id="showCommunications">
                                     <div class="panel-footer">
                                         <span class="pull-left">Toggle Details</span>
                                         <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -164,19 +163,36 @@
                             </div>
                         </div>
                     </div>
-                    <div id="vehicleAnalytics" class="col-lg-12">
-                        <div class="collapse devider" id="communications">
-                            Communications Information
+                    <div class="collapse analDevider col-lg-12" id="communications">
+                        <div class="col-lg-12 huge text-right" id="RC"></div>
+                        <div class="col-lg-2">
+                            <i class="glyphicons glyphicons-router x2 drop" id="routerIcon"></i>
                         </div>
-                        <div class="collapse devider" id="diagnostics">
-                            Diagnostics Information
+                        <div class="col-lg-5 text-left">
+                            <ul class="list-unstyled small">
+                                <li id="asset_id"></li>
+                                <li id="name"></li>
+                                <li id="description"></li>
+                                <li id="full_product_name"></li>
+                                <li id="state"></li>
+                                <li id="state_updated_at"></li>
+                                <li id="mac"></li>
+                                <li id="serial_number"></li>
+                                <li id="target_firmware"></li>
+                                <li id="actual_firmware"></li>
+                                <li id="created_at"></li>
+                                <li id="config_status"></li>
+                            </ul>
                         </div>
-                        <div class="collapse devider" id="activity">
-                            Activity Information
-                        </div>
-                        <div class="collapse devider" id="alertDiv">
-                            Alerts Information
-                        </div>
+                    </div>
+                    <div class="collapse devider col-lg-12" id="diagnostics">
+                        Diagnostics Information
+                    </div>
+                    <div class="collapse devider col-lg-12" id="activity">
+                        Activity Information
+                    </div>
+                    <div class="collapse devider col-lg-12" id="alertDiv">
+                        Alerts Information
                     </div>
                 </div>
             </div>

@@ -1,6 +1,7 @@
 ﻿$(function () {
     var start = moment().startOf('month').format('YYYY-MM-DD hh:mm');
     var end = moment().endOf('month').format('YYYY-MM-DD hh:mm');
+    var vehicleRouter = null;
 
     $('#startDtTm').datetimepicker();
     $('#startDtTm').val(start);
@@ -301,7 +302,7 @@
 
     //#region GetVehicleData Functions
     function getVehicleList() { //Get a download of the vehicle for ID
-        var _url = 'getVehicleListBasic';
+        var _url = 'getVehicleListMac';
         var _data = "";
         $.ajax({
             type: "GET",
@@ -318,7 +319,7 @@
         if (result) {
             $('#vehicleList').empty();
             for (var i = 0; i < result.length; i++) {
-                $("#vehicleList").append($('<option>', { value: result[i].ID }).text(result[i].vehicleID));
+                $("#vehicleList").append($('<option>', { value: result[i].macAddress }).text(result[i].vehicleID));
             }
             $('#vehicleList').removeClass('hidden');
             $('#vlPreloader').addClass('hidden');
@@ -331,4 +332,90 @@
         alert('A problem occurred getting vehicles, please reload or contact the administrator');
     }
     //#endregion
+
+    $('#reload').click(function () {
+        getRouter($('#vehicleList').val());
+    });
+
+    //#region getECmRouter Information Functions
+    function getRouter(macAddress) { //Get a download of the vehicle for ID
+        var _url = 'getECMRouter';
+        var _data = "macAddress=" + macAddress;
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: _url,
+            data: _data,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                getRouterSuccess(data, macAddress);
+            },
+            error: getRouterError
+        });
+    }
+
+    function getRouterSuccess(data, macAddress) {
+        if (data) {
+            var accNum = data.account.split("/");
+            getECMAccount(accNum[6]);
+
+            if (data.mac == macAddress.toUpperCase()) {
+                if (data.state == "offline") {
+                    $('#routerIcon').addClass("red");
+                } else {
+                    $('#routerIcon').addClass("green");
+                }
+                $('#asset_id').html("<strong>Asset ID: </strong>" + data.asset_id);
+                $('#name').html("<strong>Name: </strong>" + data.name);
+                $('#description').html("<strong>Description: </strong>" + data.description);
+                $('#full_product_name').html("<strong>Full Product Name: </strong>" + data.full_product_name);
+                $('#state').html("<strong>State: </strong>" + data.state);
+                $('#state_updated_at').html("<strong>State Update at : </strong>" + moment(data.state_updated_at).format("MM/DD/YYYY HH:mm"));
+                $('#mac').html("<strong>MAC Address: </strong>" + data.mac);
+                var tf = data.target_firmware.split("/");
+                $('#target_firmware').html("<strong>Target Firmware: </strong>" + tf[6]);
+                var af = data.actual_firmware.split("/");
+                $('#actual_firmware').html("<strong>Actual Firmware: </strong>" + af[6]);
+                $('#created_at').html("<strong>Created at: </strong>" + moment(data.created_at).format("MM/DD/YYYY HH:mm"));
+                $('#config_status').html("<strong>Config Status: </strong>" + data.config_status);
+            }
+        } else {
+            alert('A problem occurred getting the router for this vehicle, please reload or contact the administrator');
+        }
+    }
+
+    function getRouterError(result, error) {
+        alert('A problem occurred getting the router for this vehicle, please reload or contact the administrator');
+    }
+    //#endregion
+
+    //#region getECMAccount Information Functions
+    function getECMAccount(num) { //Get a download of the vehicle for ID
+        var _url = "getECMAccount";
+        var _data = "accountNum=" + num;
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: _url,
+            data: _data,
+            contentType: "application/json; charset=utf-8",
+            success: getECMAccountSuccess,
+            error: getECMAccountError
+        });
+    }
+
+    function getECMAccountSuccess(result) {
+        if (result) {
+            $('#RC').html("Router Communications / " + result.name);
+            $('#vehicleSummaries').slideDown();
+        } else {
+            alert('A problem occurred getting the Cradlepoint ECM Account for this vehicle, please reload or contact the administrator');
+        }
+    }
+
+    function getECMAccountError(result, error) {
+        alert('A problem occurred getting the Cradlepoint ECM Account for this vehicle, please reload or contact the administrator');
+    }
+    //#endregion
+    
 });

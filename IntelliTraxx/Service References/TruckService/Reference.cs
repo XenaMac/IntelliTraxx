@@ -355,6 +355,83 @@ namespace IntelliTraxx.TruckService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="macVehicle", Namespace="http://schemas.datacontract.org/2004/07/LATATrax")]
+    [System.SerializableAttribute()]
+    public partial class macVehicle : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Guid IDField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string macAddressField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string vehicleIDField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Guid ID {
+            get {
+                return this.IDField;
+            }
+            set {
+                if ((this.IDField.Equals(value) != true)) {
+                    this.IDField = value;
+                    this.RaisePropertyChanged("ID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string macAddress {
+            get {
+                return this.macAddressField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.macAddressField, value) != true)) {
+                    this.macAddressField = value;
+                    this.RaisePropertyChanged("macAddress");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string vehicleID {
+            get {
+                return this.vehicleIDField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.vehicleIDField, value) != true)) {
+                    this.vehicleIDField = value;
+                    this.RaisePropertyChanged("vehicleID");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="Vehicle", Namespace="http://schemas.datacontract.org/2004/07/LATATrax.Models")]
     [System.SerializableAttribute()]
     public partial class Vehicle : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
@@ -4390,6 +4467,12 @@ namespace IntelliTraxx.TruckService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/getVehicleListBasic", ReplyAction="http://tempuri.org/ITruckService/getVehicleListBasicResponse")]
         System.Threading.Tasks.Task<System.Collections.Generic.List<IntelliTraxx.TruckService.linkVehicle>> getVehicleListBasicAsync();
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/getVehicleListMac", ReplyAction="http://tempuri.org/ITruckService/getVehicleListMacResponse")]
+        System.Collections.Generic.List<IntelliTraxx.TruckService.macVehicle> getVehicleListMac();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/getVehicleListMac", ReplyAction="http://tempuri.org/ITruckService/getVehicleListMacResponse")]
+        System.Threading.Tasks.Task<System.Collections.Generic.List<IntelliTraxx.TruckService.macVehicle>> getVehicleListMacAsync();
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/getAllVehicles", ReplyAction="http://tempuri.org/ITruckService/getAllVehiclesResponse")]
         System.Collections.Generic.List<IntelliTraxx.TruckService.Vehicle> getAllVehicles(bool loadHistorical);
         
@@ -4884,6 +4967,14 @@ namespace IntelliTraxx.TruckService {
         
         public System.Threading.Tasks.Task<System.Collections.Generic.List<IntelliTraxx.TruckService.linkVehicle>> getVehicleListBasicAsync() {
             return base.Channel.getVehicleListBasicAsync();
+        }
+        
+        public System.Collections.Generic.List<IntelliTraxx.TruckService.macVehicle> getVehicleListMac() {
+            return base.Channel.getVehicleListMac();
+        }
+        
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<IntelliTraxx.TruckService.macVehicle>> getVehicleListMacAsync() {
+            return base.Channel.getVehicleListMacAsync();
         }
         
         public System.Collections.Generic.List<IntelliTraxx.TruckService.Vehicle> getAllVehicles(bool loadHistorical) {

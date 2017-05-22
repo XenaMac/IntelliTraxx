@@ -186,7 +186,7 @@ namespace IntelliTraxx.Controllers
                 ViewBag.Companies = truckService.getCompanies(new Guid());
             }
             
-            return Redirect("Index");
+            return Redirect("/Index");
         }
 
         [CustomAuthorize(Roles = "Administrator")]
@@ -314,7 +314,7 @@ namespace IntelliTraxx.Controllers
                 ViewBag.UserCompanies = truckService.getUserCompaniesFull(model.UserID);
             }
             
-            return Redirect("Index");
+            return Redirect("/Index");
         }
 
         [CustomAuthorize(Roles = "Administrator")]
@@ -331,7 +331,7 @@ namespace IntelliTraxx.Controllers
 
             if (success == "OK")
             {
-                return Redirect("Index");
+                return Redirect("/Index");
             }
             else
             {
@@ -379,7 +379,7 @@ namespace IntelliTraxx.Controllers
                 return View(model);
             }
             
-            return RedirectToAction("Index", new { tab = "R" });
+            return RedirectToAction("/Index", new { tab = "R" });
         }
         
         [CustomAuthorize(Roles = "Administrator")]
@@ -394,7 +394,7 @@ namespace IntelliTraxx.Controllers
             role.IsAdmin = Role[0].isAdmin;
             if (Role[0] == null)
             {
-                return View("Index", new { tab = "R" });
+                return View("/Index", new { tab = "R" });
             }
             else
             {
@@ -416,7 +416,7 @@ namespace IntelliTraxx.Controllers
 
             if (success == "OK")
             {
-                return RedirectToAction("Index", new { tab = "R" });
+                return RedirectToAction("/Index", new { tab = "R" });
             }
             else
             {
@@ -461,7 +461,7 @@ namespace IntelliTraxx.Controllers
                 return View(model);
             }
             
-            return RedirectToAction("Index", new { tab = "C" });
+            return RedirectToAction("/Index", new { tab = "C" });
         }
 
         [CustomAuthorize(Roles = "Administrator")]
@@ -481,7 +481,7 @@ namespace IntelliTraxx.Controllers
 
             if (Co[0] == null)
             {
-                return View("Index", new { tab = "R" });
+                return View("/Index", new { tab = "R" });
             }
             else
             {
@@ -519,7 +519,7 @@ namespace IntelliTraxx.Controllers
                 return View(model);
             }
             
-            return RedirectToAction("Index", "Admin", new { tab = "C" });
+            return RedirectToAction("/Index", "Admin", new { tab = "C" });
         }
         
         [CustomAuthorize(Roles = "Administrator")]
@@ -534,7 +534,7 @@ namespace IntelliTraxx.Controllers
 
             if (co[0].isParent == true)
             {
-                return RedirectToAction("Index", new { tab = "C" });
+                return RedirectToAction("/Index", new { tab = "C" });
             }
             else
             {
@@ -542,7 +542,7 @@ namespace IntelliTraxx.Controllers
 
                 if (success == "OK")
                 {
-                    return RedirectToAction("Index", new { tab = "C" });
+                    return RedirectToAction("/Index", new { tab = "C" });
                 }
                 else
                 {
@@ -616,7 +616,7 @@ namespace IntelliTraxx.Controllers
 
             truckService.updateVehicleClass(nvc, new Guid(sid));
             
-            return RedirectToAction("Index", new { tab = "VC" });
+            return RedirectToAction("/Index", new { tab = "VC" });
         }
         
         [CustomAuthorize(Roles = "Administrator")]
@@ -638,7 +638,7 @@ namespace IntelliTraxx.Controllers
 
             if (vcToEdit == null)
             {
-                return View("Index", new { tab = "VC" });
+                return View("/Index", new { tab = "VC" });
             }
             else
             {
@@ -667,7 +667,7 @@ namespace IntelliTraxx.Controllers
 
             truckService.updateVehicleClass(VCToEdit, new Guid(sid));
             
-            return RedirectToAction("Index", "Admin", new { tab = "VC" });
+            return RedirectToAction("/Index", "Admin", new { tab = "VC" });
         }
         
         [CustomAuthorize(Roles = "Administrator")]
@@ -693,7 +693,7 @@ namespace IntelliTraxx.Controllers
             //delete class
             truckService.deleteVehicleClass(vcToEdit, new Guid(sid));
             
-            return RedirectToAction("Index", new { tab = "VC" });
+            return RedirectToAction("/Index", new { tab = "VC" });
         }
         
         [CustomAuthorize(Roles = "Administrator")]
@@ -732,7 +732,7 @@ namespace IntelliTraxx.Controllers
 
             truckService.updateExtendedData(nv, new Guid(sid));
             
-            return RedirectToAction("Index", new { tab = "V" });
+            return RedirectToAction("/Index", new { tab = "V" });
         }
         
         [CustomAuthorize(Roles = "Administrator")]
@@ -794,7 +794,7 @@ namespace IntelliTraxx.Controllers
 
             truckService.updateExtendedData(nv, new Guid(sid));
             
-            return RedirectToAction("Index", "Admin", new { tab = "V" });
+            return RedirectToAction("/Index", "Admin", new { tab = "V" });
         }
         
         [CustomAuthorize(Roles = "Administrator")]
@@ -818,7 +818,7 @@ namespace IntelliTraxx.Controllers
             //delete class
             truckService.deleteExtendedData(vcToEdit, new Guid(sid));
             
-            return RedirectToAction("Index", new { tab = "V" });
+            return RedirectToAction("/Index", new { tab = "V" });
         }
         
         [CustomAuthorize(Roles = "Administrator")]
@@ -866,7 +866,7 @@ namespace IntelliTraxx.Controllers
                 truckService.updateDriver(nd, new Guid(sid));
             }
             
-            return RedirectToAction("Index", new { tab = "D" });
+            return RedirectToAction("/Index", new { tab = "D" });
         }
         
         [CustomAuthorize(Roles = "Administrator")]
@@ -949,7 +949,7 @@ namespace IntelliTraxx.Controllers
                 truckService.updateDriver(ed, new Guid(sid));
             }
             
-            return RedirectToAction("Index", new { tab = "D" });
+            return RedirectToAction("/Index", new { tab = "D" });
         }
         
         [CustomAuthorize(Roles = "Administrator")]
@@ -973,7 +973,7 @@ namespace IntelliTraxx.Controllers
             //delete class
             truckService.deleteDriver(driverToEdit, new Guid(sid));
             
-            return RedirectToAction("Index", new { tab = "D" });
+            return RedirectToAction("/Index", new { tab = "D" });
         }
         
         [CustomAuthorize(Roles = "Administrator")]
@@ -1007,7 +1007,7 @@ namespace IntelliTraxx.Controllers
 
             truckService.updateAppVar(nv, new Guid(sid));
             
-            return RedirectToAction("Index", new { tab = "A" });
+            return RedirectToAction("/Index", new { tab = "A" });
         }
         
         [CustomAuthorize(Roles = "Administrator")]
@@ -1053,7 +1053,7 @@ namespace IntelliTraxx.Controllers
 
             truckService.updateAppVar(ev, new Guid(sid));
             
-            return RedirectToAction("Index", new { tab = "A" });
+            return RedirectToAction("/Index", new { tab = "A" });
         }
         
         [CustomAuthorize(Roles = "Administrator")]
@@ -1077,7 +1077,7 @@ namespace IntelliTraxx.Controllers
             //delete class
             truckService.deleteAppVar(varToEdit, new Guid(sid));
             
-            return RedirectToAction("Index", new { tab = "A" });
+            return RedirectToAction("/Index", new { tab = "A" });
         }
         
         [CustomAuthorize(Roles = "Administrator")]
@@ -1111,7 +1111,7 @@ namespace IntelliTraxx.Controllers
 
             truckService.updateVar(nv, new Guid(sid));
             
-            return RedirectToAction("Index", new { tab = "VAR" });
+            return RedirectToAction("/Index", new { tab = "VAR" });
         }
 
         [CustomAuthorize(Roles = "Administrator")]
@@ -1157,7 +1157,7 @@ namespace IntelliTraxx.Controllers
 
             truckService.updateServiceVar(ev, new Guid(sid));
             
-            return RedirectToAction("Index", new { tab = "VAR" });
+            return RedirectToAction("/Index", new { tab = "VAR" });
         }
         
         [CustomAuthorize(Roles = "Administrator")]
@@ -1181,7 +1181,7 @@ namespace IntelliTraxx.Controllers
             //delete class
             truckService.deleteServiceVar(varToEdit, new Guid(sid));
             
-            return RedirectToAction("Index", new { tab = "VAR" });
+            return RedirectToAction("/Index", new { tab = "VAR" });
         }
 
 
