@@ -361,8 +361,10 @@
 
             if (data.mac == macAddress.toUpperCase()) {
                 if (data.state == "offline") {
+                    $('#routerIcon').removeClass("green");
                     $('#routerIcon').addClass("red");
                 } else {
+                    $('#routerIcon').removeClass("red");
                     $('#routerIcon').addClass("green");
                 }
                 $('#asset_id').html("<strong>Asset ID: </strong>" + data.asset_id);
@@ -378,6 +380,8 @@
                 $('#actual_firmware').html("<strong>Actual Firmware: </strong>" + af[6]);
                 $('#created_at').html("<strong>Created at: </strong>" + moment(data.created_at).format("MM/DD/YYYY HH:mm"));
                 $('#config_status').html("<strong>Config Status: </strong>" + data.config_status);
+
+                getSignalStrength(data.id);
             }
         } else {
             alert('A problem occurred getting the router for this vehicle, please reload or contact the administrator');
@@ -417,5 +421,61 @@
         alert('A problem occurred getting the Cradlepoint ECM Account for this vehicle, please reload or contact the administrator');
     }
     //#endregion
-    
+
+    //#region getECMSignalStrength Information Functions
+    function getSignalStrength(id) { 
+        $("#signalTable tbody").html("");
+
+        var _url = "getECMSignalStrength";
+        var _data = "routerID=" + id;
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: _url,
+            data: _data,
+            contentType: "application/json; charset=utf-8",
+            success: getSignalStrengthSuccess,
+            error: getSignalStrengthError
+        });
+    }
+
+    function getSignalStrengthSuccess(result) {
+        if (result) {
+            for (var i = 0; i < result.length; i++) {
+                var markup = "<tr>"
+
+                if (result[i].connection_state == "connected") {
+                    markup += "<td><i class=\"material-icons green\">cloud_done</i></td>";
+                } else {
+                    markup += "<td><i class=\"material-icons red\">error</i></td>";
+                }
+
+                if (result[i].signal_percent >= 0 && result[i].signal_percent <= 20) {
+                    markup += "<td><img src=\"../Content/Images/20.png\" width=\"15\" /></td>";
+                } else if (result[i].signal_percent > 21 && result[i].signal_percent <= 40) {
+                    markup += "<td><img src=\"../Content/Images/40.png\" width=\"15\" /></td>";
+                } else if (result[i].signal_percent > 41 && result[i].signal_percent <= 60) {
+                    markup += "<td><img src=\"../Content/Images/60.png\" width=\"15\" /></td>";
+                } else if (result[i].signal_percent > 61 && result[i].signal_percent <= 80) {
+                    markup += "<td><img src=\"../Content/Images/80.png\" width=\"15\" /></td>";
+                } else if (result[i].signal_percent > 81 && result[i].signal_percent <= 100) {
+                    markup += "<td><img src=\"../Content/Images/100.png\" width=\"15\" /></td>";
+                }
+
+                markup += "<td>" + result[i].name + "</td>";
+                markup += "<td>" + result[i].dbm + "</td>";
+                markup += "<td>" + result[i].sinr + "% </td>";
+                markup += "</tr>";
+
+                $("#signalTable tbody").append(markup);
+            }
+        } else {
+            alert('A problem occurred getting the Cradlepoint router signal strength for this vehicle, please reload or contact the administrator');
+        }
+    }
+
+    function getSignalStrengthError(result, error) {
+        alert('A problem occurred getting the Cradlepoint router signal strength for this vehicle, please reload or contact the administrator');
+    }
+    //#endregion
 });

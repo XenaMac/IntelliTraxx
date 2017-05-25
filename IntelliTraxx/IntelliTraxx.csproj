@@ -262,8 +262,15 @@
     <Content Include="Content\BootStrap_MultiSelect\bootstrap-multiselect.css" />
     <Content Include="Content\glyphicons-bootstrap.css" />
     <Content Include="Content\glyphicons.css" />
+    <Content Include="Content\Images\100.png" />
+    <Content Include="Content\Images\20.png" />
+    <Content Include="Content\Images\40.png" />
+    <Content Include="Content\Images\60.png" />
+    <Content Include="Content\Images\80.png" />
     <Content Include="Content\Images\black.png" />
     <Content Include="Content\Images\blue.png" />
+    <Content Include="Content\Images\cp-logo-full-color_525pxw.png" />
+    <Content Include="Content\Images\defaultDriver.png" />
     <Content Include="Content\Images\green.png" />
     <Content Include="Content\Images\grey.png" />
     <Content Include="Content\Images\IntelliTraxx_Logo.png" />

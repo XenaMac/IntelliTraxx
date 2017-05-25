@@ -102,7 +102,7 @@
     }
 
     <div>
-        @Html.ActionLink("Back to Companies", "Index", new { tab = "C" })
+        @Html.ActionLink("Back to Companies", "/Index", new { tab = "C" })
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         @Ajax.ActionLink("Delete Company", "DeleteCompany", "Admin", new { companyID = Model.CompanyID },
             new AjaxOptions()

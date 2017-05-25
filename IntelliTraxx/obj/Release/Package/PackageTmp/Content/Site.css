@@ -81,6 +81,12 @@ textarea {
     margin-bottom: 10px;
 }
 
+.analDevider {
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 1em;
+    padding-bottom: 1em;
+}
+
 .loading {
     position: absolute;
     left: 50%;
@@ -212,6 +218,14 @@ table .header {
     background-color: red;
 }
 
+.red{
+    color: red;
+}
+
+.green {
+    color: green;
+}
+
 .panel-black > .panel-heading {
     color: #fff;
     background-color: #000;
@@ -301,4 +315,9 @@ table .header {
     max-height: 600px;
     overflow-y: hidden;
     overflow-y: auto;
+}
+
+.huge{
+    font-size:  1.5em;
+    font-weight: bold;
 }

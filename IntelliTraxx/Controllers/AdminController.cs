@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Security.Claims;
@@ -863,6 +864,26 @@ namespace IntelliTraxx.Controllers
                 BinaryReader br = new BinaryReader(fileUpload.InputStream);
                 nd.imageData = br.ReadBytes((int)fileUpload.InputStream.Length);
                 nd.imageType = fileUpload.ContentType;
+                truckService.updateDriver(nd, new Guid(sid));
+            } else {
+                Image img = Image.FromFile(Server.MapPath("~/Content/Images/defaultDriver.png"));
+                byte[] arr;
+                ImageConverter converter = new ImageConverter();
+                arr = (byte[])converter.ConvertTo(img, typeof(byte[]));
+
+                //Make VehiclesVM to lataservice.vehicles
+                Driver nd = new Driver();
+                nd.DriverID = Guid.NewGuid();
+                nd.CompanyID = model.CompanyID;
+                nd.DriverFirstName = model.DriverFirstName;
+                nd.DriverLastName = model.DriverLastName;
+                nd.DriverEmail = model.DriverEmail;
+                nd.DriverNumber = model.DriverNumber;
+                nd.DriverPassword = Convert.ToInt32(model.PIN).ToString("0000");
+                nd.PIN = Convert.ToInt32(model.PIN).ToString("0000");
+                nd.ProfilePic = "defaulDriver.png";
+                nd.imageData = arr;
+                nd.imageType = "png";
                 truckService.updateDriver(nd, new Guid(sid));
             }
             

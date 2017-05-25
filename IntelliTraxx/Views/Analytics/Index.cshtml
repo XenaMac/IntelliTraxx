@@ -16,15 +16,15 @@
     <div id="profileDiv" class="profileDiv_in">
         @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
             {
-            @Html.AntiForgeryToken()
-            <small>
-                <ul class="list-group">
-                    <li class="list-group-item"><a href="" class="text-left" style="padding: 5px;" id="userNameRole"></a><br /></li>
-                    <li class="list-group-item"><a href="" class="text-left" style="padding: 5px;"><i class="glyphicons glyphicons-bell"></i> Notifications@*<span class="badge" style="margin-left: 5px;">3</span>*@ (Coming Soon)</a><br /></li>
-                    <li class="list-group-item"><a href="" class="text-left" style="padding: 5px;"><i class="glyphicons glyphicons-question-sign"></i> Help  (Coming Soon)</a></li>
-                    <li class="list-group-item"><a href="javascript:document.getElementById('logoutForm').submit()" style="padding: 5px;"><i class="glyphicons glyphicons-exit"></i> Log off</a></li>
-                </ul>
-            </small>
+        @Html.AntiForgeryToken()
+        <small>
+            <ul class="list-group">
+                <li class="list-group-item"><a href="" class="text-left" style="padding: 5px;" id="userNameRole"></a><br /></li>
+                <li class="list-group-item"><a href="" class="text-left" style="padding: 5px;"><i class="glyphicons glyphicons-bell"></i> Notifications@*<span class="badge" style="margin-left: 5px;">3</span>*@ (Coming Soon)</a><br /></li>
+                <li class="list-group-item"><a href="" class="text-left" style="padding: 5px;"><i class="glyphicons glyphicons-question-sign"></i> Help  (Coming Soon)</a></li>
+                <li class="list-group-item"><a href="javascript:document.getElementById('logoutForm').submit()" style="padding: 5px;"><i class="glyphicons glyphicons-exit"></i> Log off</a></li>
+            </ul>
+        </small>
         }
     </div>
 </div>
@@ -70,10 +70,10 @@
                             <input type="text" id="vToDate" class="form-control" placeholder="To Date:" />
                         </div>
                         <div id="toDateDiv" class="col-lg-3">
-                            <button class="btn btn-info glyphicon glyphicon-refresh" id="reload"></button>
+                            <button class="btn btn-primary glyphicons glyphicons-charts" id="reload"></button>
                         </div>
                     </div>
-                    <div id="vehicleSummaries" class="col-lg-12 container-fluid analDevider" hidden>
+                    <div id="vehicleSummaries" class="col-lg-12 row centered analDevider" hidden>
                         <div class="col-lg-3 col-md-6">
                             <div class="panel panel-warning">
                                 <div class="panel-heading">
@@ -96,7 +96,7 @@
                                 </a>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-md-6">
+                        @*<div class="col-lg-3 col-md-6">
                             <div class="panel panel-info">
                                 <div class="panel-heading">
                                     <div class="row">
@@ -117,7 +117,7 @@
                                     </div>
                                 </a>
                             </div>
-                        </div>
+                        </div>*@
                         <div class="col-lg-3 col-md-6">
                             <div class="panel panel-primary">
                                 <div class="panel-heading">
@@ -140,7 +140,7 @@
                                 </a>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-md-6">
+                        @*<div class="col-lg-3 col-md-6">
                             <div class="panel panel-danger">
                                 <div class="panel-heading">
                                     <div class="row">
@@ -161,15 +161,28 @@
                                     </div>
                                 </a>
                             </div>
-                        </div>
+                        </div>*@
                     </div>
                     <div class="collapse analDevider col-lg-12" id="communications">
                         <div class="col-lg-12 huge text-right" id="RC"></div>
-                        <div class="col-lg-2">
-                            <i class="glyphicons glyphicons-router x2 drop" id="routerIcon"></i>
+                        <div class="col-lg-4" style="display:block; text-align:center;">
+                            <i class="glyphicons glyphicons-router x2 drop text-center" id="routerIcon"></i><br /><br />
+                            <table class="table table-condensed" id="signalTable">
+                                <thead align="center">
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                        <th>Name</th>
+                                        <th>dBm</th>
+                                        <th>Quality</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                            <img src="~/Content/Images/cp-logo-full-color_525pxw.png" width="75"/>
                         </div>
                         <div class="col-lg-5 text-left">
-                            <ul class="list-unstyled small">
+                            <ul class="list-unstyled">
                                 <li id="asset_id"></li>
                                 <li id="name"></li>
                                 <li id="description"></li>

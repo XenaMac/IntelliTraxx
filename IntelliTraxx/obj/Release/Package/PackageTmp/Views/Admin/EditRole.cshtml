@@ -47,7 +47,7 @@
     }
 
     <div>
-        @Html.ActionLink("Back to Roles", "Index", new { tab = "R" })
+        @Html.ActionLink("Back to Roles", "/Index", new { tab = "R" })
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         @Ajax.ActionLink("Delete Role", "DeleteRole", "Admin", new { roleID = Model.RoleID },
             new AjaxOptions()

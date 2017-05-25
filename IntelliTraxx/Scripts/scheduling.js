@@ -16,6 +16,12 @@
         datepicker: false,
         format: 'H:i'
     });
+    $('#dayList').multiselect({
+        includeSelectAllOption: true,
+        buttonClass: 'btn btn-primary',
+        numberDisplayed: 7,
+        buttonWidth: '150px'
+    });
 
     initVehicleDropDown();
     getAllSchedules();
@@ -28,9 +34,6 @@
         $('#loader').removeClass('hidden');
         $('#scheduleInfo').addClass('hidden');
         $('#scheduleList').html('');
-        for (var i = 1; i <= 7; i++) {
-            $('#' + i).button('reset');
-        }
 
         var _url = 'getAllSchedules';
         var _data = "";
@@ -56,7 +59,7 @@
             schedules = data;
             var markup = '<div class="list-group">';
             for (var i = 0; i < schedules.length; i++) {
-                markup += '<a href="#" class="list-group-item" data-alias="' + data[i].scheduleID + '"><h4 class="list-group-item-heading">' + schedules[i].scheduleName + '</h4><p class="list-group-item-text small">' + moment().day(schedules[i].DOW - 1).format('dddd') + ': ' + moment(schedules[i].startTime).format('HH:mm') + ' - ' + moment(schedules[i].endTime).format('HH:mm') + '</p></a>';
+                markup += '<a href="#" class="list-group-item" data-alias="' + data[i].scheduleID + '"><h4 class="list-group-item-heading">' + schedules[i].scheduleName + '</h4><p class="list-group-item-text small">' + moment().day(schedules[i].DOW - 1).format('dddd') + ': ' + moment.utc(schedules[i].startTime).add(moment().utcOffset(), 'minutes').format('HH:mm') + ' - ' + moment.utc(schedules[i].endTime).add(moment().utcOffset(), 'minutes').format('HH:mm') + '</p></a>';
             }
             markup += '</div>';
 
@@ -136,6 +139,10 @@
     //#region editSchedule()
 
     function editSchedule(scheduleID) {
+        $('#dayList option:selected').each(function (index, brand) {
+            $('#dayList').multiselect('deselect', $(this).val());
+        });
+
         if (scheduleID != null) {
             scheduleVehicles = [];
             $('.btn-group label').removeClass('active');
@@ -149,15 +156,14 @@
             $('#tbEffEndDt').datetimepicker({
                 value: moment(schedule[0].EffDtEnd).format('YYYY-MM-DD HH:mm')
             });
-            $('#' + schedule[0].DOW).attr('checked', 'checked');
-            $('#' + schedule[0].DOW).parent('.btn').addClass('active');
+            $('#dayList').multiselect('select', schedule[0].DOW);
             $('#timeFrom').datetimepicker({
-                value: moment(schedule[0].startTime).format('HH:mm'),
+                value: moment.utc(schedule[0].startTime).add(moment().utcOffset(), 'minutes').format('HH:mm'),
                 format: 'H:i',
                 datepicker: false,
             });
             $('#timeTo').datetimepicker({
-                value: moment(schedule[0].endTime).format('HH:mm'),
+                value: moment.utc(schedule[0].endTime).add(moment().utcOffset(), 'minutes').format('HH:mm'),
                 format: 'H:i',
                 datepicker: false,
             });
@@ -235,7 +241,6 @@
     }
 
     $('#newSchedule').click(function () {
-        $('.btn-group label').removeClass('active');
         $('#scheduleID').val('');
         $('#tbScheduleName').val('');
         $('#tbEffStDt').val('');
@@ -279,43 +284,39 @@
         var scheduleList = [];
         updateVehicles = [];
         var DOW = null;
-        
+        var scheduleid = null;
+        var knew = null;        
         updateVehicles = [];
+
         $('#vehicleList option:selected').each(function (index, brand) {
             updateVehicles.push($(this).val());
         });
-        
-        for (var i = 1; i <= 7; i++) {
-            if ($('#' + i).prop('checked')) {
 
-                var scheduleid = null;
-                var knew = null;
-
-                if ($btn.prop('id') == "modifySchedule") {
-                    var scheduleid = $('#scheduleID').val();
-                    var knew = false;
-                } else {
-                    scheduleid = createGuid();
-                    var knew = true;
-                }
-
-                scheduleList.push({
-                    scheduleID: scheduleid,
-                    scheduleName: $('#tbScheduleName').val(),
-                    company: null,
-                    startTime: $('#timeFrom').val(),
-                    endTime: $('#timeTo').val(),
-                    createdBy: null,
-                    createdOn: null,
-                    modifiedBy: null,
-                    modifiedOn: null,
-                    DOW: i,
-                    EffDtStart: $('#tbEffStDt').val(),
-                    EffDtEnd: $('#tbEffEndDt').val(),
-                    active: $('#active').prop('checked')
-                });
+        $('#dayList option:selected').each(function (index, brand) {
+            if ($btn.prop('id') == "modifySchedule") {
+                scheduleid = $('#scheduleID').val();
+                knew = false;
+            } else {
+                scheduleid = createGuid();
+                knew = true;
             }
-        }
+
+            scheduleList.push({
+                scheduleID: scheduleid,
+                scheduleName: $('#tbScheduleName').val(),
+                company: null,
+                startTime: $('#timeFrom').val(),
+                endTime: $('#timeTo').val(),
+                createdBy: null,
+                createdOn: null,
+                modifiedBy: null,
+                modifiedOn: null,
+                DOW: $(this).val(),
+                EffDtStart: $('#tbEffStDt').val(),
+                EffDtEnd: $('#tbEffEndDt').val(),
+                active: $('#active').prop('checked')
+            });
+        });
 
         updateSchedule(scheduleList, knew, updateVehicles);        
     });
@@ -402,7 +403,7 @@
                 "showMethod": "fadeIn",
                 "hideMethod": "fadeOut"
             }
-            Command: toastr["success"]("Schedule was successfully Updated/Created");
+            Command: toastr["success"]("Schedulem(s) successfully Updated/Created");
             if (reload) {
                 initVehicleDropDown();
                 getAllSchedules();
