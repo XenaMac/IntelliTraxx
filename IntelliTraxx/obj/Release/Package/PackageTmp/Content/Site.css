@@ -218,7 +218,7 @@ table .header {
     background-color: red;
 }
 
-.red{
+.red {
     color: red;
 }
 
@@ -294,10 +294,21 @@ table .header {
     margin: 10px;
 }
 
-.material-icons.md-18 { font-size: 18px; }
-.material-icons.md-24 { font-size: 24px; }
-.material-icons.md-36 { font-size: 36px; }
-.material-icons.md-48 { font-size: 48px; }
+.material-icons.md-18 {
+    font-size: 18px;
+}
+
+.material-icons.md-24 {
+    font-size: 24px;
+}
+
+.material-icons.md-36 {
+    font-size: 36px;
+}
+
+.material-icons.md-48 {
+    font-size: 48px;
+}
 
 #vehicTable {
     max-height: 400px;
@@ -317,7 +328,19 @@ table .header {
     overflow-y: auto;
 }
 
-.huge{
-    font-size:  1.5em;
+.huge {
+    font-size: 1.5em;
     font-weight: bold;
+}
+
+.centered {
+    text-align: center;
+    font-size: 0;
+}
+
+.centered > div {
+    float: none;
+    display: inline-block;
+    text-align: left;
+    font-size: 13px;
 }

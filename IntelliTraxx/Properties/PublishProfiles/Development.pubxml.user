@@ -31,10 +31,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/07/2017 10:27:03</publishTime>
     </File>
     <File Include="bin/IntelliTraxx.dll">
-      <publishTime>05/22/2017 07:47:51</publishTime>
+      <publishTime>05/25/2017 20:27:32</publishTime>
     </File>
     <File Include="bin/IntelliTraxx.pdb">
-      <publishTime>05/22/2017 07:47:51</publishTime>
+      <publishTime>05/25/2017 20:27:32</publishTime>
     </File>
     <File Include="bin/Microsoft.AI.Agent.Intercept.dll">
       <publishTime>05/07/2017 10:27:04</publishTime>
@@ -324,11 +324,32 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Content/glyphicons.css">
       <publishTime>05/07/2017 10:26:52</publishTime>
     </File>
+    <File Include="Content/Images/100.png">
+      <publishTime>05/23/2017 13:10:01</publishTime>
+    </File>
+    <File Include="Content/Images/20.png">
+      <publishTime>05/23/2017 13:10:01</publishTime>
+    </File>
+    <File Include="Content/Images/40.png">
+      <publishTime>05/23/2017 13:10:01</publishTime>
+    </File>
+    <File Include="Content/Images/60.png">
+      <publishTime>05/23/2017 13:10:01</publishTime>
+    </File>
+    <File Include="Content/Images/80.png">
+      <publishTime>05/23/2017 13:10:01</publishTime>
+    </File>
     <File Include="Content/Images/black.png">
       <publishTime>05/07/2017 10:26:51</publishTime>
     </File>
     <File Include="Content/Images/blue.png">
       <publishTime>05/07/2017 10:26:51</publishTime>
+    </File>
+    <File Include="Content/Images/cp-logo-full-color_525pxw.png">
+      <publishTime>05/23/2017 19:47:27</publishTime>
+    </File>
+    <File Include="Content/Images/defaultDriver.png">
+      <publishTime>05/24/2017 20:09:20</publishTime>
     </File>
     <File Include="Content/Images/green.png">
       <publishTime>05/07/2017 10:26:51</publishTime>
@@ -403,7 +424,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/07/2017 10:26:51</publishTime>
     </File>
     <File Include="Content/Site.css">
-      <publishTime>05/22/2017 07:16:59</publishTime>
+      <publishTime>05/24/2017 07:07:37</publishTime>
     </File>
     <File Include="Content/themes/base/accordion.css">
       <publishTime>05/07/2017 10:26:52</publishTime>
@@ -628,10 +649,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/07/2017 10:26:52</publishTime>
     </File>
     <File Include="Scripts/alertsadmin.js">
-      <publishTime>05/13/2017 07:09:06</publishTime>
+      <publishTime>05/24/2017 06:43:33</publishTime>
     </File>
     <File Include="Scripts/analytics.js">
-      <publishTime>05/22/2017 07:04:41</publishTime>
+      <publishTime>05/25/2017 10:17:50</publishTime>
     </File>
     <File Include="Scripts/bootstrap-table-export.min.js">
       <publishTime>05/07/2017 10:26:52</publishTime>
@@ -793,7 +814,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/07/2017 10:26:53</publishTime>
     </File>
     <File Include="Scripts/scheduling.js">
-      <publishTime>05/11/2017 17:37:33</publishTime>
+      <publishTime>05/25/2017 06:34:56</publishTime>
     </File>
     <File Include="Scripts/tableExport.js">
       <publishTime>05/07/2017 10:26:53</publishTime>
@@ -805,34 +826,34 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/07/2017 10:26:52</publishTime>
     </File>
     <File Include="Service References/AlertAdminService/IntelliTraxx.AlertAdminService.alertClass.datasource">
-      <publishTime>05/07/2017 10:26:53</publishTime>
+      <publishTime>05/24/2017 15:31:29</publishTime>
     </File>
     <File Include="Service References/AlertAdminService/IntelliTraxx.AlertAdminService.alertData.datasource">
-      <publishTime>05/07/2017 10:26:53</publishTime>
+      <publishTime>05/24/2017 15:31:29</publishTime>
     </File>
     <File Include="Service References/AlertAdminService/IntelliTraxx.AlertAdminService.alertGeoFence.datasource">
-      <publishTime>05/07/2017 10:26:53</publishTime>
+      <publishTime>05/24/2017 15:31:29</publishTime>
     </File>
     <File Include="Service References/AlertAdminService/IntelliTraxx.AlertAdminService.alertVehicle.datasource">
-      <publishTime>05/07/2017 10:26:53</publishTime>
+      <publishTime>05/24/2017 15:31:29</publishTime>
     </File>
     <File Include="Service References/AlertAdminService/IntelliTraxx.AlertAdminService.dbAlert.datasource">
-      <publishTime>05/07/2017 10:26:53</publishTime>
+      <publishTime>05/24/2017 15:31:29</publishTime>
     </File>
     <File Include="Service References/AlertAdminService/IntelliTraxx.AlertAdminService.linkVehicle.datasource">
-      <publishTime>05/07/2017 10:26:53</publishTime>
+      <publishTime>05/24/2017 15:31:29</publishTime>
     </File>
     <File Include="Service References/AlertAdminService/IntelliTraxx.AlertAdminService.polyData.datasource">
-      <publishTime>05/07/2017 10:26:53</publishTime>
+      <publishTime>05/24/2017 15:31:29</publishTime>
     </File>
     <File Include="Service References/AlertAdminService/IntelliTraxx.AlertAdminService.schedule.datasource">
-      <publishTime>05/07/2017 10:26:53</publishTime>
+      <publishTime>05/24/2017 15:31:29</publishTime>
     </File>
     <File Include="Service References/AlertAdminService/IntelliTraxx.AlertAdminService.vsLink.datasource">
-      <publishTime>05/07/2017 10:26:53</publishTime>
+      <publishTime>05/24/2017 15:31:29</publishTime>
     </File>
     <File Include="Service References/PolygonService/IntelliTraxx.PolygonService.polygonData.datasource">
-      <publishTime>05/07/2017 10:26:54</publishTime>
+      <publishTime>05/25/2017 20:15:17</publishTime>
     </File>
     <File Include="Service References/TabletService/IntelliTraxx.TabletService.dispatch.datasource">
       <publishTime>05/07/2017 10:26:54</publishTime>
@@ -994,7 +1015,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/07/2017 10:26:54</publishTime>
     </File>
     <File Include="Views/Analytics/Index.cshtml">
-      <publishTime>05/22/2017 07:15:59</publishTime>
+      <publishTime>05/25/2017 10:15:54</publishTime>
     </File>
     <File Include="Views/Fleet/Index.cshtml">
       <publishTime>05/18/2017 12:35:08</publishTime>
@@ -1030,7 +1051,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/07/2017 10:26:54</publishTime>
     </File>
     <File Include="Views/Scheduling/Index.cshtml">
-      <publishTime>05/13/2017 18:59:32</publishTime>
+      <publishTime>05/24/2017 12:04:24</publishTime>
     </File>
     <File Include="Views/Shared/Error.cshtml">
       <publishTime>05/07/2017 10:26:54</publishTime>
@@ -1078,7 +1099,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/07/2017 10:26:54</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>05/22/2017 07:47:51</publishTime>
+      <publishTime>05/25/2017 20:27:33</publishTime>
     </File>
   </ItemGroup>
 </Project>

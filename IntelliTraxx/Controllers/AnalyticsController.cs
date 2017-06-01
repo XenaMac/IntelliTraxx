@@ -4,6 +4,7 @@ using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -80,6 +81,29 @@ namespace IntelliTraxx.Controllers
             return Json(router, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult getFirmware(string fw)
+        {
+            //get vars for api keys
+            List<systemvar> vars = truckService.getAppVars();
+
+            var client = new RestClient();
+            client.BaseUrl = new Uri("https://www.cradlepointecm.com/");
+
+            var request = new RestRequest();
+            request.Resource = "api/v2/firmwares/" + fw + "/";
+
+            // easily add HTTP Headers
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("X-CP-API-ID", vars.Where(v => v.varName == "X-CP-API-ID").Select(x => x.varVal).FirstOrDefault());
+            request.AddHeader("X-CP-API-KEY", vars.Where(v => v.varName == "X-CP-API-KEY").Select(x => x.varVal).FirstOrDefault());
+            request.AddHeader("X-ECM-API-ID", vars.Where(v => v.varName == "X-ECM-API-ID").Select(x => x.varVal).FirstOrDefault());
+            request.AddHeader("X-ECM-API-KEY", vars.Where(v => v.varName == "X-ECM-API-KEY").Select(x => x.varVal).FirstOrDefault());
+
+            IRestResponse response = client.Execute(request);
+            FirmWareRootobject firmware = JsonConvert.DeserializeObject<FirmWareRootobject>(response.Content);
+            return Json(firmware, JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult getECMAccount(string accountNum)
         {
             //get vars for api keys
@@ -130,7 +154,7 @@ namespace IntelliTraxx.Controllers
 
             foreach (NetDevicesDatum device in devices.data)
             {
-                if (device.router.Contains(routerID) && device.mode == "wan")
+                if (device.mode == "wan" && device.service_type == "LTE")
                 {
                     RouterSignal rs = getRouterStrength(device);
                     RSList.Add(rs);
@@ -163,7 +187,7 @@ namespace IntelliTraxx.Controllers
             IRestResponse response = client.Execute(request);
             DSSRootobject samples = JsonConvert.DeserializeObject<DSSRootobject>(response.Content);
             DSSDatum sample = samples.data.Where(s => s.net_device.Contains(device.id)).OrderByDescending(d => d.created_at).FirstOrDefault();
-            if(sample != null)
+            if (sample != null)
             {
                 NewRS.connection_state = device.connection_state;
                 NewRS.name = device.name;
@@ -171,7 +195,8 @@ namespace IntelliTraxx.Controllers
                 NewRS.dbm = sample.dbm;
                 NewRS.sinr = sample.sinr;
                 NewRS.created_at = sample.created_at;
-            } else
+            }
+            else
             {
                 NewRS.connection_state = device.connection_state;
                 NewRS.name = device.name;
@@ -182,6 +207,83 @@ namespace IntelliTraxx.Controllers
             }
 
             return NewRS;
+        }
+
+        public ActionResult getDataUsage(string routerID)
+        {
+            //get vars for api keys
+            List<systemvar> vars = truckService.getAppVars();
+            List<NDMDatum> NDs = new List<NDMDatum>();
+            var totalBytes = 0;
+
+            var client = new RestClient();
+            client.BaseUrl = new Uri("https://www.cradlepointecm.com/");
+
+            var request = new RestRequest();
+            request.Resource = "api/v2/net_devices/";
+            request.AddParameter("router", routerID);
+
+            // easily add HTTP Headers
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("X-CP-API-ID", vars.Where(v => v.varName == "X-CP-API-ID").Select(x => x.varVal).FirstOrDefault());
+            request.AddHeader("X-CP-API-KEY", vars.Where(v => v.varName == "X-CP-API-KEY").Select(x => x.varVal).FirstOrDefault());
+            request.AddHeader("X-ECM-API-ID", vars.Where(v => v.varName == "X-ECM-API-ID").Select(x => x.varVal).FirstOrDefault());
+            request.AddHeader("X-ECM-API-KEY", vars.Where(v => v.varName == "X-ECM-API-KEY").Select(x => x.varVal).FirstOrDefault());
+
+            IRestResponse response = client.Execute(request);
+            NetDevicesRootobject devices = JsonConvert.DeserializeObject<NetDevicesRootobject>(response.Content);
+
+            foreach (NetDevicesDatum device in devices.data)
+            {
+                if (device.mode == "wan" && device.service_type == "LTE")
+                {
+                    var client2 = new RestClient();
+                    client2.BaseUrl = new Uri("https://www.cradlepointecm.com/");
+                    var request2 = new RestRequest();
+
+                    request2.AddHeader("Content-Type", "application/json");
+                    request2.AddHeader("X-CP-API-ID", vars.Where(v => v.varName == "X-CP-API-ID").Select(x => x.varVal).FirstOrDefault());
+                    request2.AddHeader("X-CP-API-KEY", vars.Where(v => v.varName == "X-CP-API-KEY").Select(x => x.varVal).FirstOrDefault());
+                    request2.AddHeader("X-ECM-API-ID", vars.Where(v => v.varName == "X-ECM-API-ID").Select(x => x.varVal).FirstOrDefault());
+                    request2.AddHeader("X-ECM-API-KEY", vars.Where(v => v.varName == "X-ECM-API-KEY").Select(x => x.varVal).FirstOrDefault());
+
+                    request2.Resource = "api/v2/net_device_metrics/";
+                    request2.AddParameter("net_device", device.id);
+
+                    IRestResponse response2 = client2.Execute(request2);
+                    NDMRootobject dms = JsonConvert.DeserializeObject<NDMRootobject>(response2.Content);
+                    NDs.Add(dms.data[0]);
+                }
+            }
+
+            return Json(NDs, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult getVehicleData(string id)
+        {
+
+            var vehicleData = truckService.getVehicleData(new Guid(id));
+
+            if (vehicleData == null)
+            {
+                var allVehicles = truckService.getAllVehicles(true);
+                foreach (Vehicle v in allVehicles)
+                {
+                    if (v.extendedData.ID == new Guid(id))
+                    {
+                        vehicleData = v;
+                    }
+                }
+            }
+
+            return Json(vehicleData, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult getOBDByDateRange(string VehicleID, DateTime from, DateTime to)
+        {
+            List<OBDLog> OBDData = truckService.getOBDDataReturnByDateRange(VehicleID, from, to);
+
+            return Json(OBDData, JsonRequestBehavior.AllowGet);
         }
     }
 
@@ -331,7 +433,7 @@ namespace IntelliTraxx.Controllers
         public int dbm { get; set; }
         public float sinr { get; set; }
     }
-    
+
     public class DSSRootobject
     {
         public DSSDatum[] data { get; set; }
@@ -359,5 +461,53 @@ namespace IntelliTraxx.Controllers
         public float sinr { get; set; }
         public float uptime { get; set; }
     }
+
+    public class FirmWareRootobject
+    {
+        public DateTime built_at { get; set; }
+        public string hash { get; set; }
+        public string id { get; set; }
+        public bool is_deprecated { get; set; }
+        public string product { get; set; }
+        public DateTime released_at { get; set; }
+        public string resource_url { get; set; }
+        public DateTime uploaded_at { get; set; }
+        public string url { get; set; }
+        public string version { get; set; }
+    }
+
+    public class NDMRootobject
+    {
+        public NDMDatum[] data { get; set; }
+        public NDMMeta meta { get; set; }
+    }
+
+    public class NDMMeta
+    {
+        public int limit { get; set; }
+        public object next { get; set; }
+        public int offset { get; set; }
+        public object previous { get; set; }
+    }
+
+    public class NDMDatum
+    {
+        public int bytes_in { get; set; }
+        public int bytes_out { get; set; }
+        public object cinr { get; set; }
+        public int? dbm { get; set; }
+        public object ecio { get; set; }
+        public string id { get; set; }
+        public string net_device { get; set; }
+        public string resource_url { get; set; }
+        public float? rsrp { get; set; }
+        public float? rsrq { get; set; }
+        public object rssi { get; set; }
+        public string service_type { get; set; }
+        public float? signal_strength { get; set; }
+        public float? sinr { get; set; }
+        public DateTime? update_ts { get; set; }
+    }
+
 
 }

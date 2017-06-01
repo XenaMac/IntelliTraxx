@@ -388,4 +388,21 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="alertReturn" nillable="true" type="tns:alertReturn" />
+  <xs:complexType name="ArrayOfOBDLog">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="OBDLog" nillable="true" type="tns:OBDLog" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfOBDLog" nillable="true" type="tns:ArrayOfOBDLog" />
+  <xs:complexType name="OBDLog">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="OBDLogID" type="ser:guid" />
+      <xs:element minOccurs="0" name="VehicleID" type="ser:guid" />
+      <xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="runID" type="ser:guid" />
+      <xs:element minOccurs="0" name="timestamp" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="val" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="OBDLog" nillable="true" type="tns:OBDLog" />
 </xs:schema>

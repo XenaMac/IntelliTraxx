@@ -1074,4 +1074,20 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="getOBDDataReturnByDateRange">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="VehicleID" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="from" type="xs:dateTime" />
+        <xs:element minOccurs="0" name="to" type="xs:dateTime" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="getOBDDataReturnByDateRangeResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q115="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="getOBDDataReturnByDateRangeResult" nillable="true" type="q115:ArrayOfOBDLog" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
 </xs:schema>

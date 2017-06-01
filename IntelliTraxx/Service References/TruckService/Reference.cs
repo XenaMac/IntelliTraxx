@@ -4445,6 +4445,131 @@ namespace IntelliTraxx.TruckService {
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="OBDLog", Namespace="http://schemas.datacontract.org/2004/07/LATATrax")]
+    [System.SerializableAttribute()]
+    public partial class OBDLog : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Guid OBDLogIDField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Guid VehicleIDField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string nameField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Guid runIDField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.DateTime timestampField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string valField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Guid OBDLogID {
+            get {
+                return this.OBDLogIDField;
+            }
+            set {
+                if ((this.OBDLogIDField.Equals(value) != true)) {
+                    this.OBDLogIDField = value;
+                    this.RaisePropertyChanged("OBDLogID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Guid VehicleID {
+            get {
+                return this.VehicleIDField;
+            }
+            set {
+                if ((this.VehicleIDField.Equals(value) != true)) {
+                    this.VehicleIDField = value;
+                    this.RaisePropertyChanged("VehicleID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string name {
+            get {
+                return this.nameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.nameField, value) != true)) {
+                    this.nameField = value;
+                    this.RaisePropertyChanged("name");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Guid runID {
+            get {
+                return this.runIDField;
+            }
+            set {
+                if ((this.runIDField.Equals(value) != true)) {
+                    this.runIDField = value;
+                    this.RaisePropertyChanged("runID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.DateTime timestamp {
+            get {
+                return this.timestampField;
+            }
+            set {
+                if ((this.timestampField.Equals(value) != true)) {
+                    this.timestampField = value;
+                    this.RaisePropertyChanged("timestamp");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string val {
+            get {
+                return this.valField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.valField, value) != true)) {
+                    this.valField = value;
+                    this.RaisePropertyChanged("val");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="TruckService.ITruckService")]
     public interface ITruckService {
@@ -4916,6 +5041,12 @@ namespace IntelliTraxx.TruckService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/changeDrivers", ReplyAction="http://tempuri.org/ITruckService/changeDriversResponse")]
         System.Threading.Tasks.Task<string> changeDriversAsync(string from, string to, string vehicleID, string modifiedBy);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/getOBDDataReturnByDateRange", ReplyAction="http://tempuri.org/ITruckService/getOBDDataReturnByDateRangeResponse")]
+        System.Collections.Generic.List<IntelliTraxx.TruckService.OBDLog> getOBDDataReturnByDateRange(string VehicleID, System.DateTime from, System.DateTime to);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/getOBDDataReturnByDateRange", ReplyAction="http://tempuri.org/ITruckService/getOBDDataReturnByDateRangeResponse")]
+        System.Threading.Tasks.Task<System.Collections.Generic.List<IntelliTraxx.TruckService.OBDLog>> getOBDDataReturnByDateRangeAsync(string VehicleID, System.DateTime from, System.DateTime to);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -5567,6 +5698,14 @@ namespace IntelliTraxx.TruckService {
         
         public System.Threading.Tasks.Task<string> changeDriversAsync(string from, string to, string vehicleID, string modifiedBy) {
             return base.Channel.changeDriversAsync(from, to, vehicleID, modifiedBy);
+        }
+        
+        public System.Collections.Generic.List<IntelliTraxx.TruckService.OBDLog> getOBDDataReturnByDateRange(string VehicleID, System.DateTime from, System.DateTime to) {
+            return base.Channel.getOBDDataReturnByDateRange(VehicleID, from, to);
+        }
+        
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<IntelliTraxx.TruckService.OBDLog>> getOBDDataReturnByDateRangeAsync(string VehicleID, System.DateTime from, System.DateTime to) {
+            return base.Channel.getOBDDataReturnByDateRangeAsync(VehicleID, from, to);
         }
     }
 }

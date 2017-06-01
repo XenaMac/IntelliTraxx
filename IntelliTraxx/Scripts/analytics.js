@@ -2,8 +2,14 @@
     var start = moment().startOf('month').format('YYYY-MM-DD hh:mm');
     var end = moment().endOf('month').format('YYYY-MM-DD hh:mm');
     var vehicleRouter = null;
+    var steps = 0;
 
-    $('#startDtTm').datetimepicker();
+    var month = moment().get('month') - 2;
+    $('#startDtTm').datetimepicker({
+        dayOfWeekStart: 1,
+        minDate: '2017/' + month + '/1',
+        maxDate: '+1970/01/01'//tomorrow is maximum date calendar
+    });
     $('#startDtTm').val(start);
     $('#endDtTm').datetimepicker();
     $('#endDtTm').val(end);
@@ -15,6 +21,8 @@
     //#region Active/Inactive Vehicles
     function AIVehicles() {
         $('#vehicles').html("<img src=\'../Content/Images/preloader.gif\' width=\'200\' />");
+        $('#vlPreloader').removeClass('hidden')
+        $('#vehicleList').addClass('hidden')
         var _url = 'getAllVehicles';
         var _data = "loadHistorical=true";
         $.ajax({
@@ -94,6 +102,13 @@
                     ]
                 }]
             });
+
+            $('#vehicleList').empty();
+            for (var i = 0; i < result.length; i++) {
+                $("#vehicleList").append($('<option>', { value: result[i].extendedData.MACAddress + "|" + result[i].extendedData.ID }).text(result[i].VehicleID));
+            }
+            $('#vlPreloader').addClass('hidden')
+            $('#vehicleList').removeClass('hidden')
 
         } else {
             alert('A problem occurred getting the Active/Inactive Vehicles, please reload or contact the administrator.');
@@ -284,61 +299,36 @@
     }
 
     $('#showVehicles').click(function () {
-        $('#vehicleList').addClass('hidden');
-        $('#vlPreloader').removeClass('hidden');
-        getVehicleList();
+        //getVehicleList();
         var month = moment().get('month') - 2;
         $('#vFromDate').datetimepicker({
             dayOfWeekStart: 1,
             minDate: '2017/' + month + '/1',
             maxDate: '+1970/01/01'//tomorrow is maximum date calendar
         });
+        $('#vFromDate').val(moment().startOf('day').format('YYYY-MM-DD hh:mm'));
         $('#vToDate').datetimepicker({
             dayOfWeekStart: 1,
             minDate: '2017/' + month + '/1',
             maxDate: '+1970/01/01'//tomorrow is maximum date calendar
         });
+        $('#vToDate').val(moment().endOf('day').format('YYYY-MM-DD hh:mm'));
     })
-
-    //#region GetVehicleData Functions
-    function getVehicleList() { //Get a download of the vehicle for ID
-        var _url = 'getVehicleListMac';
-        var _data = "";
-        $.ajax({
-            type: "GET",
-            dataType: "json",
-            url: _url,
-            data: _data,
-            contentType: "application/json; charset=utf-8",
-            success: getVehicleListSuccess,
-            error: getVehicleListError
-        });
-    }
-
-    function getVehicleListSuccess(result) {
-        if (result) {
-            $('#vehicleList').empty();
-            for (var i = 0; i < result.length; i++) {
-                $("#vehicleList").append($('<option>', { value: result[i].macAddress }).text(result[i].vehicleID));
-            }
-            $('#vehicleList').removeClass('hidden');
-            $('#vlPreloader').addClass('hidden');
-        } else {
-            alert('A problem occurred getting vehicles, please reload or contact the administrator');
-        }
-    }
-
-    function getVehicleListError(result, error) {
-        alert('A problem occurred getting vehicles, please reload or contact the administrator');
-    }
-    //#endregion
-
+    
     $('#reload').click(function () {
-        getRouter($('#vehicleList').val());
+        $("#vehiclePreloader").removeClass('hidden');
+        $('#vehicleSummaries').slideUp();
+        $('#communications').collapse('hide');
+        $('#showCommunciations').removeClass('hidden');
+        var MACID = $('#vehicleList').val().split("|");
+        var MACAddress = formatMac(MACID[0])
+        getRouter(MACAddress)
+        getOBDByDateRange(MACID[1], $('#vFromDate').val(), $('#vToDate').val())
     });
 
     //#region getECmRouter Information Functions
     function getRouter(macAddress) { //Get a download of the vehicle for ID
+        $('#EM').addClass("hidden");
         var _url = 'getECMRouter';
         var _data = "macAddress=" + macAddress;
         $.ajax({
@@ -363,9 +353,13 @@
                 if (data.state == "offline") {
                     $('#routerIcon').removeClass("green");
                     $('#routerIcon').addClass("red");
+                    $('#RC').removeClass("green");
+                    $('#RC').addClass("red");
                 } else {
                     $('#routerIcon').removeClass("red");
                     $('#routerIcon').addClass("green");
+                    $('#RC').removeClass("red");
+                    $('#RC').addClass("green");
                 }
                 $('#asset_id').html("<strong>Asset ID: </strong>" + data.asset_id);
                 $('#name').html("<strong>Name: </strong>" + data.name);
@@ -375,21 +369,45 @@
                 $('#state_updated_at').html("<strong>State Update at : </strong>" + moment(data.state_updated_at).format("MM/DD/YYYY HH:mm"));
                 $('#mac').html("<strong>MAC Address: </strong>" + data.mac);
                 var tf = data.target_firmware.split("/");
-                $('#target_firmware').html("<strong>Target Firmware: </strong>" + tf[6]);
+                getTargetFirmware(tf[6]);
                 var af = data.actual_firmware.split("/");
-                $('#actual_firmware').html("<strong>Actual Firmware: </strong>" + af[6]);
+                getActualFirmware(af[6]);
                 $('#created_at').html("<strong>Created at: </strong>" + moment(data.created_at).format("MM/DD/YYYY HH:mm"));
                 $('#config_status').html("<strong>Config Status: </strong>" + data.config_status);
 
+
+                $("#commPanel").addClass("panel-warning")
+                $("#commPanel").removeClass("panel-default")
+                $("#commLink").removeClass('hidden');
+                $("#commText").addClass('hidden');
+
                 getSignalStrength(data.id);
+                getDataUsage(data.id);
+
+                stepCheck(1);
             }
         } else {
-            alert('A problem occurred getting the router for this vehicle, please reload or contact the administrator');
+            $("#commPanel").removeClass("panel-warning")
+            $("#commPanel").addClass("panel-default")
+            $('#commInfo').html("--")
+            $("#commLink").addClass('hidden');
+            $("#commText").removeClass('hidden');
+            $('#showCommunications').addClass('hidden');
+            stepCheck(100);
+            //alert('A problem occurred getting the router for this vehicle, please reload or contact the administrator');
         }
     }
 
     function getRouterError(result, error) {
-        alert('A problem occurred getting the router for this vehicle, please reload or contact the administrator');
+        $("#commPanel").removeClass("panel-warning")
+        $("#commPanel").addClass("panel-default")
+        $("#vehiclePreloader").addClass("hidden")
+        $('#commInfo').html("--")
+        $("#commLink").addClass('hidden');
+        $("#commText").removeClass('hidden');
+        $('#showCommunciations').addClass('hidden');
+        stepCheck(100);
+        //alert('A problem occurred getting the router for this vehicle, please reload or contact the administrator');
     }
     //#endregion
 
@@ -410,20 +428,24 @@
 
     function getECMAccountSuccess(result) {
         if (result) {
-            $('#RC').html("Router Communications / " + result.name);
-            $('#vehicleSummaries').slideDown();
+            $('#RC').html("Router Communications / " + result.name + "<br /><br />");
+            stepCheck(1);
         } else {
             alert('A problem occurred getting the Cradlepoint ECM Account for this vehicle, please reload or contact the administrator');
+            stepCheck(0);
         }
     }
 
     function getECMAccountError(result, error) {
         alert('A problem occurred getting the Cradlepoint ECM Account for this vehicle, please reload or contact the administrator');
+        stepCheck(0);
     }
     //#endregion
 
     //#region getECMSignalStrength Information Functions
     function getSignalStrength(id) { 
+        $('#signalPreloader').removeClass('hidden');
+        $('#signalTable').addClass('hidden');
         $("#signalTable tbody").html("");
 
         var _url = "getECMSignalStrength";
@@ -468,9 +490,11 @@
                 markup += "</tr>";
 
                 $("#signalTable tbody").append(markup);
+                stepCheck(1);
             }
         } else {
             alert('A problem occurred getting the Cradlepoint router signal strength for this vehicle, please reload or contact the administrator');
+            stepCheck(0);
         }
     }
 
@@ -478,4 +502,209 @@
         alert('A problem occurred getting the Cradlepoint router signal strength for this vehicle, please reload or contact the administrator');
     }
     //#endregion
+
+    //#region getTragetFirware Information Functions
+    function getTargetFirmware(id) {
+        var _url = "getFirmware";
+        var _data = "fw=" + id;
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: _url,
+            data: _data,
+            contentType: "application/json; charset=utf-8",
+            success: getTargetFirmwareSuccess,
+            error: getTargetFirmwareError
+        });
+    }
+
+    function getTargetFirmwareSuccess(result) {
+        if (result) {
+            $('#target_firmware').html("<strong>Target Firmware: </strong>" + result.version);
+            stepCheck(1);
+        } else {
+            alert('A problem occurred getting the router target firmware, please reload or contact the administrator');
+            stepCheck(0);
+        }
+    }
+
+    function getTargetFirmwareError(result, error) {
+        alert('A problem occurred getting the router target firmware, please reload or contact the administrator');
+        stepCheck(0);
+    }
+    //#endregion
+
+    //#region getActualFirware Information Functions
+    function getActualFirmware(id) {
+        var _url = "getFirmware";
+        var _data = "fw=" + id;
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: _url,
+            data: _data,
+            contentType: "application/json; charset=utf-8",
+            success: getActualFirmwareSuccess,
+            error: getActualFirmwareError
+        });
+    }
+
+    function getActualFirmwareSuccess(result) {
+        if (result) {
+            $('#actual_firmware').html("<strong>Actual Firmware: </strong>" + result.version);
+            stepCheck(1);
+        } else {
+            alert('A problem occurred getting the router actual firmware, please reload or contact the administrator');
+            stepCheck(0);
+        }
+    }
+
+    function getActualFirmwareError(result, error) {
+        alert('A problem occurred getting the router actual firmware, please reload or contact the administrator');
+        stepCheck(0);
+    }
+    //#endregion
+
+    //#region getNetDeviceMetrics Information Functions
+    function getDataUsage(routerid) {
+        var _url = "getDataUsage";
+        var _data = "routerID=" + routerid;
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: _url,
+            data: _data,
+            contentType: "application/json; charset=utf-8",
+            success: getDataUsageSuccess,
+            error: getDataUsageError
+        });
+    }
+
+    function getDataUsageSuccess(result) {
+        if (result) {
+            var total = 0
+            total += result[0].bytes_in;
+            total += result[0].bytes_out;
+            total = formatBytes(total, 0);
+
+            $('#commInfo').html(total);
+            $('#data_Usage').html(total);
+            $('#usageDate').html("As of last router update to ECM: " + moment(result[0].update_ts).format("MM/DD/YYYY HH:mm"));
+
+            $('#signalPreloader').addClass('hidden');
+            $('#signalTable').removeClass('hidden');
+            stepCheck(1);
+        } else {
+            alert('A problem occurred getting the router data usage, please reload or contact the administrator');
+            stepCheck(0);
+        }
+    }
+
+    function getDataUsageError(result, error) {
+        alert('A problem occurred getting the router data usage, please reload or contact the administrator');
+        stepCheck(0);
+    }
+    //#endregion   
+
+    //#region getNetDeviceMetrics Information Functions
+    function getOBDByDateRange(VehicleID, from, to) {
+        var _url = "getOBDByDateRange";
+        var _data = "VehicleID=" + VehicleID + "&from=" + from + "&to=" + to;
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: _url,
+            data: _data,
+            contentType: "application/json; charset=utf-8",
+            success: getOBDByDateRangeSuccess,
+            error: getOBDByDateRangeError
+        });
+    }
+
+    function getOBDByDateRangeSuccess(result) {
+        if (result.length != 0) {
+
+            var markup = ''
+            var codes = [];
+
+            for (var i = 0; i < result.length; i++) {
+                if (!containsObject(result[i].name, result)) {
+                    codes.push(result[i].name)
+                    $('#PIDList').append($('<option>', { value: result[i].name }).text(result[i].name));
+                }
+            }
+
+            $("#OBDPanel").addClass("panel-info")
+            $("#OBDPanel").removeClass("panel-default")
+            $('#OBDInfo').html(result.length)
+            $("#OBDLink").removeClass('hidden')
+            $("#OBDText").addClass('hidden')
+            $('#showDiagnostics').removeClass('hidden')
+            stepCheck(1);
+        } else {
+            $("#OBDPanel").removeClass("panel-info")
+            $("#OBDPanel").addClass("panel-default")
+            $('#OBDInfo').html("--")
+            $("#OBDLink").addClass('hidden')
+            $("#OBDText").removeClass('hidden')
+            $('#showDiagnostics').addClass('hidden')
+            stepCheck(1)
+        }
+    }
+
+    function getOBDByDateRangeError(result, error) {
+        alert('A problem occurred getting the diagnostic data, please reload or contact the administrator');
+        stepCheck(0);
+    }
+    //#endregion 
+
+
+    //--------------------------------------------------------------------------//
+
+    //bytes conversion function
+    function formatBytes(a, b) {
+        if (0 == a) return "0 Bytes";
+
+        var c = 1e3,
+            d = b || 2,
+            e = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"],
+            f = Math.floor(Math.log(a) / Math.log(c));
+
+        return parseFloat((a / Math.pow(c, f)).toFixed(d)) + " " + e[f]
+    }
+
+    //show the divs function
+    function stepCheck(step)
+    {
+        if (step != 0) {
+            steps += step
+        } else {
+            steps = 0
+        }
+
+        if (steps >= 7) {
+            $('#vehicleSummaries').slideDown()
+            $("#vehiclePreloader").addClass('hidden')
+            steps = 0
+        }
+    }
+
+    //return formatted mac address
+    function formatMac(maccaddress) {        
+        return maccaddress.toString(16)             // "4a8926c44578"
+            .match(/.{1,2}/g)    // ["4a", "89", "26", "c4", "45", "78"]
+            .join(':')  
+    }
+
+    //is object in array
+    function containsObject(obj, list) {
+        var i;
+        for (i = 0; i < list.length; i++) {
+            if (list[i] === obj) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 });

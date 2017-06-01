@@ -344,3 +344,15 @@ table .header {
     text-align: left;
     font-size: 13px;
 }
+
+.bigGrey {
+    color: #CECECE;
+    font-weight: bold;
+    font-size: 4em;
+}
+
+.littleGrey {
+    color: #CECECE;
+    font-weight: bold;
+    font-size: 2em;
+}
