@@ -335,42 +335,38 @@
     function getVehicles(reload) {
         $('#vehicleListDiv').addClass('hidden');
         $('#listLoader').removeClass('hidden');
-        if (selectedVehicle == null) {
-            SlidingMarker.initializeGlobally();
+        SlidingMarker.initializeGlobally();
 
-            //on if reload = true
-            if (reload == true) {
-                for (i = 0; i < vehicles.length; i++) {
-                    vehicles[i].Marker.setMap(null);
+        //on if reload = true
+        if (reload == true) {
+            for (i = 0; i < vehicles.length; i++) {
+                vehicles[i].Marker.setMap(null);
+            }
+            vehicles = [];
+            currentD2V = 0
+            $("#vehicleList").empty();
+            $("#vehicleList").append($('<option>', { value: 'None' }).text('-- Select Vehicle ID --'));
+        } else {
+            $("#vehicleList").empty();
+            $("#vehicleList").append($('<option>', { value: 'None' }).text('-- Select Vehicle ID --'));
+        }
+
+        $.post("getAllVehicles?loadHistorical=" + getHistorical, null, function (data) {
+            for (var i = 0; i < data.length; i++) {
+                $("#vehicleList").append($('<option>', { value: data[i].extendedData.ID }).text(data[i].VehicleID));
+                if (!containsVehicle(data[i].extendedData.ID)) {
+                    if (data[i].driver != null) {
+                        currentD2V += 1;
+                    }
+                    vehicles.push(new Vehicle(data[i], false));
                 }
-                vehicles = [];
-                currentD2V = 0
-                $("#vehicleList").empty();
-                $("#vehicleList").append($('<option>', { value: 'None' }).text('-- Select Vehicle ID --'));
-            } else {
-                $("#vehicleList").empty();
-                $("#vehicleList").append($('<option>', { value: 'None' }).text('-- Select Vehicle ID --'));
             }
 
-            $.post("getAllVehicles?loadHistorical=" + getHistorical, null, function (data) {
-                if (data.length != vehicles.length) {
-                    for (var i = 0; i < data.length; i++) {
-                        $("#vehicleList").append($('<option>', { value: data[i].extendedData.ID }).text(data[i].VehicleID));
-                        if (!containsVehicle(data[i].extendedData.ID)) {
-                            if (data[i].driver != null) {
-                                currentD2V += 1;
-                            }
-                            vehicles.push(new Vehicle(data[i], false));
-                        }
-                    }
-                }
+            $('#currentD2V').html('Current Active Vehicles without Assigned Drivers: <strong>' + (data.length - currentD2V) + "</strong><hr />")
 
-                $('#currentD2V').html('Current Active Vehicles without Assigned Drivers: <strong>' + (data.length - currentD2V) + "</strong><hr />")
-
-                $('#vehicleListDiv').removeClass('hidden');
-                $('#listLoader').addClass('hidden');
-            });
-        }
+            $('#vehicleListDiv').removeClass('hidden');
+            $('#listLoader').addClass('hidden');
+        });
     };
 
     var selectThisVehicle = function (selected, old) {
@@ -384,12 +380,12 @@
             selectedVehicle = selected;
             mapLogEntry("selected", selected);
             openNav();
+            $("#vehicleList").val(selectedVehicle.ID);
             getVehicleData(selected.ID);
             getVehicleAlertData(selected.ID);
             var to = moment.utc().format('YYYY-MM-DD HH:mm');
             var from = moment.utc().add(-2, "hours").format('YYYY-MM-DD HH:mm');
             getVehicleHistoryData(selectedVehicle.VehicleID, from, to);
-            $("#vehicleList").val(selectedVehicle.ID);
             getAvailableDrivers();
 
             //if driver is not null then show driver panel

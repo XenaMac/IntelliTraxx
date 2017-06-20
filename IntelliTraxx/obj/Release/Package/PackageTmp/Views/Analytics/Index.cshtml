@@ -70,55 +70,65 @@
                             <input type="text" id="vToDate" class="form-control" placeholder="To Date:" />
                         </div>
                         <div id="reloadDiv" class="col-lg-3">
-                            <button class="btn btn-primary glyphicons glyphicons-charts" id="reload"></button>
+                            <button class="btn btn-primary glyphicons glyphicons-list-alt" id="reload"></button>
                             <img id="vehiclePreloader" src="~/Content/Images/preloader.gif" width="50" class="hidden" />
                         </div>
+                        <div>&nbsp;</div>
+                        <div id="EM" class="col-lg-10 col-lg-offset-1 alert alert-danger hidden"></div>
                     </div>
-                    <div id="vehicleSummaries" class="col-lg-12 row centered analDevider" hidden>
+                    <div id="vehicleSummaries" class="col-lg-12 centered analDevider" hidden>
                         <div class="col-lg-3 col-md-6">
-                            <div class="panel panel-warning">
+                            <div class="panel panel-warning" id="commPanel">
                                 <div class="panel-heading">
                                     <div class="row">
                                         <div class="col-xs-3">
                                             <i class="material-icons md-48">router</i>
                                         </div>
                                         <div class="col-xs-9 text-right">
-                                            <div class="huge">26</div>
+                                            <div class="huge" id="commInfo">26</div>
                                             <div class="">Communications</div>
                                         </div>
                                     </div>
                                 </div>
-                                <a data-toggle="collapse" href="#communications" id="showCommunications">
-                                    <div class="panel-footer">
+                                <div class="panel-footer" id="commLink">
+                                    <a data-toggle="collapse" href="#communications" id="showCommunications">
                                         <span class="pull-left">Toggle Details</span>
                                         <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                                         <div class="clearfix"></div>
-                                    </div>
-                                </a>
+                                    </a>
+                                </div>
+                                <div class="panel-footer hidden" id="commText">
+                                    <span class="pull-left">MAC Address not in ECM</span>
+                                    <div class="clearfix"></div>
+                                </div>
                             </div>
                         </div>
-                        @*<div class="col-lg-3 col-md-6">
-                            <div class="panel panel-info">
+                        <div class="col-lg-3 col-md-6">
+                            <div class="panel panel-info" id="OBDPanel">
                                 <div class="panel-heading">
                                     <div class="row">
                                         <div class="col-xs-3">
-                                            <i class="material-icons md-48"><i class="material-icons"><i class="material-icons">settings_input_hdmi</i></i></i>
+                                            <i class="material-icons md-48">settings_input_hdmi</i>
                                         </div>
                                         <div class="col-xs-9 text-right">
-                                            <div class="huge">26</div>
+                                            <div class="huge" id="OBDInfo">--</div>
                                             <div class="">Diagnostics</div>
                                         </div>
                                     </div>
                                 </div>
-                                <a data-toggle="collapse" href="#diagnostics">
-                                    <div class="panel-footer">
+                                <div class="panel-footer" id="OBDLink">
+                                    <a data-toggle="collapse" href="#diagnostics" id="showDiagnostics">
                                         <span class="pull-left">Toggle Details</span>
                                         <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                                         <div class="clearfix"></div>
-                                    </div>
-                                </a>
+                                    </a>
+                                </div>
+                                <div class="panel-footer hidden" id="OBDText">
+                                    <span class="pull-left">Diagnostics not available</span>
+                                    <div class="clearfix"></div>
+                                </div>
                             </div>
-                        </div>*@
+                        </div>
                         <div class="col-lg-3 col-md-6">
                             <div class="panel panel-primary">
                                 <div class="panel-heading">
@@ -141,31 +151,9 @@
                                 </a>
                             </div>
                         </div>
-                        @*<div class="col-lg-3 col-md-6">
-                            <div class="panel panel-danger">
-                                <div class="panel-heading">
-                                    <div class="row">
-                                        <div class="col-xs-3">
-                                            <i class="material-icons md-48">warning</i>
-                                        </div>
-                                        <div class="col-xs-9 text-right">
-                                            <div class="huge">26</div>
-                                            <div class="">Alerts</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <a data-toggle="collapse" href="#alertDiv">
-                                    <div class="panel-footer">
-                                        <span class="pull-left">Toggle Details</span>
-                                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                        <div class="clearfix"></div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>*@
                     </div>
                     <div class="collapse analDevider col-lg-12" id="communications">
-                        <div class="col-lg-12 huge text-right" id="RC"></div>
+                        <div class="col-lg-12 huge text-left" id="RC"></div>
                         <div class="col-lg-4" style="display:block; text-align:center;">
                             <i class="glyphicons glyphicons-router x2 drop text-center" id="routerIcon"></i><br /><br />
                             <img id="signalPreloader" src="~/Content/Images/preloader.gif" width="50" class="hidden" />
@@ -181,9 +169,9 @@
                                 </thead>
                                 <tbody></tbody>
                             </table>
-                            <img src="~/Content/Images/cp-logo-full-color_525pxw.png" width="75"/>
+                            <img src="~/Content/Images/cp-logo-full-color_525pxw.png" width="75" />
                         </div>
-                        <div class="col-lg-5 text-left">
+                        <div class="col-lg-4 text-left">
                             <ul class="list-unstyled">
                                 <li id="asset_id"></li>
                                 <li id="name"></li>
@@ -199,20 +187,57 @@
                                 <li id="config_status"></li>
                             </ul>
                         </div>
+
+                        <div class="col-lg-4 text-left" style="display:block; text-align:center; color:#cecece">
+                            <br /><br />
+                            <p class="bigGrey" id="data_Usage">0 GB</p>
+                            <p class="littleGrey">Moden WAN Usage</p>
+                            <small id="usageDate"></small>
+                        </div>
                     </div>
-                    <div class="collapse devider col-lg-12" id="diagnostics">
-                        Diagnostics Information
-                    </div>
-                    <div class="collapse devider col-lg-12" id="activity">
-                        Activity Information
-                    </div>
-                    <div class="collapse devider col-lg-12" id="alertDiv">
-                        Alerts Information
+                    <div class="collapse devider col-lg-12" id="diagnostics" style="padding: 10px;">
+                        <div class="col-lg-10 col-lg-offset-1 form-group" style="display:block; text-align:center;" id="DGNav">
+                            <form class="form-inline">
+                                <div class="form-group">
+                                    <i class="material-icons md-48 pull-left">settings_input_hdmi</i>
+                                </div>
+                                <div class="form-group">
+                                    <select id="PIDList" class="form-control"></select>
+                                </div>
+                                <button type="button" class="btn btn-info glyphicons glyphicons-refresh" id="PIDSReload"></button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <button type="button" class="btn btn-default glyphicons glyphicons-table" data-toggle="button" aria-pressed="false" autocomplete="off"></button>
+                                <button type="button" class="btn btn-default glyphicons glyphicons-charts" data-toggle="button" aria-pressed="false" autocomplete="off"></button>
+                            </form>
+                        </div>
+                        <div id="PIDSTableLoader" class="col-lg-12 hidden" style="display:block; text-align:center;">
+                            <img id="PIDSTablePreloader" src="~/Content/Images/preloader.gif" width="150" />
+                        </div>
+                        <div class="col-lg-12 small" style="display: block; text-align:center;" id="DGTable">
+                            <table id="PIDSTable" data-toggle="table" data-striped="true" data-query-params="queryParams" data-pagination="true" data-page-size="10" data-page-list="[10, 25, 50, 100, 500]" data-classes="table table-hover table-condensed" data-sort-name="alertStart" data-sort-order="desc" data-search="true" data-show-export="true">
+                                <thead>
+                                    <tr>
+                                        <th class="hidden">Alert ID</th>
+                                        <th data-halign="center" data-sortable="true">Name</th>
+                                        <th data-halign="center" data-sortable="true">Value</th>
+                                        <th data-halign="center" data-sortable="true" data-formatter="dateFormat">TimeStamp</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                        <div class="col-lg-12" style="display: block; text-align:center;" id="DGChart">
+                            <div id="PIDChart"></div>
+                        </div>
+                        <div class="collapse devider col-lg-12" id="activity">
+                            Activity Information
+                        </div>
+                        <div class="collapse devider col-lg-12" id="alertDiv">
+                            Alerts Information
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
         <div class="col-lg-2">
             <ul class="nav nav-pills nav-stacked">
                 <li role="presentation" class="active"><a href="#dashboard" aria-controls="home" role="tab" data-toggle="tab">Dash Board</a></li>
@@ -222,3 +247,27 @@
         </div>
     </div>
 </div>
+
+
+
+
+
+<script type="text/javascript">
+    function queryParams() {
+        return {
+            type: 'owner',
+            sort: 'updated',
+            direction: 'desc',
+            per_page: 25,
+            page: 1
+        };
+    }
+
+    function dateFormat(value, row, index) {
+        if (value != "/Date(978332400000)/") {
+            return moment(value).add(moment().utcOffset(), 'minutes').format('MM/DD/YYYY HH:mm');
+        } else {
+            return "N/A";
+        }
+    }
+</script>
