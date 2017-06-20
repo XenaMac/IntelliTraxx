@@ -1,8 +1,11 @@
 ﻿$(function () {
-    var start = moment().startOf('month').format('YYYY-MM-DD hh:mm');
-    var end = moment().endOf('month').format('YYYY-MM-DD hh:mm');
-    var vehicleRouter = null;
-    var steps = 0;
+    var start = moment().startOf('month').format('YYYY-MM-DD hh:mm')
+    var end = moment().endOf('month').format('YYYY-MM-DD hh:mm')
+    var vehicleRouter = null
+    var steps = 0
+    var PIDS = []
+    var MACID = null
+    var MACAddress = null
 
     var month = moment().get('month') - 2;
     $('#startDtTm').datetimepicker({
@@ -14,6 +17,15 @@
     $('#endDtTm').datetimepicker();
     $('#endDtTm').val(end);
 
+
+    $('#PIDSTable').bootstrapTable({
+        onPostBody: function () {
+            alert("Table Ready")
+            //$('#DGTable').removeClass('hidden')
+            //$('#PIDSTableLoader').addClass('hidden')
+        }
+    })
+    
     AIVehicles();
     getDriverAnalytics();
     getAlertsByRange(start, end);
@@ -317,14 +329,19 @@
     
     $('#reload').click(function () {
         $("#vehiclePreloader").removeClass('hidden');
+        $('#diagnostics').collapse('hide');
         $('#vehicleSummaries').slideUp();
         $('#communications').collapse('hide');
         $('#showCommunciations').removeClass('hidden');
-        var MACID = $('#vehicleList').val().split("|");
-        var MACAddress = formatMac(MACID[0])
+        MACID = $('#vehicleList').val().split("|");
+        MACAddress = formatMac(MACID[0])
         getRouter(MACAddress)
-        getOBDByDateRange(MACID[1], $('#vFromDate').val(), $('#vToDate').val())
+        getPIDSByDateRange(MACID[1], $('#vFromDate').val(), $('#vToDate').val())
     });
+
+    $('#PIDSReload').click(function () {
+        getOBDByDateRange($('#PIDList option:selected').text(), MACID[1], $('#vFromDate').val(), $('#vToDate').val())
+    })
 
     //#region getECmRouter Information Functions
     function getRouter(macAddress) { //Get a download of the vehicle for ID
@@ -368,10 +385,15 @@
                 $('#state').html("<strong>State: </strong>" + data.state);
                 $('#state_updated_at').html("<strong>State Update at : </strong>" + moment(data.state_updated_at).format("MM/DD/YYYY HH:mm"));
                 $('#mac').html("<strong>MAC Address: </strong>" + data.mac);
-                var tf = data.target_firmware.split("/");
-                getTargetFirmware(tf[6]);
-                var af = data.actual_firmware.split("/");
-                getActualFirmware(af[6]);
+                if (data.target_firmware != null) {
+                    var tf = data.target_firmware.split("/");
+                    getTargetFirmware(tf[6]);
+                    var af = data.actual_firmware.split("/");
+                    getActualFirmware(af[6]);
+                } else {
+                    $('#target_firmware').html("<strong>Target Firmware: </strong> NULL from ECM");
+                    $('#actual_firmware').html("<strong>Actual Firmware: </strong> NULL from ECM");
+                }
                 $('#created_at').html("<strong>Created at: </strong>" + moment(data.created_at).format("MM/DD/YYYY HH:mm"));
                 $('#config_status').html("<strong>Config Status: </strong>" + data.config_status);
 
@@ -581,7 +603,7 @@
     }
 
     function getDataUsageSuccess(result) {
-        if (result) {
+        if (result.length != 0) {
             var total = 0
             total += result[0].bytes_in;
             total += result[0].bytes_out;
@@ -595,8 +617,18 @@
             $('#signalTable').removeClass('hidden');
             stepCheck(1);
         } else {
-            alert('A problem occurred getting the router data usage, please reload or contact the administrator');
-            stepCheck(0);
+            $('#commInfo').html("Null");
+            $('#data_Usage').html("Null");
+            $('#usageDate').html("As of last router update to ECM: NULL");
+
+            $('#signalPreloader').addClass('hidden');
+            $('#signalTable').removeClass('hidden');
+
+            $('#routerIcon').removeClass("green");
+            $('#routerIcon').addClass("red");
+            $('#RC').removeClass("green");
+            $('#RC').addClass("red");
+            stepCheck(1);
         }
     }
 
@@ -607,8 +639,8 @@
     //#endregion   
 
     //#region getNetDeviceMetrics Information Functions
-    function getOBDByDateRange(VehicleID, from, to) {
-        var _url = "getOBDByDateRange";
+    function getPIDSByDateRange(VehicleID, from, to) {
+        var _url = "getPIDSByDateRange";
         var _data = "VehicleID=" + VehicleID + "&from=" + from + "&to=" + to;
         $.ajax({
             type: "GET",
@@ -616,23 +648,27 @@
             url: _url,
             data: _data,
             contentType: "application/json; charset=utf-8",
-            success: getOBDByDateRangeSuccess,
-            error: getOBDByDateRangeError
+            success: function (result) {
+                getPIDSByDateRangeSuccess(result, VehicleID, from, to);
+            },
+            error: getPIDSByDateRangeError
         });
     }
 
-    function getOBDByDateRangeSuccess(result) {
+    function getPIDSByDateRangeSuccess(result, VehicleID, from, to) {
         if (result.length != 0) {
-
-            var markup = ''
             var codes = [];
+            PIDS = result;
+            $('#PIDList').empty();
 
             for (var i = 0; i < result.length; i++) {
-                if (!containsObject(result[i].name, result)) {
+                if (!containsObject(result[i].name, codes)) {
                     codes.push(result[i].name)
                     $('#PIDList').append($('<option>', { value: result[i].name }).text(result[i].name));
                 }
             }
+
+            getOBDByDateRange(codes[0], VehicleID, from, to);
 
             $("#OBDPanel").addClass("panel-info")
             $("#OBDPanel").removeClass("panel-default")
@@ -652,12 +688,59 @@
         }
     }
 
-    function getOBDByDateRangeError(result, error) {
-        alert('A problem occurred getting the diagnostic data, please reload or contact the administrator');
+    function getPIDSByDateRangeError(result, error) {
+        alert('A problem occurred getting the OBD PIDs, please reload or contact the administrator');
         stepCheck(0);
     }
-    //#endregion 
+    //#endregion
 
+    //#region getNetDeviceMetrics Information Functions
+    function getOBDByDateRange(PID, VehicleID, from, to) {
+        $('#DGTable').addClass('hidden')
+        $('#PIDSTableLoader').removeClass('hidden')
+        var _url = "getOBDByDateRange";
+        var _data = "PID=" + PID + "&VehicleID=" + VehicleID + "&from=" + from + "&to=" + to;
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: _url,
+            data: _data,
+            contentType: "application/json; charset=utf-8",
+            success: getOBDByDateRangeSuccess,
+            error: getOBDByDateRangeError
+        });
+    }
+
+    function getOBDByDateRangeSuccess(result) {
+        if (result.length != 0) {
+            $('#PIDSTable').bootstrapTable('removeAll');
+
+            for (var i = 0; i < result.length; i++) {
+                var ts = moment.utc(result[i].timestamp).format("MM/DD/YYYY h:mm:ss")
+                $('#PIDSTable').bootstrapTable('insertRow', {
+                    index: i,
+                    row: {
+                        0: result[i].ID,
+                        1: result[i].name,
+                        2: result[i].val,
+                        3: ts
+                    }
+                });
+
+                if (i == result.length - 1) {
+                    $('#DGTable').removeClass('hidden')
+                    $('#PIDSTableLoader').addClass('hidden')
+                }
+            }
+        } else {
+            alert('A problem occurred getting the diagnostic data, please reload or contact the administrator');
+        }
+    }
+
+    function getOBDByDateRangeError(result, error) {
+        alert('A problem occurred getting the diagnostic data, please reload or contact the administrator');
+    }
+    //#endregion
 
     //--------------------------------------------------------------------------//
 

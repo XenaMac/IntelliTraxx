@@ -70,7 +70,7 @@
                             <input type="text" id="vToDate" class="form-control" placeholder="To Date:" />
                         </div>
                         <div id="reloadDiv" class="col-lg-3">
-                            <button class="btn btn-primary glyphicons glyphicons-charts" id="reload"></button>
+                            <button class="btn btn-primary glyphicons glyphicons-list-alt" id="reload"></button>
                             <img id="vehiclePreloader" src="~/Content/Images/preloader.gif" width="50" class="hidden" />
                         </div>
                         <div>&nbsp;</div>
@@ -204,12 +204,16 @@
                                 <div class="form-group">
                                     <select id="PIDList" class="form-control"></select>
                                 </div>
-                                <button type="button" class="btn btn-default" data-toggle="button" aria-pressed="false" autocomplete="off">Chart</button>
-                                <button type="button" class="btn btn-default" data-toggle="button" aria-pressed="false" autocomplete="off">Table</button>
+                                <button type="button" class="btn btn-info glyphicons glyphicons-refresh" id="PIDSReload"></button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <button type="button" class="btn btn-default glyphicons glyphicons-table" data-toggle="button" aria-pressed="false" autocomplete="off"></button>
+                                <button type="button" class="btn btn-default glyphicons glyphicons-charts" data-toggle="button" aria-pressed="false" autocomplete="off"></button>
                             </form>
                         </div>
-                        <div class="col-lg-12" style="display: block; text-align:center;" id="DGTable">
-                            <table id="PIDTable" data-toggle="table" data-striped="true" data-query-params="queryParams" data-pagination="true" data-page-size="15" data-page-list="[5, 10, 20, 50]" class="table table-hover table-condensed" data-sort-name="alertStart" data-sort-order="desc" data-search="true" data-show-export="true">
+                        <div id="PIDSTableLoader" class="col-lg-12 hidden" style="display:block; text-align:center;">
+                            <img id="PIDSTablePreloader" src="~/Content/Images/preloader.gif" width="150" />
+                        </div>
+                        <div class="col-lg-12 small" style="display: block; text-align:center;" id="DGTable">
+                            <table id="PIDSTable" data-toggle="table" data-striped="true" data-query-params="queryParams" data-pagination="true" data-page-size="10" data-page-list="[10, 25, 50, 100, 500]" data-classes="table table-hover table-condensed" data-sort-name="alertStart" data-sort-order="desc" data-search="true" data-show-export="true">
                                 <thead>
                                     <tr>
                                         <th class="hidden">Alert ID</th>

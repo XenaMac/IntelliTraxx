@@ -279,9 +279,16 @@ namespace IntelliTraxx.Controllers
             return Json(vehicleData, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult getOBDByDateRange(string VehicleID, DateTime from, DateTime to)
+        public ActionResult getPIDSByDateRange(string VehicleID, DateTime from, DateTime to)
         {
-            List<OBDLog> OBDData = truckService.getOBDDataReturnByDateRange(VehicleID, from, to);
+            List<OBDLog> OBDData = truckService.getOBDDataReturnByDateRange(VehicleID, from, to).OrderByDescending(d => d.timestamp).ToList();
+
+            return Json(OBDData, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult getOBDByDateRange(string PID, string VehicleID, DateTime from, DateTime to)
+        {
+            List<OBDLog> OBDData = truckService.getOBDDataReturnByDateRange(VehicleID, from, to).Where(n => n.name == PID).OrderByDescending(d => d.timestamp).ToList();
 
             return Json(OBDData, JsonRequestBehavior.AllowGet);
         }
