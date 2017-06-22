@@ -288,7 +288,8 @@ namespace IntelliTraxx.Controllers
 
         public ActionResult getOBDByDateRange(string PID, string VehicleID, DateTime from, DateTime to)
         {
-            List<OBDLog> OBDData = truckService.getOBDDataReturnByDateRange(VehicleID, from, to).Where(n => n.name == PID).OrderByDescending(d => d.timestamp).ToList();
+            List<string> PIDs = PID.Split(',').ToList();
+            List<OBDLog> OBDData = truckService.getOBDDataReturnByDateRange(VehicleID, from, to).Where(n => PIDs.Contains(n.name)).OrderByDescending(d => d.timestamp).ToList();
 
             return Json(OBDData, JsonRequestBehavior.AllowGet);
         }

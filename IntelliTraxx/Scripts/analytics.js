@@ -16,8 +16,7 @@
     $('#startDtTm').val(start);
     $('#endDtTm').datetimepicker();
     $('#endDtTm').val(end);
-
-
+    
     $('#PIDSTable').bootstrapTable({
         onPostBody: function () {
             alert("Table Ready")
@@ -668,6 +667,26 @@
                 }
             }
 
+            $('#PIDList').multiselect({
+                includeSelectAllOption: true,
+                enableFiltering: true,
+                buttonClass: 'btn btn-info',
+                numberDisplayed: 50,
+                buttonWidth: '300px',
+                onChange: function (option, checked, select) {
+                    getOBDByDateRange($('#PIDList').val(), VehicleID, from, to);
+                },
+                onSelectAll: function (option, checked, select) {
+                    getOBDByDateRange($('#PIDList').val(), VehicleID, from, to);
+                },
+                onDeselectAll: function () {
+                    getOBDByDateRange(codes[0], VehicleID, from, to);
+                    $('#PIDList').multiselect('select', codes[0]);
+                }
+            });
+
+            $('#PIDList').multiselect('select', codes[0]);
+
             getOBDByDateRange(codes[0], VehicleID, from, to);
 
             $("#OBDPanel").addClass("panel-info")
@@ -741,6 +760,11 @@
         alert('A problem occurred getting the diagnostic data, please reload or contact the administrator');
     }
     //#endregion
+
+    //toggle table
+    $('#tableToggle').on('click', function () {
+        $('#DGTable').toggleClass("hidden");
+    })
 
     //--------------------------------------------------------------------------//
 

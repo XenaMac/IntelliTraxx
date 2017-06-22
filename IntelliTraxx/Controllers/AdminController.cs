@@ -187,7 +187,7 @@ namespace IntelliTraxx.Controllers
                 ViewBag.Companies = truckService.getCompanies(new Guid());
             }
             
-            return Redirect("/Index");
+            return Redirect("Index");
         }
 
         [CustomAuthorize(Roles = "Administrator")]
@@ -315,7 +315,7 @@ namespace IntelliTraxx.Controllers
                 ViewBag.UserCompanies = truckService.getUserCompaniesFull(model.UserID);
             }
             
-            return Redirect("/Index");
+            return Redirect("Index");
         }
 
         [CustomAuthorize(Roles = "Administrator")]
@@ -332,7 +332,7 @@ namespace IntelliTraxx.Controllers
 
             if (success == "OK")
             {
-                return Redirect("/Index");
+                return Redirect("Index");
             }
             else
             {

@@ -31,10 +31,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/07/2017 10:27:03</publishTime>
     </File>
     <File Include="bin/IntelliTraxx.dll">
-      <publishTime>06/20/2017 08:02:13</publishTime>
+      <publishTime>06/22/2017 14:13:37</publishTime>
     </File>
     <File Include="bin/IntelliTraxx.pdb">
-      <publishTime>06/20/2017 08:02:13</publishTime>
+      <publishTime>06/22/2017 14:13:37</publishTime>
     </File>
     <File Include="bin/Microsoft.AI.Agent.Intercept.dll">
       <publishTime>05/07/2017 10:27:04</publishTime>
@@ -652,7 +652,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/24/2017 06:43:33</publishTime>
     </File>
     <File Include="Scripts/analytics.js">
-      <publishTime>06/20/2017 07:40:58</publishTime>
+      <publishTime>06/22/2017 10:30:26</publishTime>
     </File>
     <File Include="Scripts/bootstrap-table-export.min.js">
       <publishTime>05/07/2017 10:26:52</publishTime>
@@ -814,7 +814,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/07/2017 10:26:53</publishTime>
     </File>
     <File Include="Scripts/scheduling.js">
-      <publishTime>05/25/2017 06:34:56</publishTime>
+      <publishTime>06/21/2017 09:13:10</publishTime>
     </File>
     <File Include="Scripts/tableExport.js">
       <publishTime>05/07/2017 10:26:53</publishTime>
@@ -1018,7 +1018,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/07/2017 10:26:54</publishTime>
     </File>
     <File Include="Views/Analytics/Index.cshtml">
-      <publishTime>06/02/2017 08:21:35</publishTime>
+      <publishTime>06/22/2017 10:57:26</publishTime>
     </File>
     <File Include="Views/Fleet/Index.cshtml">
       <publishTime>05/18/2017 12:35:08</publishTime>
@@ -1075,7 +1075,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/11/2017 13:26:45</publishTime>
     </File>
     <File Include="Views/Shared/_LayoutAnalytics.cshtml">
-      <publishTime>05/11/2017 13:26:53</publishTime>
+      <publishTime>06/22/2017 09:40:34</publishTime>
     </File>
     <File Include="Views/Shared/_LayoutMap.cshtml">
       <publishTime>05/07/2017 10:26:54</publishTime>
@@ -1102,7 +1102,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/07/2017 10:26:54</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>06/20/2017 15:48:10</publishTime>
+      <publishTime>06/22/2017 14:13:39</publishTime>
     </File>
   </ItemGroup>
 </Project>
