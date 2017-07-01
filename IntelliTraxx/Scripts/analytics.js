@@ -338,10 +338,6 @@
         getPIDSByDateRange(MACID[1], $('#vFromDate').val(), $('#vToDate').val())
     });
 
-    $('#PIDSReload').click(function () {
-        getOBDByDateRange($('#PIDList option:selected').text(), MACID[1], $('#vFromDate').val(), $('#vToDate').val())
-    })
-
     //#region getECmRouter Information Functions
     function getRouter(macAddress) { //Get a download of the vehicle for ID
         $('#EM').addClass("hidden");
@@ -657,7 +653,6 @@
     function getPIDSByDateRangeSuccess(result, VehicleID, from, to) {
         if (result.length != 0) {
             var codes = [];
-            PIDS = result;
             $('#PIDList').empty();
 
             for (var i = 0; i < result.length; i++) {
@@ -666,7 +661,7 @@
                     $('#PIDList').append($('<option>', { value: result[i].name }).text(result[i].name));
                 }
             }
-
+            
             $('#PIDList').multiselect({
                 includeSelectAllOption: true,
                 enableFiltering: true,
@@ -680,8 +675,7 @@
                     getOBDByDateRange($('#PIDList').val(), VehicleID, from, to);
                 },
                 onDeselectAll: function () {
-                    getOBDByDateRange(codes[0], VehicleID, from, to);
-                    $('#PIDList').multiselect('select', codes[0]);
+                    getOBDByDateRange($('#PIDList').val(), VehicleID, from, to);
                 }
             });
 
@@ -751,8 +745,79 @@
                     $('#PIDSTableLoader').addClass('hidden')
                 }
             }
+
+            //chart data elements
+            var ts0 = moment.utc(result[0].timestamp).format("MM/DD/YYYY h:mm:ss")
+            var ts1 = moment.utc(result[result.length - 1].timestamp).format("MM/DD/YYYY h:mm:ss")
+            var objects = [];
+            $.each(result, function (index, value) {
+                if (!containsPid(value, objects)) {
+                    objects.push({
+                        'name': value.name,
+                        'data': [ moment.utc(value.timestamp).format("MM/DD/YYY HH:mm"), parseInt(value.val) ]
+                    });
+                } else {
+                    var PID = objects.filter(function (obj) {
+                        return obj.name ==value.name;
+                    });
+
+                    PID[0].data.push( moment.utc(value.timestamp).format("MM/DD/YYY HH:mm"), parseInt(value.val) );
+                }
+                
+            });
+
+            console.log(objects);
+
+            Highcharts.chart('PIDChart', {
+                chart: {
+                    type: 'spline'
+                },
+                title: {
+                    text: 'PID Chart for ' + $('#vehicleList option:selected').text()
+                },
+                subtitle: {
+                    text: ts0 + " - " + ts1
+                },
+                xAxis: {
+                    type: 'datetime',
+                    dateTimeLabelFormats: { // don't display the dummy year
+                        month: '%e. %b',
+                        year: '%b'
+                    },
+                    title: {
+                        text: 'X: Date'
+                    },
+                    minTickInterval: 100
+                },
+                yAxis: {
+                    title: {
+                        text: 'Y: Value'
+                    },
+                    min: 0
+                },
+                tooltip: {
+                    headerFormat: '<b>{series.name}</b><br>',
+                    pointFormat: '{point.x:%e. %b}: {point.y: f}'
+                },
+                plotOptions: {
+                    spline: {
+                        marker: {
+                            enabled: true
+                        }
+                    }
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle'
+                },
+                series: objects
+            });
         } else {
-            alert('A problem occurred getting the diagnostic data, please reload or contact the administrator');
+            $('#PIDSTable').bootstrapTable('removeAll');
+            $('#DGTable').removeClass('hidden')
+            $('#PIDSTableLoader').addClass('hidden')
+            //alert('A problem occurred getting the diagnostic data, please reload or contact the administrator');
         }
     }
 
@@ -814,4 +879,17 @@
 
         return false;
     }
+
+    //PID IN Array
+    function containsPid(obj, list) {
+        var i;
+        for (i = 0; i < list.length; i++) {
+            if (list[i].name === obj.name) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 });

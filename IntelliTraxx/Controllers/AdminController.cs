@@ -45,15 +45,15 @@ namespace IntelliTraxx.Controllers
             admin.VehicleClasses = truckService.getVehicleClasses().OrderBy(vc => vc.VehicleClassName).ToList<VehicleClass>();
 
             #region get vehicles
-            List<VehicleExtendedData> VEDS = truckService.getExtendedData();
+            List<Vehicle> VEDS = truckService.getAllVehicles(true);
             admin.Vehicles = new List<VehicleVM>();
-            foreach (VehicleExtendedData ved in VEDS)
+            foreach (Vehicle ved in VEDS)
             {
                 VehicleVM nv = new VehicleVM();
-                nv.CompanyID = ved.companyID;
-                List<Company> vcompany = truckService.getCompanies(ved.companyID);
+                nv.CompanyID = ved.extendedData.companyID;
+                List<Company> vcompany = truckService.getCompanies(ved.extendedData.companyID);
                 nv.Company = vcompany[0].CompanyName;
-                nv.VehicleClassID = ved.vehicleClassID;
+                nv.VehicleClassID = ved.extendedData.vehicleClassID;
                 List<VehicleClass> vclass = truckService.getVehicleClasses();
                 foreach (VehicleClass vc in vclass)
                 {
@@ -62,14 +62,14 @@ namespace IntelliTraxx.Controllers
                         nv.VehicleClass = vc.VehicleClassName;
                     }
                 }
-                nv.HaulLimit = ved.haulLimit;
-                nv.ID = ved.ID;
-                nv.VehicleIdentification = ved.vehicleID;
-                nv.LicensePlate = ved.licensePlate;
-                nv.Make = ved.Make;
-                nv.VehicleModel = ved.Model;
-                nv.Year = ved.Year;
-                nv.VehicleFriendlyName = ved.VehicleFriendlyName;
+                nv.HaulLimit = ved.extendedData.haulLimit;
+                nv.ID = ved.extendedData.ID;
+                nv.VehicleIdentification = ved.extendedData.vehicleID;
+                nv.LicensePlate = ved.extendedData.licensePlate;
+                nv.Make = ved.extendedData.Make;
+                nv.VehicleModel = ved.extendedData.Model;
+                nv.Year = ved.extendedData.Year;
+                nv.VehicleFriendlyName = ved.extendedData.VehicleFriendlyName;
                 admin.Vehicles.Add(nv);
             }
             #endregion

@@ -338,10 +338,6 @@
         getPIDSByDateRange(MACID[1], $('#vFromDate').val(), $('#vToDate').val())
     });
 
-    $('#PIDSReload').click(function () {
-        getOBDByDateRange($('#PIDList option:selected').text(), MACID[1], $('#vFromDate').val(), $('#vToDate').val())
-    })
-
     //#region getECmRouter Information Functions
     function getRouter(macAddress) { //Get a download of the vehicle for ID
         $('#EM').addClass("hidden");
@@ -657,12 +653,17 @@
     function getPIDSByDateRangeSuccess(result, VehicleID, from, to) {
         if (result.length != 0) {
             var codes = [];
+            var PIDData = [];
             PIDS = result;
             $('#PIDList').empty();
 
             for (var i = 0; i < result.length; i++) {
                 if (!containsObject(result[i].name, codes)) {
                     codes.push(result[i].name)
+                    PIDData.push({
+                        "name": result[i].name,
+                        ""
+                    })
                     $('#PIDList').append($('<option>', { value: result[i].name }).text(result[i].name));
                 }
             }
@@ -680,14 +681,53 @@
                     getOBDByDateRange($('#PIDList').val(), VehicleID, from, to);
                 },
                 onDeselectAll: function () {
-                    getOBDByDateRange(codes[0], VehicleID, from, to);
-                    $('#PIDList').multiselect('select', codes[0]);
+                    getOBDByDateRange($('#PIDList').val(), VehicleID, from, to);
                 }
             });
 
             $('#PIDList').multiselect('select', codes[0]);
 
             getOBDByDateRange(codes[0], VehicleID, from, to);
+
+            Highcharts.chart('PIDChart', {
+                title: {
+                    text: 'PID Chart for ' + VehicleID
+                },
+                subtitle: {
+                    text: from + " - " + to
+                },
+                yAxis: {
+                    title: {
+                        text: 'PID'
+                    }
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle'
+                },
+                plotOptions: {
+                    series: {
+                        //pointStart: 2010
+                    }
+                },
+                series: [{
+                    name: 'Installation',
+                    data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175]
+                }, {
+                    name: 'Manufacturing',
+                    data: [24916, 24064, 29742, 29851, 32490, 30282, 38121, 40434]
+                }, {
+                    name: 'Sales & Distribution',
+                    data: [11744, 17722, 16005, 19771, 20185, 24377, 32147, 39387]
+                }, {
+                    name: 'Project Development',
+                    data: [null, null, 7988, 12169, 15112, 22452, 34400, 34227]
+                }, {
+                    name: 'Other',
+                    data: [12908, 5948, 8105, 11248, 8989, 11816, 18274, 18111]
+                }]
+            });
 
             $("#OBDPanel").addClass("panel-info")
             $("#OBDPanel").removeClass("panel-default")
@@ -752,7 +792,10 @@
                 }
             }
         } else {
-            alert('A problem occurred getting the diagnostic data, please reload or contact the administrator');
+            $('#PIDSTable').bootstrapTable('removeAll');
+            $('#DGTable').removeClass('hidden')
+            $('#PIDSTableLoader').addClass('hidden')
+            //alert('A problem occurred getting the diagnostic data, please reload or contact the administrator');
         }
     }
 
