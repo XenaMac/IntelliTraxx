@@ -710,6 +710,7 @@
     //#region getNetDeviceMetrics Information Functions
     function getOBDByDateRange(PID, VehicleID, from, to) {
         $('#DGTable').addClass('hidden')
+        $('#DGChart').addClass('hidden')
         $('#PIDSTableLoader').removeClass('hidden')
         var _url = "getOBDByDateRange";
         var _data = "PID=" + PID + "&VehicleID=" + VehicleID + "&from=" + from + "&to=" + to;
@@ -742,6 +743,7 @@
 
                 if (i == result.length - 1) {
                     $('#DGTable').removeClass('hidden')
+                    $('#DGChart').removeClass('hidden')
                     $('#PIDSTableLoader').addClass('hidden')
                 }
             }
@@ -754,14 +756,14 @@
                 if (!containsPid(value, objects)) {
                     objects.push({
                         'name': value.name,
-                        'data': [ moment.utc(value.timestamp).format("MM/DD/YYY HH:mm"), parseInt(value.val) ]
+                        'data': [[moment.utc(value.timestamp).format("MM/DD h:mm:ss"), parseInt(value.val)] ]
                     });
                 } else {
                     var PID = objects.filter(function (obj) {
                         return obj.name ==value.name;
                     });
 
-                    PID[0].data.push( moment.utc(value.timestamp).format("MM/DD/YYY HH:mm"), parseInt(value.val) );
+                    PID[0].data.push([moment.utc(value.timestamp).format("MM/DD h:mm:ss"), parseInt(value.val)] );
                 }
                 
             });
@@ -773,31 +775,27 @@
                     type: 'spline'
                 },
                 title: {
-                    text: 'PID Chart for ' + $('#vehicleList option:selected').text()
+                    text: 'Diagnostics for ' + $('#vehicleList option:selected').text()
                 },
                 subtitle: {
                     text: ts0 + " - " + ts1
                 },
                 xAxis: {
-                    type: 'datetime',
-                    dateTimeLabelFormats: { // don't display the dummy year
-                        month: '%e. %b',
-                        year: '%b'
-                    },
-                    title: {
-                        text: 'X: Date'
-                    },
-                    minTickInterval: 100
+                    type: 'category'
                 },
                 yAxis: {
                     title: {
-                        text: 'Y: Value'
+                        text: 'PID Value'
                     },
                     min: 0
                 },
                 tooltip: {
-                    headerFormat: '<b>{series.name}</b><br>',
-                    pointFormat: '{point.x:%e. %b}: {point.y: f}'
+                    formatter: function () {
+                        console.log(this);
+                        var txt = this.y + ' on: ' + this.key;                        
+                        return txt;
+                    }
+
                 },
                 plotOptions: {
                     spline: {
@@ -805,11 +803,6 @@
                             enabled: true
                         }
                     }
-                },
-                legend: {
-                    layout: 'vertical',
-                    align: 'right',
-                    verticalAlign: 'middle'
                 },
                 series: objects
             });
@@ -829,6 +822,11 @@
     //toggle table
     $('#tableToggle').on('click', function () {
         $('#DGTable').toggleClass("hidden");
+    })
+
+    //toggle chart
+    $('#chartToggle').on('click', function () {
+        $('#DGChart').toggleClass("hidden");
     })
 
     //--------------------------------------------------------------------------//

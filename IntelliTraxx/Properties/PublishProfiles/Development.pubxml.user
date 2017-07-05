@@ -31,10 +31,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/07/2017 10:27:03</publishTime>
     </File>
     <File Include="bin/IntelliTraxx.dll">
-      <publishTime>06/22/2017 14:13:37</publishTime>
+      <publishTime>07/01/2017 11:02:45</publishTime>
     </File>
     <File Include="bin/IntelliTraxx.pdb">
-      <publishTime>06/22/2017 14:13:37</publishTime>
+      <publishTime>07/01/2017 11:02:45</publishTime>
     </File>
     <File Include="bin/Microsoft.AI.Agent.Intercept.dll">
       <publishTime>05/07/2017 10:27:04</publishTime>
@@ -652,7 +652,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/24/2017 06:43:33</publishTime>
     </File>
     <File Include="Scripts/analytics.js">
-      <publishTime>06/23/2017 08:42:03</publishTime>
+      <publishTime>06/26/2017 13:04:39</publishTime>
     </File>
     <File Include="Scripts/bootstrap-table-export.min.js">
       <publishTime>05/07/2017 10:26:52</publishTime>
@@ -1102,7 +1102,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/07/2017 10:26:54</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>06/23/2017 13:03:47</publishTime>
+      <publishTime>07/01/2017 11:02:46</publishTime>
     </File>
   </ItemGroup>
 </Project>
