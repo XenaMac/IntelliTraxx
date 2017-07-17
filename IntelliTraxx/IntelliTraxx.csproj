@@ -354,6 +354,17 @@
     <Content Include="Content\VClasses\00022.png" />
     <Content Include="Content\VClasses\00023.png" />
     <Content Include="Content\VClasses\00024.png" />
+    <Content Include="Content\VClasses\00025.png" />
+    <Content Include="Content\VClasses\00026.png" />
+    <Content Include="Content\VClasses\00027.png" />
+    <Content Include="Content\VClasses\00028.png" />
+    <Content Include="Content\VClasses\00029.png" />
+    <Content Include="Content\VClasses\00030.png" />
+    <Content Include="Content\VClasses\00031.png" />
+    <Content Include="Content\VClasses\00032.png" />
+    <Content Include="Content\VClasses\00033.png" />
+    <Content Include="Content\VClasses\00034.png" />
+    <Content Include="Content\VClasses\00035.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="fonts\glyphicons-regular.svg" />

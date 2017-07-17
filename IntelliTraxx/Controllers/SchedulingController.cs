@@ -25,8 +25,27 @@ namespace IntelliTraxx.Controllers
 
         public ActionResult getAllSchedules()
         {
+            List<simpleschedule> simpleschedules = new List<simpleschedule>();
             List<schedule> schedules = alertService.getAllSchedules();
-            return Json(schedules.OrderBy(v => v.scheduleName), JsonRequestBehavior.AllowGet);
+            foreach(schedule s in schedules)
+            {
+                simpleschedule ss = new simpleschedule();
+                ss.active = s.active;
+                ss.companyid = s.companyid;
+                ss.createdBy = s.createdBy;
+                ss.createdOn = s.createdOn.ToLongDateString();
+                ss.DOW = s.DOW;
+                ss.EffDtEnd = s.EffDtEnd.ToShortDateString();
+                ss.EffDtStart = s.EffDtStart.ToShortDateString();
+                ss.endTime = s.endTime.ToString("HH:mm");
+                ss.modifiedBy = s.modifiedBy;
+                ss.modifiedOn = s.modifiedOn.ToShortDateString();
+                ss.scheduleID = s.scheduleID;
+                ss.scheduleName = s.scheduleName;
+                ss.startTime = s.startTime.ToString("HH:mm");
+                simpleschedules.Add(ss);
+            }
+            return Json(simpleschedules.OrderBy(v => v.scheduleName), JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult getAllVehicles(bool loadHistorical)
@@ -85,6 +104,37 @@ namespace IntelliTraxx.Controllers
         {
             string success = alertService.deleteSchedules(dSchedules);
             return Json(success, JsonRequestBehavior.AllowGet);
+        }
+
+        //---------------------------------------------------------------------------------------//
+
+        public class simpleschedule
+        {            
+            public Guid scheduleID { get; set; }
+            
+            public string scheduleName { get; set; }
+            
+            public Guid companyid { get; set; }
+            
+            public string startTime { get; set; }
+            
+            public string endTime { get; set; }
+            
+            public string createdBy { get; set; }
+            
+            public string createdOn { get; set; }
+            
+            public string modifiedBy { get; set; }
+            
+            public string modifiedOn { get; set; }
+            
+            public int DOW { get; set; }
+            
+            public string EffDtStart { get; set; }
+            
+            public string EffDtEnd { get; set; }
+            
+            public bool active { get; set; }
         }
     }
 }

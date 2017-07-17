@@ -59,7 +59,7 @@
             schedules = data;
             var markup = '<div class="list-group">';
             for (var i = 0; i < schedules.length; i++) {
-                markup += '<a href="#" class="list-group-item" data-alias="' + data[i].scheduleID + '"><h4 class="list-group-item-heading">' + schedules[i].scheduleName + '</h4><p class="list-group-item-text small">' + moment().day(schedules[i].DOW - 1).format('dddd') + ': ' + moment(schedules[i].startTime).format('HH:mm') + ' - ' + moment(schedules[i].endTime).format('HH:mm') + '</p></a>';
+                markup += '<a href="#" class="list-group-item" data-alias="' + data[i].scheduleID + '"><h4 class="list-group-item-heading">' + schedules[i].scheduleName + '</h4><p class="list-group-item-text small">' + moment().day(schedules[i].DOW - 1).format('dddd') + ': ' + schedules[i].startTime + ' - ' + schedules[i].endTime + '</p></a>';
             }
             markup += '</div>';
 
@@ -158,12 +158,12 @@
             });
             $('#dayList').multiselect('select', schedule[0].DOW);
             $('#timeFrom').datetimepicker({
-                value: moment(schedule[0].startTime).format('HH:mm'),
+                value: schedule[0].startTime,
                 format: 'H:i',
                 datepicker: false,
             });
             $('#timeTo').datetimepicker({
-                value: moment(schedule[0].endTime).format('HH:mm'),
+                value: schedule[0].endTime,
                 format: 'H:i',
                 datepicker: false,
             });
