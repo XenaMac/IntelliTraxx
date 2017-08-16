@@ -308,12 +308,15 @@
                 knew = true;
             }
 
+            var start = moment(moment().get("month") + "/" + moment().get("date") + "/" + moment().get("year") + " " + $('#timeFrom').val());
+            var end = moment(moment().get("month") + "/" + moment().get("date") + "/" + moment().get("year") + " " + $('#timeTo').val());
+
             scheduleList.push({
                 scheduleID: scheduleid,
                 scheduleName: $('#tbScheduleName').val(),
                 company: null,
-                startTime: $('#timeFrom').val(),
-                endTime: $('#timeTo').val(),
+                startTime: moment.utc(start).format("YYYY-MM-DD HH:mm:ss"),
+                endTime: moment.utc(end).format("YYYY-MM-DD HH:mm:ss"),
                 createdBy: null,
                 createdOn: null,
                 modifiedBy: null,
