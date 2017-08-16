@@ -348,6 +348,6 @@ C:\GitHub\IntelliTraxx\IntelliTraxx\bin\EntityFramework.SqlServer.xml
 C:\GitHub\IntelliTraxx\IntelliTraxx\bin\Microsoft.AspNet.Identity.Core.xml
 C:\GitHub\IntelliTraxx\IntelliTraxx\bin\Microsoft.AspNet.Identity.Owin.xml
 C:\GitHub\IntelliTraxx\IntelliTraxx\bin\Microsoft.AspNet.Identity.EntityFramework.xml
-C:\GitHub\IntelliTraxx\IntelliTraxx\obj\Debug\IntelliTraxx.csprojResolveAssemblyReference.cache
 C:\GitHub\IntelliTraxx\IntelliTraxx\obj\Debug\IntelliTraxx.dll
 C:\GitHub\IntelliTraxx\IntelliTraxx\obj\Debug\IntelliTraxx.pdb
+C:\GitHub\IntelliTraxx\IntelliTraxx\obj\Debug\IntelliTraxx.csprojResolveAssemblyReference.cache

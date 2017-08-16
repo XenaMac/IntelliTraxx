@@ -1,6 +1,6 @@
 ﻿$(function () {
-    var start = moment().startOf('month').format('YYYY-MM-DD hh:mm')
-    var end = moment().endOf('month').format('YYYY-MM-DD hh:mm')
+    var start = moment().startOf('month').format('YYYY-MM-DD HH:mm')
+    var end = moment().endOf('month').format('YYYY-MM-DD HH:mm')
     var vehicleRouter = null
     var steps = 0
     var PIDS = []
@@ -317,13 +317,13 @@
             minDate: '2017/' + month + '/1',
             maxDate: '+1970/01/01'//tomorrow is maximum date calendar
         });
-        $('#vFromDate').val(moment().startOf('day').format('YYYY-MM-DD hh:mm'));
+        $('#vFromDate').val(moment().startOf('day').format('YYYY-MM-DD HH:mm'));
         $('#vToDate').datetimepicker({
             dayOfWeekStart: 1,
             minDate: '2017/' + month + '/1',
             maxDate: '+1970/01/01'//tomorrow is maximum date calendar
         });
-        $('#vToDate').val(moment().endOf('day').format('YYYY-MM-DD hh:mm'));
+        $('#vToDate').val(moment().endOf('day').format('YYYY-MM-DD HH:mm'));
     })
     
     $('#reload').click(function () {
@@ -335,7 +335,8 @@
         MACID = $('#vehicleList').val().split("|");
         MACAddress = formatMac(MACID[0])
         getRouter(MACAddress)
-        getPIDSByDateRange(MACID[1], $('#vFromDate').val(), $('#vToDate').val())
+        getPIDSByDateRange(MACID[1], $('#vFromDate').val(), $('#vToDate').val());
+        getTripsByDate($('#vehicleList option:selected').text(), $('#vFromDate').val(), $('#vToDate').val());
     });
 
     //#region getECmRouter Information Functions
@@ -828,6 +829,38 @@
     $('#chartToggle').on('click', function () {
         $('#DGChart').toggleClass("hidden");
     })
+
+    //#region getNetDeviceMetrics Information Functions
+    function getTripsByDate(VehicleID, start, end) {
+        var _url = "getTripsByDate";
+        var _data = "ID=" + VehicleID + "&start=" + start + "&end=" + end;
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: _url,
+            data: _data,
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                getTripsByDateSuccess(result, VehicleID, start, end);
+            },
+            error: getTripsByDateError
+        });
+    }
+
+    function getTripsByDateSuccess(result, VehicleID, start, to) {
+        var trip = 1;
+        if (result.length != 0) {
+            for (var i = 1; i < result.length; i++) {
+                //if(result[i-1])
+            }
+        }
+    }
+
+    function getTripsByDateError(result, error) {
+        alert('A problem occurred getting the Vehicle Trips data, please reload or contact the administrator');
+        stepCheck(0);
+    }
+    //#endregion
 
     //--------------------------------------------------------------------------//
 

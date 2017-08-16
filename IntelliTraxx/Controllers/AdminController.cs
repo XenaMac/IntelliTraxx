@@ -739,27 +739,22 @@ namespace IntelliTraxx.Controllers
         [CustomAuthorize(Roles = "Administrator")]
         public ActionResult EditVehicle(string VehicleID)
         {
-            Guid vehicleID = new Guid(VehicleID);
-            List<VehicleExtendedData> vcs = truckService.getExtendedData();
+            Guid id = new Guid(VehicleID);
+            Vehicle vehicle = truckService.getVehicleData(id);
+
             VehicleVM vehicleToEdit = new VehicleVM();
-            foreach (VehicleExtendedData vc in vcs)
-            {
-                if (vc.ID == vehicleID)
-                {
-                    vehicleToEdit.ID = vc.ID;
-                    vehicleToEdit.VehicleIdentification = vc.vehicleID;
-                    vehicleToEdit.CompanyID = vc.companyID;
-                    vehicleToEdit.VehicleClassID = vc.vehicleClassID;
-                    vehicleToEdit.HaulLimit = vc.haulLimit;
-                    vehicleToEdit.LicensePlate = vc.licensePlate;
-                    vehicleToEdit.Make = vc.Make;
-                    vehicleToEdit.VehicleModel = vc.Model;
-                    vehicleToEdit.Year = vc.Year;
-                    vehicleToEdit.VehicleFriendlyName = vc.VehicleFriendlyName;
-                    vehicleToEdit.VehicleMACAddress = vc.MACAddress;
-                    vehicleToEdit.RouterID = vc.RouterID;
-                }
-            }
+            vehicleToEdit.ID = vehicle.extendedData.ID;
+            vehicleToEdit.VehicleIdentification = vehicle.extendedData.vehicleID;
+            vehicleToEdit.CompanyID = vehicle.extendedData.companyID;
+            vehicleToEdit.VehicleClassID = vehicle.extendedData.vehicleClassID;
+            vehicleToEdit.HaulLimit = vehicle.extendedData.haulLimit;
+            vehicleToEdit.LicensePlate = vehicle.extendedData.licensePlate;
+            vehicleToEdit.Make = vehicle.extendedData.Make;
+            vehicleToEdit.VehicleModel = vehicle.extendedData.Model;
+            vehicleToEdit.Year = vehicle.extendedData.Year;
+            vehicleToEdit.VehicleFriendlyName = vehicle.extendedData.VehicleFriendlyName;
+            vehicleToEdit.VehicleMACAddress = vehicle.extendedData.MACAddress;
+            vehicleToEdit.RouterID = vehicle.extendedData.RouterID;
 
             return View(vehicleToEdit);
 

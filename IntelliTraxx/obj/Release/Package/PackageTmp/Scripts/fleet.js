@@ -43,6 +43,16 @@
         } else {
             this.status = "Active";
         }
+
+        //Vehicle Non-Communicado
+        var Now = moment().add(moment().utcOffset(), 'minutes');
+        var LMR = moment(data.lastMessageReceived);
+        var diff = Now.diff(LMR, 'minutes');
+
+        if (diff >= 2) {
+            this.status = "Inactive";
+        }
+
         this.lat = data.gps.lat;
         this.lon = data.gps.lon;
         this.dir = data.gps.dir;
@@ -353,13 +363,24 @@
 
         $.post("getAllVehicles?loadHistorical=" + getHistorical, null, function (data) {
             for (var i = 0; i < data.length; i++) {
-                $("#vehicleList").append($('<option>', { value: data[i].extendedData.ID }).text(data[i].VehicleID));
-                if (!containsVehicle(data[i].extendedData.ID)) {
-                    if (data[i].driver != null) {
-                        currentD2V += 1;
+                var Now = moment().add(moment().utcOffset(), 'minutes');
+                var LMR = moment(data[i].lastMessageReceived);
+                var diff = Now.diff(LMR, 'minutes');
+
+                if (diff >= 3) {
+                    if (containsVehicle(data[i].extendedData.ID)) {
+                        vehicles.splice(getVehicleIndex(data[i].extendedData.ID), 1);
                     }
-                    vehicles.push(new Vehicle(data[i], false));
-                }
+                    killVehicle(data[i].VehicleID);
+                } else {
+                    $("#vehicleList").append($('<option>', { value: data[i].extendedData.ID }).text(data[i].VehicleID));
+                    if (!containsVehicle(data[i].extendedData.ID)) {
+                        if (data[i].driver != null) {
+                            currentD2V += 1;
+                        }
+                        vehicles.push(new Vehicle(data[i], false));
+                    }
+                }                
             }
 
             $('#currentD2V').html('Current Active Vehicles without Assigned Drivers: <strong>' + (data.length - currentD2V) + "</strong><hr />")
@@ -1362,831 +1383,864 @@
         }
     });
 
-//#region get monthly alerts
-function getMonthsAlerts() { //Get a download of the vehicle for ID
-    //empty alertpanel
-    jsPanel.activePanels.getPanel("alertPanel").content.css("padding", "10px");
-    jsPanel.activePanels.getPanel("alertPanel").content.empty();
+    //#region get monthly alerts
+    function getMonthsAlerts() { //Get a download of the vehicle for ID
+        //empty alertpanel
+        jsPanel.activePanels.getPanel("alertPanel").content.css("padding", "10px");
+        jsPanel.activePanels.getPanel("alertPanel").content.empty();
 
-    //add loader
-    jsPanel.activePanels.getPanel("alertPanel").content.append("<div id=\'vehicleHistoryLoader\' class=\'loading\'><img src=\'../Content/Images/preloader.gif\' width=\'100\' /></div>");
+        //add loader
+        jsPanel.activePanels.getPanel("alertPanel").content.append("<div id=\'vehicleHistoryLoader\' class=\'loading\'><img src=\'../Content/Images/preloader.gif\' width=\'100\' /></div>");
 
-    var _url = 'CurrentMonthAlerts';
-    var _data = "";
-    $.ajax({
-        type: "GET",
-        dataType: "json",
-        url: _url,
-        data: _data,
-        contentType: "application/json; charset=utf-8",
-        success: getMonthsAlertsSuccess,
-        error: getMonthsAlertsError
-    });
-}
-
-function getMonthsAlertsSuccess(data) {
-    jsPanel.activePanels.getPanel("alertPanel").content.empty();
-    jsPanel.activePanels.getPanel("alertPanel").content.append("<p class=\'text-center\'>Alerts for the current month");
-    jsPanel.activePanels.getPanel("alertPanel").content.append("<div class=\'list-group\' id=\'alertlistGroup\'></div>");
-    for (var i = 0; i < data.GridAlertList.length; i++) {
-        $('#alertlistGroup').append("<a href=\'#\'class=\'list-group-item\'>" + data.GridAlertList[i].AlertName + "<span class=\'label label-danger\' style=\'margin-left: 25px;\'>" + data.GridAlertList[i].Alerts.length + "</span></a>");
-    }
-}
-
-function getMonthsAlertsError(result, error) {
-    //empty alertpanel
-    jsPanel.activePanels.getPanel("alertPanel").content.empty();
-
-    var err = error;
-    alert('A problem occurred getting the chosen alert data, please reload or contact the administrator. Error:' + err.toString());
-}
-//#endregion
-
-//#region getAllAlerts Functions
-function getAllAlerts(from, to) { //Get a download of the vehicle for ID
-    jsPanel.activePanels.getPanel("alertPanel").content.empty();
-
-    //add loader
-    jsPanel.activePanels.getPanel("alertPanel").content.append("<div id=\'vehicleHistoryLoader\' class=\'loading\'><img src=\'../Content/Images/preloader.gif\' width=\'100\' /></div>");
-
-    var _url = 'getAlerts';
-    var _data = "";
-    if (from == null || from == "" && to == null || to == "") {
-        _data = "";
-    } else {
-        _data = "from=" + from + "&to=" + to;
-    }
-    $.ajax({
-        type: "GET",
-        dataType: "json",
-        url: _url,
-        data: _data,
-        contentType: "application/json; charset=utf-8",
-        success: getAllAlertsSuccess,
-        error: getallAlertsError
-    });
-}
-
-function getAllAlertsSuccess(result) {
-    jsPanel.activePanels.getPanel("alertPanel").content.empty();
-    var markup = "";
-
-    //create table
-    markup += "<h2>Alerts</h2>";
-    markup += "<div id=\'toolbar1\'>";
-    markup += "<div class=\'form-inline\'><div class=\'input-group input-group\'><input type=\'text\' id=\'alertDTPFrom\' class=\'form-control\' aria-label=\'From Date\' placeholder=\'From Date\'><span class=\'input-group-btn\'><button class=\'btn btn-default\' type=\'button\' id=\'alertDTPfromDateOpener\'><i class=\'glyphicons glyphicons-calendar\'></i></button></span></div><div class=\'input-group\'><input type=\'text\' id=\'alertDTPTo\' class=\'form-control\' aria-label=\'To Date\' placeholder=\'To Date\'><span class=\'input-group-btn\'><button class=\'btn btn-default\' type=\'button\' id=\'alertDTPToDateOpener\'><i class=\'glyphicons glyphicons-calendar\'></i></button></span></div><button class=\'btn btn-default\' id=\'alertFilter\'><i class=\'glyphicons glyphicons-filter\'></i></button><button style=\'margin-left: 10px;\' class=\'btn btn-primary\' id=\'alertsAdmin\'><i class=\'glyphicons glyphicons-cogwheels\'></i> Alert Administration</button></div>";
-    markup += "</div>";
-    markup += "<table id=\'alertsPaneTable\'><thead><tr>";
-    markup += "<th data-field=\'alertID\' data-sortable=\'true\' class=\'text-center\' data-visible=\'false\'>Alert ID</th>"
-    markup += "<th data-field=\'alertName\' data-sortable=\'true\' class=\'text-center\'>Alert Name</th>";
-    markup += "<th data-field=\'vehicleID\' data-sortable=\'true\' class=\'text-center\'>Vehicle ID</th>";
-    markup += "<th data-field=\'alertType\' data-sortable=\'true\' class=\'text-center\'>Alert Type</th>";
-    markup += "<th data-field=\'alertStart\' data-sortable=\'true\' class=\'text-center\'>Alert Start</th>";
-    markup += "<th data-field=\'alertEnd\' data-sortable=\'true\' class=\'text-center\'>Alert End</th>";
-    markup += "<th data-field=\'alertMaxValue\' data-sortable=\'true\' class=\'text-center\'>Max Value</th>";
-    markup += "</tr></thead><tbody>";
-
-    //get data
-    for (var a = 0; a < result.length; a++) {
-        var typeName = null;
-        var alertStart = new Date(parseInt(result[a].alertStart.substr(6)));
-        var alertEnd = new Date(parseInt(result[a].alertEnd.substr(6)));
-
-        if (result[a].alertType == 0) {
-            typeName = "Exit";
-        } else if (result[a].alertType == 1) {
-            typeName = "Enter";
-        } else if (result[a].alertType == 2) {
-            typeName = "Speeding";
-        }
-
-        markup += "<tr><td class=\'text-center\'>" + result[a].alertID + "</td><td class=\'text-center\'>" + result[a].alertName + "</td><td class=\'text-center\'>" + result[a].vehicleID + "</td><td class=\'text-center\'>" + typeName + "</td><td class=\'text-center\'>" + alertStart.toLocaleDateString() + " @ " + alertStart.toLocaleTimeString().replace(/:\d{2}\s/, ' ') + "</td><td class=\'text-center\'>" + alertEnd.toLocaleDateString() + " @ " + alertEnd.toLocaleTimeString().replace(/:\d{2}\s/, ' ') + "</td><td class=\'text-center\'>" + result[a].maxVal + "</td></tr>";
-
-    }
-    markup += "</tbody></table>"
-
-    jsPanel.activePanels.getPanel("alertPanel").content.append(markup);
-
-    //#region datetime and click table row stuff
-    var today = new Date();
-    var dd = today.getDate();
-    var mm = today.getMonth() + 1; //January is 0!
-    var yyyy = today.getFullYear();
-    today = mm + '/' + dd + '/' + yyyy;
-
-    $('#alertDTPFrom').datetimepicker({
-        dayOfWeekStart: 1,
-        lang: 'en',
-        disabledDates: ['1986/01/08', '1986/01/09', '1986/01/10'],
-        startDate: today
-    });
-
-    $('#alertDTPfromDateOpener').click(function () {
-        $('#alertDTPFrom').datetimepicker('show');
-    });
-
-    $('#alertDTPTo').datetimepicker({
-        dayOfWeekStart: 1,
-        lang: 'en',
-        disabledDates: ['1986/01/08', '1986/01/09', '1986/01/10'],
-        startDate: today
-    });
-
-    $('#alertDTPToDateOpener').click(function () {
-        $('#alertDTPTo').datetimepicker('show');
-    });
-
-    $('#alertFilter').click(function () {
-        //var url = '@Url.Action("/Index")' + '?from=' + $('#alertDTPFrom').val() + '&to=' + $('#alertDTPTo').val();
-        getAllAlerts($('#alertDTPFrom').val(), $('#alertDTPTo').val());
-    });
-
-    var $table = $('#alertsPaneTable');
-
-    $(function () {
-        $table.on('click-row.bs.table', function (e, row, $element) {
-            $('.success').removeClass('success');
-            $($element).addClass('success');
-
-            var index = $table.find('tr.success').data('index');
-            getAlert($table.bootstrapTable('getData')[index].alertID);
-            //alert($table.bootstrapTable('getData')[index].alertID);
+        var _url = 'CurrentMonthAlerts';
+        var _data = "";
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: _url,
+            data: _data,
+            contentType: "application/json; charset=utf-8",
+            success: getMonthsAlertsSuccess,
+            error: getMonthsAlertsError
         });
-    });
+    }
 
+    function getMonthsAlertsSuccess(data) {
+        jsPanel.activePanels.getPanel("alertPanel").content.empty();
+        jsPanel.activePanels.getPanel("alertPanel").content.append("<p class=\'text-center\'>Alerts for the current month");
+        jsPanel.activePanels.getPanel("alertPanel").content.append("<div class=\'list-group\' id=\'alertlistGroup\'></div>");
+        for (var i = 0; i < data.GridAlertList.length; i++) {
+            $('#alertlistGroup').append("<a href=\'#\'class=\'list-group-item\'>" + data.GridAlertList[i].AlertName + "<span class=\'label label-danger\' style=\'margin-left: 25px;\'>" + data.GridAlertList[i].Alerts.length + "</span></a>");
+        }
+    }
+
+    function getMonthsAlertsError(result, error) {
+        //empty alertpanel
+        jsPanel.activePanels.getPanel("alertPanel").content.empty();
+
+        var err = error;
+        alert('A problem occurred getting the chosen alert data, please reload or contact the administrator. Error:' + err.toString());
+    }
     //#endregion
 
-    //bootstrap table
-    $('#alertsPaneTable').bootstrapTable({
-        toolbar: '#toolbar1',
-        pagination: true,
-        striped: true,
-        showColumns: true,
-        showExport: true,
-        search: true,
-    });
-
-
-    $('#alertsAdmin').click(function () {
+    //#region getAllAlerts Functions
+    function getAllAlerts(from, to) { //Get a download of the vehicle for ID
         jsPanel.activePanels.getPanel("alertPanel").content.empty();
-        jsPanel.activePanels.getPanel("alertPanel").content.append("What the hell goes here?");
-    });
-}
 
-function getallAlertsError(result, error) {
-    var err = error;
-    alert('A problem occurred getting the vehicle alert data, please reload or contact support.');
-}
-//#endregion
+        //add loader
+        jsPanel.activePanels.getPanel("alertPanel").content.append("<div id=\'vehicleHistoryLoader\' class=\'loading\'><img src=\'../Content/Images/preloader.gif\' width=\'100\' /></div>");
 
-//#region getSpecificAlert
-function getAlert(alertID) { //Get a download of the vehicle for ID
-    //view alert panel functionality
-    $.jsPanel({
-        id: "alertViewPanel",
-        position: { my: "center-top", at: "center-top", offsetY: 100, offsetX: 0 },
-        headerTitle: "Alert View",
-        headerLogo: '<span class=\'glyphicons glyphicons-light-beacon\' style=\'margin: 4px 0 0 4px;font-size:2.0rem;\'></span>&nbsp;',
-        theme: "#F7AD00",
-        headerControls: {
-            maximize: 'remove',
-            minimize: 'remove',
-            normalize: 'remove',
-            smallify: 'remove'
-        },
-        content: '<div id=\'alertLoader\' class=\'loading hidden\'><img src=\'../Content/Images/preloader.gif\' width=\'100\' /></div>' +
-        '<div id="specificAlertPane">' +
-        '<h2>View Alert</h2>' +
-        '<hr />' +
-        '<input type="hidden" id=alertID />' +
-        '<input type="hidden" id=vehicleID />' +
-        '<div class="col-md-12">' +
-        '<p id="alertDesc"></p>' +
-        '<div class="col-md-12 pull-left">' +
-        '<strong>As of: </strong><label id="LC" class="mapText"></label>&nbsp;&nbsp;' +
-        '<strong>Lat: </strong><label id="Lat" class="mapText"></label>&nbsp;&nbsp;' +
-        '<strong>Long: </strong><label id="Long" class="mapText"></label>&nbsp;&nbsp;' +
-        '<strong>Direction: </strong><label id="Dir" class="mapText"></label>&nbsp;&nbsp;' +
-        '<strong>Speed: </strong><label id="SPD" class="mapText"></label><br />' +
-        '</div>' +
-        '<div class="col-md-12" id="alertMap"><br /><br /></div>' +
-        '<div class="col-md-12"></div>' +
-        '<div class="col-md-12 text-center sliderDiv">' +
-        '<br />' +
-        '<div id="alertMapSlider"></div>' +
-        '<div id="broadcastNum"></div>' +
-        '<br />' +
-        '</div>' +
-        '<div class="col-md-2 sliderDiv"><label id="ST" class="sm pull-left"></label></div>' +
-        '<div class="col-md-8 sliderDiv text-center"></div>' +
-        '<div class="col-md-2 sliderDiv"><label id="ET" class="small pull-right"></label></div>' +
-        '</div>' +
-        '</div>',
-        contentSize: {
-            width: function () { return $(window).width() / 1.5 },
-            height: function () { return $(window).height() / 1.5 },
-        },
-        callback: function () {
-            this.content.css("padding", "10px");
-
-            var alertmapDiv = null;
-            var alertmap = null;
-
-            viewAlert();
-
-            //#region get alert
-            function viewAlert() {
-                //unhide loader
-                $('#alertLoader').show();
-
-                var _url = 'ViewAlert';
-                var _data = "alertID=" + alertID;
-                $.ajax({
-                    type: "GET",
-                    dataType: "json",
-                    url: _url,
-                    data: _data,
-                    contentType: "application/json; charset=utf-8",
-                    success: viewAlertSuccess,
-                    error: viewAlertError
-                });
-            }
-
-            function viewAlertSuccess(data) {
-                if (data) {
-                    $('#alertID').val(data.alertID);
-                    $('#vehicleID').val(data.vehicleID);
-                    $('#alertDesc').html("Vehicle <strong>" + data.vehicleID + "</strong> triggered the <strong>" + data.alertName + "</strong> alert that started at <strong>" + moment(data.alertStart).add(moment().utcOffset(), 'minutes').format('MM/DD/YYYY HH:mm') + "</strong> and ended at <strong>" + moment(data.alertEnd).add(moment().utcOffset(), 'minutes').format('MM/DD/YYYY HH:mm') + "</strong>.")
-                    getAlertData();
-                }
-            }
-
-            function viewAlertError(result, error) {
-                //unhide loader
-                $('#alertLoader').hide();
-                $('#specificAlertPane').hide();
-
-                //empty alertpanel
-                jsPanel.activePanels.getPanel("alertViewPanel").content.empty();
-
-                var err = error;
-                alert('A problem occurred getting the chosen alert, please reload or contact the administrator. Error:' + err.toString());
-            }
-            //#endregion
-
-
-            //#region get alert history
-            function getAlertData() {
-                var _url = 'GetAlertHistory';
-                var _data = "alertID=" + $('#alertID').val() + "&vehicleID=" + $('#vehicleID').val();
-                $.ajax({
-                    type: "GET",
-                    dataType: "json",
-                    url: _url,
-                    data: _data,
-                    contentType: "application/json; charset=utf-8",
-                    success: getAlertDataSuccess,
-                    error: getAlertDataError
-                });
-            }
-
-            function getAlertDataSuccess(data) {
-                if (data) {
-                    alertmapDiv = document.getElementById('alertMap');
-                    alertmap = new google.maps.Map(alertmapDiv, {
-                        zoom: 13,
-                        mapTypeControl: true,
-                        mapTypeControlOptions: {
-                            style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
-                            position: google.maps.ControlPosition.RIGHT_TOP
-                        },
-                        zoomControl: true,
-                        zoomControlOptions: {
-                            position: google.maps.ControlPosition.RIGHT_TOP
-                        },
-                        scaleControl: true,
-                        streetViewControl: false,
-                        fullscreenControl: false
-                    });
-
-                    //center map
-                    alertmap.setCenter({ lat: data.Locations[0].Lat, lng: data.Locations[0].Lon });
-
-                    //set initial mapping information
-                    $('#LC').text(moment(data.Alert.alertStart).add(moment().utcOffset(), 'minutes').format('MM/DD/YYYY') + " @ " + moment(data.Alert.alertStart).add(moment().utcOffset(), 'minutes').format('HH:mm'));
-                    $('#Lat').text(data.Locations[0].Lat);
-                    $('#Long').text(data.Locations[0].Lon);
-                    $('#Dir').text(data.Locations[0].Direction);
-                    $('#SPD').text(data.Locations[0].Speed);
-                    $('#broadcastNum').html("<p>GPS Broadcast #: 1 of " + data.Locations.length)
-
-                    //vehicle marker
-                    alertMapvehicle = new google.maps.Marker({
-                        position: { lat: data.Locations[0].Lat, lng: data.Locations[0].Lon },
-                        title: data.Alert.vehicleID,
-                        draggable: false,
-                        map: alertmap
-                    });
-
-                    //slider
-                    $('#alertMapSlider').slider({
-                        animate: "slow",
-                        min: 1,
-                        max: data.Locations.length,
-                        step: 1,
-                        orientation: "horizontal",
-                        value: data.Locations.length,
-                        slide: function (event, slideEvt) {
-                            alertMapvehicle.setMap(null);
-                            var index = slideEvt.value - 1;
-                            //Set values based on slider
-                            var date = new Date(parseInt(data.Locations[index].timestamp.substr(6)));
-                            $('#LC').text(date.toLocaleDateString() + " at " + date.toLocaleTimeString());
-                            $('#Lat').text(data.Locations[index].Lat);
-                            $('#Long').text(data.Locations[index].Lon);
-                            $('#Dir').text(data.Locations[index].Direction);
-                            $('#SPD').text(data.Locations[index].Speed);
-
-                            $('#broadcastNum').html("<p>GPS Broadcast #: " + (index + 1) + " of " + data.Locations.length)
-
-                            //center map
-                            alertmap.setCenter({ lat: data.Locations[index].Lat, lng: data.Locations[index].Lon });
-
-                            //add marker
-                            alertMapvehicle = new google.maps.Marker({
-                                position: { lat: data.Locations[index].Lat, lng: data.Locations[index].Lon },
-                                title: data.Alert.VehicleID,
-                                draggable: false,
-                                map: alertmap
-                            });
-                        }
-                    });
-
-                    $('#alertMapSlider').slider("value", 1);
-                }
-
-                //unhide loader
-                $('#alertLoader').hide();
-            }
-
-            function getAlertDataError(result, error) {
-                //empty alertpanel
-                jsPanel.activePanels.getPanel("alertViewPanel").content.empty();
-
-                var err = error;
-                alert('A problem occurred getting the chosen alert data, please reload or contact the administrator. Error:' + err.toString());
-            }
-            //#endregion
-        },
-    });
-}
-//#endregion
-
-//#region Open Playback
-function OpenPlayback(ID, start, end) {
-    jsPanel.activePanels.getPanel("playBackPanel").content.empty();
-
-    var _url = 'getHistory';
-    var _data = "ID=" + ID + "&start=" + start + "&end=" + end;
-
-    if (ID == 0 && start == 0 && end == 0) {
-        ID = vehicles[0].VehicleID;
-        end = moment.utc().format('YYYY-MM-DD HH:mm');
-        start = moment.utc().add(-2, "hours").format('YYYY-MM-DD HH:mm');
-        _data = "ID=" + ID + "&start=" + start + "&end=" + end;
-    }
-
-    $.ajax({
-        type: "GET",
-        dataType: "json",
-        ID: ID,
-        start: start,
-        end: end,
-        url: _url,
-        data: _data,
-        contentType: "application/json; charset=utf-8",
-        success: function (data) {
-            OpenPlaybackSuccess(data, this.ID, this.start, this.end);
-        },
-        error: OpenPlaybackError
-    });
-}
-
-function OpenPlaybackSuccess(result, ID, start, end) {
-    if (result.length <= 0) {
-        alert('No location elements returned for that search criteria. Please enter new criteria and try again.');
-        result = oldVehicleHistoryResults;
-    } else {
-        oldVehicleHistoryResults = result;
-    }
-
-    //paint the panel
-    var pbcontent = '<br /><br /><br />' +
-        '<div id="vehicleHistoryDiv" class="hiddden">' +
-        '<div id="historyCriteria" class="row col-sm-12 center-block">' +
-        '<select id="vehicleHistoryList_M" class="col-sm-3">' +
-        '<option value="None">-- Vehicle ID --</option>' +
-        '</select>' +
-        //'<div class="col-sm-3" id="playBackVehicleID"></div>' +
-        '<input type="text" id="playBackFrom_M" class="col-sm-4" aria-label="From" placeholder="From Date:">' +
-        '<select id="increments_M" class="col-sm-3">' +
-        '<option value="2">2 Hours</option>' +
-        '<option value="6">6 Hours</option>' +
-        '<option value="8">8 Hours</option>' +
-        '<option value="12">12 Hours</option>' +
-        '</select>' +
-        '<button id="historySearch_M" class="btn btn-primary glyphicons glyphicons-search" style="margin-left: 3px; margin-right: 3px;" alt="Search"></button>' +
-        '<button id="historyDownload_M" class="btn btn-primary glyphicons glyphicons-download" alt="download"></button>' +
-        '</div>' +
-        '<div id="historySlider" class="col-sm-12" style="margin-top: 15px; margin-bottom: 15px;"></div>' +
-        '<div id="historyMap" class="col-sm-12" style="height: 55.0em; border: 1px solid #000; z-index: 1; padding-left: 0px;"></div>' +
-        '<div id="historyInfo" class="col-sm-12">' +
-        '<label>Date: </label><span id="datetime" class="mapText_M"></span>' +
-        '<label>&nbsp;&nbsp;Lat: </label><span id="lat" class="mapText_M"></span>' +
-        '<label>&nbsp;&nbsp;Lng:  </label><span id="lon" class="mapText_M"></span>' +
-        '<label>&nbsp;&nbsp;Dir: </label><span id="dir" class="mapText_M"></span>' +
-        '<label>&nbsp;&nbsp;Spd: </label><span id="speed" class="mapText_M"></span>' +
-        '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="gpsRecordNumb" class="mapText_M"></span>' +
-        '</div>' +
-        '</div>';
-    jsPanel.activePanels.getPanel("playBackPanel").content.append(pbcontent);
-
-    //work drop down box of vehicles
-    $('#vehicleHistoryList_M').empty();
-    for (var index in vehicles) {
-        $('#vehicleHistoryList_M').append('<option value="' + vehicles[index].VehicleID + '">' + vehicles[index].VehicleID + '</option>');
-    }
-    $('#vehicleHistoryList_M').val(ID);
-
-    historyData = result;
-
-    for (var i = 0; i < historyData.length; i++) {
-        drivePathCoordinates.push({ lat: historyData[i].Lat, lng: historyData[i].Lon });
-    }
-
-    drivePath = new google.maps.Polyline({
-        path: drivePathCoordinates,
-        geodesic: true,
-        strokeColor: '#61c',
-        strokeOpacity: 1.0,
-        strokeWeight: 1
-    });
-
-    historyMap = new google.maps.Map(document.getElementById("historyMap"), {
-        zoom: 12,
-        center: drivePathCoordinates[0],
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
-        mapTypeControl: false,
-        zoomControl: true,
-        scaleControl: true,
-        streetViewControl: false,
-        fullscreenControl: false
-    });
-
-    //vehicle marker
-    historyVehicle = new google.maps.Marker({
-        position: { lat: historyData[0].Lat, lng: historyData[0].Lon },
-        draggable: false,
-        map: historyMap
-    });
-
-    //attached drivepath --- ugly ... putting off until can think of something prettier...
-    //if (drivePath != null) {
-    //    drivePath.setMap(historyMap)
-    //}
-
-    $('#datetime').text(moment(start).add(moment().utcOffset(), 'minutes').format('MM/DD/YYYY HH:mm'));
-    $('#lat').text(historyData[0].Lat);
-    $('#lon').text(historyData[0].Lon);
-    $('#dir').text(historyData[0].Direction);
-    $('#speed').text(historyData[0].Speed);
-    $('#gpsRecordNumb').text('# 1 of ' + historyData.length);
-
-    //slider
-    $('#historySlider').slider({
-        animate: "slow",
-        min: 1,
-        max: historyData.length,
-        step: 1,
-        orientation: "horizontal",
-        value: historyData.length,
-        slide: function (event, slideEvt) {
-            historyVehicle.setMap(null);
-            var index = slideEvt.value;
-            //Set values based on slider
-            $('#datetime').text(moment(historyData[index].timestamp).add(moment().utcOffset(), 'minutes').format('MM/DD/YYYY HH:mm'));
-            $('#lat').text(historyData[index].Lat);
-            $('#lon').text(historyData[index].Lon);
-            $('#dir').text(historyData[index].Direction);
-            $('#speed').text(historyData[index].Speed);
-            $('#gpsRecordNumb').text('# ' + index + ' of ' + historyData.length);
-
-            //center map
-            historyMap.setCenter({ lat: historyData[index].Lat, lng: historyData[index].Lon });
-
-            //add marker
-            historyVehicle = new google.maps.Marker({
-                position: { lat: historyData[index].Lat, lng: historyData[index].Lon },
-                draggable: false,
-                map: historyMap
-            });
+        var _url = 'getAlerts';
+        var _data = "";
+        if (from == null || from == "" && to == null || to == "") {
+            _data = "";
+        } else {
+            _data = "from=" + from + "&to=" + to;
         }
-    });
-
-    $('#historySlider').slider("value", 1);
-    
-    var month = moment().get('month') - 2;
-    $('#playBackFrom_M').datetimepicker({
-        dayOfWeekStart: 1,
-        minDate: '2017/' + month + '/1',
-        maxDate: '+1970/01/01'//tomorrow is maximum date calendar
-    });
-
-    $('#playBackFrom_M').val(moment(start).add(moment().utcOffset(), 'minutes').format('YYYY-MM-DD HH:mm'));
-
-    $('#vehicleHistoryLoader').addClass('hidden');
-    $('#vehicleHistoryDiv').removeClass('hidden');
-
-    $('#historySearch_M').click(function () {
-        var from = moment(new Date($('#playBackFrom_M').val())).add(-1 * moment().utcOffset(), 'minutes').format('YYYY-MM-DD HH:mm');
-        var to = moment(from).add($('#increments_M').val(), 'hours').format('YYYY-MM-DD HH:mm');
-        OpenPlayback($('#vehicleHistoryList_M').val(), from, to);
-    });
-
-    $('#historyDownload_M').click(function () {
-        var from = moment(new Date($('#playBackFrom_M').val())).add(-1 * moment().utcOffset(), 'minutes').format('YYYY-MM-DD HH:mm');
-        var to = moment(from).add($('#increments_M').val(), 'hours').format('YYYY-MM-DD HH:mm');
-        dowloadVehicleHistory($('#vehicleHistoryList_M').val(), from, to);
-    });
-}
-
-function OpenPlaybackError(result, error) {
-    var err = error;
-    alert('A problem occurred selecting and/or downloading the selected vehicle data, please reload or contact the administrator');
-}
-//#endregion
-
-//#region getAvailableDrivers Functions
-function getAvailableDrivers() { //Get a download of the vehicle for ID
-    $('#availableDrivers').empty();
-    var _url = 'getAvailableDrivers';
-    var _data = "";
-    $.ajax({
-        type: "GET",
-        dataType: "json",
-        url: _url,
-        data: _data,
-        contentType: "application/json; charset=utf-8",
-        success: getAvailableDriversSuccess,
-        error: getAvailableDriversError
-    });
-}
-
-function getAvailableDriversSuccess(data) {
-    if (data.length > 0) {
-        $('#availableDrivers').append($('<option>', { value: '' }).text('-- New Driver --'));
-        for (var i = 0; i < data.length; i++) {
-            var name = data[i].DriverFirstName + " " + data[i].DriverLastName;
-
-            if (selectedVehicle.status == "NA") {
-                $('#availableDrivers').prop('disabled', 'disabled')
-                $('#availableDrivers').append($('<option>', { value: data[i].DriverID }).text(name));
-                $('#availDriverText').html("<em>The selected vehicle is not active. Please assign drivers to inactive vehicles using the Drivers -> Vehicles Module inside administration.</em>")
-            } else {
-                $('#availableDrivers').prop('disabled', false)
-                $('#availableDrivers').append($('<option>', { value: data[i].DriverID }).text(name));
-                $('#availDriverText').html("<em>Changing a driver is permanent until you change drivers again.</em>")
-            }
-        }
-    } else {
-        $('#availDriverText').html("<em>There are no available drivers in the sytem. Please add and assign drivers using the administration module.</em>")
-    }
-}
-
-function getAvailableDriversError(result, error) {
-    var err = error;
-    alert('A problem occurred getting the pulling the avilable drivers, please reload or contact the administrator');
-}
-//#endregion
-
-//#region changeDrivers Functions
-function changeDrivers(from, to) { //Get a download of the vehicle for ID
-    var _url = 'changeDrivers';
-    var _data = "from=" + from + "&to=" + to + "&vehicleID=" + selectedVehicle.ID;
-    $.ajax({
-        type: "GET",
-        dataType: "json",
-        url: _url,
-        data: _data,
-        contentType: "application/json; charset=utf-8",
-        success: changeDriversSuccess,
-        error: changeDriversError
-    });
-}
-
-function changeDriversSuccess(data) {
-    if (data == "OK") {
-        toastr.options = {
-            "closeButton": false,
-            "debug": false,
-            "newestOnTop": false,
-            "progressBar": false,
-            "positionClass": "toast-bottom-left",
-            "preventDuplicates": false,
-            "onclick": null,
-            "showDuration": "300",
-            "hideDuration": "1000",
-            "timeOut": "5000",
-            "extendedTimeOut": "1000",
-            "showEasing": "swing",
-            "hideEasing": "linear",
-            "showMethod": "fadeIn",
-            "hideMethod": "fadeOut"
-        }
-        Command: toastr["success"]("New Driver Assigned. We need to refresh the map now.");
-        selectedVehicle = null;
-        closeNav();
-        getVehicles(true);
-    } else {
-        alert('A problem occurred changing the drivers, please reload or contact the administrator');
-    }
-}
-
-function changeDriversError(result, error) {
-    var err = error;
-    alert('A problem occurred changing the drivers, please reload or contact the administrator');
-}
-//#endregion
-
-
-
-
-$(document).on('click', "#alertsTable > tbody > tr", function () {
-    getAlert($(this).find("td.hidden").html());
-});
-
-var resetIcons = function () {
-    for (var i = 0; i < vehicles.length; i++) {
-        vehicles[i].Marker.setIcon({
-            url: '../Content/Images/blue.png', // url
-            scaledSize: new google.maps.Size(32, 50), // scaled size
-            origin: new google.maps.Point(0, 0), // origin
-            anchor: new google.maps.Point(16, 50) // anchor
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: _url,
+            data: _data,
+            contentType: "application/json; charset=utf-8",
+            success: getAllAlertsSuccess,
+            error: getallAlertsError
         });
-        vehicles[i].Marker.setAnimation(null);
     }
-}
 
-$('#vehicleList').on('change', function () {
-    var listVehicle = null;
-    for (var i = 0; i < vehicles.length; i++) {
-        if (vehicles[i].ID == $(this).val()) {
-            listVehicle = vehicles[i];
+    function getAllAlertsSuccess(result) {
+        jsPanel.activePanels.getPanel("alertPanel").content.empty();
+        var markup = "";
+
+        //create table
+        markup += "<h2>Alerts</h2>";
+        markup += "<div id=\'toolbar1\'>";
+        markup += "<div class=\'form-inline\'><div class=\'input-group input-group\'><input type=\'text\' id=\'alertDTPFrom\' class=\'form-control\' aria-label=\'From Date\' placeholder=\'From Date\'><span class=\'input-group-btn\'><button class=\'btn btn-default\' type=\'button\' id=\'alertDTPfromDateOpener\'><i class=\'glyphicons glyphicons-calendar\'></i></button></span></div><div class=\'input-group\'><input type=\'text\' id=\'alertDTPTo\' class=\'form-control\' aria-label=\'To Date\' placeholder=\'To Date\'><span class=\'input-group-btn\'><button class=\'btn btn-default\' type=\'button\' id=\'alertDTPToDateOpener\'><i class=\'glyphicons glyphicons-calendar\'></i></button></span></div><button class=\'btn btn-default\' id=\'alertFilter\'><i class=\'glyphicons glyphicons-filter\'></i></button><button style=\'margin-left: 10px;\' class=\'btn btn-primary\' id=\'alertsAdmin\'><i class=\'glyphicons glyphicons-cogwheels\'></i> Alert Administration</button></div>";
+        markup += "</div>";
+        markup += "<table id=\'alertsPaneTable\'><thead><tr>";
+        markup += "<th data-field=\'alertID\' data-sortable=\'true\' class=\'text-center\' data-visible=\'false\'>Alert ID</th>"
+        markup += "<th data-field=\'alertName\' data-sortable=\'true\' class=\'text-center\'>Alert Name</th>";
+        markup += "<th data-field=\'vehicleID\' data-sortable=\'true\' class=\'text-center\'>Vehicle ID</th>";
+        markup += "<th data-field=\'alertType\' data-sortable=\'true\' class=\'text-center\'>Alert Type</th>";
+        markup += "<th data-field=\'alertStart\' data-sortable=\'true\' class=\'text-center\'>Alert Start</th>";
+        markup += "<th data-field=\'alertEnd\' data-sortable=\'true\' class=\'text-center\'>Alert End</th>";
+        markup += "<th data-field=\'alertMaxValue\' data-sortable=\'true\' class=\'text-center\'>Max Value</th>";
+        markup += "</tr></thead><tbody>";
+
+        //get data
+        for (var a = 0; a < result.length; a++) {
+            var typeName = null;
+            var alertStart = new Date(parseInt(result[a].alertStart.substr(6)));
+            var alertEnd = new Date(parseInt(result[a].alertEnd.substr(6)));
+
+            if (result[a].alertType == 0) {
+                typeName = "Exit";
+            } else if (result[a].alertType == 1) {
+                typeName = "Enter";
+            } else if (result[a].alertType == 2) {
+                typeName = "Speeding";
+            }
+
+            markup += "<tr><td class=\'text-center\'>" + result[a].alertID + "</td><td class=\'text-center\'>" + result[a].alertName + "</td><td class=\'text-center\'>" + result[a].vehicleID + "</td><td class=\'text-center\'>" + typeName + "</td><td class=\'text-center\'>" + alertStart.toLocaleDateString() + " @ " + alertStart.toLocaleTimeString().replace(/:\d{2}\s/, ' ') + "</td><td class=\'text-center\'>" + alertEnd.toLocaleDateString() + " @ " + alertEnd.toLocaleTimeString().replace(/:\d{2}\s/, ' ') + "</td><td class=\'text-center\'>" + result[a].maxVal + "</td></tr>";
+
         }
+        markup += "</tbody></table>"
+
+        jsPanel.activePanels.getPanel("alertPanel").content.append(markup);
+
+        //#region datetime and click table row stuff
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; //January is 0!
+        var yyyy = today.getFullYear();
+        today = mm + '/' + dd + '/' + yyyy;
+
+        $('#alertDTPFrom').datetimepicker({
+            dayOfWeekStart: 1,
+            lang: 'en',
+            disabledDates: ['1986/01/08', '1986/01/09', '1986/01/10'],
+            startDate: today
+        });
+
+        $('#alertDTPfromDateOpener').click(function () {
+            $('#alertDTPFrom').datetimepicker('show');
+        });
+
+        $('#alertDTPTo').datetimepicker({
+            dayOfWeekStart: 1,
+            lang: 'en',
+            disabledDates: ['1986/01/08', '1986/01/09', '1986/01/10'],
+            startDate: today
+        });
+
+        $('#alertDTPToDateOpener').click(function () {
+            $('#alertDTPTo').datetimepicker('show');
+        });
+
+        $('#alertFilter').click(function () {
+            //var url = '@Url.Action("/Index")' + '?from=' + $('#alertDTPFrom').val() + '&to=' + $('#alertDTPTo').val();
+            getAllAlerts($('#alertDTPFrom').val(), $('#alertDTPTo').val());
+        });
+
+        var $table = $('#alertsPaneTable');
+
+        $(function () {
+            $table.on('click-row.bs.table', function (e, row, $element) {
+                $('.success').removeClass('success');
+                $($element).addClass('success');
+
+                var index = $table.find('tr.success').data('index');
+                getAlert($table.bootstrapTable('getData')[index].alertID);
+                //alert($table.bootstrapTable('getData')[index].alertID);
+            });
+        });
+
+        //#endregion
+
+        //bootstrap table
+        $('#alertsPaneTable').bootstrapTable({
+            toolbar: '#toolbar1',
+            pagination: true,
+            striped: true,
+            showColumns: true,
+            showExport: true,
+            search: true,
+        });
+
+
+        $('#alertsAdmin').click(function () {
+            jsPanel.activePanels.getPanel("alertPanel").content.empty();
+            jsPanel.activePanels.getPanel("alertPanel").content.append("What the hell goes here?");
+        });
     }
-    selectThisVehicle(listVehicle, selectedVehicle);
-    map.setZoom(15);
-    map.setCenter(listVehicle.Marker.getPosition());
-});
 
-$('#openAlerts').click(function () {
-    jsPanel.activePanels.getPanel("alertPanel").maximize();
-});
-
-function mapLogEntry(type, vehicle) {
-    if (type == "position") {
-        $('#log_panel').append("<strong>" + moment().format('MM/DD/YYYY hh:mm') + "</strong> -- " + vehicle.VehicleID + " -- Set Position(" + vehicle.lat + ", " + vehicle.lon + ")<br />");
-    } else if (type == "selected") {
-        $('#log_panel').append("<strong>" + moment().format('MM/DD/YYYY hh:mm') + "</strong> -- " + vehicle.VehicleID + " -- Selected for analysis<br />");
-    } else if (type == "unselected") {
-        $('#log_panel').append("<strong>" + moment().format('MM/DD/YYYY hh:mm') + "</strong> -- " + vehicle.VehicleID + " -- Unselected<br />");
-    } else if (type == "alert") {
-        $('#log_panel').append("<strong>" + moment().format('MM/DD/YYYY hh:mm') + "</strong> -- " + vehicle.VehicleID + " -- Alert: [" + vehicle.lat + ", " + vehicle.lon + "]<br />");
+    function getallAlertsError(result, error) {
+        var err = error;
+        alert('A problem occurred getting the vehicle alert data, please reload or contact support.');
     }
-}
+    //#endregion
 
-function containsVehicle(ID) {
-    var i;
-    for (i = 0; i < vehicles.length; i++) {
-        if (vehicles[i].ID == ID) {
-            return true;
+    //#region getSpecificAlert
+    function getAlert(alertID) { //Get a download of the vehicle for ID
+        //view alert panel functionality
+        $.jsPanel({
+            id: "alertViewPanel",
+            position: { my: "center-top", at: "center-top", offsetY: 100, offsetX: 0 },
+            headerTitle: "Alert View",
+            headerLogo: '<span class=\'glyphicons glyphicons-light-beacon\' style=\'margin: 4px 0 0 4px;font-size:2.0rem;\'></span>&nbsp;',
+            theme: "#F7AD00",
+            headerControls: {
+                maximize: 'remove',
+                minimize: 'remove',
+                normalize: 'remove',
+                smallify: 'remove'
+            },
+            content: '<div id=\'alertLoader\' class=\'loading hidden\'><img src=\'../Content/Images/preloader.gif\' width=\'100\' /></div>' +
+            '<div id="specificAlertPane">' +
+            '<h2>View Alert</h2>' +
+            '<hr />' +
+            '<input type="hidden" id=alertID />' +
+            '<input type="hidden" id=vehicleID />' +
+            '<div class="col-md-12">' +
+            '<p id="alertDesc"></p>' +
+            '<div class="col-md-12 pull-left">' +
+            '<strong>As of: </strong><label id="LC" class="mapText"></label>&nbsp;&nbsp;' +
+            '<strong>Lat: </strong><label id="Lat" class="mapText"></label>&nbsp;&nbsp;' +
+            '<strong>Long: </strong><label id="Long" class="mapText"></label>&nbsp;&nbsp;' +
+            '<strong>Direction: </strong><label id="Dir" class="mapText"></label>&nbsp;&nbsp;' +
+            '<strong>Speed: </strong><label id="SPD" class="mapText"></label><br />' +
+            '</div>' +
+            '<div class="col-md-12" id="alertMap"><br /><br /></div>' +
+            '<div class="col-md-12"></div>' +
+            '<div class="col-md-12 text-center sliderDiv">' +
+            '<br />' +
+            '<div id="alertMapSlider"></div>' +
+            '<div id="broadcastNum"></div>' +
+            '<br />' +
+            '</div>' +
+            '<div class="col-md-2 sliderDiv"><label id="ST" class="sm pull-left"></label></div>' +
+            '<div class="col-md-8 sliderDiv text-center"></div>' +
+            '<div class="col-md-2 sliderDiv"><label id="ET" class="small pull-right"></label></div>' +
+            '</div>' +
+            '</div>',
+            contentSize: {
+                width: function () { return $(window).width() / 1.5 },
+                height: function () { return $(window).height() / 1.5 },
+            },
+            callback: function () {
+                this.content.css("padding", "10px");
+
+                var alertmapDiv = null;
+                var alertmap = null;
+
+                viewAlert();
+
+                //#region get alert
+                function viewAlert() {
+                    //unhide loader
+                    $('#alertLoader').show();
+
+                    var _url = 'ViewAlert';
+                    var _data = "alertID=" + alertID;
+                    $.ajax({
+                        type: "GET",
+                        dataType: "json",
+                        url: _url,
+                        data: _data,
+                        contentType: "application/json; charset=utf-8",
+                        success: viewAlertSuccess,
+                        error: viewAlertError
+                    });
+                }
+
+                function viewAlertSuccess(data) {
+                    if (data) {
+                        $('#alertID').val(data.alertID);
+                        $('#vehicleID').val(data.vehicleID);
+                        $('#alertDesc').html("Vehicle <strong>" + data.vehicleID + "</strong> triggered the <strong>" + data.alertName + "</strong> alert that started at <strong>" + moment(data.alertStart).add(moment().utcOffset(), 'minutes').format('MM/DD/YYYY HH:mm') + "</strong> and ended at <strong>" + moment(data.alertEnd).add(moment().utcOffset(), 'minutes').format('MM/DD/YYYY HH:mm') + "</strong>.")
+                        getAlertData();
+                    }
+                }
+
+                function viewAlertError(result, error) {
+                    //unhide loader
+                    $('#alertLoader').hide();
+                    $('#specificAlertPane').hide();
+
+                    //empty alertpanel
+                    jsPanel.activePanels.getPanel("alertViewPanel").content.empty();
+
+                    var err = error;
+                    alert('A problem occurred getting the chosen alert, please reload or contact the administrator. Error:' + err.toString());
+                }
+                //#endregion
+
+
+                //#region get alert history
+                function getAlertData() {
+                    var _url = 'GetAlertHistory';
+                    var _data = "alertID=" + $('#alertID').val() + "&vehicleID=" + $('#vehicleID').val();
+                    $.ajax({
+                        type: "GET",
+                        dataType: "json",
+                        url: _url,
+                        data: _data,
+                        contentType: "application/json; charset=utf-8",
+                        success: getAlertDataSuccess,
+                        error: getAlertDataError
+                    });
+                }
+
+                function getAlertDataSuccess(data) {
+                    if (data) {
+                        alertmapDiv = document.getElementById('alertMap');
+                        alertmap = new google.maps.Map(alertmapDiv, {
+                            zoom: 13,
+                            mapTypeControl: true,
+                            mapTypeControlOptions: {
+                                style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+                                position: google.maps.ControlPosition.RIGHT_TOP
+                            },
+                            zoomControl: true,
+                            zoomControlOptions: {
+                                position: google.maps.ControlPosition.RIGHT_TOP
+                            },
+                            scaleControl: true,
+                            streetViewControl: false,
+                            fullscreenControl: false
+                        });
+
+                        //center map
+                        alertmap.setCenter({ lat: data.Locations[0].Lat, lng: data.Locations[0].Lon });
+
+                        //set initial mapping information
+                        $('#LC').text(moment(data.Alert.alertStart).add(moment().utcOffset(), 'minutes').format('MM/DD/YYYY') + " @ " + moment(data.Alert.alertStart).add(moment().utcOffset(), 'minutes').format('HH:mm'));
+                        $('#Lat').text(data.Locations[0].Lat);
+                        $('#Long').text(data.Locations[0].Lon);
+                        $('#Dir').text(data.Locations[0].Direction);
+                        $('#SPD').text(data.Locations[0].Speed);
+                        $('#broadcastNum').html("<p>GPS Broadcast #: 1 of " + data.Locations.length)
+
+                        //vehicle marker
+                        alertMapvehicle = new google.maps.Marker({
+                            position: { lat: data.Locations[0].Lat, lng: data.Locations[0].Lon },
+                            title: data.Alert.vehicleID,
+                            draggable: false,
+                            map: alertmap
+                        });
+
+                        //slider
+                        $('#alertMapSlider').slider({
+                            animate: "slow",
+                            min: 1,
+                            max: data.Locations.length,
+                            step: 1,
+                            orientation: "horizontal",
+                            value: data.Locations.length,
+                            slide: function (event, slideEvt) {
+                                alertMapvehicle.setMap(null);
+                                var index = slideEvt.value - 1;
+                                //Set values based on slider
+                                var date = new Date(parseInt(data.Locations[index].timestamp.substr(6)));
+                                $('#LC').text(date.toLocaleDateString() + " at " + date.toLocaleTimeString());
+                                $('#Lat').text(data.Locations[index].Lat);
+                                $('#Long').text(data.Locations[index].Lon);
+                                $('#Dir').text(data.Locations[index].Direction);
+                                $('#SPD').text(data.Locations[index].Speed);
+
+                                $('#broadcastNum').html("<p>GPS Broadcast #: " + (index + 1) + " of " + data.Locations.length)
+
+                                //center map
+                                alertmap.setCenter({ lat: data.Locations[index].Lat, lng: data.Locations[index].Lon });
+
+                                //add marker
+                                alertMapvehicle = new google.maps.Marker({
+                                    position: { lat: data.Locations[index].Lat, lng: data.Locations[index].Lon },
+                                    title: data.Alert.VehicleID,
+                                    draggable: false,
+                                    map: alertmap
+                                });
+                            }
+                        });
+
+                        $('#alertMapSlider').slider("value", 1);
+                    }
+
+                    //unhide loader
+                    $('#alertLoader').hide();
+                }
+
+                function getAlertDataError(result, error) {
+                    //empty alertpanel
+                    jsPanel.activePanels.getPanel("alertViewPanel").content.empty();
+
+                    var err = error;
+                    alert('A problem occurred getting the chosen alert data, please reload or contact the administrator. Error:' + err.toString());
+                }
+                //#endregion
+            },
+        });
+    }
+    //#endregion
+
+    //#region Open Playback
+    function OpenPlayback(ID, start, end) {
+        jsPanel.activePanels.getPanel("playBackPanel").content.empty();
+
+        var _url = 'getHistory';
+        var _data = "ID=" + ID + "&start=" + start + "&end=" + end;
+
+        if (ID == 0 && start == 0 && end == 0) {
+            ID = vehicles[0].VehicleID;
+            end = moment.utc().format('YYYY-MM-DD HH:mm');
+            start = moment.utc().add(-2, "hours").format('YYYY-MM-DD HH:mm');
+            _data = "ID=" + ID + "&start=" + start + "&end=" + end;
         }
+
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            ID: ID,
+            start: start,
+            end: end,
+            url: _url,
+            data: _data,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                OpenPlaybackSuccess(data, this.ID, this.start, this.end);
+            },
+            error: OpenPlaybackError
+        });
     }
 
-    return false;
-}
-
-function containsObject(obj, list) {
-    var i;
-    for (i = 0; i < list.length; i++) {
-        if (list[i] === obj) {
-            return true;
+    function OpenPlaybackSuccess(result, ID, start, end) {
+        if (result.length <= 0) {
+            alert('No location elements returned for that search criteria. Please enter new criteria and try again.');
+            result = oldVehicleHistoryResults;
+        } else {
+            oldVehicleHistoryResults = result;
         }
+
+        //paint the panel
+        var pbcontent = '<br /><br /><br />' +
+            '<div id="vehicleHistoryDiv" class="hiddden">' +
+            '<div id="historyCriteria" class="row col-sm-12 center-block">' +
+            '<select id="vehicleHistoryList_M" class="col-sm-3">' +
+            '<option value="None">-- Vehicle ID --</option>' +
+            '</select>' +
+            //'<div class="col-sm-3" id="playBackVehicleID"></div>' +
+            '<input type="text" id="playBackFrom_M" class="col-sm-4" aria-label="From" placeholder="From Date:">' +
+            '<select id="increments_M" class="col-sm-3">' +
+            '<option value="2">2 Hours</option>' +
+            '<option value="6">6 Hours</option>' +
+            '<option value="8">8 Hours</option>' +
+            '<option value="12">12 Hours</option>' +
+            '</select>' +
+            '<button id="historySearch_M" class="btn btn-primary glyphicons glyphicons-search" style="margin-left: 3px; margin-right: 3px;" alt="Search"></button>' +
+            '<button id="historyDownload_M" class="btn btn-primary glyphicons glyphicons-download" alt="download"></button>' +
+            '</div>' +
+            '<div id="historySlider" class="col-sm-12" style="margin-top: 15px; margin-bottom: 15px;"></div>' +
+            '<div id="historyMap" class="col-sm-12" style="height: 55.0em; border: 1px solid #000; z-index: 1; padding-left: 0px;"></div>' +
+            '<div id="historyInfo" class="col-sm-12">' +
+            '<label>Date: </label><span id="datetime" class="mapText_M"></span>' +
+            '<label>&nbsp;&nbsp;Lat: </label><span id="lat" class="mapText_M"></span>' +
+            '<label>&nbsp;&nbsp;Lng:  </label><span id="lon" class="mapText_M"></span>' +
+            '<label>&nbsp;&nbsp;Dir: </label><span id="dir" class="mapText_M"></span>' +
+            '<label>&nbsp;&nbsp;Spd: </label><span id="speed" class="mapText_M"></span>' +
+            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="gpsRecordNumb" class="mapText_M"></span>' +
+            '</div>' +
+            '</div>';
+        jsPanel.activePanels.getPanel("playBackPanel").content.append(pbcontent);
+
+        //work drop down box of vehicles
+        $('#vehicleHistoryList_M').empty();
+        for (var index in vehicles) {
+            $('#vehicleHistoryList_M').append('<option value="' + vehicles[index].VehicleID + '">' + vehicles[index].VehicleID + '</option>');
+        }
+        $('#vehicleHistoryList_M').val(ID);
+
+        historyData = result;
+
+        for (var i = 0; i < historyData.length; i++) {
+            drivePathCoordinates.push({ lat: historyData[i].Lat, lng: historyData[i].Lon });
+        }
+
+        drivePath = new google.maps.Polyline({
+            path: drivePathCoordinates,
+            geodesic: true,
+            strokeColor: '#61c',
+            strokeOpacity: 1.0,
+            strokeWeight: 1
+        });
+
+        historyMap = new google.maps.Map(document.getElementById("historyMap"), {
+            zoom: 12,
+            center: drivePathCoordinates[0],
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            mapTypeControl: false,
+            zoomControl: true,
+            scaleControl: true,
+            streetViewControl: false,
+            fullscreenControl: false
+        });
+
+        //vehicle marker
+        historyVehicle = new google.maps.Marker({
+            position: { lat: historyData[0].Lat, lng: historyData[0].Lon },
+            draggable: false,
+            map: historyMap
+        });
+
+        //attached drivepath --- ugly ... putting off until can think of something prettier...
+        //if (drivePath != null) {
+        //    drivePath.setMap(historyMap)
+        //}
+
+        $('#datetime').text(moment(start).add(moment().utcOffset(), 'minutes').format('MM/DD/YYYY HH:mm'));
+        $('#lat').text(historyData[0].Lat);
+        $('#lon').text(historyData[0].Lon);
+        $('#dir').text(historyData[0].Direction);
+        $('#speed').text(historyData[0].Speed);
+        $('#gpsRecordNumb').text('# 1 of ' + historyData.length);
+
+        //slider
+        $('#historySlider').slider({
+            animate: "slow",
+            min: 1,
+            max: historyData.length,
+            step: 1,
+            orientation: "horizontal",
+            value: historyData.length,
+            slide: function (event, slideEvt) {
+                historyVehicle.setMap(null);
+                var index = slideEvt.value;
+                //Set values based on slider
+                $('#datetime').text(moment(historyData[index].timestamp).add(moment().utcOffset(), 'minutes').format('MM/DD/YYYY HH:mm'));
+                $('#lat').text(historyData[index].Lat);
+                $('#lon').text(historyData[index].Lon);
+                $('#dir').text(historyData[index].Direction);
+                $('#speed').text(historyData[index].Speed);
+                $('#gpsRecordNumb').text('# ' + index + ' of ' + historyData.length);
+
+                //center map
+                historyMap.setCenter({ lat: historyData[index].Lat, lng: historyData[index].Lon });
+
+                //add marker
+                historyVehicle = new google.maps.Marker({
+                    position: { lat: historyData[index].Lat, lng: historyData[index].Lon },
+                    draggable: false,
+                    map: historyMap
+                });
+            }
+        });
+
+        $('#historySlider').slider("value", 1);
+    
+        var month = moment().get('month') - 2;
+        $('#playBackFrom_M').datetimepicker({
+            dayOfWeekStart: 1,
+            minDate: '2017/' + month + '/1',
+            maxDate: '+1970/01/01'//tomorrow is maximum date calendar
+        });
+
+        $('#playBackFrom_M').val(moment(start).add(moment().utcOffset(), 'minutes').format('YYYY-MM-DD HH:mm'));
+
+        $('#vehicleHistoryLoader').addClass('hidden');
+        $('#vehicleHistoryDiv').removeClass('hidden');
+
+        $('#historySearch_M').click(function () {
+            var from = moment(new Date($('#playBackFrom_M').val())).add(-1 * moment().utcOffset(), 'minutes').format('YYYY-MM-DD HH:mm');
+            var to = moment(from).add($('#increments_M').val(), 'hours').format('YYYY-MM-DD HH:mm');
+            OpenPlayback($('#vehicleHistoryList_M').val(), from, to);
+        });
+
+        $('#historyDownload_M').click(function () {
+            var from = moment(new Date($('#playBackFrom_M').val())).add(-1 * moment().utcOffset(), 'minutes').format('YYYY-MM-DD HH:mm');
+            var to = moment(from).add($('#increments_M').val(), 'hours').format('YYYY-MM-DD HH:mm');
+            dowloadVehicleHistory($('#vehicleHistoryList_M').val(), from, to);
+        });
     }
 
-    return false;
-}
+    function OpenPlaybackError(result, error) {
+        var err = error;
+        alert('A problem occurred selecting and/or downloading the selected vehicle data, please reload or contact the administrator');
+    }
+    //#endregion
 
-function openNav() {
-    document.getElementById("mySidenav").style.width = "45em";
-    document.getElementById("map").style.marginright = "45em";
-}
-
-function closeNav() {
-    //alert("closing nav");
-    document.getElementById("mySidenav").style.width = "0";
-    document.getElementById("map").style.marginLeft = "0";
-
-    $('#collapseFive').collapse('hide')
-    $('#info_panel').html('');
-    $('#collapseOne').collapse('hide')
-    $('#alert_panel').html('');
-    $('#alertNumb').html('0');
-    $('#collapseThree').collapse('hide')
-    $('#playback_panel').html('');
-    $('#collapseSix').collapse('hide');
-    $('#collapseSixPanel').show();
-    $('#collapseSevenPanel').show();
-    $('#collapseEightPanel').show();
-
-    //driver panel changes back... need to find more elegant way to do this
-    $('#driverPic').html('<span class="glyphicons glyphicons-user-key" style="font-size: 150px;" id="driverIcon"></span>');
-    $('#driverName').html('No Driver Assigned');
-    $('#driverEmail').html('');
-    $('#driverStatus').html('');
-    $('#behaviorsDiv').hide();
-    $('#collapseSix').collapse('hide');
-    $('#availableDrivers').empty();
-}
-
-$('#closebtn').click(function () {
-    closeNav();
-});
-
-function base64ArrayBuffer(arrayBuffer) {
-    var base64 = ''
-    var encodings = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
-
-    var bytes = new Uint8Array(arrayBuffer)
-    var byteLength = bytes.byteLength
-    var byteRemainder = byteLength % 3
-    var mainLength = byteLength - byteRemainder
-
-    var a, b, c, d
-    var chunk
-
-    // Main loop deals with bytes in chunks of 3
-    for (var i = 0; i < mainLength; i = i + 3) {
-        // Combine the three bytes into a single integer
-        chunk = (bytes[i] << 16) | (bytes[i + 1] << 8) | bytes[i + 2]
-
-        // Use bitmasks to extract 6-bit segments from the triplet
-        a = (chunk & 16515072) >> 18 // 16515072 = (2^6 - 1) << 18
-        b = (chunk & 258048) >> 12 // 258048   = (2^6 - 1) << 12
-        c = (chunk & 4032) >> 6 // 4032     = (2^6 - 1) << 6
-        d = chunk & 63               // 63       = 2^6 - 1
-
-        // Convert the raw binary segments to the appropriate ASCII encoding
-        base64 += encodings[a] + encodings[b] + encodings[c] + encodings[d]
+    //#region getAvailableDrivers Functions
+    function getAvailableDrivers() { //Get a download of the vehicle for ID
+        $('#availableDrivers').empty();
+        var _url = 'getAvailableDrivers';
+        var _data = "";
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: _url,
+            data: _data,
+            contentType: "application/json; charset=utf-8",
+            success: getAvailableDriversSuccess,
+            error: getAvailableDriversError
+        });
     }
 
-    // Deal with the remaining bytes and padding
-    if (byteRemainder == 1) {
-        chunk = bytes[mainLength]
+    function getAvailableDriversSuccess(data) {
+        if (data.length > 0) {
+            $('#availableDrivers').append($('<option>', { value: '' }).text('-- New Driver --'));
+            for (var i = 0; i < data.length; i++) {
+                var name = data[i].DriverFirstName + " " + data[i].DriverLastName;
 
-        a = (chunk & 252) >> 2 // 252 = (2^6 - 1) << 2
-
-        // Set the 4 least significant bits to zero
-        b = (chunk & 3) << 4 // 3   = 2^2 - 1
-
-        base64 += encodings[a] + encodings[b] + '=='
-    } else if (byteRemainder == 2) {
-        chunk = (bytes[mainLength] << 8) | bytes[mainLength + 1]
-
-        a = (chunk & 64512) >> 10 // 64512 = (2^6 - 1) << 10
-        b = (chunk & 1008) >> 4 // 1008  = (2^6 - 1) << 4
-
-        // Set the 2 least significant bits to zero
-        c = (chunk & 15) << 2 // 15    = 2^4 - 1
-
-        base64 += encodings[a] + encodings[b] + encodings[c] + '='
-    }
-
-    return base64
-}
-
-$('#availableDrivers').change(function () {
-    if (confirm('Change assigned driver for this vehicle to: ' + $('#availableDrivers option:selected').text() + '? This will reload all vehicles on the map.')) {
-        if (selectedVehicle.driver != null) {
-            if (selectedVehicle.driver.DriverID != "00000000-0000-0000-0000-000000000000") {
-                changeDrivers(selectedVehicle.driver.DriverID, $(this).val());
-            } else {
-
-                changeDrivers(null, $(this).val());
+                if (selectedVehicle.status == "NA") {
+                    $('#availableDrivers').prop('disabled', 'disabled')
+                    $('#availableDrivers').append($('<option>', { value: data[i].DriverID }).text(name));
+                    $('#availDriverText').html("<em>The selected vehicle is not active. Please assign drivers to inactive vehicles using the Drivers -> Vehicles Module inside administration.</em>")
+                } else {
+                    $('#availableDrivers').prop('disabled', false)
+                    $('#availableDrivers').append($('<option>', { value: data[i].DriverID }).text(name));
+                    $('#availDriverText').html("<em>Changing a driver is permanent until you change drivers again.</em>")
+                }
             }
         } else {
-            changeDrivers(null, $(this).val());
+            $('#availDriverText').html("<em>There are no available drivers in the sytem. Please add and assign drivers using the administration module.</em>")
         }
     }
-});
+
+    function getAvailableDriversError(result, error) {
+        var err = error;
+        alert('A problem occurred getting the pulling the avilable drivers, please reload or contact the administrator');
+    }
+    //#endregion
+
+    //#region changeDrivers Functions
+    function changeDrivers(from, to) { //Get a download of the vehicle for ID
+        var _url = 'changeDrivers';
+        var _data = "from=" + from + "&to=" + to + "&vehicleID=" + selectedVehicle.ID;
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: _url,
+            data: _data,
+            contentType: "application/json; charset=utf-8",
+            success: changeDriversSuccess,
+            error: changeDriversError
+        });
+    }
+
+    function changeDriversSuccess(data) {
+        if (data == "OK") {
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-bottom-left",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+            Command: toastr["success"]("New Driver Assigned. We need to refresh the map now.");
+            selectedVehicle = null;
+            closeNav();
+            getVehicles(true);
+        } else {
+            alert('A problem occurred changing the drivers, please reload or contact the administrator');
+        }
+    }
+
+    function changeDriversError(result, error) {
+        var err = error;
+        alert('A problem occurred changing the drivers, please reload or contact the administrator');
+    }
+    //#endregion
+
+    //#region killVehicle Functions
+    function killVehicle(VehicleID) { //Get a download of the vehicle for ID
+        var _url = 'killVehilce';
+        var _data = "VehicleID=" + VehicleID;
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: _url,
+            data: _data,
+            contentType: "application/json; charset=utf-8",
+            success: killVehicleSuccess,
+            error: killVehicleError
+        });
+    }
+
+    function killVehicleSuccess(result) {
+    }
+
+    function killVehicleError(result, error) {
+        var err = error;
+        alert('A problem occurred getting removing a vehilce from the service due to LMR > 10 minutes, please reload or contact the administrator');
+    }
+    //#endregion
+
+
+    $(document).on('click', "#alertsTable > tbody > tr", function () {
+        getAlert($(this).find("td.hidden").html());
+    });
+
+    var resetIcons = function () {
+        for (var i = 0; i < vehicles.length; i++) {
+            vehicles[i].Marker.setIcon({
+                url: '../Content/Images/blue.png', // url
+                scaledSize: new google.maps.Size(32, 50), // scaled size
+                origin: new google.maps.Point(0, 0), // origin
+                anchor: new google.maps.Point(16, 50) // anchor
+            });
+            vehicles[i].Marker.setAnimation(null);
+        }
+    }
+
+    $('#vehicleList').on('change', function () {
+        var listVehicle = null;
+        for (var i = 0; i < vehicles.length; i++) {
+            if (vehicles[i].ID == $(this).val()) {
+                listVehicle = vehicles[i];
+            }
+        }
+        selectThisVehicle(listVehicle, selectedVehicle);
+        map.setZoom(15);
+        map.setCenter(listVehicle.Marker.getPosition());
+    });
+
+    $('#openAlerts').click(function () {
+        jsPanel.activePanels.getPanel("alertPanel").maximize();
+    });
+
+    function mapLogEntry(type, vehicle) {
+        if (type == "position") {
+            $('#log_panel').append("<strong>" + moment().format('MM/DD/YYYY hh:mm') + "</strong> -- " + vehicle.VehicleID + " -- Set Position(" + vehicle.lat + ", " + vehicle.lon + ")<br />");
+        } else if (type == "selected") {
+            $('#log_panel').append("<strong>" + moment().format('MM/DD/YYYY hh:mm') + "</strong> -- " + vehicle.VehicleID + " -- Selected for analysis<br />");
+        } else if (type == "unselected") {
+            $('#log_panel').append("<strong>" + moment().format('MM/DD/YYYY hh:mm') + "</strong> -- " + vehicle.VehicleID + " -- Unselected<br />");
+        } else if (type == "alert") {
+            $('#log_panel').append("<strong>" + moment().format('MM/DD/YYYY hh:mm') + "</strong> -- " + vehicle.VehicleID + " -- Alert: [" + vehicle.lat + ", " + vehicle.lon + "]<br />");
+        }
+    }
+
+    function containsVehicle(ID) {
+        var i;
+        for (i = 0; i < vehicles.length; i++) {
+            if (vehicles[i].ID == ID) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    function getVehicleIndex(ID) {
+        var i;
+        for (i = 0; i < vehicles.length; i++) {
+            if (vehicles[i].ID == ID) {
+                i = vehicles.indexOf(i)
+            }
+        }
+
+        return i;
+    }
+
+    function containsObject(obj, list) {
+        var i;
+        for (i = 0; i < list.length; i++) {
+            if (list[i] === obj) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    function openNav() {
+        document.getElementById("mySidenav").style.width = "45em";
+        document.getElementById("map").style.marginright = "45em";
+    }
+
+    function closeNav() {
+        //alert("closing nav");
+        document.getElementById("mySidenav").style.width = "0";
+        document.getElementById("map").style.marginLeft = "0";
+
+        $('#collapseFive').collapse('hide')
+        $('#info_panel').html('');
+        $('#collapseOne').collapse('hide')
+        $('#alert_panel').html('');
+        $('#alertNumb').html('0');
+        $('#collapseThree').collapse('hide')
+        $('#playback_panel').html('');
+        $('#collapseSix').collapse('hide');
+        $('#collapseSixPanel').show();
+        $('#collapseSevenPanel').show();
+        $('#collapseEightPanel').show();
+
+        //driver panel changes back... need to find more elegant way to do this
+        $('#driverPic').html('<span class="glyphicons glyphicons-user-key" style="font-size: 150px;" id="driverIcon"></span>');
+        $('#driverName').html('No Driver Assigned');
+        $('#driverEmail').html('');
+        $('#driverStatus').html('');
+        $('#behaviorsDiv').hide();
+        $('#collapseSix').collapse('hide');
+        $('#availableDrivers').empty();
+    }
+
+    $('#closebtn').click(function () {
+        closeNav();
+    });
+
+    function base64ArrayBuffer(arrayBuffer) {
+        var base64 = ''
+        var encodings = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+
+        var bytes = new Uint8Array(arrayBuffer)
+        var byteLength = bytes.byteLength
+        var byteRemainder = byteLength % 3
+        var mainLength = byteLength - byteRemainder
+
+        var a, b, c, d
+        var chunk
+
+        // Main loop deals with bytes in chunks of 3
+        for (var i = 0; i < mainLength; i = i + 3) {
+            // Combine the three bytes into a single integer
+            chunk = (bytes[i] << 16) | (bytes[i + 1] << 8) | bytes[i + 2]
+
+            // Use bitmasks to extract 6-bit segments from the triplet
+            a = (chunk & 16515072) >> 18 // 16515072 = (2^6 - 1) << 18
+            b = (chunk & 258048) >> 12 // 258048   = (2^6 - 1) << 12
+            c = (chunk & 4032) >> 6 // 4032     = (2^6 - 1) << 6
+            d = chunk & 63               // 63       = 2^6 - 1
+
+            // Convert the raw binary segments to the appropriate ASCII encoding
+            base64 += encodings[a] + encodings[b] + encodings[c] + encodings[d]
+        }
+
+        // Deal with the remaining bytes and padding
+        if (byteRemainder == 1) {
+            chunk = bytes[mainLength]
+
+            a = (chunk & 252) >> 2 // 252 = (2^6 - 1) << 2
+
+            // Set the 4 least significant bits to zero
+            b = (chunk & 3) << 4 // 3   = 2^2 - 1
+
+            base64 += encodings[a] + encodings[b] + '=='
+        } else if (byteRemainder == 2) {
+            chunk = (bytes[mainLength] << 8) | bytes[mainLength + 1]
+
+            a = (chunk & 64512) >> 10 // 64512 = (2^6 - 1) << 10
+            b = (chunk & 1008) >> 4 // 1008  = (2^6 - 1) << 4
+
+            // Set the 2 least significant bits to zero
+            c = (chunk & 15) << 2 // 15    = 2^4 - 1
+
+            base64 += encodings[a] + encodings[b] + encodings[c] + '='
+        }
+
+        return base64
+    }
+
+    $('#availableDrivers').change(function () {
+        if (confirm('Change assigned driver for this vehicle to: ' + $('#availableDrivers option:selected').text() + '? This will reload all vehicles on the map.')) {
+            if (selectedVehicle.driver != null) {
+                if (selectedVehicle.driver.DriverID != "00000000-0000-0000-0000-000000000000") {
+                    changeDrivers(selectedVehicle.driver.DriverID, $(this).val());
+                } else {
+
+                    changeDrivers(null, $(this).val());
+                }
+            } else {
+                changeDrivers(null, $(this).val());
+            }
+        }
+    });
 });

@@ -293,6 +293,43 @@ namespace IntelliTraxx.Controllers
 
             return Json(OBDData, JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult getTripsByDate(string ID, DateTime start, DateTime end)
+        {
+            List<VehicleGPSRecord> tracking = truckService.getLocationHistory(ID, start, end).OrderByDescending(g => g.timestamp).ToList<VehicleGPSRecord>();
+
+            List<Trip> Trips = new List<Trip>();
+            bool NewTrip = true;
+            Trip trip = null;
+
+            for (var i = 0; i <= tracking.Count; i++)
+            {
+                if(NewTrip)
+                {
+                    trip = new Trip();
+                    trip.Start = tracking[i].lastMessageReceived;
+                    trip.GPSRecords.Add(tracking[i]);
+                    NewTrip = false;
+                }
+                else
+                {
+                    TimeSpan ts = tracking[i + 1].lastMessageReceived - tracking[i].lastMessageReceived;
+                    if (ts.Minutes < 10)
+                    {
+                        trip.GPSRecords.Add(tracking[i]);
+                    }
+                    else
+                    {
+                        trip.GPSRecords.Add(tracking[i]);
+                        trip.End = tracking[i].lastMessageReceived;
+                        NewTrip = true;
+                    }
+                }
+                
+            }
+
+            return Json(tracking.OrderByDescending(v => v.lastMessageReceived), JsonRequestBehavior.AllowGet);
+        }
     }
 
     //------------------------------ Classes ----------------------------------------//
@@ -517,5 +554,12 @@ namespace IntelliTraxx.Controllers
         public DateTime? update_ts { get; set; }
     }
 
-
+    public class Trip
+    {
+        public DateTime Start { get; set; }
+        public DateTime End { get; set; }
+        public float mileage { get; set; }
+        public TimeSpan idletime { get; set; }
+        public List<VehicleGPSRecord> GPSRecords { get; set; }
+    }
 }

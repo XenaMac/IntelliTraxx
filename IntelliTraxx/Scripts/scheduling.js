@@ -58,8 +58,12 @@
         } else {
             schedules = data;
             var markup = '<div class="list-group">';
+
             for (var i = 0; i < schedules.length; i++) {
-                markup += '<a href="#" class="list-group-item" data-alias="' + data[i].scheduleID + '"><h4 class="list-group-item-heading">' + schedules[i].scheduleName + '</h4><p class="list-group-item-text small">' + moment().day(schedules[i].DOW - 1).format('dddd') + ': ' + schedules[i].startTime + ' - ' + schedules[i].endTime + '</p></a>';
+                var start = moment(schedules[i].startTime, 'HH:mm');
+                var end = moment(schedules[i].endTime, 'HH:mm');
+
+                markup += '<a href="#" class="list-group-item" data-alias="' + data[i].scheduleID + '"><h4 class="list-group-item-heading">' + schedules[i].scheduleName + '</h4><p class="list-group-item-text small">' + moment().day(schedules[i].DOW - 1).format('dddd') + ': ' + moment(start).add(moment().utcOffset(), 'minutes').format('HH:mm') + ' - ' + moment(end).add(moment().utcOffset(), 'minutes').format('HH:mm') + '</p></a>';
             }
             markup += '</div>';
 
@@ -148,6 +152,9 @@
             $('.btn-group label').removeClass('active');
 
             var schedule = findSchedule(scheduleID);
+            var start = moment(schedule[0].startTime, 'HH:mm');
+            var end = moment(schedule[0].endTime, 'HH:mm');
+
             $('#scheduleID').val(schedule[0].scheduleID);
             $('#tbScheduleName').val(schedule[0].scheduleName);
             $('#tbEffStDt').datetimepicker({
@@ -158,12 +165,12 @@
             });
             $('#dayList').multiselect('select', schedule[0].DOW);
             $('#timeFrom').datetimepicker({
-                value: schedule[0].startTime,
+                value: moment(start).add(moment().utcOffset(), 'minutes').format('HH:mm'),
                 format: 'H:i',
                 datepicker: false,
             });
             $('#timeTo').datetimepicker({
-                value: schedule[0].endTime,
+                value: moment(end).add(moment().utcOffset(), 'minutes').format('HH:mm'),
                 format: 'H:i',
                 datepicker: false,
             });

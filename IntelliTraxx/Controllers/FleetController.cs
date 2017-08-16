@@ -111,6 +111,13 @@ namespace IntelliTraxx.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult killVehilce(string VehicleID)
+        {
+            var VehilceDead = truckService.killVehicle(VehicleID);
+
+            return Json(VehilceDead, JsonRequestBehavior.AllowGet);
+        }
+
         #region Polygon Functions
 
         [Authorize]
@@ -278,7 +285,7 @@ namespace IntelliTraxx.Controllers
 
         public ActionResult getHistory(string ID, DateTime start, DateTime end)
         {
-            var tracking = truckService.getGPSTracking(ID, start, end);
+            var tracking = truckService.getGPSTracking(ID, start.ToUniversalTime(), end.ToUniversalTime());
 
             return Json(tracking, JsonRequestBehavior.AllowGet);
         }
