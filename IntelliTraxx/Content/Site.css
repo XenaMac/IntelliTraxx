@@ -76,6 +76,18 @@ textarea {
     font-size: 1em;
 }
 
+.markerLabels {
+    color: white;
+    background-color: black;
+    font-family: "Lucida Grande", "Arial", sans-serif;
+    font-size: 12px;
+    font-weight: normal;
+    text-align: center;
+    border: 0px solid black;
+    white-space: nowrap;
+    padding: 3px;
+}
+
 .devider {
     border-bottom: 1px solid #ccc;
     margin-bottom: 10px;

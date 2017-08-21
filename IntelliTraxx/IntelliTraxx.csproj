@@ -25,6 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -426,6 +427,7 @@
     <Content Include="Scripts\jsPanel-3.5.0\source\jquery.jspanel.min.js" />
     <Content Include="Scripts\jsPanel-3.5.0\source\LICENSE.TXT" />
     <Content Include="Scripts\logoMenu.js" />
+    <Content Include="Scripts\markerwithlabel.terikon.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\moment-with-locales.js" />
     <Content Include="Scripts\moment-with-locales.min.js" />

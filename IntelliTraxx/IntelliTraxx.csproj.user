@@ -16,6 +16,7 @@
     <UseGlobalApplicationHostFile />
     <NameOfLastUsedPublishProfile>Development</NameOfLastUsedPublishProfile>
     <ProjectView>ProjectFiles</ProjectView>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>

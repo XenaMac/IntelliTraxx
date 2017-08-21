@@ -57,6 +57,9 @@ namespace IntelliTraxx
             bundles.Add(new ScriptBundle("~/bundles/BSMS").Include(
                      "~/Scripts/BS_MultiSelect/bootstrap-multiselect.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/markerwithlabel").Include(
+                     "~/Scripts/markerwithlabel.terikon.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/Site.css",
                       "~/Content/glyphicons.css",

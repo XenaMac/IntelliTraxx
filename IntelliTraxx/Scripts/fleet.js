@@ -72,7 +72,7 @@
         var _this = this;
 
         if (this.status == "InAlert") {
-            this.Marker = new SlidingMarker({
+            this.Marker = new MarkerWithLabel({
                 icon: {
                     url: '../Content/Images/red.png', // url
                     scaledSize: new google.maps.Size(32, 50), // scaled size
@@ -83,11 +83,15 @@
                 map: map,
                 title: this.Name,
                 duration: this.ABI * 1000,
-                easing: "linear"
+                easing: "linear",
+                labelContent: this.Name,
+                labelAnchor: new google.maps.Point(35, 0), //(25, 27),
+                labelClass: "markerLabels", // the CSS class for the label
+                labelStyle: { opacity: 0.8 },
             });
             mapLogEntry("alert", _this);
         } else if (this.status == "Inactive") {
-            this.Marker = new SlidingMarker({
+            this.Marker = new MarkerWithLabel({
                 icon: {
                     url: '../Content/Images/grey.png', // url
                     scaledSize: new google.maps.Size(32, 50), // scaled size
@@ -98,11 +102,15 @@
                 map: map,
                 title: this.Name,
                 duration: this.ABI * 1000,
-                easing: "linear"
+                easing: "linear",
+                labelContent: this.Name,
+                labelAnchor: new google.maps.Point(35, 0), //(25, 27),
+                labelClass: "markerLabels", // the CSS class for the label
+                labelStyle: { opacity: 0.8 },
             });
             mapLogEntry("alert", _this);
         } else {
-            this.Marker = new SlidingMarker({
+            this.Marker = new MarkerWithLabel({
                 icon: {
                     url: '../Content/Images/blue.png', // url
                     scaledSize: new google.maps.Size(32, 50), // scaled size
@@ -111,9 +119,12 @@
                 },
                 position: { lat: this.lat, lng: this.lon },
                 map: map,
-                title: this.Name + " (" + this.spd + ")",
                 duration: this.ABI * 1000,
-                easing: "linear"
+                easing: "linear",
+                labelContent: this.Name,
+                labelAnchor: new google.maps.Point(35, 0), //(25, 27),
+                labelClass: "markerLabels", // the CSS class for the label
+                labelStyle: { opacity: 0.8 },
             });
         }
 
@@ -226,7 +237,9 @@
 
                 $.getScript("https://cdnjs.cloudflare.com/ajax/libs/marker-animate-unobtrusive/0.2.8/vendor/markerAnimate.js", function (data, textStatus, jqxhr) {
                     $.getScript("https://cdnjs.cloudflare.com/ajax/libs/marker-animate-unobtrusive/0.2.8/SlidingMarker.min.js", function (data, textStatus, jqxhr) {
-                        initMap();
+                        $.getScript("../Scripts/markerwithlabel.terikon.js", function (data, textStatus, jqxhr) {
+                            initMap();
+                        });
                     });
                 });
 

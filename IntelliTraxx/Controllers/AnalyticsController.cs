@@ -307,6 +307,7 @@ namespace IntelliTraxx.Controllers
                 if(NewTrip)
                 {
                     trip = new Trip();
+                    trip.GPSRecords = new List<VehicleGPSRecord>();
                     trip.Start = tracking[i].lastMessageReceived;
                     trip.GPSRecords.Add(tracking[i]);
                     NewTrip = false;
