@@ -248,3 +248,4 @@ C:\GitHub\IntelliTraxx\IntelliTraxx\bin\Microsoft.AspNet.Identity.EntityFramewor
 C:\GitHub\IntelliTraxx\IntelliTraxx\obj\Release\IntelliTraxx.csprojResolveAssemblyReference.cache
 C:\GitHub\IntelliTraxx\IntelliTraxx\obj\Release\IntelliTraxx.dll
 C:\GitHub\IntelliTraxx\IntelliTraxx\obj\Release\IntelliTraxx.pdb
+C:\GitHub\IntelliTraxx\IntelliTraxx\obj\Release\IntelliTraxx.csproj.CoreCompileInputs.cache

@@ -5,7 +5,7 @@
     var drawingManager = null;
     var currentLocation = null;
     var defaultZoom = null;
-    var labelOpacity = "0.8";
+    var labelOpacity = "1";
     var vehicles = [];
     var selectedVehicle = null;
     var shapes = [];
@@ -72,11 +72,28 @@
 
         var _this = this;
 
+        var title = this.Name + "\r\nSpeed: " + this.spd + "\r\n dBm: " + data.signal.dBm + "  |  SINR: " + data.signal.SINR;
+        var LabelContent = this.Name;
+        if (data.signal.dBm = "") {
+            LabelContent = this.Name;
+        } else if (data.signal.dBm < -61 && data.signal.dBm > -60) {
+            LabelContent = "<img src=../Content/Images/80.png  width=12px/>" + "<br />" + this.Name;
+        } else if (data.signal.dBm < -61 && data.signal.dBm > -80) {
+            LabelContent = "<img src=../Content/Images/80.png  width=12px/>" + "<br />" + this.Name;
+        } else if (data.signal.dBm < -81 && data.signal.dBm > -100) {
+            LabelContent = "<img src=../Content/Images/60.png  width=12px/>" + "<br />" + this.Name;
+        } else if (data.signal.dBm < -101 && data.signal.dBm > -115) {
+            LabelContent = "<img src=../Content/Images/40.png  width=12px/>" + "<br />" + this.Name;
+        } else if (data.signal.dBm < -116) {
+            LabelContent = "<img src=../Content/Images/20.png  width=12px/>" + "<br />" + this.Name;
+        }
+
+
         if (this.status == "InAlert") {
             this.Marker = new MarkerWithLabel({
                 position: { lat: this.lat, lng: this.lon },
-                title: this.Name + " (" + this.spd + ")",
-                labelContent: this.Name,
+                title: title,
+                labelContent: LabelContent,
                 labelAnchor: new google.maps.Point(30, 0),
                 labelClass: "markerLabels", // the CSS class for the label
                 labelStyle: { opacity: labelOpacity },
@@ -101,8 +118,8 @@
                     origin: new google.maps.Point(0, 0), // origin
                     anchor: new google.maps.Point(16, 50) // anchor
                 },
-                title: this.Name + " (" + this.spd + ")",
-                labelContent: this.Name,
+                title: title,
+                labelContent: LabelContent,
                 labelAnchor: new google.maps.Point(30, 0),
                 labelClass: "markerLabels", // the CSS class for the label
                 labelStyle: { opacity: labelOpacity },
@@ -120,8 +137,8 @@
                     origin: new google.maps.Point(0, 0), // origin
                     anchor: new google.maps.Point(16, 50) // anchor
                 },
-                title: this.Name + " (" + this.spd + ")",
-                labelContent: this.Name,
+                title: title,
+                labelContent: LabelContent,
                 labelAnchor: new google.maps.Point(30, 0),
                 labelClass: "markerLabels", // the CSS class for the label
                 labelStyle: { opacity: labelOpacity },
@@ -136,7 +153,7 @@
             map.setZoom(15);
             map.setCenter(this.getPosition());
         });
-
+        
         mapLogEntry("position", this);
 
         if (this.status != "Inactive") {
@@ -182,7 +199,6 @@
                 });
             }, this.ABI * 1000);
         }
-
 
         this.modifyIcon = function (icon) {
             if (icon == "normal") {

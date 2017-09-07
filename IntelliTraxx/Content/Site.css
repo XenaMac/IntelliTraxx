@@ -77,12 +77,13 @@ textarea {
 }
 
 .markerLabels {
-    color: white;
-    background-color: black;
+    color: black;
+    background-color: white;
+    border: 1px solid white;
     font-size: 12px;
     text-align: center;
     white-space: normal;
-    padding: 3px;
+    padding: 0px;
     opacity: 1;
     pointer-events: none;
     width: 60px;
