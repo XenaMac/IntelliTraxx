@@ -79,13 +79,13 @@ textarea {
 .markerLabels {
     color: white;
     background-color: black;
-    font-family: "Lucida Grande", "Arial", sans-serif;
     font-size: 12px;
-    font-weight: normal;
     text-align: center;
-    border: 0px solid black;
-    white-space: nowrap;
+    white-space: normal;
     padding: 3px;
+    opacity: 1;
+    pointer-events: none;
+    width: 60px;
 }
 
 .devider {

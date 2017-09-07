@@ -249,7 +249,7 @@ namespace IntelliTraxx.Controllers
             alert.alertEnd = alert.alertEnd.ToString() != "1/1/2001 12:00:00 AM" ? alert.alertEnd.AddMinutes(2) : alert.alertStart.AddMinutes(5);
             AH.Alert = alert;
 
-            AH.Locations = truckService.getGPSTracking(vehicleID, alert.alertStart, alert.alertEnd);
+            AH.Locations = truckService.getGPSTracking(vehicleID, alert.alertStart.ToString(), alert.alertEnd.ToString());
 
             return Json(AH, JsonRequestBehavior.AllowGet);
         }
@@ -283,9 +283,9 @@ namespace IntelliTraxx.Controllers
 
         #endregion
 
-        public ActionResult getHistory(string ID, DateTime start, DateTime end)
+        public ActionResult getHistory(string ID, string start, string end)
         {
-            var tracking = truckService.getGPSTracking(ID, start.ToUniversalTime(), end.ToUniversalTime());
+            var tracking = truckService.getGPSTracking(ID, start, end);
 
             return Json(tracking, JsonRequestBehavior.AllowGet);
         }
@@ -306,8 +306,7 @@ namespace IntelliTraxx.Controllers
             return Json(response.Data.Data, JsonRequestBehavior.AllowGet);
         }
 
-
-
+        
         // ------------------------ Classes -------------------//
 
 

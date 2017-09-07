@@ -134,6 +134,19 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="VehicleExtendedData" nillable="true" type="tns:VehicleExtendedData" />
+  <xs:complexType name="VehicleSignal">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ID" type="ser:guid" />
+      <xs:element minOccurs="0" name="Lat" type="xs:float" />
+      <xs:element minOccurs="0" name="Lon" type="xs:float" />
+      <xs:element minOccurs="0" name="MAC" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SINR" type="xs:float" />
+      <xs:element minOccurs="0" name="dBm" type="xs:float" />
+      <xs:element minOccurs="0" name="timestamp" type="xs:dateTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="VehicleSignal" nillable="true" type="tns:VehicleSignal" />
   <xs:complexType name="ArrayOfVehicleGPSRecord">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="VehicleGPSRecord" nillable="true" type="tns:VehicleGPSRecord" />

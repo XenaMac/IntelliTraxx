@@ -304,12 +304,34 @@ namespace IntelliTraxx.Controllers
 
             for (var i = 0; i <= tracking.Count; i++)
             {
-                if(NewTrip)
+                if (NewTrip)
                 {
                     trip = new Trip();
-                    trip.GPSRecords = new List<VehicleGPSRecord>();
+                    trip.GPSRecords = new List<ModVehilcleGPSRecord>();
                     trip.Start = tracking[i].lastMessageReceived;
-                    trip.GPSRecords.Add(tracking[i]);
+                    ModVehilcleGPSRecord gpsr = new ModVehilcleGPSRecord();
+                    gpsr.ABI = tracking[i].ABI;
+                    gpsr.Direction = tracking[i].Direction;
+                    gpsr.ExtensionData = tracking[i].ExtensionData;
+                    gpsr.ID = tracking[i].ID;
+                    gpsr.InPolygon = tracking[i].InPolygon;
+                    gpsr.lastMessageReceived = tracking[i].lastMessageReceived;
+                    gpsr.Lat = tracking[i].Lat;
+                    gpsr.Lon = tracking[i].Lon;
+                    gpsr.PolyName = tracking[i].PolyName;
+                    gpsr.runID = tracking[i].runID;
+                    gpsr.Speed = tracking[i].Speed;
+                    gpsr.status = tracking[i].status;
+                    gpsr.timestamp = tracking[i].timestamp;
+                    gpsr.VehicleID = tracking[i].VehicleID;
+
+                    if(i == 0)
+                    {
+                        //start record
+                        gpsr.recordstate = State.Start.ToString();
+                    }
+
+                    trip.GPSRecords.Add(gpsr);
                     NewTrip = false;
                 }
                 else
@@ -317,16 +339,16 @@ namespace IntelliTraxx.Controllers
                     TimeSpan ts = tracking[i + 1].lastMessageReceived - tracking[i].lastMessageReceived;
                     if (ts.Minutes < 10)
                     {
-                        trip.GPSRecords.Add(tracking[i]);
+                        //trip.GPSRecords.Add(tracking[i]);
                     }
                     else
                     {
-                        trip.GPSRecords.Add(tracking[i]);
+                        //trip.GPSRecords.Add(tracking[i]);
                         trip.End = tracking[i].lastMessageReceived;
                         NewTrip = true;
                     }
                 }
-                
+
             }
 
             return Json(tracking.OrderByDescending(v => v.lastMessageReceived), JsonRequestBehavior.AllowGet);
@@ -561,6 +583,13 @@ namespace IntelliTraxx.Controllers
         public DateTime End { get; set; }
         public float mileage { get; set; }
         public TimeSpan idletime { get; set; }
-        public List<VehicleGPSRecord> GPSRecords { get; set; }
+        public List<ModVehilcleGPSRecord> GPSRecords { get; set; }
     }
+
+    public class ModVehilcleGPSRecord : VehicleGPSRecord
+    {
+        public string recordstate { get; set; }
+    }
+
+    public enum State { Idle, Moving, Start, End };
 }

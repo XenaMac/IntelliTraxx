@@ -28,7 +28,8 @@
       <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/LATATrax.Messages" minOccurs="0" name="obd2" nillable="true" type="q7:OBD2" />
       <xs:element minOccurs="0" name="runID" type="ser:guid" />
       <xs:element minOccurs="0" name="sched" nillable="true" type="tns:dailySchedule" />
-      <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/LATATrax.Messages" minOccurs="0" name="status" nillable="true" type="q8:ArrayOfStatus" />
+      <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="signal" nillable="true" type="q8:VehicleSignal" />
+      <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/LATATrax.Messages" minOccurs="0" name="status" nillable="true" type="q9:ArrayOfStatus" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="Vehicle" nillable="true" type="tns:Vehicle" />

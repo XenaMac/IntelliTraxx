@@ -5,6 +5,7 @@
     var drawingManager = null;
     var currentLocation = null;
     var defaultZoom = null;
+    var labelOpacity = "0.8";
     var vehicles = [];
     var selectedVehicle = null;
     var shapes = [];
@@ -49,7 +50,7 @@
         var LMR = moment(data.lastMessageReceived);
         var diff = Now.diff(LMR, 'minutes');
 
-        if (diff >= 2) {
+        if (diff >= 3) {
             this.status = "Inactive";
         }
 
@@ -73,58 +74,60 @@
 
         if (this.status == "InAlert") {
             this.Marker = new MarkerWithLabel({
+                position: { lat: this.lat, lng: this.lon },
+                title: this.Name + " (" + this.spd + ")",
+                labelContent: this.Name,
+                labelAnchor: new google.maps.Point(30, 0),
+                labelClass: "markerLabels", // the CSS class for the label
+                labelStyle: { opacity: labelOpacity },
                 icon: {
                     url: '../Content/Images/red.png', // url
                     scaledSize: new google.maps.Size(32, 50), // scaled size
                     origin: new google.maps.Point(0, 0), // origin
                     anchor: new google.maps.Point(16, 50) // anchor
-                },
-                position: { lat: this.lat, lng: this.lon },
+                },               
                 map: map,
                 title: this.Name,
                 duration: this.ABI * 1000,
-                easing: "linear",
-                labelContent: this.Name,
-                labelAnchor: new google.maps.Point(35, 0), //(25, 27),
-                labelClass: "markerLabels", // the CSS class for the label
-                labelStyle: { opacity: 0.8 },
+                easing: "linear"
             });
             mapLogEntry("alert", _this);
         } else if (this.status == "Inactive") {
             this.Marker = new MarkerWithLabel({
+                position: { lat: this.lat, lng: this.lon },
                 icon: {
                     url: '../Content/Images/grey.png', // url
                     scaledSize: new google.maps.Size(32, 50), // scaled size
                     origin: new google.maps.Point(0, 0), // origin
                     anchor: new google.maps.Point(16, 50) // anchor
                 },
-                position: { lat: this.lat, lng: this.lon },
-                map: map,
-                title: this.Name,
-                duration: this.ABI * 1000,
-                easing: "linear",
+                title: this.Name + " (" + this.spd + ")",
                 labelContent: this.Name,
-                labelAnchor: new google.maps.Point(35, 0), //(25, 27),
+                labelAnchor: new google.maps.Point(30, 0),
                 labelClass: "markerLabels", // the CSS class for the label
-                labelStyle: { opacity: 0.8 },
+                labelStyle: { opacity: labelOpacity },
+                map: map,
+                duration: this.ABI * 1000,
+                easing: "linear"
             });
             mapLogEntry("alert", _this);
         } else {
             this.Marker = new MarkerWithLabel({
+                position: { lat: this.lat, lng: this.lon },
                 icon: {
                     url: '../Content/Images/blue.png', // url
                     scaledSize: new google.maps.Size(32, 50), // scaled size
                     origin: new google.maps.Point(0, 0), // origin
                     anchor: new google.maps.Point(16, 50) // anchor
                 },
-                position: { lat: this.lat, lng: this.lon },
+                title: this.Name + " (" + this.spd + ")",
+                labelContent: this.Name,
+                labelAnchor: new google.maps.Point(30, 0),
+                labelClass: "markerLabels", // the CSS class for the label
+                labelStyle: { opacity: labelOpacity },
                 map: map,
                 duration: this.ABI * 1000,
-                easing: "linear",
-                labelContent: this.Name,
-                labelAnchor: new google.maps.Point(35, 0), //(25, 27),
-                labelClass: "markerLabels", // the CSS class for the label
-                labelStyle: { opacity: 0.8 },
+                easing: "linear"
             });
         }
 
@@ -146,6 +149,7 @@
                         _this.lon = data[0].Lon;
                         _this.dir = data[0].Direction;
                         _this.spd = data[0].Speed;
+                        _this.ABI = data[0].ABI;
 
                         if (selectedVehicle == null) {
                             if (_this.status == "InAlert") {
@@ -155,8 +159,6 @@
                                     origin: new google.maps.Point(0, 0), // origin
                                     anchor: new google.maps.Point(16, 50) // anchor
                                 });
-                                $('#' + _this.ID).html('');
-                                $('#' + _this.ID).html(_this.Name + '&nbsp;&nbsp;<span id=\'alerts\' class=\'glyphicons glyphicons-alert\' style=\'color: red;\'></span>');
                                 mapLogEntry("alert", _this);
                             } else {
                                 _this.Marker.setIcon({
@@ -165,11 +167,11 @@
                                     origin: new google.maps.Point(0, 0), // origin
                                     anchor: new google.maps.Point(16, 50) // anchor
                                 });
-                                $('#' + _this.ID).html('');
-                                $('#' + _this.ID).html(_this.Name);
                             }
                         }
-
+                        //_this.Marker.setLabel(data[0].);
+                        _this.Marker.setEasing("linear");
+                        _this.Marker.setDuration(_this.ABI * 1000);
                         _this.Marker.setPosition({ lat: _this.lat, lng: _this.lon });
                         if (_this.selected == true) {
                             map.setCenter(_this.Marker.getPosition());
@@ -233,10 +235,19 @@
                     if (data.Result[i].varName == "DEFAULTMAPZOOMRATE") {
                         defaultZoom = data.Result[i].varVal;
                     }
+
+                    if (data.Result[i].varName == "MARKERLABELS") {
+                        if (data.Result[i].varVal == "false")
+                        {
+                            labelOpacity = "0.0";
+                            $('#labels').bootstrapToggle('off');
+                        }
+                    }
                 }
 
                 $.getScript("https://cdnjs.cloudflare.com/ajax/libs/marker-animate-unobtrusive/0.2.8/vendor/markerAnimate.js", function (data, textStatus, jqxhr) {
                     $.getScript("https://cdnjs.cloudflare.com/ajax/libs/marker-animate-unobtrusive/0.2.8/SlidingMarker.min.js", function (data, textStatus, jqxhr) {
+                        SlidingMarker.initializeGlobally();
                         $.getScript("../Scripts/markerwithlabel.terikon.js", function (data, textStatus, jqxhr) {
                             initMap();
                         });
@@ -358,7 +369,6 @@
     function getVehicles(reload) {
         $('#vehicleListDiv').addClass('hidden');
         $('#listLoader').removeClass('hidden');
-        SlidingMarker.initializeGlobally();
 
         //on if reload = true
         if (reload == true) {
@@ -386,7 +396,7 @@
                     }
                     killVehicle(data[i].VehicleID);
                 } else {
-                    $("#vehicleList").append($('<option>', { value: data[i].extendedData.ID }).text(data[i].VehicleID));
+                    $("#vehicleList").append($('<option>', { value: data[i].extendedData.ID }).text(data[i].extendedData.VehicleFriendlyName + " (" + data[i].VehicleID + ")"));
                     if (!containsVehicle(data[i].extendedData.ID)) {
                         if (data[i].driver != null) {
                             currentD2V += 1;
@@ -487,7 +497,7 @@
 
     function getVehicleDataSuccess(result) {
         $('#collapseFive').collapse('show');
-        $('#info_panel').html("<div class='vehicleInfo'><div class=\"col-sm-12\" id=\"vehicleInfoDiv\"><img id='vehicleClassImage' class='img-responsive' src='../Content/VClasses/" + result.extendedData.vehicleClassImage + "' align='right'><h3>" + result.extendedData.VehicleFriendlyName + "</h3><br /><p>This vehicle is a " + result.extendedData.Year + ", " + result.extendedData.Make + "-" + result.extendedData.Model + ". Plate Number: " + result.extendedData.licensePlate + ", has a Haul Limit of: " + result.extendedData.haulLimit + "/lbs and has ID Number: " + result.extendedData.vehicleID + ". The most recent broadcast from this vehicle was at: <strong>" + moment(result.lastMessageReceived).format('MM/DD/YYYY HH:mm') + "</strong> at Latitude: <strong>" + result.gps.lat + "</strong>, Longitude: <strong>" + result.gps.lon + "</strong> moving in a direction of: <strong>" + result.gps.dir + " degrees at a speed of: <strong>" + result.gps.spd + "</strong>.</div></div>");
+        $('#info_panel').html("<div class='vehicleInfo'><div class=\"col-sm-12\" id=\"vehicleInfoDiv\"><img id='vehicleClassImage' class='img-responsive' src='../Content/VClasses/" + result.extendedData.vehicleClassImage + "' align='right'><h3>" + result.extendedData.VehicleFriendlyName + "</h3><br /><p>This vehicle is a " + result.extendedData.Year + ", " + result.extendedData.Make + "-" + result.extendedData.Model + ". Plate Number: " + result.extendedData.licensePlate + ", has a Haul Limit of: " + result.extendedData.haulLimit + "/lbs and has ID Number: " + result.extendedData.vehicleID + ". The most recent broadcast from this vehicle was at: <strong>" + moment(result.lastMessageReceived).add(moment().utcOffset(), 'minutes').format('MM/DD/YYYY HH:mm') + "</strong> at Latitude: <strong>" + result.gps.lat + "</strong>, Longitude: <strong>" + result.gps.lon + "</strong> moving in a direction of: <strong>" + result.gps.dir + " degrees at a speed of: <strong>" + result.gps.spd + "</strong>.</div></div>");
     }
 
     function getVehicleDataError(result, error) {
@@ -547,7 +557,7 @@
                     var markup = "<tr class=\'rowClick\'>";
                 }
 
-                markup += "<td class=\'hidden\'>" + result[a].alertID + "</td><td class='text-center'>" + result[a].alertName.substr(0, 25) + " ... </td><td class='text-center'>" + alertStart.toLocaleDateString() + "@" + alertStart.toLocaleTimeString().replace(/:\d{2}\s/, ' ') + "</td><td class='text-center'>" + alertEnd.toLocaleDateString() + "@" + alertEnd.toLocaleTimeString().replace(/:\d{2}\s/, ' ') + "</td></tr>";
+                markup += "<td class=\'hidden\'>" + result[a].alertID + "</td><td class='text-center'>" + result[a].alertName.substr(0, 25) + " ... </td><td class='text-center'>" + moment(alertStart).add(moment().utcOffset(), 'minutes').format('MM/DD/YYYY HH:mm') + "</td><td class='text-center'>" + moment(alertEnd).add(moment().utcOffset(), 'minutes').format('MM/DD/YYYY HH:mm') + "</td></tr>";
                 $("#alertsTable tbody").append(markup);
             };
         }
@@ -974,6 +984,17 @@
         }
     });
 
+    //#region show historical functionality
+    $('#labels').change(function () {
+        if (this.checked) {
+            labelOpacity = "0.8";
+            getVehicles(true);
+        } else {
+            labelOpacity = "0.0";
+            getVehicles(true);
+        }
+    });
+
     function showPolygons() {
         shapes = [];
 
@@ -1177,7 +1198,7 @@
             $('#fenceAlertInfo').html('');
 
             if (data.length > 0) {
-                var alertContent = "<h5>Alerts attached to this fence.</h5><small><table id='fenceAlertsTable' class='table table-responsive table-striped table-condensed table-bordered'><thead class='ah'><tr><td class='header'>Alert Name</td><td class='header'>Start</td><td class='header'>End</td><td class='header'>Active</td><td class='header'>Edit</td></tr></thead><tbody></tbody></table></small>";
+                var alertContent = "<h5>Alerts attached to this fence.</h5><small><table id='fenceAlertsTable' class='table table-responsive table-striped table-condensed table-bordered'><thead class='ah'><tr><td class='header'>Alert Name</td><td class='header'>Start</td><td class='header'>End</td><td class='header'>Active</td></tr></thead><tbody></tbody></table></small>";
 
                 $('#fenceAlertInfo').html(alertContent);
 
@@ -1186,8 +1207,8 @@
 
                 for (var a = 0; a < data.length; a++) {
                     var markup = '';
-                    var alertStart = moment(data[a].AlertStartTime).format('MM/DD/YYYY HH:ss');
-                    var alertEnd = moment(data[a].AlertEndTime).format('MM/DD/YYYY HH:ss');
+                    var alertStart = moment(data[a].AlertStartTime).format('MM/DD/YYYY');
+                    var alertEnd = moment(data[a].AlertEndTime).format('MM/DD/YYYY');
 
                     markup += "<tr><td class='text-center'>" + data[a].AlertFriendlyName + "</td><td class='text-center'>" + alertStart + "</td><td class='text-center'>" + alertEnd + "</td>";
 
@@ -1196,7 +1217,6 @@
                     } else {
                         markup += "<td class='text-center'><input id='" + data[a].AlertID + "' class='alertActive' type='checkbox' data-toggle='toggle' data-size='mini'></td>";
                     }
-                    markup += "<td class='text-center'><button type='button' class='btn btn-default btn-xs glyphicons glyphicons-pencil EditAlertButton' id='EA_" + data[a].AlertID + "'></button></td></tr>";
                     $("#fenceAlertsTable tbody").append(markup);
                 };
             } else {

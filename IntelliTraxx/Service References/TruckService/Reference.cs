@@ -491,6 +491,9 @@ namespace IntelliTraxx.TruckService {
         private IntelliTraxx.TruckService.dailySchedule schedField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private IntelliTraxx.TruckService.VehicleSignal signalField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.Generic.List<IntelliTraxx.TruckService.Status> statusField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
@@ -720,6 +723,19 @@ namespace IntelliTraxx.TruckService {
                 if ((object.ReferenceEquals(this.schedField, value) != true)) {
                     this.schedField = value;
                     this.RaisePropertyChanged("sched");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public IntelliTraxx.TruckService.VehicleSignal signal {
+            get {
+                return this.signalField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.signalField, value) != true)) {
+                    this.signalField = value;
+                    this.RaisePropertyChanged("signal");
                 }
             }
         }
@@ -1598,6 +1614,163 @@ namespace IntelliTraxx.TruckService {
                 if ((this.scheduleIDField.Equals(value) != true)) {
                     this.scheduleIDField = value;
                     this.RaisePropertyChanged("scheduleID");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="VehicleSignal", Namespace="http://schemas.datacontract.org/2004/07/LATATrax")]
+    [System.SerializableAttribute()]
+    public partial class VehicleSignal : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Guid IDField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private float LatField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private float LonField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string MACField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string NameField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private float SINRField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private float dBmField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.DateTime timestampField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Guid ID {
+            get {
+                return this.IDField;
+            }
+            set {
+                if ((this.IDField.Equals(value) != true)) {
+                    this.IDField = value;
+                    this.RaisePropertyChanged("ID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public float Lat {
+            get {
+                return this.LatField;
+            }
+            set {
+                if ((this.LatField.Equals(value) != true)) {
+                    this.LatField = value;
+                    this.RaisePropertyChanged("Lat");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public float Lon {
+            get {
+                return this.LonField;
+            }
+            set {
+                if ((this.LonField.Equals(value) != true)) {
+                    this.LonField = value;
+                    this.RaisePropertyChanged("Lon");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string MAC {
+            get {
+                return this.MACField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.MACField, value) != true)) {
+                    this.MACField = value;
+                    this.RaisePropertyChanged("MAC");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Name {
+            get {
+                return this.NameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.NameField, value) != true)) {
+                    this.NameField = value;
+                    this.RaisePropertyChanged("Name");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public float SINR {
+            get {
+                return this.SINRField;
+            }
+            set {
+                if ((this.SINRField.Equals(value) != true)) {
+                    this.SINRField = value;
+                    this.RaisePropertyChanged("SINR");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public float dBm {
+            get {
+                return this.dBmField;
+            }
+            set {
+                if ((this.dBmField.Equals(value) != true)) {
+                    this.dBmField = value;
+                    this.RaisePropertyChanged("dBm");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.DateTime timestamp {
+            get {
+                return this.timestampField;
+            }
+            set {
+                if ((this.timestampField.Equals(value) != true)) {
+                    this.timestampField = value;
+                    this.RaisePropertyChanged("timestamp");
                 }
             }
         }
@@ -5013,10 +5186,10 @@ namespace IntelliTraxx.TruckService {
         System.Threading.Tasks.Task<System.Collections.Generic.List<IntelliTraxx.TruckService.alertReturn>> getAllAlertsByRangeByVehicleAsync(System.DateTime start, System.DateTime end, string vehicleID);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/getGPSTracking", ReplyAction="http://tempuri.org/ITruckService/getGPSTrackingResponse")]
-        System.Collections.Generic.List<IntelliTraxx.TruckService.VehicleGPSRecord> getGPSTracking(string vehicleID, System.DateTime from, System.DateTime to);
+        System.Collections.Generic.List<IntelliTraxx.TruckService.VehicleGPSRecord> getGPSTracking(string vehicleID, string from, string to);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/getGPSTracking", ReplyAction="http://tempuri.org/ITruckService/getGPSTrackingResponse")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<IntelliTraxx.TruckService.VehicleGPSRecord>> getGPSTrackingAsync(string vehicleID, System.DateTime from, System.DateTime to);
+        System.Threading.Tasks.Task<System.Collections.Generic.List<IntelliTraxx.TruckService.VehicleGPSRecord>> getGPSTrackingAsync(string vehicleID, string from, string to);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/clearAlerts", ReplyAction="http://tempuri.org/ITruckService/clearAlertsResponse")]
         string clearAlerts(bool clearAll, string vehicleID);
@@ -5660,11 +5833,11 @@ namespace IntelliTraxx.TruckService {
             return base.Channel.getAllAlertsByRangeByVehicleAsync(start, end, vehicleID);
         }
         
-        public System.Collections.Generic.List<IntelliTraxx.TruckService.VehicleGPSRecord> getGPSTracking(string vehicleID, System.DateTime from, System.DateTime to) {
+        public System.Collections.Generic.List<IntelliTraxx.TruckService.VehicleGPSRecord> getGPSTracking(string vehicleID, string from, string to) {
             return base.Channel.getGPSTracking(vehicleID, from, to);
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<IntelliTraxx.TruckService.VehicleGPSRecord>> getGPSTrackingAsync(string vehicleID, System.DateTime from, System.DateTime to) {
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<IntelliTraxx.TruckService.VehicleGPSRecord>> getGPSTrackingAsync(string vehicleID, string from, string to) {
             return base.Channel.getGPSTrackingAsync(vehicleID, from, to);
         }
         

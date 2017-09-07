@@ -93,7 +93,7 @@ namespace IntelliTraxx.Controllers
             alert.alertEnd = alert.alertEnd.ToString() != "1/1/2001 12:00:00 AM" ? alert.alertEnd.AddMinutes(2) : alert.alertStart.AddMinutes(5);
             AH.Alert = alert;
 
-            AH.Locations = truckService.getGPSTracking(vehicleID, alert.alertStart, alert.alertEnd);
+            AH.Locations = truckService.getGPSTracking(vehicleID, alert.alertStart.ToString(), alert.alertEnd.ToString());
 
             return Json(AH, JsonRequestBehavior.AllowGet);
         }
@@ -182,12 +182,12 @@ namespace IntelliTraxx.Controllers
 
             if (startDate != "")
             {
-                s = Convert.ToDateTime(startDate);
+                s = Convert.ToDateTime(startDate).ToUniversalTime();
             }
 
             if (endDate != "")
             {
-                e = Convert.ToDateTime(endDate);
+                e = Convert.ToDateTime(endDate).ToUniversalTime();
             }
 
             //create alert class
