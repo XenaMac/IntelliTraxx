@@ -854,10 +854,13 @@
                 //if(result[i-1])
             }
         }
+        else {
+
+        }
     }
 
     function getTripsByDateError(result, error) {
-        alert('A problem occurred getting the Vehicle Trips data, please reload or contact the administrator');
+        //alert('A problem occurred getting the Vehicle Trips data, please reload or contact the administrator');
         stepCheck(0);
     }
     //#endregion

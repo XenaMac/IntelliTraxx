@@ -31,10 +31,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/07/2017 10:27:03</publishTime>
     </File>
     <File Include="bin/IntelliTraxx.dll">
-      <publishTime>09/07/2017 09:01:19</publishTime>
+      <publishTime>10/03/2017 11:51:07</publishTime>
     </File>
     <File Include="bin/IntelliTraxx.pdb">
-      <publishTime>09/07/2017 09:01:19</publishTime>
+      <publishTime>10/03/2017 11:51:07</publishTime>
     </File>
     <File Include="bin/Microsoft.AI.Agent.Intercept.dll">
       <publishTime>05/07/2017 10:27:04</publishTime>
@@ -685,7 +685,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/23/2017 12:05:07</publishTime>
     </File>
     <File Include="Scripts/analytics.js">
-      <publishTime>08/07/2017 18:38:27</publishTime>
+      <publishTime>10/03/2017 11:50:07</publishTime>
     </File>
     <File Include="Scripts/bootstrap-table-export.min.js">
       <publishTime>05/07/2017 10:26:52</publishTime>
@@ -706,7 +706,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/07/2017 10:26:52</publishTime>
     </File>
     <File Include="Scripts/fleet.js">
-      <publishTime>09/07/2017 14:29:41</publishTime>
+      <publishTime>09/13/2017 13:56:53</publishTime>
     </File>
     <File Include="Scripts/Highcharts/highcharts-3d.js">
       <publishTime>05/07/2017 10:26:52</publishTime>
@@ -1054,7 +1054,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/07/2017 10:26:54</publishTime>
     </File>
     <File Include="Views/Analytics/Index.cshtml">
-      <publishTime>07/05/2017 09:42:56</publishTime>
+      <publishTime>10/03/2017 11:50:03</publishTime>
     </File>
     <File Include="Views/Fleet/Index.cshtml">
       <publishTime>09/07/2017 08:39:31</publishTime>
@@ -1138,7 +1138,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/07/2017 10:26:54</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>09/07/2017 09:01:19</publishTime>
+      <publishTime>10/03/2017 11:51:10</publishTime>
     </File>
   </ItemGroup>
 </Project>

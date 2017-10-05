@@ -74,10 +74,10 @@
 
         var title = this.Name + "\r\nSpeed: " + this.spd + "\r\n dBm: " + data.signal.dBm + "  |  SINR: " + data.signal.SINR;
         var LabelContent = this.Name;
-        if (data.signal.dBm = "") {
+        if (data.signal.dBm == "") {
             LabelContent = this.Name;
         } else if (data.signal.dBm < -61 && data.signal.dBm > -60) {
-            LabelContent = "<img src=../Content/Images/80.png  width=12px/>" + "<br />" + this.Name;
+            LabelContent = "<img src=../Content/Images/100.png  width=12px/>" + "<br />" + this.Name;
         } else if (data.signal.dBm < -61 && data.signal.dBm > -80) {
             LabelContent = "<img src=../Content/Images/80.png  width=12px/>" + "<br />" + this.Name;
         } else if (data.signal.dBm < -81 && data.signal.dBm > -100) {

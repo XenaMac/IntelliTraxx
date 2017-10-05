@@ -4,6 +4,7 @@ using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
@@ -59,6 +60,8 @@ namespace IntelliTraxx.Controllers
 
         public ActionResult getECMRouter(string macAddress)
         {
+            //macAddress = macAddress.Replace(":", "");
+
             //get vars for api keys
             List<systemvar> vars = truckService.getAppVars();
 
@@ -74,6 +77,12 @@ namespace IntelliTraxx.Controllers
             request.AddHeader("X-CP-API-KEY", vars.Where(v => v.varName == "X-CP-API-KEY").Select(x => x.varVal).FirstOrDefault());
             request.AddHeader("X-ECM-API-ID", vars.Where(v => v.varName == "X-ECM-API-ID").Select(x => x.varVal).FirstOrDefault());
             request.AddHeader("X-ECM-API-KEY", vars.Where(v => v.varName == "X-ECM-API-KEY").Select(x => x.varVal).FirstOrDefault());
+            request.Method = Method.GET;
+
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                |  SecurityProtocolType.Tls11
+                |  SecurityProtocolType.Tls12
+                |  SecurityProtocolType.Ssl3;
 
             IRestResponse response = client.Execute(request);
             RoutersRootobject routers = JsonConvert.DeserializeObject<RoutersRootobject>(response.Content);
@@ -296,13 +305,45 @@ namespace IntelliTraxx.Controllers
 
         public ActionResult getTripsByDate(string ID, DateTime start, DateTime end)
         {
+            List<VehicleGPSRecord> tracking = truckService.getLocationHistory(ID, start.Date, end.AddDays(1).AddTicks(-1)).OrderBy(g => g.timestamp).ToList<VehicleGPSRecord>();
+
+            List<Trip> Trips = new List<Trip>();
+            bool NewTrip = true;
+            Trip trip = null;
+
+            for (var i = 0; i <= tracking.Count - 1; i++)
+            {
+                if (NewTrip)
+                {
+                    trip = new Trip();
+                    trip.Start = tracking[i].timestamp;
+                    NewTrip = false;
+                }
+                else 
+                {
+                    TimeSpan ts = tracking[i].timestamp - tracking[i+1].timestamp;
+                    if (ts.Minutes > 3)
+                    {
+                        trip.End = tracking[i].timestamp;
+                        Trips.Add(trip);
+                        NewTrip = true;
+                    }
+                }
+
+            }
+
+            return Json(Trips, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult getTripAnalytics(string ID, DateTime start, DateTime end)
+        {
             List<VehicleGPSRecord> tracking = truckService.getLocationHistory(ID, start, end).OrderByDescending(g => g.timestamp).ToList<VehicleGPSRecord>();
 
             List<Trip> Trips = new List<Trip>();
             bool NewTrip = true;
             Trip trip = null;
 
-            for (var i = 0; i <= tracking.Count; i++)
+            for (var i = 0; i <= tracking.Count - 1; i++)
             {
                 if (NewTrip)
                 {
@@ -325,10 +366,20 @@ namespace IntelliTraxx.Controllers
                     gpsr.timestamp = tracking[i].timestamp;
                     gpsr.VehicleID = tracking[i].VehicleID;
 
-                    if(i == 0)
+                    //If the next record is over 10 minutes difference then it's a single data ghost.
+                    if (i == 0)
                     {
-                        //start record
-                        gpsr.recordstate = State.Start.ToString();
+                        TimeSpan ts = tracking[i].lastMessageReceived - tracking[i + 1].lastMessageReceived;
+                        if (ts.Minutes < 10)
+                        {
+                            //start record
+                            gpsr.recordstate = State.Start.ToString();
+                        }
+                        else
+                        {
+                            //end record
+                            gpsr.recordstate = State.End.ToString();
+                        }
                     }
 
                     trip.GPSRecords.Add(gpsr);
@@ -336,15 +387,48 @@ namespace IntelliTraxx.Controllers
                 }
                 else
                 {
-                    TimeSpan ts = tracking[i + 1].lastMessageReceived - tracking[i].lastMessageReceived;
+                    TimeSpan ts = tracking[i].lastMessageReceived - tracking[i + 1].lastMessageReceived;
                     if (ts.Minutes < 10)
                     {
-                        //trip.GPSRecords.Add(tracking[i]);
+                        ModVehilcleGPSRecord gpsr = new ModVehilcleGPSRecord();
+                        gpsr.ABI = tracking[i].ABI;
+                        gpsr.Direction = tracking[i].Direction;
+                        gpsr.ExtensionData = tracking[i].ExtensionData;
+                        gpsr.ID = tracking[i].ID;
+                        gpsr.InPolygon = tracking[i].InPolygon;
+                        gpsr.lastMessageReceived = tracking[i].lastMessageReceived;
+                        gpsr.Lat = tracking[i].Lat;
+                        gpsr.Lon = tracking[i].Lon;
+                        gpsr.PolyName = tracking[i].PolyName;
+                        gpsr.runID = tracking[i].runID;
+                        gpsr.Speed = tracking[i].Speed;
+                        gpsr.status = tracking[i].status;
+                        gpsr.timestamp = tracking[i].timestamp;
+                        gpsr.VehicleID = tracking[i].VehicleID;
+
+                        trip.GPSRecords.Add(gpsr);
                     }
                     else
                     {
-                        //trip.GPSRecords.Add(tracking[i]);
+                        ModVehilcleGPSRecord gpsr = new ModVehilcleGPSRecord();
+                        gpsr.ABI = tracking[i].ABI;
+                        gpsr.Direction = tracking[i].Direction;
+                        gpsr.ExtensionData = tracking[i].ExtensionData;
+                        gpsr.ID = tracking[i].ID;
+                        gpsr.InPolygon = tracking[i].InPolygon;
+                        gpsr.lastMessageReceived = tracking[i].lastMessageReceived;
+                        gpsr.Lat = tracking[i].Lat;
+                        gpsr.Lon = tracking[i].Lon;
+                        gpsr.PolyName = tracking[i].PolyName;
+                        gpsr.runID = tracking[i].runID;
+                        gpsr.Speed = tracking[i].Speed;
+                        gpsr.status = tracking[i].status;
+                        gpsr.timestamp = tracking[i].timestamp;
+                        gpsr.VehicleID = tracking[i].VehicleID;
+
+                        trip.GPSRecords.Add(gpsr);
                         trip.End = tracking[i].lastMessageReceived;
+
                         NewTrip = true;
                     }
                 }
@@ -354,6 +438,8 @@ namespace IntelliTraxx.Controllers
             return Json(tracking.OrderByDescending(v => v.lastMessageReceived), JsonRequestBehavior.AllowGet);
         }
     }
+    
+
 
     //------------------------------ Classes ----------------------------------------//
 

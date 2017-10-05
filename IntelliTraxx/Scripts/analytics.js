@@ -336,7 +336,7 @@
         MACAddress = formatMac(MACID[0])
         getRouter(MACAddress)
         getPIDSByDateRange(MACID[1], $('#vFromDate').val(), $('#vToDate').val());
-        getTripsByDate($('#vehicleList option:selected').text(), $('#vFromDate').val(), $('#vToDate').val());
+        //getTripsByDate($('#vehicleList option:selected').text(), $('#vFromDate').val(), $('#vToDate').val());
     });
 
     //#region getECmRouter Information Functions
@@ -854,10 +854,13 @@
                 //if(result[i-1])
             }
         }
+        else {
+
+        }
     }
 
     function getTripsByDateError(result, error) {
-        alert('A problem occurred getting the Vehicle Trips data, please reload or contact the administrator');
+        //alert('A problem occurred getting the Vehicle Trips data, please reload or contact the administrator');
         stepCheck(0);
     }
     //#endregion
