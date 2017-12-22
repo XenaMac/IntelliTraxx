@@ -402,24 +402,19 @@
 
         $.post("getAllVehicles?loadHistorical=" + getHistorical, null, function (data) {
             for (var i = 0; i < data.length; i++) {
-                var Now = moment().add(moment().utcOffset(), 'minutes');
-                var LMR = moment(data[i].lastMessageReceived);
-                var diff = Now.diff(LMR, 'minutes');
+                if (!containsVehicle(data[i].extendedData.ID)) {
+                    vehicles.push(new Vehicle(data[i], false));
+                }
+            }
 
-                if (diff >= 3) {
-                    if (containsVehicle(data[i].extendedData.ID)) {
-                        vehicles.splice(getVehicleIndex(data[i].extendedData.ID), 1);
-                    }
-                    killVehicle(data[i].VehicleID);
-                } else {
-                    $("#vehicleList").append($('<option>', { value: data[i].extendedData.ID }).text(data[i].extendedData.VehicleFriendlyName + " (" + data[i].VehicleID + ")"));
-                    if (!containsVehicle(data[i].extendedData.ID)) {
-                        if (data[i].driver != null) {
-                            currentD2V += 1;
-                        }
-                        vehicles.push(new Vehicle(data[i], false));
-                    }
-                }                
+            vehicles.sort(function (a, b) {
+                if (a.Name < b.Name) return -1;
+                if (a.Name > b.Name) return 1;
+                return 0;
+            });
+
+            for (var i = 0; i < vehicles.length; i++) {
+                $("#vehicleList").append($('<option>', { value: vehicles[i].ID }).text(vehicles[i].Name + " (" + vehicles[i].VehicleID + ")"));
             }
 
             $('#currentD2V').html('Current Active Vehicles without Assigned Drivers: <strong>' + (data.length - currentD2V) + "</strong><hr />")
@@ -513,7 +508,7 @@
 
     function getVehicleDataSuccess(result) {
         $('#collapseFive').collapse('show');
-        $('#info_panel').html("<div class='vehicleInfo'><div class=\"col-sm-12\" id=\"vehicleInfoDiv\"><img id='vehicleClassImage' class='img-responsive' src='../Content/VClasses/" + result.extendedData.vehicleClassImage + "' align='right'><h3>" + result.extendedData.VehicleFriendlyName + "</h3><br /><p>This vehicle is a " + result.extendedData.Year + ", " + result.extendedData.Make + "-" + result.extendedData.Model + ". Plate Number: " + result.extendedData.licensePlate + ", has a Haul Limit of: " + result.extendedData.haulLimit + "/lbs and has ID Number: " + result.extendedData.vehicleID + ". The most recent broadcast from this vehicle was at: <strong>" + moment(result.lastMessageReceived).add(moment().utcOffset(), 'minutes').format('MM/DD/YYYY HH:mm') + "</strong> at Latitude: <strong>" + result.gps.lat + "</strong>, Longitude: <strong>" + result.gps.lon + "</strong> moving in a direction of: <strong>" + result.gps.dir + " degrees at a speed of: <strong>" + result.gps.spd + "</strong>.</div></div>");
+        $('#info_panel').html("<div class='vehicleInfo'><div class=\"col-sm-12\" id=\"vehicleInfoDiv\"><img id='vehicleClassImage' class='img-responsive' src='../Content/VClasses/" + result.extendedData.vehicleClassImage + "' align='right'><h3>" + result.extendedData.VehicleFriendlyName + "</h3><br /><p>This vehicle is a " + result.extendedData.Year + ", " + result.extendedData.Make + "-" + result.extendedData.Model + ". Plate Number: " + result.extendedData.licensePlate + ", has a Haul Limit of: " + result.extendedData.haulLimit + "/lbs and has ID Number: " + result.extendedData.vehicleID + ". The most recent broadcast from this vehicle was at: <strong>" + moment(result.timestamp).format('MM/DD/YYYY HH:mm') + "</strong> at Latitude: <strong>" + result.gps.lat + "</strong>, Longitude: <strong>" + result.gps.lon + "</strong> moving in a direction of: <strong>" + result.gps.dir + " degrees at a speed of: <strong>" + result.gps.spd + "</strong>.</div></div>");
     }
 
     function getVehicleDataError(result, error) {

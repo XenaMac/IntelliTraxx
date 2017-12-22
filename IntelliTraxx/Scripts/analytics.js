@@ -333,8 +333,8 @@
         $('#communications').collapse('hide');
         $('#showCommunciations').removeClass('hidden');
         MACID = $('#vehicleList').val().split("|");
-        MACAddress = formatMac(MACID[0])
-        getRouter(MACAddress)
+        //MACAddress = formatMac(MACID[0])
+        getRouter(MACID[0])
         getPIDSByDateRange(MACID[1], $('#vFromDate').val(), $('#vToDate').val());
         //getTripsByDate($('#vehicleList option:selected').text(), $('#vFromDate').val(), $('#vToDate').val());
     });
