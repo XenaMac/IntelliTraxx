@@ -659,10 +659,11 @@
             $('#historySlider').slider();
             $('#historySlider').slider("value", 1);
 
-            var month = moment().get('month') - 2;
+            var d = new Date();
+            d.setMonth(d.getMonth() - 2);
             $('#playBackFrom').datetimepicker({
                 dayOfWeekStart: 1,
-                minDate: '2017/' + month + '/1',
+                minDate: d,
                 maxDate: '+1970/01/01'//tomorrow is maximum date calendar
             });
 
@@ -792,10 +793,11 @@
 
             $('#historySlider').slider("value", 1);
 
-            var month = moment().get('month') - 2;
+            var d = new Date();
+            d.setMonth(d.getMonth() - 2);
             $('#playBackFrom').datetimepicker({
                 dayOfWeekStart: 1,
-                minDate: '2017/' + month + '/1',
+                minDate: d,
                 maxDate: '+1970/01/01'//tomorrow is maximum date calendar
             });
 
