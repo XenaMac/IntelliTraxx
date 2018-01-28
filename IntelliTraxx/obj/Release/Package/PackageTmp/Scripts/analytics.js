@@ -6,15 +6,20 @@
     var PIDS = []
     var MACID = null
     var MACAddress = null
-
-    var month = moment().get('month') - 2;
+    
+    var d = new Date();
+    d.setMonth(d.getMonth() - 2);
     $('#startDtTm').datetimepicker({
         dayOfWeekStart: 1,
-        minDate: '2017/' + month + '/1',
+        minDate: d,
         maxDate: '+1970/01/01'//tomorrow is maximum date calendar
     });
     $('#startDtTm').val(start);
-    $('#endDtTm').datetimepicker();
+    $('#endDtTm').datetimepicker({
+        dayOfWeekStart: 1,
+        minDate: d,
+        maxDate: '+1970/01/01'//tomorrow is maximum date calendar
+    });
     $('#endDtTm').val(end);
     
     $('#PIDSTable').bootstrapTable({
@@ -311,16 +316,17 @@
 
     $('#showVehicles').click(function () {
         //getVehicleList();
-        var month = moment().get('month') - 2;
+        var d = new Date();
+        d.setMonth(d.getMonth() - 2);
         $('#vFromDate').datetimepicker({
             dayOfWeekStart: 1,
-            minDate: '2017/' + month + '/1',
+            minDate: d,
             maxDate: '+1970/01/01'//tomorrow is maximum date calendar
         });
         $('#vFromDate').val(moment().startOf('day').format('YYYY-MM-DD HH:mm'));
         $('#vToDate').datetimepicker({
             dayOfWeekStart: 1,
-            minDate: '2017/' + month + '/1',
+            minDate: d,
             maxDate: '+1970/01/01'//tomorrow is maximum date calendar
         });
         $('#vToDate').val(moment().endOf('day').format('YYYY-MM-DD HH:mm'));

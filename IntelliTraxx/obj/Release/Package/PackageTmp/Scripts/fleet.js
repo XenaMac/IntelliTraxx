@@ -402,24 +402,19 @@
 
         $.post("getAllVehicles?loadHistorical=" + getHistorical, null, function (data) {
             for (var i = 0; i < data.length; i++) {
-                var Now = moment().add(moment().utcOffset(), 'minutes');
-                var LMR = moment(data[i].lastMessageReceived);
-                var diff = Now.diff(LMR, 'minutes');
+                if (!containsVehicle(data[i].extendedData.ID)) {
+                    vehicles.push(new Vehicle(data[i], false));
+                }
+            }
 
-                if (diff >= 3) {
-                    if (containsVehicle(data[i].extendedData.ID)) {
-                        vehicles.splice(getVehicleIndex(data[i].extendedData.ID), 1);
-                    }
-                    killVehicle(data[i].VehicleID);
-                } else {
-                    $("#vehicleList").append($('<option>', { value: data[i].extendedData.ID }).text(data[i].extendedData.VehicleFriendlyName + " (" + data[i].VehicleID + ")"));
-                    if (!containsVehicle(data[i].extendedData.ID)) {
-                        if (data[i].driver != null) {
-                            currentD2V += 1;
-                        }
-                        vehicles.push(new Vehicle(data[i], false));
-                    }
-                }                
+            vehicles.sort(function (a, b) {
+                if (a.Name < b.Name) return -1;
+                if (a.Name > b.Name) return 1;
+                return 0;
+            });
+
+            for (var i = 0; i < vehicles.length; i++) {
+                $("#vehicleList").append($('<option>', { value: vehicles[i].ID }).text(vehicles[i].Name + " (" + vehicles[i].VehicleID + ")"));
             }
 
             $('#currentD2V').html('Current Active Vehicles without Assigned Drivers: <strong>' + (data.length - currentD2V) + "</strong><hr />")
@@ -664,10 +659,11 @@
             $('#historySlider').slider();
             $('#historySlider').slider("value", 1);
 
-            var month = moment().get('month') - 2;
+            var d = new Date();
+            d.setMonth(d.getMonth() - 2);
             $('#playBackFrom').datetimepicker({
                 dayOfWeekStart: 1,
-                minDate: '2017/' + month + '/1',
+                minDate: d,
                 maxDate: '+1970/01/01'//tomorrow is maximum date calendar
             });
 
@@ -797,10 +793,11 @@
 
             $('#historySlider').slider("value", 1);
 
-            var month = moment().get('month') - 2;
+            var d = new Date();
+            d.setMonth(d.getMonth() - 2);
             $('#playBackFrom').datetimepicker({
                 dayOfWeekStart: 1,
-                minDate: '2017/' + month + '/1',
+                minDate: d,
                 maxDate: '+1970/01/01'//tomorrow is maximum date calendar
             });
 
