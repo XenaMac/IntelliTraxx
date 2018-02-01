@@ -97,7 +97,7 @@ namespace IntelliTraxx.Controllers
 
         public ActionResult getAvailableDrivers()
         {
-            List<Driver> availableDrivers = truckService.getAvailableDrivers();
+            List<Driver> availableDrivers = truckService.getAvailableDrivers().OrderBy(d => d.DriverFirstName).ToList();
             
             return Json(availableDrivers, JsonRequestBehavior.AllowGet);
         }

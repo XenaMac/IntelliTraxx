@@ -18,9 +18,26 @@
     var historyVehicle = null;
     var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     var searchDate = new Date();
-    var getHistorical = false;
+    var getHistorical = null;
     var polysVisible = false;
     var currentD2V = 0;
+
+    //setting inactive or active vehilce get
+    var gh = getCookie('GH');
+
+    if (gh == undefined) {
+        setCookie('GH', 'false');
+        var getHistorical = false;
+        $('#historical').bootstrapToggle('on')
+    } else {
+        var getHistorical = gh;
+        if (gh == "true") {
+            $('#historical').bootstrapToggle('off')
+        } else {
+            $('#historical').bootstrapToggle('on')
+        }
+    }
+
 
     $('[data-toggle="tooltip"]').tooltip()
 
@@ -46,9 +63,14 @@
         }
 
         //Vehicle Non-Communicado
-        var Now = moment().add(moment().utcOffset(), 'minutes');
+        var timestamp = new Date();
+        var inverseOffset = moment(timestamp).utcOffset() * -1;
+        timestamp = moment().utcOffset(inverseOffset);
+        //alert('NOW: ' + Now.to);
         var LMR = moment(data.lastMessageReceived);
-        var diff = Now.diff(LMR, 'minutes');
+        //alert('LMR:' + LMR);
+        var diff = timestamp.diff(LMR, 'minutes');
+        //alert(diff);
 
         if (diff >= 3) {
             this.status = "Inactive";
@@ -990,9 +1012,10 @@
     $('#historical').change(function () {
         if (this.checked) {
             getHistorical = false;
-            getVehicles(true);
+            setCookie('GH', 'false');
         } else {
             getHistorical = true;
+            setCookie('GH', 'true');
             getVehicles(true);
         }
     });
@@ -2289,4 +2312,17 @@
             }
         }
     });
+
+    //#region cookie functions
+    function setCookie(key, value) {
+        var expires = new Date();
+        expires.setTime(expires.getTime() + 31536000000); //1 year  
+        document.cookie = key + '=' + value + ';expires=' + expires.toUTCString();
+    }
+
+    function getCookie(key) {
+        var keyValue = document.cookie.match('(^|;) ?' + key + '=([^;]*)(;|$)');
+        return keyValue ? keyValue[2] : null;
+    }
+    //#endregion
 });
