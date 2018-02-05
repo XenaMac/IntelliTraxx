@@ -54,7 +54,14 @@
     function Vehicle(data, selected) {
         this.ID = data.extendedData.ID
         this.VehicleID = data.VehicleID;
-        this.Name = data.extendedData.VehicleFriendlyName;
+        this.VehicleID = data.VehicleID;
+		
+        if(data.driver != null) {
+			this.Name = data.extendedData.VehicleFriendlyName + "<br />(" + data.driver.DriverLastName + ")";
+		} else {
+			this.Name = data.extendedData.VehicleFriendlyName + "<br />(No Driver)";
+		}
+
         if (data.status[0] != null && data.status[0].statusName == "Active") {
             if (data.status[0].statusVal == "Inactive")
                 this.status = "Inactive";
@@ -116,7 +123,7 @@
                 position: { lat: this.lat, lng: this.lon },
                 title: title,
                 labelContent: LabelContent,
-                labelAnchor: new google.maps.Point(30, 0),
+                labelAnchor: new google.maps.Point(45, 0),
                 labelClass: "markerLabels", // the CSS class for the label
                 labelStyle: { opacity: labelOpacity },
                 icon: {
@@ -142,7 +149,7 @@
                 },
                 title: title,
                 labelContent: LabelContent,
-                labelAnchor: new google.maps.Point(30, 0),
+                labelAnchor: new google.maps.Point(45, 0),
                 labelClass: "markerLabels", // the CSS class for the label
                 labelStyle: { opacity: labelOpacity },
                 map: map,
@@ -161,7 +168,7 @@
                 },
                 title: title,
                 labelContent: LabelContent,
-                labelAnchor: new google.maps.Point(30, 0),
+                labelAnchor: new google.maps.Point(45, 0),
                 labelClass: "markerLabels", // the CSS class for the label
                 labelStyle: { opacity: labelOpacity },
                 map: map,
@@ -470,8 +477,8 @@
             $('#collapseSixPanel').show();
             $('#collapseSix').collapse('show');
             if (selectedVehicle.driver != null && selectedVehicle.driver.DriverID != "00000000-0000-0000-0000-000000000000") {
-                var src = base64ArrayBuffer(selectedVehicle.driver.imageData);
-                $('#driverPic').html('<img id="ItemPreview" src="data:image/gif;base64,' + src + '"  width="150" class="vertical- align: top;"/>');
+                
+                $('#driverPic').html('<img id="ItemPreview" src="../Content/Images/' + selectedVehicle.driver.ProfilePic + '"  width="150" class="vertical- align: top;"/>');
                 $('#driverName').html(selectedVehicle.driver.DriverFirstName + " " + selectedVehicle.driver.DriverLastName);
                 $('#driverEmail').html(selectedVehicle.driver.DriverEmail);
                 if (selectedVehicle.driver.currentStatus.statusName == null) {
@@ -1013,6 +1020,7 @@
         if (this.checked) {
             getHistorical = false;
             setCookie('GH', 'false');
+            getVehicles(true);
         } else {
             getHistorical = true;
             setCookie('GH', 'true');

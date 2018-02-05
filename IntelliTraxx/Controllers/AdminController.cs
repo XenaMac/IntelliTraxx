@@ -90,7 +90,7 @@ namespace IntelliTraxx.Controllers
                 driver.DriverLastName = d.DriverLastName;
                 driver.DriverPassword = d.DriverPassword;
                 driver.PIN = d.PIN;
-                //driver.DriverPicture = "~/Images/drivers/" + d.ProfilePic;
+                driver.DriverPicture = "~/Images/" + d.ProfilePic;
                 driver.imageDataField = d.imageData;
                 driver.imageTypeField = d.imageType;
                 admin.Drivers.Add(driver);

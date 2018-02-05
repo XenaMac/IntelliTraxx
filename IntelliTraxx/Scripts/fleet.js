@@ -477,8 +477,8 @@
             $('#collapseSixPanel').show();
             $('#collapseSix').collapse('show');
             if (selectedVehicle.driver != null && selectedVehicle.driver.DriverID != "00000000-0000-0000-0000-000000000000") {
-                var src = base64ArrayBuffer(selectedVehicle.driver.imageData);
-                $('#driverPic').html('<img id="ItemPreview" src="data:image/gif;base64,' + src + '"  width="150" class="vertical- align: top;"/>');
+                
+                $('#driverPic').html('<img id="ItemPreview" src="../Content/Images/' + selectedVehicle.driver.ProfilePic + '"  width="150" class="vertical- align: top;"/>');
                 $('#driverName').html(selectedVehicle.driver.DriverFirstName + " " + selectedVehicle.driver.DriverLastName);
                 $('#driverEmail').html(selectedVehicle.driver.DriverEmail);
                 if (selectedVehicle.driver.currentStatus.statusName == null) {
@@ -1020,6 +1020,7 @@
         if (this.checked) {
             getHistorical = false;
             setCookie('GH', 'false');
+            getVehicles(true);
         } else {
             getHistorical = true;
             setCookie('GH', 'true');

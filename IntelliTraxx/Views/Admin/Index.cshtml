@@ -342,11 +342,8 @@
                     <tbody>
                         @foreach (var dr in Model.Drivers)
                         {
-                            var base64 = Convert.ToBase64String(dr.imageDataField);
-                            var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
-
                         <tr>
-                            <td><img class="img" src="@imgSrc" width="65" /></td>
+                            <td><img class="img" src="../Content/Images/defaultDriver.png" width="65" /></td>
                             <td>@dr.DriverFirstName</td>
                             <td>@dr.DriverLastName</td>
                             <td>@dr.CompanyName</td>
