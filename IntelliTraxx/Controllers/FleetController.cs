@@ -111,7 +111,16 @@ namespace IntelliTraxx.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult killVehilce(string VehicleID)
+        public ActionResult removeDriver(string from, string vehicleID)
+        {
+            string result = "";
+
+            result = truckService.removeDriver(from, vehicleID);
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult killVehilce(string from, string VehicleID)
         {
             var VehilceDead = truckService.killVehicle(VehicleID);
 

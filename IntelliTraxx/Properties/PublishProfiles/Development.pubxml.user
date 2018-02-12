@@ -31,10 +31,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/07/2017 10:27:03</publishTime>
     </File>
     <File Include="bin/IntelliTraxx.dll">
-      <publishTime>02/05/2018 08:09:11</publishTime>
+      <publishTime>02/12/2018 14:37:11</publishTime>
     </File>
     <File Include="bin/IntelliTraxx.pdb">
-      <publishTime>02/05/2018 08:09:11</publishTime>
+      <publishTime>02/12/2018 14:37:11</publishTime>
     </File>
     <File Include="bin/Microsoft.AI.Agent.Intercept.dll">
       <publishTime>05/07/2017 10:27:04</publishTime>
@@ -706,7 +706,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/07/2017 10:26:52</publishTime>
     </File>
     <File Include="Scripts/fleet.js">
-      <publishTime>02/02/2018 08:08:08</publishTime>
+      <publishTime>02/12/2018 15:08:09</publishTime>
     </File>
     <File Include="Scripts/Highcharts/highcharts-3d.js">
       <publishTime>05/07/2017 10:26:52</publishTime>
@@ -901,64 +901,64 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/07/2017 10:26:54</publishTime>
     </File>
     <File Include="Service References/TruckService/IntelliTraxx.TruckService.alertReturn.datasource">
-      <publishTime>09/07/2017 07:21:39</publishTime>
+      <publishTime>02/12/2018 14:35:19</publishTime>
     </File>
     <File Include="Service References/TruckService/IntelliTraxx.TruckService.Company.datasource">
-      <publishTime>09/07/2017 07:21:39</publishTime>
+      <publishTime>02/12/2018 14:35:19</publishTime>
     </File>
     <File Include="Service References/TruckService/IntelliTraxx.TruckService.customStatus.datasource">
-      <publishTime>09/07/2017 07:21:39</publishTime>
+      <publishTime>02/12/2018 14:35:19</publishTime>
     </File>
     <File Include="Service References/TruckService/IntelliTraxx.TruckService.dispatch.datasource">
-      <publishTime>09/07/2017 07:21:39</publishTime>
+      <publishTime>02/12/2018 14:35:19</publishTime>
     </File>
     <File Include="Service References/TruckService/IntelliTraxx.TruckService.Driver.datasource">
-      <publishTime>09/07/2017 07:21:39</publishTime>
+      <publishTime>02/12/2018 14:35:19</publishTime>
     </File>
     <File Include="Service References/TruckService/IntelliTraxx.TruckService.driverVehicleReturn.datasource">
-      <publishTime>09/07/2017 07:21:39</publishTime>
+      <publishTime>02/12/2018 14:35:19</publishTime>
     </File>
     <File Include="Service References/TruckService/IntelliTraxx.TruckService.linkVehicle.datasource">
-      <publishTime>09/07/2017 07:21:39</publishTime>
+      <publishTime>02/12/2018 14:35:19</publishTime>
     </File>
     <File Include="Service References/TruckService/IntelliTraxx.TruckService.macVehicle.datasource">
-      <publishTime>09/07/2017 07:21:39</publishTime>
+      <publishTime>02/12/2018 14:35:19</publishTime>
     </File>
     <File Include="Service References/TruckService/IntelliTraxx.TruckService.OBDLog.datasource">
-      <publishTime>09/07/2017 07:21:39</publishTime>
+      <publishTime>02/12/2018 14:35:19</publishTime>
     </File>
     <File Include="Service References/TruckService/IntelliTraxx.TruckService.retVehicle.datasource">
-      <publishTime>09/07/2017 07:21:39</publishTime>
+      <publishTime>02/12/2018 14:35:19</publishTime>
     </File>
     <File Include="Service References/TruckService/IntelliTraxx.TruckService.Role.datasource">
-      <publishTime>09/07/2017 07:21:39</publishTime>
+      <publishTime>02/12/2018 14:35:19</publishTime>
     </File>
     <File Include="Service References/TruckService/IntelliTraxx.TruckService.statusObjectReturn.datasource">
-      <publishTime>09/07/2017 07:21:39</publishTime>
+      <publishTime>02/12/2018 14:35:19</publishTime>
     </File>
     <File Include="Service References/TruckService/IntelliTraxx.TruckService.systemvar.datasource">
-      <publishTime>09/07/2017 07:21:39</publishTime>
+      <publishTime>02/12/2018 14:35:19</publishTime>
     </File>
     <File Include="Service References/TruckService/IntelliTraxx.TruckService.User.datasource">
-      <publishTime>09/07/2017 07:21:39</publishTime>
+      <publishTime>02/12/2018 14:35:19</publishTime>
     </File>
     <File Include="Service References/TruckService/IntelliTraxx.TruckService.UserCompany.datasource">
-      <publishTime>09/07/2017 07:21:39</publishTime>
+      <publishTime>02/12/2018 14:35:19</publishTime>
     </File>
     <File Include="Service References/TruckService/IntelliTraxx.TruckService.UserRole.datasource">
-      <publishTime>09/07/2017 07:21:39</publishTime>
+      <publishTime>02/12/2018 14:35:19</publishTime>
     </File>
     <File Include="Service References/TruckService/IntelliTraxx.TruckService.Vehicle.datasource">
-      <publishTime>09/07/2017 07:21:39</publishTime>
+      <publishTime>02/12/2018 14:35:19</publishTime>
     </File>
     <File Include="Service References/TruckService/IntelliTraxx.TruckService.VehicleClass.datasource">
-      <publishTime>09/07/2017 07:21:39</publishTime>
+      <publishTime>02/12/2018 14:35:19</publishTime>
     </File>
     <File Include="Service References/TruckService/IntelliTraxx.TruckService.VehicleExtendedData.datasource">
-      <publishTime>09/07/2017 07:21:39</publishTime>
+      <publishTime>02/12/2018 14:35:19</publishTime>
     </File>
     <File Include="Service References/TruckService/IntelliTraxx.TruckService.VehicleGPSRecord.datasource">
-      <publishTime>09/07/2017 07:21:39</publishTime>
+      <publishTime>02/12/2018 14:35:19</publishTime>
     </File>
     <File Include="Views/Account/ConfirmEmail.cshtml">
       <publishTime>05/07/2017 10:26:54</publishTime>
@@ -1042,7 +1042,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/20/2017 14:53:50</publishTime>
     </File>
     <File Include="Views/Admin/Index.cshtml">
-      <publishTime>02/03/2018 12:30:48</publishTime>
+      <publishTime>02/05/2018 10:24:47</publishTime>
     </File>
     <File Include="Views/Alerts/Admin.cshtml">
       <publishTime>05/13/2017 18:59:32</publishTime>
@@ -1138,7 +1138,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/07/2017 10:26:54</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>02/05/2018 08:09:12</publishTime>
+      <publishTime>02/12/2018 14:37:12</publishTime>
     </File>
   </ItemGroup>
 </Project>

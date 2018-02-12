@@ -2041,23 +2041,20 @@
     }
 
     function getAvailableDriversSuccess(data) {
-        if (data.length > 0) {
-            $('#availableDrivers').append($('<option>', { value: '' }).text('-- New Driver --'));
-            for (var i = 0; i < data.length; i++) {
-                var name = data[i].DriverFirstName + " " + data[i].DriverLastName;
+        $('#availableDrivers').append($('<option>', { value: '' }).text('-- Change Driver --'));
+        $('#availableDrivers').append($('<option>', { value: 'No Driver' }).text('No Driver'));
+        for (var i = 0; i < data.length; i++) {
+            var name = data[i].DriverFirstName + " " + data[i].DriverLastName;
 
-                if (selectedVehicle.status == "NA") {
-                    $('#availableDrivers').prop('disabled', 'disabled')
-                    $('#availableDrivers').append($('<option>', { value: data[i].DriverID }).text(name));
-                    $('#availDriverText').html("<em>The selected vehicle is not active. Please assign drivers to inactive vehicles using the Drivers -> Vehicles Module inside administration.</em>")
-                } else {
-                    $('#availableDrivers').prop('disabled', false)
-                    $('#availableDrivers').append($('<option>', { value: data[i].DriverID }).text(name));
-                    $('#availDriverText').html("<em>Changing a driver is permanent until you change drivers again.</em>")
-                }
+            if (selectedVehicle.status == "NA") {
+                $('#availableDrivers').prop('disabled', 'disabled')
+                $('#availableDrivers').append($('<option>', { value: data[i].DriverID }).text(name));
+                $('#availDriverText').html("<em>The selected vehicle is not active. Please assign drivers to inactive vehicles using the Drivers -> Vehicles Module inside administration.</em>")
+            } else {
+                $('#availableDrivers').prop('disabled', false)
+                $('#availableDrivers').append($('<option>', { value: data[i].DriverID }).text(name));
+                $('#availDriverText').html("<em>Changing a driver is permanent until you change drivers again.</em>")
             }
-        } else {
-            $('#availDriverText').html("<em>There are no available drivers in the sytem. Please add and assign drivers using the administration module.</em>")
         }
     }
 
@@ -2114,6 +2111,57 @@
         var err = error;
         alert('A problem occurred changing the drivers, please reload or contact the administrator');
     }
+    //#endregion
+
+    //#region RemoveDriver functions
+
+    function removeDriver(from, vehicleID) { //Get a download of the vehicle for ID
+        var _url = 'removeDriver';
+        var _data = "from=" + from + "&vehicleID=" + vehicleID;
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: _url,
+            data: _data,
+            contentType: "application/json; charset=utf-8",
+            success: removeDriverSuccess,
+            error: removeDriverError
+        });
+    }
+
+    function removeDriverSuccess(data) {
+        if (data == "OK") {
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-bottom-left",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+            Command: toastr["success"]("Driver Removed. We need to refresh the map now.");
+            selectedVehicle = null;
+            closeNav();
+            getVehicles(true);
+        } else {
+            alert('A problem occurred removing the driver, please reload or contact the administrator');
+        }
+    }
+
+    function removeDriverError(result, error) {
+        var err = error;
+        alert('A problem occurred removing the driver, please reload or contact the administrator');
+    }
+
     //#endregion
 
     //#region killVehicle Functions
@@ -2307,7 +2355,9 @@
     }
 
     $('#availableDrivers').change(function () {
-        if (confirm('Change assigned driver for this vehicle to: ' + $('#availableDrivers option:selected').text() + '? This will reload all vehicles on the map.')) {
+        if ($(this).val() == "No Driver") {
+            removeDriver(selectedVehicle.driver.DriverID, selectedVehicle.ID);
+        } else if (confirm('Change assigned driver for this vehicle to: ' + $('#availableDrivers option:selected').text() + '? This will reload all vehicles on the map.')) {
             if (selectedVehicle.driver != null) {
                 if (selectedVehicle.driver.DriverID != "00000000-0000-0000-0000-000000000000") {
                     changeDrivers(selectedVehicle.driver.DriverID, $(this).val());

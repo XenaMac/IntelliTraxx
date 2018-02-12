@@ -5215,6 +5215,12 @@ namespace IntelliTraxx.TruckService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/changeDrivers", ReplyAction="http://tempuri.org/ITruckService/changeDriversResponse")]
         System.Threading.Tasks.Task<string> changeDriversAsync(string from, string to, string vehicleID, string modifiedBy);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/removeDriver", ReplyAction="http://tempuri.org/ITruckService/removeDriverResponse")]
+        string removeDriver(string from, string vehicleID);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/removeDriver", ReplyAction="http://tempuri.org/ITruckService/removeDriverResponse")]
+        System.Threading.Tasks.Task<string> removeDriverAsync(string from, string vehicleID);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITruckService/getOBDDataReturnByDateRange", ReplyAction="http://tempuri.org/ITruckService/getOBDDataReturnByDateRangeResponse")]
         System.Collections.Generic.List<IntelliTraxx.TruckService.OBDLog> getOBDDataReturnByDateRange(string VehicleID, System.DateTime from, System.DateTime to);
         
@@ -5871,6 +5877,14 @@ namespace IntelliTraxx.TruckService {
         
         public System.Threading.Tasks.Task<string> changeDriversAsync(string from, string to, string vehicleID, string modifiedBy) {
             return base.Channel.changeDriversAsync(from, to, vehicleID, modifiedBy);
+        }
+        
+        public string removeDriver(string from, string vehicleID) {
+            return base.Channel.removeDriver(from, vehicleID);
+        }
+        
+        public System.Threading.Tasks.Task<string> removeDriverAsync(string from, string vehicleID) {
+            return base.Channel.removeDriverAsync(from, vehicleID);
         }
         
         public System.Collections.Generic.List<IntelliTraxx.TruckService.OBDLog> getOBDDataReturnByDateRange(string VehicleID, System.DateTime from, System.DateTime to) {
