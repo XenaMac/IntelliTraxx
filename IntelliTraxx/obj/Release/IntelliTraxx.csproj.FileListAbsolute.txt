@@ -249,3 +249,4 @@ C:\GitHub\IntelliTraxx\IntelliTraxx\obj\Release\IntelliTraxx.csprojResolveAssemb
 C:\GitHub\IntelliTraxx\IntelliTraxx\obj\Release\IntelliTraxx.dll
 C:\GitHub\IntelliTraxx\IntelliTraxx\obj\Release\IntelliTraxx.pdb
 C:\GitHub\IntelliTraxx\IntelliTraxx\obj\Release\IntelliTraxx.csproj.CoreCompileInputs.cache
+C:\GitHub\IntelliTraxx\IntelliTraxx\obj\Release\IntelliTraxx.csproj.CopyComplete

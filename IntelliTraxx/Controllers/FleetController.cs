@@ -37,7 +37,7 @@ namespace IntelliTraxx.Controllers
                 }
             }
 
-            return Json(parentCompany.CompanyCity + ", " + parentCompany.CompanyState, JsonRequestBehavior.AllowGet);
+            return Json(parentCompany.CompanyAddress + "," + parentCompany.CompanyCity + ", " + parentCompany.CompanyState, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult getVariables()
@@ -296,7 +296,7 @@ namespace IntelliTraxx.Controllers
         {
             var tracking = truckService.getGPSTracking(ID, start, end);
 
-            return Json(tracking, JsonRequestBehavior.AllowGet);
+            return Json(tracking.OrderBy(t => t.timestamp), JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult getAllRouters()

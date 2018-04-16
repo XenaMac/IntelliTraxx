@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="/Imports">
+      <xsd:import schemaLocation="http://38.124.164.212:9028/AJAXVehicles.svc?xsd=xsd0" />
+      <xsd:import schemaLocation="http://38.124.164.212:9028/AJAXVehicles.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://38.124.164.212:9028/AJAXVehicles.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/LATATrax.Models" />
+      <xsd:import schemaLocation="http://38.124.164.212:9028/AJAXVehicles.svc?xsd=xsd3" namespace="http://tempuri.org" />
+      <xsd:import schemaLocation="http://38.124.164.212:9028/AJAXVehicles.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/LATATrax" />
+      <xsd:import schemaLocation="http://38.124.164.212:9028/AJAXVehicles.svc?xsd=xsd5" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="AJAXVehicles_DoWork_InputMessage">
+    <wsdl:part name="parameters" element="DoWork" />
+  </wsdl:message>
+  <wsdl:message name="AJAXVehicles_DoWork_OutputMessage">
+    <wsdl:part name="parameters" element="DoWorkResponse" />
+  </wsdl:message>
+  <wsdl:message name="AJAXVehicles_getLogon_InputMessage">
+    <wsdl:part name="parameters" element="getLogon" />
+  </wsdl:message>
+  <wsdl:message name="AJAXVehicles_getLogon_OutputMessage">
+    <wsdl:part name="parameters" element="getLogonResponse" />
+  </wsdl:message>
+  <wsdl:message name="AJAXVehicles_serviceTest_InputMessage">
+    <wsdl:part name="parameters" element="serviceTest" />
+  </wsdl:message>
+  <wsdl:message name="AJAXVehicles_serviceTest_OutputMessage">
+    <wsdl:part name="parameters" element="serviceTestResponse" />
+  </wsdl:message>
+  <wsdl:message name="AJAXVehicles_getJSONVehicles_InputMessage">
+    <wsdl:part name="parameters" element="getJSONVehicles" />
+  </wsdl:message>
+  <wsdl:message name="AJAXVehicles_getJSONVehicles_OutputMessage">
+    <wsdl:part name="parameters" element="getJSONVehiclesResponse" />
+  </wsdl:message>
+  <wsdl:message name="AJAXVehicles_addPolygon_InputMessage">
+    <wsdl:part name="parameters" element="addPolygon" />
+  </wsdl:message>
+  <wsdl:message name="AJAXVehicles_addPolygon_OutputMessage">
+    <wsdl:part name="parameters" element="addPolygonResponse" />
+  </wsdl:message>
+  <wsdl:message name="AJAXVehicles_getGeoFenceDesignerObjects_InputMessage">
+    <wsdl:part name="parameters" element="getGeoFenceDesignerObjects" />
+  </wsdl:message>
+  <wsdl:message name="AJAXVehicles_getGeoFenceDesignerObjects_OutputMessage">
+    <wsdl:part name="parameters" element="getGeoFenceDesignerObjectsResponse" />
+  </wsdl:message>
+  <wsdl:message name="AJAXVehicles_getSpecificGeoFenceDesignerObject_InputMessage">
+    <wsdl:part name="parameters" element="getSpecificGeoFenceDesignerObject" />
+  </wsdl:message>
+  <wsdl:message name="AJAXVehicles_getSpecificGeoFenceDesignerObject_OutputMessage">
+    <wsdl:part name="parameters" element="getSpecificGeoFenceDesignerObjectResponse" />
+  </wsdl:message>
+  <wsdl:message name="AJAXVehicles_getFenceNames_InputMessage">
+    <wsdl:part name="parameters" element="getFenceNames" />
+  </wsdl:message>
+  <wsdl:message name="AJAXVehicles_getFenceNames_OutputMessage">
+    <wsdl:part name="parameters" element="getFenceNamesResponse" />
+  </wsdl:message>
+  <wsdl:message name="AJAXVehicles_getPolygons_InputMessage">
+    <wsdl:part name="parameters" element="getPolygons" />
+  </wsdl:message>
+  <wsdl:message name="AJAXVehicles_getPolygons_OutputMessage">
+    <wsdl:part name="parameters" element="getPolygonsResponse" />
+  </wsdl:message>
+  <wsdl:message name="AJAXVehicles_getKMLByPolygon_InputMessage">
+    <wsdl:part name="parameters" element="getKMLByPolygon" />
+  </wsdl:message>
+  <wsdl:message name="AJAXVehicles_getKMLByPolygon_OutputMessage">
+    <wsdl:part name="parameters" element="getKMLByPolygonResponse" />
+  </wsdl:message>
+  <wsdl:message name="AJAXVehicles_sayHello_InputMessage">
+    <wsdl:part name="parameters" element="sayHello" />
+  </wsdl:message>
+  <wsdl:message name="AJAXVehicles_sayHello_OutputMessage">
+    <wsdl:part name="parameters" element="sayHelloResponse" />
+  </wsdl:message>
+  <wsdl:message name="AJAXVehicles_setCellSignal_InputMessage">
+    <wsdl:part name="parameters" element="setCellSignal" />
+  </wsdl:message>
+  <wsdl:message name="AJAXVehicles_setCellSignal_OutputMessage">
+    <wsdl:part name="parameters" element="setCellSignalResponse" />
+  </wsdl:message>
+  <wsdl:message name="AJAXVehicles_ODBInit_InputMessage">
+    <wsdl:part name="parameters" element="ODBInit" />
+  </wsdl:message>
+  <wsdl:message name="AJAXVehicles_ODBInit_OutputMessage">
+    <wsdl:part name="parameters" element="ODBInitResponse" />
+  </wsdl:message>
+  <wsdl:message name="AJAXVehicles_setODBData_InputMessage">
+    <wsdl:part name="parameters" element="setODBData" />
+  </wsdl:message>
+  <wsdl:message name="AJAXVehicles_setODBData_OutputMessage">
+    <wsdl:part name="parameters" element="setODBDataResponse" />
+  </wsdl:message>
+  <wsdl:portType name="AJAXVehicles">
+    <wsdl:operation name="DoWork">
+      <wsdl:input wsaw:Action="urn:AJAXVehicles/DoWork" message="AJAXVehicles_DoWork_InputMessage" />
+      <wsdl:output wsaw:Action="urn:AJAXVehicles/DoWorkResponse" message="AJAXVehicles_DoWork_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getLogon">
+      <wsdl:input wsaw:Action="urn:AJAXVehicles/getLogon" message="AJAXVehicles_getLogon_InputMessage" />
+      <wsdl:output wsaw:Action="urn:AJAXVehicles/getLogonResponse" message="AJAXVehicles_getLogon_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="serviceTest">
+      <wsdl:input wsaw:Action="urn:AJAXVehicles/serviceTest" message="AJAXVehicles_serviceTest_InputMessage" />
+      <wsdl:output wsaw:Action="urn:AJAXVehicles/serviceTestResponse" message="AJAXVehicles_serviceTest_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getJSONVehicles">
+      <wsdl:input wsaw:Action="urn:AJAXVehicles/getJSONVehicles" message="AJAXVehicles_getJSONVehicles_InputMessage" />
+      <wsdl:output wsaw:Action="urn:AJAXVehicles/getJSONVehiclesResponse" message="AJAXVehicles_getJSONVehicles_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="addPolygon">
+      <wsdl:input wsaw:Action="urn:AJAXVehicles/addPolygon" message="AJAXVehicles_addPolygon_InputMessage" />
+      <wsdl:output wsaw:Action="urn:AJAXVehicles/addPolygonResponse" message="AJAXVehicles_addPolygon_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getGeoFenceDesignerObjects">
+      <wsdl:input wsaw:Action="urn:AJAXVehicles/getGeoFenceDesignerObjects" message="AJAXVehicles_getGeoFenceDesignerObjects_InputMessage" />
+      <wsdl:output wsaw:Action="urn:AJAXVehicles/getGeoFenceDesignerObjectsResponse" message="AJAXVehicles_getGeoFenceDesignerObjects_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getSpecificGeoFenceDesignerObject">
+      <wsdl:input wsaw:Action="urn:AJAXVehicles/getSpecificGeoFenceDesignerObject" message="AJAXVehicles_getSpecificGeoFenceDesignerObject_InputMessage" />
+      <wsdl:output wsaw:Action="urn:AJAXVehicles/getSpecificGeoFenceDesignerObjectResponse" message="AJAXVehicles_getSpecificGeoFenceDesignerObject_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getFenceNames">
+      <wsdl:input wsaw:Action="urn:AJAXVehicles/getFenceNames" message="AJAXVehicles_getFenceNames_InputMessage" />
+      <wsdl:output wsaw:Action="urn:AJAXVehicles/getFenceNamesResponse" message="AJAXVehicles_getFenceNames_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getPolygons">
+      <wsdl:input wsaw:Action="urn:AJAXVehicles/getPolygons" message="AJAXVehicles_getPolygons_InputMessage" />
+      <wsdl:output wsaw:Action="urn:AJAXVehicles/getPolygonsResponse" message="AJAXVehicles_getPolygons_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getKMLByPolygon">
+      <wsdl:input wsaw:Action="urn:AJAXVehicles/getKMLByPolygon" message="AJAXVehicles_getKMLByPolygon_InputMessage" />
+      <wsdl:output wsaw:Action="urn:AJAXVehicles/getKMLByPolygonResponse" message="AJAXVehicles_getKMLByPolygon_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="sayHello">
+      <wsdl:input wsaw:Action="urn:AJAXVehicles/sayHello" message="AJAXVehicles_sayHello_InputMessage" />
+      <wsdl:output wsaw:Action="urn:AJAXVehicles/sayHelloResponse" message="AJAXVehicles_sayHello_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="setCellSignal">
+      <wsdl:input wsaw:Action="urn:AJAXVehicles/setCellSignal" message="AJAXVehicles_setCellSignal_InputMessage" />
+      <wsdl:output wsaw:Action="urn:AJAXVehicles/setCellSignalResponse" message="AJAXVehicles_setCellSignal_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ODBInit">
+      <wsdl:input wsaw:Action="urn:AJAXVehicles/ODBInit" message="AJAXVehicles_ODBInit_InputMessage" />
+      <wsdl:output wsaw:Action="urn:AJAXVehicles/ODBInitResponse" message="AJAXVehicles_ODBInit_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="setODBData">
+      <wsdl:input wsaw:Action="urn:AJAXVehicles/setODBData" message="AJAXVehicles_setODBData_InputMessage" />
+      <wsdl:output wsaw:Action="urn:AJAXVehicles/setODBDataResponse" message="AJAXVehicles_setODBData_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

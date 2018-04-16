@@ -94,7 +94,7 @@
         this.ABI = data.ABI;
 
         for (var a = 0; a < data.alerts.length; a++) {
-            if (data.alerts[a].alertActive == true) {
+            if (moment().diff(data.alerts[a].alertStart, 'minutes') < 5) {
                 this.status = "InAlert";
             }
         }
@@ -582,22 +582,20 @@
                 var typeName = null;
                 var alertStart = new Date(parseInt(result[a].alertStart.substr(6)));
                 var alertEnd = new Date(parseInt(result[a].alertEnd.substr(6)));
+                alertEnd = moment(alertEnd).format('MM/DD/YYYY HH:mm');
 
-                if (result[a].alertType == 0) {
-                    typeName = "Exit";
-                } else if (result[a].alertType == 1) {
-                    typeName = "Enter";
-                } else if (result[a].alertType == 2) {
-                    typeName = "Speeding";
+                if (alertEnd.indexOf('2001-01-01') == -1) {
+                    alertEnd = "--";
                 }
 
-                if (result[a].alertActive == true) {
+                if (moment().diff(moment(alertStart), 'minutes') < 5) {
+                    //alert(moment(alertStart).diff(moment(), 'minutes'));
                     var markup = "<tr class=\'danger rowClick\'>";
                 } else {
                     var markup = "<tr class=\'rowClick\'>";
-                }
+                }                   
 
-                markup += "<td class=\'hidden\'>" + result[a].alertID + "</td><td class='text-center'>" + result[a].alertName.substr(0, 25) + " ... </td><td class='text-center'>" + moment(alertStart).add(moment().utcOffset(), 'minutes').format('MM/DD/YYYY HH:mm') + "</td><td class='text-center'>" + moment(alertEnd).add(moment().utcOffset(), 'minutes').format('MM/DD/YYYY HH:mm') + "</td></tr>";
+                markup += "<td class=\'hidden\'>" + result[a].alertID + "</td><td class='text-center'>" + result[a].alertName.substr(0, 25) + " ... </td><td class='text-center'>" + moment(alertStart).format('MM/DD/YYYY HH:mm') + "</td><td class='text-center'>" + alertEnd + "</td></tr>";
                 $("#alertsTable tbody").append(markup);
             };
         }
@@ -678,7 +676,7 @@
 
 
             $('#playBackVehicleID').html("<strong>" + selectedVehicle.VehicleID + "</strong>");
-            $('#datetime').text(moment(start).format('MM/DD/YYYY HH:mm'));
+            $('#datetime').text(moment(start).add(moment().utcOffset(), 'minutes'));
             $('#lat').text("");
             $('#lon').text("");
             $('#dir').text("");
@@ -782,7 +780,7 @@
             //}
 
             $('#playBackVehicleID').html("<strong>" + selectedVehicle.VehicleID + "</strong>");
-            $('#datetime').text(moment(start).format('MM/DD/YYYY HH:mm'));
+            $('#datetime').text(moment(start).add(moment().utcOffset(), 'minutes'));
             $('#lat').text(historyData[0].Lat);
             $('#lon').text(historyData[0].Lon);
             $('#dir').text(historyData[0].Direction);
