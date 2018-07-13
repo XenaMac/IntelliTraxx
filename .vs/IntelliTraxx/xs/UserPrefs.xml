@@ -1,0 +1,30 @@
+﻿<Properties StartupConfiguration="{8BEEA855-1850-4F96-91BB-341FDE197159}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="IntelliTraxx/Web.config">
+    <Files>
+      <File FileName="IntelliTraxx/Web.config" Line="115" Column="87" />
+      <File FileName="IntelliTraxx/Controllers/FleetController.cs" Line="1" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="IntelliTraxx" expanded="True">
+            <Node name="IntelliTraxx" expanded="True">
+              <Node name="References" expanded="True" />
+              <Node name="Controllers" expanded="True" />
+              <Node name="Web.config" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/jonmckinley/GitHub/IntelliTraxx/IntelliTraxx/Controllers/FleetController.cs" relfile="IntelliTraxx/Controllers/FleetController.cs" line="45" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.IntelliTraxx PreferredExecutionTarget="MonoDevelop.Default" />
+</Properties>
