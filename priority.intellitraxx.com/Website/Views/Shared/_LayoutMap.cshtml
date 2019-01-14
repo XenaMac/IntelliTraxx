@@ -1,0 +1,82 @@
+﻿@using Microsoft.AspNet.Identity
+@using System.Security.Claims;
+@using System.Threading;
+<!DOCTYPE html>
+<html ng-app="intelliTruxxApp">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="840">    
+    <title>Intellitruxx: @ViewBag.Title</title>
+    <link rel="icon" href="~/favicon.ico">
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    
+</head>
+<body>
+    @{
+        var claimsIdentity = User.Identity as System.Security.Claims.ClaimsIdentity;
+        var identity = (ClaimsPrincipal)Thread.CurrentPrincipal;
+        var roles = identity.Claims.Where(c => c.Type == "Roles").Select(c => c.Value).SingleOrDefault();
+    }
+    <div>
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    @*<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>*@
+                    @Html.ActionLink("IntelliTraxx: Priority Ambulance AVL", "Index", "VehicleLocation", new { area = "" }, new { @class = "navbar-brand" })
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <a href="#" id="showMenu">
+                                <span class="glyphicons glyphicons-show-thumbnails" aria-hidden="true" style="font-size:24px"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" id="showLeftPush">
+                                <span class="glyphicons glyphicons-cadastral-map" aria-hidden="true" style="font-size:24px"></span>
+                            </a>
+                        </li>
+                    </ul>
+                    @Html.Partial("_LoginPartial")
+                </div>
+            </div>
+        </div>
+        <div id="perspective" class="perspective effect-movedown">
+            <div class="container col-lg-12" style="padding:0px;">
+                <div class="wrapper">
+                    <!-- wrapper needed for scroll -->
+                    @RenderBody()
+                    <div class="websiteUrl hidden">
+                        @Request.Url.GetLeftPart(System.UriPartial.Authority)@Request.ApplicationPath
+                    </div>
+                </div><!-- wrapper -->
+            </div><!-- /container -->
+            <nav class="outer-nav top horizontal">
+                <a href="~/" class="btn btn-default" aria-label="Italic"><span class="glyphicons glyphicons-map" aria-hidden="true" style="font-size:24px"></span> Vehicle Location</a>
+                <a href="~/Analytics/Index" class="btn btn-default" aria-label="Italic"><span class="glyphicons glyphicons-stats" aria-hidden="true" style="font-size:24px"></span>Analytics</a>
+                @if (roles.Contains("Administrator"))
+                {
+                    <a href="~/Admin/Index" class="btn btn-default" aria-label="Italic"><span class="glyphicons glyphicons-cogwheels" aria-hidden="true" style="font-size:24px"></span>Administration</a>
+                }
+            </nav>
+        </div><!-- /perspective -->
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @Scripts.Render("~/bundles/app")
+        @Html.Partial("_Toastr")
+        <script type="text/javascript">
+            $(function () {
+                $('[data-toggle="popover"]').popover();
+            })
+        </script>
+
+        @RenderSection("scripts", required: false)
+    </div>
+</body>
+</html>

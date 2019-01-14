@@ -1,0 +1,116 @@
+﻿@model Base_AVL.LATAService.alertReturn
+
+@{
+    ViewBag.Title = "ViewAlert";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<div class="col-lg-8 col-lg-offset-2">
+    <h2>View Alert</h2>
+    <hr />
+    @Html.HiddenFor(model => model.alertID, new { id = "alertID" })
+    @Html.HiddenFor(model => model.vehicleID, new { id = "vehicleID" })
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.vehicleID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.vehicleID)
+        </dd>
+        <br />
+        <dt>
+            @Html.DisplayNameFor(model => model.alertName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.alertName)
+        </dd>
+        <br />
+        @*<dt>
+                @Html.DisplayNameFor(model => model.AlertType)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.AlertType)
+            </dd>*@
+
+        <dt>
+            @Html.DisplayNameFor(model => model.alertStart)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.alertStart)
+        </dd>
+        <br />
+        <dt>
+            @Html.DisplayNameFor(model => model.alertEnd)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.alertEnd)
+        </dd>
+        <br />
+        @*<dt>
+                @Html.DisplayNameFor(model => model.LatLonStart)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.LatLonStart)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.LatLonEnd)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.LatLonEnd)
+            </dd>*@
+
+        <dt>
+            @Html.DisplayNameFor(model => model.maxVal)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.maxVal)
+        </dd>
+
+        @*<dt>
+                @Html.DisplayNameFor(model => model.runID)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.runID)
+            </dd>*@
+
+    </dl>
+    <div class="col-md-12">
+        <div class="col-md-12 pull-left">
+            <strong>As of: </strong><label id="LC" class="blueText"></label>&nbsp;&nbsp;
+            <strong>Lat: </strong><label id="Lat" class="blueText"></label>&nbsp;&nbsp;
+            <strong>Long: </strong><label id="Long" class="blueText"></label>&nbsp;&nbsp;
+            <strong>Direction: </strong><label id="Dir" class="blueText"></label>&nbsp;&nbsp;
+            <strong>Speed: </strong><label id="SPD" class="blueText"></label><br />
+        </div>
+        <div class="col-md-12" id="alertMap"><br /><br /></div>
+        <div class="col-md-12"></div>
+        <div class="col-md-12 text-center sliderDiv">
+            <br />
+            <div id="ex1Slider"></div>
+            <br />
+        </div>
+        <div class="col-md-2 sliderDiv"><label id="ST" class="sm pull-left"></label></div>
+        <div class="col-md-8 sliderDiv text-center"></div>
+        <div class="col-md-2 sliderDiv"><label id="ET" class="small pull-right"></label></div>
+    </div>
+    <br /><br />
+    <p>
+        @*@Html.ActionLink("Edit", "Edit", new { id = Model.AlertID }) |*@
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/alertMap.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkyxzsMHs1COuqcUEkPKiHY2289J0LG-4&libraries=drawing" async defer></script>
+}

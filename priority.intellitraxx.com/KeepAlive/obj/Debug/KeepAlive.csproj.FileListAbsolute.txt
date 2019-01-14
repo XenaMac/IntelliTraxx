@@ -1,0 +1,10 @@
+\\Mac\Home\Documents\Documents - Jon’s MacBook Pro (2)\GitHub\priority.intellitraxx.com\priority.intellitraxx.com\KeepAlive\bin\Debug\IntelliFleetKeepAlive.exe.config
+\\Mac\Home\Documents\Documents - Jon’s MacBook Pro (2)\GitHub\priority.intellitraxx.com\priority.intellitraxx.com\KeepAlive\bin\Debug\IntelliFleetKeepAlive.exe.manifest
+\\Mac\Home\Documents\Documents - Jon’s MacBook Pro (2)\GitHub\priority.intellitraxx.com\priority.intellitraxx.com\KeepAlive\bin\Debug\IntelliFleetKeepAlive.application
+\\Mac\Home\Documents\Documents - Jon’s MacBook Pro (2)\GitHub\priority.intellitraxx.com\priority.intellitraxx.com\KeepAlive\bin\Debug\IntelliFleetKeepAlive.exe
+\\Mac\Home\Documents\Documents - Jon’s MacBook Pro (2)\GitHub\priority.intellitraxx.com\priority.intellitraxx.com\KeepAlive\bin\Debug\IntelliFleetKeepAlive.pdb
+\\Mac\Home\Documents\Documents - Jon’s MacBook Pro (2)\GitHub\priority.intellitraxx.com\priority.intellitraxx.com\KeepAlive\obj\Debug\KeepAlive.csproj.CoreCompileInputs.cache
+\\Mac\Home\Documents\Documents - Jon’s MacBook Pro (2)\GitHub\priority.intellitraxx.com\priority.intellitraxx.com\KeepAlive\obj\Debug\IntelliFleetKeepAlive.exe.manifest
+\\Mac\Home\Documents\Documents - Jon’s MacBook Pro (2)\GitHub\priority.intellitraxx.com\priority.intellitraxx.com\KeepAlive\obj\Debug\IntelliFleetKeepAlive.application
+\\Mac\Home\Documents\Documents - Jon’s MacBook Pro (2)\GitHub\priority.intellitraxx.com\priority.intellitraxx.com\KeepAlive\obj\Debug\IntelliFleetKeepAlive.exe
+\\Mac\Home\Documents\Documents - Jon’s MacBook Pro (2)\GitHub\priority.intellitraxx.com\priority.intellitraxx.com\KeepAlive\obj\Debug\IntelliFleetKeepAlive.pdb

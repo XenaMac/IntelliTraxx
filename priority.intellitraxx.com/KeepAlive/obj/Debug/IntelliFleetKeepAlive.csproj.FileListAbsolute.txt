@@ -1,0 +1,9 @@
+C:\GitHub\IntelliFleetSolution\IntelliFleetSolution\IntelliFleetKeepAlive\bin\Debug\IntelliFleetKeepAlive.exe.config
+C:\GitHub\IntelliFleetSolution\IntelliFleetSolution\IntelliFleetKeepAlive\bin\Debug\IntelliFleetKeepAlive.exe.manifest
+C:\GitHub\IntelliFleetSolution\IntelliFleetSolution\IntelliFleetKeepAlive\bin\Debug\IntelliFleetKeepAlive.application
+C:\GitHub\IntelliFleetSolution\IntelliFleetSolution\IntelliFleetKeepAlive\bin\Debug\IntelliFleetKeepAlive.exe
+C:\GitHub\IntelliFleetSolution\IntelliFleetSolution\IntelliFleetKeepAlive\bin\Debug\IntelliFleetKeepAlive.pdb
+C:\GitHub\IntelliFleetSolution\IntelliFleetSolution\IntelliFleetKeepAlive\obj\Debug\IntelliFleetKeepAlive.exe.manifest
+C:\GitHub\IntelliFleetSolution\IntelliFleetSolution\IntelliFleetKeepAlive\obj\Debug\IntelliFleetKeepAlive.application
+C:\GitHub\IntelliFleetSolution\IntelliFleetSolution\IntelliFleetKeepAlive\obj\Debug\IntelliFleetKeepAlive.exe
+C:\GitHub\IntelliFleetSolution\IntelliFleetSolution\IntelliFleetKeepAlive\obj\Debug\IntelliFleetKeepAlive.pdb

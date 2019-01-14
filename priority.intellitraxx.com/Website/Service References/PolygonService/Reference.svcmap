@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="e2dbc944-ecd7-4cc6-910a-279f4f35bf8c" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings>
+      <CollectionMapping TypeName="System.Collections.Generic.List`1" Category="List" />
+    </CollectionMappings>
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>false</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost/LATATrax/PolygonService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="PolygonService1.xsd" MetadataType="Schema" ID="a1a778d6-e239-4158-9a3f-4ce643201a42" SourceId="1" SourceUrl="http://localhost/LATATrax/PolygonService.svc?xsd=xsd1" />
+    <MetadataFile FileName="PolygonService2.xsd" MetadataType="Schema" ID="c1738a4e-68dd-4924-bd1e-d223192ec184" SourceId="1" SourceUrl="http://localhost/LATATrax/PolygonService.svc?xsd=xsd2" />
+    <MetadataFile FileName="PolygonService.wsdl" MetadataType="Wsdl" ID="8f46f74e-59b5-4c0e-b99b-4ca15cc8d112" SourceId="1" SourceUrl="http://localhost/LATATrax/PolygonService.svc?wsdl" />
+    <MetadataFile FileName="PolygonService.disco" MetadataType="Disco" ID="991f0fa2-c7d9-41e0-94e3-bffbe8492bcb" SourceId="1" SourceUrl="http://localhost/LATATrax/PolygonService.svc?disco" />
+    <MetadataFile FileName="PolygonService.xsd" MetadataType="Schema" ID="3ed1da88-f59a-4da8-b667-49cff8fe2b38" SourceId="1" SourceUrl="http://localhost/LATATrax/PolygonService.svc?xsd=xsd0" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

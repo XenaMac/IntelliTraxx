@@ -1,0 +1,125 @@
+﻿@model List<Base_AVL.LATAService.alertReturn>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<link href="~/Content/bootstrap-table.css" rel="stylesheet" />
+<link href="~/Content/jquery.datetimepicker.min.css" rel="stylesheet" />
+
+<div class="container-fluid col-lg-10 col-lg-offset-1">
+    <h2>Alerts</h2>
+
+    <div id="toolbar1">
+        <div class="form-inline">
+            <div class="input-group input-group">
+                <input type="text" id="datetimepicker" class="form-control" aria-label="From Date" placeholder="From Date">
+                <span class="input-group-btn">
+                    <button class="btn btn-info" type="button" id="fromDateOpener"><i class="glyphicons glyphicons-calendar"></i></button>
+                </span>
+            </div>
+
+            <div class="input-group">
+                <input type="text" id="toDatetimepicker" class="form-control" aria-label="To Date" placeholder="To Date">
+                <span class="input-group-btn">
+                    <button class="btn btn-info" type="button" id="toDateOpener"><i class="glyphicons glyphicons-calendar"></i></button>
+                </span>
+            </div>
+
+            <button class="btn btn-info" id="filter"><i class="glyphicons glyphicons-filter"></i></button>
+        </div>
+    </div>
+    <table id="alertsTable"
+           data-toggle="table"
+           data-search="true"
+           data-show-refresh="false"
+           data-show-columns="true"
+           data-query-params="queryParams"
+           data-pagination="true"
+           data-show-export="true"
+           data-toolbar="#toolbar1">
+        <thead>
+            <tr>
+                <th data-sortable="true">Alert Name</th>
+                <th data-sortable="true">Vehicle ID</th>
+                <th data-sortable="true">Alert Type</th>
+                <th data-sortable="true">Alert Start</th>
+                <th data-sortable="true">Alert End</th>
+                <th data-sortable="true">Max Value</th>
+                <th>View</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Base_AVL.LATAService.alertReturn alert in @Model)
+            {
+                <tr>
+                    <td>@alert.alertName</td>
+                    <td>@alert.vehicleID</td>
+                    <td>
+                        @if (@alert.alertType == 0)
+                        {
+                            @("ENTER");
+                        }
+                        else if (@alert.alertType == 1)
+                        {
+                            @("EXIT");
+                        }
+                        else if (@alert.alertType == 2)
+                        {
+                            @("SPEEDING");
+                        }
+                    </td>
+                    <td>@alert.alertStart</td>
+                    <td>@alert.alertEnd</td>
+                    <td>@alert.maxVal</td>
+                    <td>
+                        <a href="@Url.Action("ViewAlert", new { alertID = @alert.alertID })" class="btn btn-info">
+                            <i class="glyphicon glyphicon-eye-open"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@section scripts{
+    <script src="~/Scripts/bootstrap-table.js"></script>
+    <script src="~/Scripts/bootstrap-table-export.min.js"></script>
+    <script src="//rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
+    <script src="~/Scripts/jquery.datetimepicker.full.min.js"></script>
+    <script>
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; //January is 0!
+        var yyyy = today.getFullYear();
+        today = mm + '/' + dd + '/' + yyyy;
+
+        $('#datetimepicker').datetimepicker({
+            dayOfWeekStart: 1,
+            lang: 'en',
+            disabledDates: ['1986/01/08', '1986/01/09', '1986/01/10'],
+            startDate: today
+        });
+
+        $('#fromDateOpener').click(function () {
+            $('#datetimepicker').datetimepicker('show');
+        });
+
+        $('#toDatetimepicker').datetimepicker({
+            dayOfWeekStart: 1,
+            lang: 'en',
+            disabledDates: ['1986/01/08', '1986/01/09', '1986/01/10'],
+            startDate: today
+        });
+
+        $('#toDateOpener').click(function () {
+            $('#toDatetimepicker').datetimepicker('show');
+        });
+
+        $('#filter').click(function () {
+            var url = '@Url.Action("/Index")' + '?from=' + $('#datetimepicker').val() + '&to=' + $('#toDatetimepicker').val();
+            window.location = url;
+        });
+    </script>
+}

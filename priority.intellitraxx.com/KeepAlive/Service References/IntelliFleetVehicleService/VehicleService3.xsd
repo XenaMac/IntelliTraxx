@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:58078/VehicleService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/IntelliFleetService.Models" />
+  <xs:import schemaLocation="http://localhost:58078/VehicleService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/IntelliFleetService" />
+  <xs:element name="getAllVehicles">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="getAllVehiclesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/IntelliFleetService.Models" minOccurs="0" name="getAllVehiclesResult" nillable="true" type="q1:ArrayOfVehicle" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="getVars">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="getVarsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/IntelliFleetService" minOccurs="0" name="getVarsResult" nillable="true" type="q2:ArrayOfsystemvar" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="reloadVars">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="reloadVarsResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
