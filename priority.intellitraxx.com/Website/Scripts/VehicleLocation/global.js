@@ -1,1 +1,0 @@
-var url = 'http://localhost:59978/AJAXVehicles.svc/';
