@@ -1,6 +1,4 @@
-﻿using IntelliTraxx.Common;
-using IntelliTraxx.TruckService;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -11,6 +9,8 @@ using System.Security.Claims;
 using System.Threading;
 using System.Web;
 using System.Web.Mvc;
+using IntelliTraxx.Common;
+using IntelliTraxx.TruckService;
 
 namespace IntelliTraxx.Controllers
 {
@@ -186,7 +186,7 @@ namespace IntelliTraxx.Controllers
                 ViewBag.Roles = truckService.getRoles(new Guid());
                 ViewBag.Companies = truckService.getCompanies(new Guid());
             }
-            
+
             return Redirect("Index");
         }
 
@@ -208,7 +208,7 @@ namespace IntelliTraxx.Controllers
             EditUser.UserSalt = user.UserSalt;
             EditUser.VerifyUserPassword = user.UserPassword;
             AuthMgmt _authMgmt = new AuthMgmt();
-            List<string> roleNames = _authMgmt.getUserRoles(user.UserID);
+            List<string> roleNames = _authMgmt.GetUserRoles(user.UserID);
             foreach (string s in roleNames)
             {
                 EditUser.Roles += s + "|";
@@ -221,7 +221,7 @@ namespace IntelliTraxx.Controllers
 
             return View(EditUser);
         }
-        
+
         [CustomAuthorize(Roles = "Administrator")]
         [HttpPost]
         public ActionResult EditUser(EditUser model, string[] Companies, string[] Roles)
@@ -231,7 +231,7 @@ namespace IntelliTraxx.Controllers
                 ViewBag.Roles = truckService.getRoles(new Guid());
                 ViewBag.Companies = truckService.getCompanies(new Guid());
                 AuthMgmt _authMgmt = new AuthMgmt();
-                List<string> roleNames = _authMgmt.getUserRoles(model.UserID);
+                List<string> roleNames = _authMgmt.GetUserRoles(model.UserID);
                 foreach (string s in roleNames)
                 {
                     model.Roles += s + "|";
@@ -314,7 +314,7 @@ namespace IntelliTraxx.Controllers
                 ViewBag.UserRoles = truckService.getUserRolesFull(model.UserID);
                 ViewBag.UserCompanies = truckService.getUserCompaniesFull(model.UserID);
             }
-            
+
             return Redirect("Index");
         }
 
@@ -339,13 +339,13 @@ namespace IntelliTraxx.Controllers
                 return RedirectToAction("EditUser", new { userid = userID });
             }
         }
-        
+
         [CustomAuthorize(Roles = "Administrator")]
         public ActionResult AddRole()
         {
             return View();
         }
-        
+
         [CustomAuthorize(Roles = "Administrator")]
         [HttpPost]
         public ActionResult AddRole(Roles model)
@@ -379,10 +379,10 @@ namespace IntelliTraxx.Controllers
             {
                 return View(model);
             }
-            
+
             return RedirectToAction("/Index", new { tab = "R" });
         }
-        
+
         [CustomAuthorize(Roles = "Administrator")]
         public ActionResult EditRole(string roleID)
         {
@@ -402,7 +402,7 @@ namespace IntelliTraxx.Controllers
                 return View(role);
             }
         }
-        
+
         [CustomAuthorize(Roles = "Administrator")]
         public ActionResult DeleteRole(string roleID)
         {
@@ -461,7 +461,7 @@ namespace IntelliTraxx.Controllers
             {
                 return View(model);
             }
-            
+
             return RedirectToAction("/Index", new { tab = "C" });
         }
 
@@ -489,7 +489,7 @@ namespace IntelliTraxx.Controllers
                 return View(company);
             }
         }
-        
+
         [CustomAuthorize(Roles = "Administrator")]
         [HttpPost]
         public ActionResult EditCompany(Companies model)
@@ -519,10 +519,10 @@ namespace IntelliTraxx.Controllers
             {
                 return View(model);
             }
-            
+
             return RedirectToAction("/Index", "Admin", new { tab = "C" });
         }
-        
+
         [CustomAuthorize(Roles = "Administrator")]
         public ActionResult DeleteCompany(string companyID)
         {
@@ -553,7 +553,7 @@ namespace IntelliTraxx.Controllers
 
 
         }
-        
+
         [HttpPost]
         public ActionResult GetParentCompanyLocation()
         {
@@ -578,7 +578,8 @@ namespace IntelliTraxx.Controllers
             var sid = identity.Claims.Where(c => c.Type == ClaimTypes.Sid).Select(c => c.Value).SingleOrDefault();
             User user = truckService.getUserProfile(new Guid(sid));
             List<Role> roles = truckService.getUserRolesFull(new Guid(sid));
-            return Json(new {
+            return Json(new
+            {
                 UserEmail = user.UserEmail,
                 UserFirstName = user.UserFirstName,
                 UserLastName = user.UserLastName,
@@ -594,7 +595,7 @@ namespace IntelliTraxx.Controllers
         {
             return View();
         }
-        
+
         [CustomAuthorize(Roles = "Administrator")]
         [HttpPost]
         public ActionResult AddVehicleClass(VehicleClass model)
@@ -616,10 +617,10 @@ namespace IntelliTraxx.Controllers
             nvc.VehicleClassImage = model.VehicleClassImage;
 
             truckService.updateVehicleClass(nvc, new Guid(sid));
-            
+
             return RedirectToAction("/Index", new { tab = "VC" });
         }
-        
+
         [CustomAuthorize(Roles = "Administrator")]
         public ActionResult EditVehicleClass(string VehicleClassID)
         {
@@ -646,7 +647,7 @@ namespace IntelliTraxx.Controllers
                 return View(vcToEdit);
             }
         }
-        
+
         [CustomAuthorize(Roles = "Administrator")]
         [HttpPost]
         public ActionResult EditVehicleClass(VehicleClasses model)
@@ -667,10 +668,10 @@ namespace IntelliTraxx.Controllers
             VCToEdit.VehicleClassImage = model.VehicleClassImage;
 
             truckService.updateVehicleClass(VCToEdit, new Guid(sid));
-            
+
             return RedirectToAction("/Index", "Admin", new { tab = "VC" });
         }
-        
+
         [CustomAuthorize(Roles = "Administrator")]
         public ActionResult DeleteVehicleClass(string vehicleClassID)
         {
@@ -693,16 +694,16 @@ namespace IntelliTraxx.Controllers
 
             //delete class
             truckService.deleteVehicleClass(vcToEdit, new Guid(sid));
-            
+
             return RedirectToAction("/Index", new { tab = "VC" });
         }
-        
+
         [CustomAuthorize(Roles = "Administrator")]
         public ActionResult AddVehicle()
         {
             return View();
         }
-        
+
         [CustomAuthorize(Roles = "Administrator")]
         [HttpPost]
         public ActionResult AddVehicle(VehicleVM model)
@@ -732,10 +733,10 @@ namespace IntelliTraxx.Controllers
             nv.RouterID = model.RouterID;
 
             truckService.updateExtendedData(nv, new Guid(sid));
-            
+
             return RedirectToAction("/Index", new { tab = "V" });
         }
-        
+
         [CustomAuthorize(Roles = "Administrator")]
         public ActionResult EditVehicle(string VehicleID)
         {
@@ -759,7 +760,7 @@ namespace IntelliTraxx.Controllers
             return View(vehicleToEdit);
 
         }
-        
+
         [CustomAuthorize(Roles = "Administrator")]
         [HttpPost]
         public ActionResult EditVehicle(VehicleVM model)
@@ -789,10 +790,10 @@ namespace IntelliTraxx.Controllers
             nv.RouterID = model.RouterID;
 
             truckService.updateExtendedData(nv, new Guid(sid));
-            
+
             return RedirectToAction("/Index", "Admin", new { tab = "V" });
         }
-        
+
         [CustomAuthorize(Roles = "Administrator")]
         public ActionResult DeleteVehicle(string VehicleID)
         {
@@ -813,16 +814,16 @@ namespace IntelliTraxx.Controllers
 
             //delete class
             truckService.deleteExtendedData(vcToEdit, new Guid(sid));
-            
+
             return RedirectToAction("/Index", new { tab = "V" });
         }
-        
+
         [CustomAuthorize(Roles = "Administrator")]
         public ActionResult AddDriver()
         {
             return View();
         }
-        
+
         [CustomAuthorize(Roles = "Administrator")]
         [HttpPost]
         public ActionResult AddDriver(DriverVM model, HttpPostedFileBase fileUpload)
@@ -860,7 +861,9 @@ namespace IntelliTraxx.Controllers
                 nd.imageData = br.ReadBytes((int)fileUpload.InputStream.Length);
                 nd.imageType = fileUpload.ContentType;
                 truckService.updateDriver(nd, new Guid(sid));
-            } else {
+            }
+            else
+            {
                 Image img = Image.FromFile(Server.MapPath("~/Content/Images/defaultDriver.png"));
                 byte[] arr;
                 ImageConverter converter = new ImageConverter();
@@ -881,10 +884,10 @@ namespace IntelliTraxx.Controllers
                 nd.imageType = "png";
                 truckService.updateDriver(nd, new Guid(sid));
             }
-            
+
             return RedirectToAction("/Index", new { tab = "D" });
         }
-        
+
         [CustomAuthorize(Roles = "Administrator")]
         public ActionResult EditDriver(string driverID)
         {
@@ -910,7 +913,7 @@ namespace IntelliTraxx.Controllers
             }
             return View(EditDriver);
         }
-        
+
         [CustomAuthorize(Roles = "Administrator")]
         [HttpPost]
         public ActionResult EditDriver(DriverVM model, HttpPostedFileBase fileUpload)
@@ -964,10 +967,10 @@ namespace IntelliTraxx.Controllers
                 ed.imageType = model.imageTypeField;
                 truckService.updateDriver(ed, new Guid(sid));
             }
-            
+
             return RedirectToAction("/Index", new { tab = "D" });
         }
-        
+
         [CustomAuthorize(Roles = "Administrator")]
         public ActionResult DeleteDriver(string driverID)
         {
@@ -988,16 +991,16 @@ namespace IntelliTraxx.Controllers
 
             //delete class
             truckService.deleteDriver(driverToEdit, new Guid(sid));
-            
+
             return RedirectToAction("/Index", new { tab = "D" });
         }
-        
+
         [CustomAuthorize(Roles = "Administrator")]
         public ActionResult AddSetting()
         {
             return View();
         }
-        
+
         [CustomAuthorize(Roles = "Administrator")]
         [HttpPost]
         public ActionResult AddSetting(Vars model)
@@ -1022,10 +1025,10 @@ namespace IntelliTraxx.Controllers
             nv.Email = email;
 
             truckService.updateAppVar(nv, new Guid(sid));
-            
+
             return RedirectToAction("/Index", new { tab = "A" });
         }
-        
+
         [CustomAuthorize(Roles = "Administrator")]
         public ActionResult EditSetting(string settingID)
         {
@@ -1043,7 +1046,7 @@ namespace IntelliTraxx.Controllers
             }
             return View(AppSetting);
         }
-        
+
         [CustomAuthorize(Roles = "Administrator")]
         [HttpPost]
         public ActionResult EditSetting(Vars model)
@@ -1068,10 +1071,10 @@ namespace IntelliTraxx.Controllers
             ev.Email = email;
 
             truckService.updateAppVar(ev, new Guid(sid));
-            
+
             return RedirectToAction("/Index", new { tab = "A" });
         }
-        
+
         [CustomAuthorize(Roles = "Administrator")]
         public ActionResult DeleteSetting(string varID)
         {
@@ -1092,16 +1095,16 @@ namespace IntelliTraxx.Controllers
 
             //delete class
             truckService.deleteAppVar(varToEdit, new Guid(sid));
-            
+
             return RedirectToAction("/Index", new { tab = "A" });
         }
-        
+
         [CustomAuthorize(Roles = "Administrator")]
         public ActionResult AddServiceVar()
         {
             return View();
         }
-        
+
         [CustomAuthorize(Roles = "Administrator")]
         [HttpPost]
         public ActionResult AddServiceVar(Vars model)
@@ -1126,7 +1129,7 @@ namespace IntelliTraxx.Controllers
             nv.Email = model.email;
 
             truckService.updateVar(nv, new Guid(sid));
-            
+
             return RedirectToAction("/Index", new { tab = "VAR" });
         }
 
@@ -1172,10 +1175,10 @@ namespace IntelliTraxx.Controllers
             ev.varType = 0;
 
             truckService.updateServiceVar(ev, new Guid(sid));
-            
+
             return RedirectToAction("/Index", new { tab = "VAR" });
         }
-        
+
         [CustomAuthorize(Roles = "Administrator")]
         public ActionResult DeleteServiceVar(string varID)
         {
@@ -1196,7 +1199,7 @@ namespace IntelliTraxx.Controllers
 
             //delete class
             truckService.deleteServiceVar(varToEdit, new Guid(sid));
-            
+
             return RedirectToAction("/Index", new { tab = "VAR" });
         }
 
@@ -1210,7 +1213,7 @@ namespace IntelliTraxx.Controllers
             return Json("OK", JsonRequestBehavior.AllowGet);
         }
     }
-    
+
 
     //----------------------------CLASSES-----------------------------------------------//
     public class ITUser

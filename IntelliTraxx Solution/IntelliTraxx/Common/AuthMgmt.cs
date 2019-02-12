@@ -1,40 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Web;
 using IntelliTraxx.TruckService;
 
 namespace IntelliTraxx.Common
 {
     public class AuthMgmt
     {
-        private TruckServiceClient truckService = new TruckServiceClient();
+        private readonly TruckServiceClient _truckService = new TruckServiceClient();
 
-        public Guid logonUser(string username, string password)
+        public Guid LogonUser(string username, string password)
         {
-            Guid userID = new Guid(truckService.logonUser(username, password).ToString());
+            var userID = new Guid(_truckService.logonUser(username, password).ToString());
             return userID;
         }
 
-        public List<string> getUserRoles(Guid userID)
+        public List<string> GetUserRoles(Guid userId)
         {
-            List<string> rolesList = new List<string>();
-            List<Role> Roles = new List<Role>();
-            var userRoles = truckService.getUserRolesGuids(userID);
-            var roles = truckService.getRoles(new Guid());
+            var rolesList = new List<string>();
+            var returnList = new List<Role>();
 
-            foreach (Guid ur in userRoles)
-            {
-                foreach (Role r in roles)
+            var userRoles = _truckService.getUserRolesGuids(userId);
+            var roles = _truckService.getRoles(new Guid());
+
+            foreach (var ur in userRoles)
+            foreach (var r in roles)
+                if (r.RoleID == ur)
                 {
-                    if (r.RoleID == ur)
-                    {
-                        Roles.Add(r);
-                        rolesList.Add(r.roleName);
-                    }
+                    returnList.Add(r);
+                    rolesList.Add(r.roleName);
                 }
-            }
 
             //Set Roles Session Object
-            System.Web.HttpContext.Current.Session["IntelliTraxxUserRoles"] = Roles;
+            HttpContext.Current.Session["IntelliTraxxUserRoles"] = returnList;
 
             return rolesList;
         }

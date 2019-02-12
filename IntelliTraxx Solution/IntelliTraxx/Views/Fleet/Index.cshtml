@@ -14,7 +14,7 @@
     <div id="adminIcon" class="adminIcon_in" data-toggle="tooltip" data-placement="right" title="Administration"></div>
     <div id="profileDiv" class="profileDiv_in">
         @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
-            {
+        {
             @Html.AntiForgeryToken()
             <ul class="list-group small">
                 <li class="list-group-item"><a href="" class="text-left" style="padding: 5px;" id="userNameRole"></a><br /></li>
@@ -53,9 +53,9 @@
                         <input id="labels" type="checkbox" data-toggle="toggle" data-size="small" checked data-on="Labels On" data-off="Label Off" data-onstyle="success" data-width="100">
                     </div>
                     @*<div class="form-group well">
-                        <label for="startSim">Start Vehicle Simulation: </label>
-                        <button id="startSim" class="btn btn-danger">Start Vehicle Simulator</button>
-                    </div>*@
+                            <label for="startSim">Start Vehicle Simulation: </label>
+                            <button id="startSim" class="btn btn-danger">Start Vehicle Simulator</button>
+                        </div>*@
                 </div>
             </div>
         </div>

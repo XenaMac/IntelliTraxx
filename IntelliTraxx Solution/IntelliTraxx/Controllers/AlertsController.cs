@@ -1,12 +1,10 @@
-﻿using IntelliTraxx.TruckService;
-using IntelliTraxx.AlertAdminService;
-using IntelliTraxx.PolygonService;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using System.Web.Script.Serialization;
-using Newtonsoft.Json.Serialization;
+using IntelliTraxx.AlertAdminService;
+using IntelliTraxx.PolygonService;
+using IntelliTraxx.TruckService;
 
 namespace IntelliTraxx.Controllers
 {
@@ -36,7 +34,7 @@ namespace IntelliTraxx.Controllers
             List<dbAlert> alerts = alertService.getAlerts();
             List<alertClass> classes = alertService.getAlertClasses();
 
-            foreach(dbAlert a in alerts)
+            foreach (dbAlert a in alerts)
             {
                 dbAlerts newAlert = new dbAlerts();
                 newAlert.AlertActive = a.AlertActive;
@@ -124,7 +122,7 @@ namespace IntelliTraxx.Controllers
             List<Vehicle> vehicles = truckService.getAllVehicles(true);
             List<string> linkedVehicles = alertService.getLinkedAlertsVehicles(alertFriendlyName);
             List<Vehicle> linkedAlertVehicles = new List<Vehicle>();
-            foreach(string id in linkedVehicles)
+            foreach (string id in linkedVehicles)
             {
                 Guid Vid = new Guid(id);
                 Vehicle v = vehicles.Where(veh => veh.extendedData.ID == Vid).FirstOrDefault();
@@ -157,14 +155,14 @@ namespace IntelliTraxx.Controllers
             EAD.extendedAlertVehicles = new List<Vehicle>();
 
 
-            foreach(alertGeoFence gf in AD.alertGeoFences)
+            foreach (alertGeoFence gf in AD.alertGeoFences)
             {
                 PolygonService.polygonData poly = new PolygonService.polygonData();
                 poly = polygonService.getPolygons().Where(p => p.geoFenceID == gf.GeoFenceID).FirstOrDefault();
                 EAD.extendedAlertFences.Add(poly);
             }
 
-            foreach(alertVehicle av in AD.alertVehicles)
+            foreach (alertVehicle av in AD.alertVehicles)
             {
                 Vehicle v = new Vehicle();
                 v = truckService.getAllVehicles(true).Where(vh => vh.extendedData.ID == av.VehicleID).FirstOrDefault();
@@ -192,10 +190,11 @@ namespace IntelliTraxx.Controllers
 
             //create alert class
             dbAlert alert = new dbAlert();
-            if(editAlertID == null || editAlertID == "")
+            if (editAlertID == null || editAlertID == "")
             {
                 alert.AlertID = Guid.NewGuid();
-            } else
+            }
+            else
             {
                 alert.AlertID = new Guid(editAlertID);
             }
@@ -276,7 +275,7 @@ namespace IntelliTraxx.Controllers
         {
             public List<Vehicle> extendedAlertVehicles { get; set; }
 
-            public List<PolygonService.polygonData> extendedAlertFences { get; set;}
+            public List<PolygonService.polygonData> extendedAlertFences { get; set; }
         }
     }
 }

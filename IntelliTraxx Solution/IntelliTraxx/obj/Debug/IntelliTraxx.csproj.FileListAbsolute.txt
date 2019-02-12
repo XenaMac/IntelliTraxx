@@ -733,3 +733,4 @@ C:\Code\TOLGA-Git\XENATECH\INTELLITRAXX\IntelliTraxx\IntelliTraxx Solution\Intel
 C:\Code\TOLGA-Git\XENATECH\INTELLITRAXX\IntelliTraxx\IntelliTraxx Solution\IntelliTraxx\obj\Debug\IntelliTraxx.csproj.CopyComplete
 C:\Code\TOLGA-Git\XENATECH\INTELLITRAXX\IntelliTraxx\IntelliTraxx Solution\IntelliTraxx\obj\Debug\IntelliTraxx.dll
 C:\Code\TOLGA-Git\XENATECH\INTELLITRAXX\IntelliTraxx\IntelliTraxx Solution\IntelliTraxx\obj\Debug\IntelliTraxx.pdb
+C:\Code\TOLGA-Git\XENATECH\INTELLITRAXX\IntelliTraxx\IntelliTraxx Solution\IntelliTraxx\obj\Debug\IntelliTraxx.csprojAssemblyReference.cache

@@ -1,9 +1,5 @@
-﻿using IntelliTraxx.Toastr;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
+using IntelliTraxx.Toastr;
 
 namespace IntelliTraxx.Controllers
 {
@@ -11,9 +7,9 @@ namespace IntelliTraxx.Controllers
     {
         public MessageControllerBase()
         {
-            Toastr = new IntelliTraxx.Toastr.Toastr();
+            Toastr = new Toastr.Toastr();
         }
-        public IntelliTraxx.Toastr.Toastr Toastr { get; set; }
+        public Toastr.Toastr Toastr { get; set; }
 
         public ToastMessage AddToastMessage(string title, string message, ToastType toastType)
         {

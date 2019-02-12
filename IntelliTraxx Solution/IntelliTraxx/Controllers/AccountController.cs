@@ -1,19 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
+using IntelliTraxx.Common;
+using IntelliTraxx.Models;
+using IntelliTraxx.Toastr;
+using IntelliTraxx.TruckService;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using IntelliTraxx.Models;
-using IntelliTraxx.Common;
-using IntelliTraxx.TruckService;
-using System.Collections.Generic;
-using System.Web.Security;
-using IntelliTraxx.Toastr;
-using System.Web.Routing;
 
 namespace IntelliTraxx.Controllers
 {
@@ -29,7 +28,7 @@ namespace IntelliTraxx.Controllers
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -59,8 +58,6 @@ namespace IntelliTraxx.Controllers
             }
         }
 
-        //
-        // GET: /Account/Login
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
@@ -68,8 +65,23 @@ namespace IntelliTraxx.Controllers
             return View();
         }
 
-        //
-        // POST: /Account/Login
+        [HttpPost]
+        [AllowAnonymous]        
+        public ActionResult LoginMobile(LoginViewModel model)
+        {
+            var user = new User();
+            if (!ModelState.IsValid)            
+                return Json(user, JsonRequestBehavior.AllowGet);            
+
+            var userId = _authMgmt.LogonUser(model.Email, model.Password);
+
+            if (userId.ToString() == "00000000-0000-0000-0000-000000000000")
+                return Json(user, JsonRequestBehavior.AllowGet);
+            
+            user = truckService.getUserProfile(userId);
+            return Json(user, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -81,7 +93,7 @@ namespace IntelliTraxx.Controllers
                 return View(model);
             }
 
-            Guid userID = _authMgmt.logonUser(model.Email, model.Password);
+            Guid userID = _authMgmt.LogonUser(model.Email, model.Password);
 
             if (userID.ToString() != "00000000-0000-0000-0000-000000000000")
             {
@@ -105,7 +117,7 @@ namespace IntelliTraxx.Controllers
                   DefaultAuthenticationTypes.ApplicationCookie);
 
                 #region Add all roles to Ident
-                List<string> roleNames = _authMgmt.getUserRoles(userID);
+                List<string> roleNames = _authMgmt.GetUserRoles(userID);
                 string rnames = null;
                 foreach (string s in roleNames)
                 {
@@ -153,7 +165,7 @@ namespace IntelliTraxx.Controllers
             {
                 // invalid username or password
                 ModelState.AddModelError("", "Invalid email or password");
-                this.AddToastMessage("Logon Failed", "Bad Login Information", ToastType.Error);
+                AddToastMessage("Logon Failed", "Bad Login Information", ToastType.Error);
                 return View();
             }
 
@@ -177,8 +189,6 @@ namespace IntelliTraxx.Controllers
             #endregion
         }
 
-        //
-        // GET: /Account/VerifyCode
         [AllowAnonymous]
         public async Task<ActionResult> VerifyCode(string provider, string returnUrl, bool rememberMe)
         {
@@ -190,8 +200,6 @@ namespace IntelliTraxx.Controllers
             return View(new VerifyCodeViewModel { Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe });
         }
 
-        //
-        // POST: /Account/VerifyCode
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -206,7 +214,7 @@ namespace IntelliTraxx.Controllers
             // If a user enters incorrect codes for a specified amount of time then the user account
             // will be locked out for a specified amount of time.
             // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -220,16 +228,12 @@ namespace IntelliTraxx.Controllers
             }
         }
 
-        //
-        // GET: /Account/Register
         [AllowAnonymous]
         public ActionResult Register()
         {
             return View();
         }
 
-        //
-        // POST: /Account/Register
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -241,7 +245,7 @@ namespace IntelliTraxx.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
@@ -258,8 +262,6 @@ namespace IntelliTraxx.Controllers
             return View(model);
         }
 
-        //
-        // GET: /Account/ConfirmEmail
         [AllowAnonymous]
         public async Task<ActionResult> ConfirmEmail(string userId, string code)
         {
@@ -271,16 +273,12 @@ namespace IntelliTraxx.Controllers
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
 
-        //
-        // GET: /Account/ForgotPassword
         [AllowAnonymous]
         public ActionResult ForgotPassword()
         {
             return View();
         }
 
-        //
-        // POST: /Account/ForgotPassword
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -307,24 +305,18 @@ namespace IntelliTraxx.Controllers
             return View(model);
         }
 
-        //
-        // GET: /Account/ForgotPasswordConfirmation
         [AllowAnonymous]
         public ActionResult ForgotPasswordConfirmation()
         {
             return View();
         }
 
-        //
-        // GET: /Account/ResetPassword
         [AllowAnonymous]
         public ActionResult ResetPassword(string code)
         {
             return code == null ? View("Error") : View();
         }
 
-        //
-        // POST: /Account/ResetPassword
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -349,16 +341,12 @@ namespace IntelliTraxx.Controllers
             return View();
         }
 
-        //
-        // GET: /Account/ResetPasswordConfirmation
         [AllowAnonymous]
         public ActionResult ResetPasswordConfirmation()
         {
             return View();
         }
 
-        //
-        // POST: /Account/ExternalLogin
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -368,8 +356,6 @@ namespace IntelliTraxx.Controllers
             return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
         }
 
-        //
-        // GET: /Account/SendCode
         [AllowAnonymous]
         public async Task<ActionResult> SendCode(string returnUrl, bool rememberMe)
         {
@@ -383,8 +369,6 @@ namespace IntelliTraxx.Controllers
             return View(new SendCodeViewModel { Providers = factorOptions, ReturnUrl = returnUrl, RememberMe = rememberMe });
         }
 
-        //
-        // POST: /Account/SendCode
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -403,8 +387,6 @@ namespace IntelliTraxx.Controllers
             return RedirectToAction("VerifyCode", new { Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });
         }
 
-        //
-        // GET: /Account/ExternalLoginCallback
         [AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
@@ -433,8 +415,6 @@ namespace IntelliTraxx.Controllers
             }
         }
 
-        //
-        // POST: /Account/ExternalLoginConfirmation
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -471,8 +451,6 @@ namespace IntelliTraxx.Controllers
             return View(model);
         }
 
-        //
-        // POST: /Account/LogOff
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
@@ -482,8 +460,6 @@ namespace IntelliTraxx.Controllers
             return View();
         }
 
-        //
-        // GET: /Account/ExternalLoginFailure
         [AllowAnonymous]
         public ActionResult ExternalLoginFailure()
         {

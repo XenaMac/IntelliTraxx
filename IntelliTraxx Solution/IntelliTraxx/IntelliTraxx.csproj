@@ -214,6 +214,7 @@
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AlertsController.cs" />
     <Compile Include="Controllers\AnalyticsController.cs" />
+    <Compile Include="Controllers\DispatchController.cs" />
     <Compile Include="Controllers\FleetController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
