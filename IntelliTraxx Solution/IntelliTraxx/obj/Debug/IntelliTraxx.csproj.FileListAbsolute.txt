@@ -734,3 +734,15 @@ C:\Code\TOLGA-Git\XENATECH\INTELLITRAXX\IntelliTraxx\IntelliTraxx Solution\Intel
 C:\Code\TOLGA-Git\XENATECH\INTELLITRAXX\IntelliTraxx\IntelliTraxx Solution\IntelliTraxx\obj\Debug\IntelliTraxx.dll
 C:\Code\TOLGA-Git\XENATECH\INTELLITRAXX\IntelliTraxx\IntelliTraxx Solution\IntelliTraxx\obj\Debug\IntelliTraxx.pdb
 C:\Code\TOLGA-Git\XENATECH\INTELLITRAXX\IntelliTraxx\IntelliTraxx Solution\IntelliTraxx\obj\Debug\IntelliTraxx.csprojAssemblyReference.cache
+C:\Code\TOLGA-Git\XENATECH\INTELLITRAXX\IntelliTraxx\IntelliTraxx Solution\IntelliTraxx\bin\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Code\TOLGA-Git\XENATECH\INTELLITRAXX\IntelliTraxx\IntelliTraxx Solution\IntelliTraxx\bin\Microsoft.IdentityModel.Logging.dll
+C:\Code\TOLGA-Git\XENATECH\INTELLITRAXX\IntelliTraxx\IntelliTraxx Solution\IntelliTraxx\bin\Microsoft.IdentityModel.Tokens.dll
+C:\Code\TOLGA-Git\XENATECH\INTELLITRAXX\IntelliTraxx\IntelliTraxx Solution\IntelliTraxx\bin\System.IdentityModel.Tokens.Jwt.dll
+C:\Code\TOLGA-Git\XENATECH\INTELLITRAXX\IntelliTraxx\IntelliTraxx Solution\IntelliTraxx\bin\Microsoft.IdentityModel.JsonWebTokens.pdb
+C:\Code\TOLGA-Git\XENATECH\INTELLITRAXX\IntelliTraxx\IntelliTraxx Solution\IntelliTraxx\bin\Microsoft.IdentityModel.JsonWebTokens.xml
+C:\Code\TOLGA-Git\XENATECH\INTELLITRAXX\IntelliTraxx\IntelliTraxx Solution\IntelliTraxx\bin\Microsoft.IdentityModel.Logging.pdb
+C:\Code\TOLGA-Git\XENATECH\INTELLITRAXX\IntelliTraxx\IntelliTraxx Solution\IntelliTraxx\bin\Microsoft.IdentityModel.Logging.xml
+C:\Code\TOLGA-Git\XENATECH\INTELLITRAXX\IntelliTraxx\IntelliTraxx Solution\IntelliTraxx\bin\Microsoft.IdentityModel.Tokens.pdb
+C:\Code\TOLGA-Git\XENATECH\INTELLITRAXX\IntelliTraxx\IntelliTraxx Solution\IntelliTraxx\bin\Microsoft.IdentityModel.Tokens.xml
+C:\Code\TOLGA-Git\XENATECH\INTELLITRAXX\IntelliTraxx\IntelliTraxx Solution\IntelliTraxx\bin\System.IdentityModel.Tokens.Jwt.pdb
+C:\Code\TOLGA-Git\XENATECH\INTELLITRAXX\IntelliTraxx\IntelliTraxx Solution\IntelliTraxx\bin\System.IdentityModel.Tokens.Jwt.xml

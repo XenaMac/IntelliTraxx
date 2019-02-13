@@ -1,17 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Security;
 using IntelliTraxx.Common;
+using IntelliTraxx.Common.Jwt;
 using IntelliTraxx.Models;
 using IntelliTraxx.Toastr;
 using IntelliTraxx.TruckService;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.Owin.Security;
 
 namespace IntelliTraxx.Controllers
@@ -19,10 +22,10 @@ namespace IntelliTraxx.Controllers
     [Authorize]
     public class AccountController : MessageControllerBase
     {
+        private readonly AuthMgmt _authMgmt = new AuthMgmt();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-        private AuthMgmt _authMgmt = new AuthMgmt();
-        private TruckServiceClient truckService = new TruckServiceClient();
+        private readonly TruckServiceClient truckService = new TruckServiceClient();
 
         public AccountController()
         {
@@ -36,26 +39,14 @@ namespace IntelliTraxx.Controllers
 
         public ApplicationSignInManager SignInManager
         {
-            get
-            {
-                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
-            }
-            private set
-            {
-                _signInManager = value;
-            }
+            get { return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>(); }
+            private set { _signInManager = value; }
         }
 
         public ApplicationUserManager UserManager
         {
-            get
-            {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
-            private set
-            {
-                _userManager = value;
-            }
+            get { return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>(); }
+            private set { _userManager = value; }
         }
 
         [AllowAnonymous]
@@ -64,78 +55,93 @@ namespace IntelliTraxx.Controllers
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
-
+        
         [HttpPost]
         [AllowAnonymous]        
         public ActionResult LoginMobile(LoginViewModel model)
         {
             var user = new User();
-            if (!ModelState.IsValid)            
-                return Json(user, JsonRequestBehavior.AllowGet);            
+            if (!ModelState.IsValid)
+                return Json(user, JsonRequestBehavior.AllowGet);
 
             var userId = _authMgmt.LogonUser(model.Email, model.Password);
 
-            if (userId.ToString() == "00000000-0000-0000-0000-000000000000")
-                return Json(user, JsonRequestBehavior.AllowGet);
-            
-            user = truckService.getUserProfile(userId);
+            if (userId.ToString() != "00000000-0000-0000-0000-000000000000")
+            {
+                user = truckService.getUserProfile(userId);
+                var userCompanies = truckService.getUserCompaniesFull(userId);
+                var userCompanyNames = string.Join("-", userCompanies);
+                var userRoles = _authMgmt.GetUserRoles(userId);
+                var userRoleNames = string.Join("-", userRoles);
+                                
+                var jwtToken = JwtManager.GenerateToken(user, userRoleNames, userCompanyNames);
+
+                var response = new
+                {
+                    user.UserID,
+                    user.UserFirstName,
+                    user.UserLastName,
+                    user.UserEmail,
+                    AccessToken = jwtToken
+                };
+                                                
+                return Json(response, JsonRequestBehavior.AllowGet);
+            }
             return Json(user, JsonRequestBehavior.AllowGet);
         }
-
+       
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginViewModel model, string returnUrl)
         {
             string rolesList = null;
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
+            if (!ModelState.IsValid) return View(model);
 
-            Guid userID = _authMgmt.LogonUser(model.Email, model.Password);
+            var userID = _authMgmt.LogonUser(model.Email, model.Password);
 
             if (userID.ToString() != "00000000-0000-0000-0000-000000000000")
             {
                 //Set User Session Object
-                User IntelliTruxxUser = truckService.getUserProfile(userID);
+                var IntelliTruxxUser = truckService.getUserProfile(userID);
 
                 //Set UserCompanies Session Object
-                List<Company> IntelliTruxxUserCompanies = truckService.getUserCompaniesFull(userID);
+                var IntelliTruxxUserCompanies = truckService.getUserCompaniesFull(userID);
 
                 //Start authentication
                 var ident = new ClaimsIdentity(
-                  new[] {
-                      // adding following 2 claim just for supporting default antiforgery provider
-                      new Claim(ClaimTypes.NameIdentifier, model.Email),
-                      new Claim("http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider", "ASP.NET Identity", "http://www.w3.org/2001/XMLSchema#string"),
-                      new Claim(ClaimTypes.Name, IntelliTruxxUser.UserFirstName + " " + IntelliTruxxUser.UserLastName),
-                      new Claim(ClaimTypes.Email, IntelliTruxxUser.UserEmail),
-                      new Claim(ClaimTypes.HomePhone, IntelliTruxxUser.UserPhone),
-                      new Claim(ClaimTypes.Sid, IntelliTruxxUser.UserID.ToString())
-                  },
-                  DefaultAuthenticationTypes.ApplicationCookie);
+                    new[]
+                    {
+                        // adding following 2 claim just for supporting default antiforgery provider
+                        new Claim(ClaimTypes.NameIdentifier, model.Email),
+                        new Claim("http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider",
+                            "ASP.NET Identity", "http://www.w3.org/2001/XMLSchema#string"),
+                        new Claim(ClaimTypes.Name,
+                            IntelliTruxxUser.UserFirstName + " " + IntelliTruxxUser.UserLastName),
+                        new Claim(ClaimTypes.Email, IntelliTruxxUser.UserEmail),
+                        new Claim(ClaimTypes.HomePhone, IntelliTruxxUser.UserPhone),
+                        new Claim(ClaimTypes.Sid, IntelliTruxxUser.UserID.ToString())
+                    },
+                    DefaultAuthenticationTypes.ApplicationCookie);
 
                 #region Add all roles to Ident
-                List<string> roleNames = _authMgmt.GetUserRoles(userID);
-                string rnames = null;
-                foreach (string s in roleNames)
-                {
-                    rnames += s + ", ";
-                }
 
-                Claim claim = new Claim("Roles", rnames);
+                var roleNames = _authMgmt.GetUserRoles(userID);
+                string rnames = null;
+                foreach (var s in roleNames) rnames += s + ", ";
+
+                var claim = new Claim("Roles", rnames);
                 ident.AddClaim(claim);
+
                 #endregion
 
                 #region Add all companies to Ident
+
                 string companies = null;
-                foreach (Company c in IntelliTruxxUserCompanies)
-                {
-                    companies += c.CompanyName + ", ";
-                }
-                Claim claimCo = new Claim("Companies", companies);
+                foreach (var c in IntelliTruxxUserCompanies) companies += c.CompanyName + ", ";
+                var claimCo = new Claim("Companies", companies);
                 ident.AddClaim(claimCo);
+
                 #endregion
 
                 HttpContext.GetOwinContext().Authentication.SignIn(new AuthenticationProperties { IsPersistent = false }, ident);
@@ -144,32 +150,32 @@ namespace IntelliTraxx.Controllers
                 {
                     //create the authentication ticket
                     var authTicket = new FormsAuthenticationTicket(
-                      1,
-                      model.Email,  //user id
-                      DateTime.Now,
-                      DateTime.Now.AddMinutes(30),  // expiry
-                      true,  //true to remember
-                      rolesList, //roles
-                      "/"
+                        1,
+                        model.Email, //user id
+                        DateTime.Now,
+                        DateTime.Now.AddMinutes(30), // expiry
+                        true, //true to remember
+                        rolesList, //roles
+                        "/"
                     );
 
                     //encrypt the ticket and add it to a cookie
-                    HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, FormsAuthentication.Encrypt(authTicket));
+                    var cookie = new HttpCookie(FormsAuthentication.FormsCookieName,
+                        FormsAuthentication.Encrypt(authTicket));
                     Response.Cookies.Add(cookie);
                 }
 
                 //this.AddToastMessage("Logon Successful", "Welcome to IntelliTruxx, " + User.Identity.Name + "!", ToastType.Success);
                 return RedirectToAction("/Index", "Fleet");
             }
-            else
-            {
-                // invalid username or password
-                ModelState.AddModelError("", "Invalid email or password");
-                AddToastMessage("Logon Failed", "Bad Login Information", ToastType.Error);
-                return View();
-            }
+
+            // invalid username or password
+            ModelState.AddModelError("", "Invalid email or password");
+            AddToastMessage("Logon Failed", "Bad Login Information", ToastType.Error);
+            return View();
 
             #region default code -- keep for reference
+
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
             ////var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
@@ -186,6 +192,7 @@ namespace IntelliTraxx.Controllers
             ////        ModelState.AddModelError("", "Invalid login attempt.");
             ////        return View(model);
             ////}
+
             #endregion
         }
 
@@ -193,10 +200,7 @@ namespace IntelliTraxx.Controllers
         public async Task<ActionResult> VerifyCode(string provider, string returnUrl, bool rememberMe)
         {
             // Require that the user has already logged in via username/password or external login
-            if (!await SignInManager.HasBeenVerifiedAsync())
-            {
-                return View("Error");
-            }
+            if (!await SignInManager.HasBeenVerifiedAsync()) return View("Error");
             return View(new VerifyCodeViewModel { Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe });
         }
 
@@ -205,16 +209,14 @@ namespace IntelliTraxx.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> VerifyCode(VerifyCodeViewModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
+            if (!ModelState.IsValid) return View(model);
 
             // The following code protects for brute force attacks against the two factor codes.
             // If a user enters incorrect codes for a specified amount of time then the user account
             // will be locked out for a specified amount of time.
             // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, model.RememberMe,
+                model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -245,7 +247,7 @@ namespace IntelliTraxx.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    await SignInManager.SignInAsync(user, false, false);
 
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
@@ -255,6 +257,7 @@ namespace IntelliTraxx.Controllers
 
                     return RedirectToAction("Index", "Home");
                 }
+
                 AddErrors(result);
             }
 
@@ -265,10 +268,7 @@ namespace IntelliTraxx.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> ConfirmEmail(string userId, string code)
         {
-            if (userId == null || code == null)
-            {
-                return View("Error");
-            }
+            if (userId == null || code == null) return View("Error");
             var result = await UserManager.ConfirmEmailAsync(userId, code);
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
@@ -287,11 +287,8 @@ namespace IntelliTraxx.Controllers
             if (ModelState.IsValid)
             {
                 var user = await UserManager.FindByNameAsync(model.Email);
-                if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
-                {
-                    // Don't reveal that the user does not exist or is not confirmed
+                if (user == null || !await UserManager.IsEmailConfirmedAsync(user.Id))
                     return View("ForgotPasswordConfirmation");
-                }
 
                 // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                 // Send an email with this link
@@ -322,21 +319,11 @@ namespace IntelliTraxx.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
+            if (!ModelState.IsValid) return View(model);
             var user = await UserManager.FindByNameAsync(model.Email);
-            if (user == null)
-            {
-                // Don't reveal that the user does not exist
-                return RedirectToAction("ResetPasswordConfirmation", "Account");
-            }
+            if (user == null) return RedirectToAction("ResetPasswordConfirmation", "Account");
             var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
-            if (result.Succeeded)
-            {
-                return RedirectToAction("ResetPasswordConfirmation", "Account");
-            }
+            if (result.Succeeded) return RedirectToAction("ResetPasswordConfirmation", "Account");
             AddErrors(result);
             return View();
         }
@@ -353,20 +340,20 @@ namespace IntelliTraxx.Controllers
         public ActionResult ExternalLogin(string provider, string returnUrl)
         {
             // Request a redirect to the external login provider
-            return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
+            return new ChallengeResult(provider,
+                Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
         }
 
         [AllowAnonymous]
         public async Task<ActionResult> SendCode(string returnUrl, bool rememberMe)
         {
             var userId = await SignInManager.GetVerifiedUserIdAsync();
-            if (userId == null)
-            {
-                return View("Error");
-            }
+            if (userId == null) return View("Error");
             var userFactors = await UserManager.GetValidTwoFactorProvidersAsync(userId);
-            var factorOptions = userFactors.Select(purpose => new SelectListItem { Text = purpose, Value = purpose }).ToList();
-            return View(new SendCodeViewModel { Providers = factorOptions, ReturnUrl = returnUrl, RememberMe = rememberMe });
+            var factorOptions = userFactors.Select(purpose => new SelectListItem { Text = purpose, Value = purpose })
+                .ToList();
+            return View(new SendCodeViewModel
+            { Providers = factorOptions, ReturnUrl = returnUrl, RememberMe = rememberMe });
         }
 
         [HttpPost]
@@ -374,30 +361,22 @@ namespace IntelliTraxx.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SendCode(SendCodeViewModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return View();
-            }
+            if (!ModelState.IsValid) return View();
 
             // Generate the token and send it
-            if (!await SignInManager.SendTwoFactorCodeAsync(model.SelectedProvider))
-            {
-                return View("Error");
-            }
-            return RedirectToAction("VerifyCode", new { Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });
+            if (!await SignInManager.SendTwoFactorCodeAsync(model.SelectedProvider)) return View("Error");
+            return RedirectToAction("VerifyCode",
+                new { Provider = model.SelectedProvider, model.ReturnUrl, model.RememberMe });
         }
 
         [AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
             var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
-            if (loginInfo == null)
-            {
-                return RedirectToAction("Login");
-            }
+            if (loginInfo == null) return RedirectToAction("Login");
 
             // Sign in the user with this external login provider if the user already has a login
-            var result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
+            var result = await SignInManager.ExternalSignInAsync(loginInfo, false);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -411,28 +390,24 @@ namespace IntelliTraxx.Controllers
                     // If the user does not have an account, then prompt the user to create an account
                     ViewBag.ReturnUrl = returnUrl;
                     ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
-                    return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
+                    return View("ExternalLoginConfirmation",
+                        new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
             }
         }
 
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl)
+        public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model,
+            string returnUrl)
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Index", "Manage");
-            }
+            if (User.Identity.IsAuthenticated) return RedirectToAction("Index", "Manage");
 
             if (ModelState.IsValid)
             {
                 // Get the information about the user from the external login provider
                 var info = await AuthenticationManager.GetExternalLoginInfoAsync();
-                if (info == null)
-                {
-                    return View("ExternalLoginFailure");
-                }
+                if (info == null) return View("ExternalLoginFailure");
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
@@ -440,10 +415,11 @@ namespace IntelliTraxx.Controllers
                     result = await UserManager.AddLoginAsync(user.Id, info.Login);
                     if (result.Succeeded)
                     {
-                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                        await SignInManager.SignInAsync(user, false, false);
                         return RedirectToLocal(returnUrl);
                     }
                 }
+
                 AddErrors(result);
             }
 
@@ -485,32 +461,22 @@ namespace IntelliTraxx.Controllers
 
             base.Dispose(disposing);
         }
+
         #region Helpers
+
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
-        private IAuthenticationManager AuthenticationManager
-        {
-            get
-            {
-                return HttpContext.GetOwinContext().Authentication;
-            }
-        }
+        private IAuthenticationManager AuthenticationManager => HttpContext.GetOwinContext().Authentication;
 
         private void AddErrors(IdentityResult result)
         {
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError("", error);
-            }
+            foreach (var error in result.Errors) ModelState.AddModelError("", error);
         }
 
         private ActionResult RedirectToLocal(string returnUrl)
         {
-            if (Url.IsLocalUrl(returnUrl))
-            {
-                return Redirect(returnUrl);
-            }
+            if (Url.IsLocalUrl(returnUrl)) return Redirect(returnUrl);
             return RedirectToAction("Index", "Home");
         }
 
@@ -535,13 +501,11 @@ namespace IntelliTraxx.Controllers
             public override void ExecuteResult(ControllerContext context)
             {
                 var properties = new AuthenticationProperties { RedirectUri = RedirectUri };
-                if (UserId != null)
-                {
-                    properties.Dictionary[XsrfKey] = UserId;
-                }
+                if (UserId != null) properties.Dictionary[XsrfKey] = UserId;
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
             }
         }
+
         #endregion
     }
 }
