@@ -1,9 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.421
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntelliTraxx", "IntelliTraxx\IntelliTraxx.csproj", "{8BEEA855-1850-4F96-91BB-341FDE197159}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntelliTraxx.WebApi", "IntelliTraxx.WebApi\IntelliTraxx.WebApi.csproj", "{4E6FFD58-013F-4F6B-AD35-0A2E8EBFF2D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntelliTraxx.WebApi.Tests", "IntelliTraxx.WebApi.Tests\IntelliTraxx.WebApi.Tests.csproj", "{B8A9806F-C224-4CA9-B2DA-0343878C5C3D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntelliTraxx.Shared", "IntelliTraxx.Shared\IntelliTraxx.Shared.csproj", "{3F77930C-C566-40A0-85D2-EBAA84CC2A75}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +21,23 @@ Global
 		{8BEEA855-1850-4F96-91BB-341FDE197159}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8BEEA855-1850-4F96-91BB-341FDE197159}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8BEEA855-1850-4F96-91BB-341FDE197159}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E6FFD58-013F-4F6B-AD35-0A2E8EBFF2D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E6FFD58-013F-4F6B-AD35-0A2E8EBFF2D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E6FFD58-013F-4F6B-AD35-0A2E8EBFF2D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E6FFD58-013F-4F6B-AD35-0A2E8EBFF2D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8A9806F-C224-4CA9-B2DA-0343878C5C3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8A9806F-C224-4CA9-B2DA-0343878C5C3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8A9806F-C224-4CA9-B2DA-0343878C5C3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8A9806F-C224-4CA9-B2DA-0343878C5C3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F77930C-C566-40A0-85D2-EBAA84CC2A75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F77930C-C566-40A0-85D2-EBAA84CC2A75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F77930C-C566-40A0-85D2-EBAA84CC2A75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F77930C-C566-40A0-85D2-EBAA84CC2A75}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3650BCE8-0C96-4CD1-9A08-91BF672CB90D}
 	EndGlobalSection
 EndGlobal

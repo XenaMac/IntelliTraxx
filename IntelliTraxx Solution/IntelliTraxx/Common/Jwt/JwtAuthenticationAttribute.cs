@@ -5,9 +5,8 @@ using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http.Filters;
-using IntelliTraxx.Common.Jwt;
 
-namespace IntelliTraxx.Common
+namespace IntelliTraxx.Common.Jwt
 {
     public class JwtAuthenticationAttribute : Attribute, IAuthenticationFilter
     {

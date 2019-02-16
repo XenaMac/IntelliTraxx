@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Web.Mvc;
 using IntelliTraxx.Common;
+using IntelliTraxx.Common.Jwt;
 
 namespace IntelliTraxx.Controllers
-{
-   
+{   
+    [JwtAuthentication]
     public class DispatchController : MobileBaseController
     {
         [AllowAnonymous]
@@ -15,13 +16,10 @@ namespace IntelliTraxx.Controllers
         }
 
         public ActionResult GetServerTimeSafe()
-        {
-            var request = HttpContext.Request;
-            var user = HttpContext.User.Identity.Name;
+        {            
             var name = this.GetUserName();
             var userId = this.GetUserId();
-
-            var data = DateTime.Now;
+            var data = $"{DateTime.Now}-{name}-{userId}" ;
             return Json(data, JsonRequestBehavior.AllowGet);
         }
     }

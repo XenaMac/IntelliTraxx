@@ -9,7 +9,7 @@ using System.Web.Mvc;
 using System.Web.Security;
 using IntelliTraxx.Common;
 using IntelliTraxx.Common.Jwt;
-using IntelliTraxx.Models;
+using IntelliTraxx.Shared;
 using IntelliTraxx.Toastr;
 using IntelliTraxx.TruckService;
 using Microsoft.AspNet.Identity;

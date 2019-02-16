@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http.Headers;
-using System.Web;
 using System.Web.Http.Filters;
 
-namespace IntelliTraxx.Common
+namespace IntelliTraxx.Common.Jwt
 {
     public static class HttpAuthenticationChallengeContextExtensions
     {
@@ -14,14 +11,12 @@ namespace IntelliTraxx.Common
             ChallengeWith(context, new AuthenticationHeaderValue(scheme));
         }
 
-        public static void ChallengeWith(this HttpAuthenticationChallengeContext context, string scheme,
-            string parameter)
+        public static void ChallengeWith(this HttpAuthenticationChallengeContext context, string scheme, string parameter)
         {
             ChallengeWith(context, new AuthenticationHeaderValue(scheme, parameter));
         }
 
-        public static void ChallengeWith(this HttpAuthenticationChallengeContext context,
-            AuthenticationHeaderValue challenge)
+        public static void ChallengeWith(this HttpAuthenticationChallengeContext context, AuthenticationHeaderValue challenge)
         {
             if (context == null)
                 throw new ArgumentNullException(nameof(context));

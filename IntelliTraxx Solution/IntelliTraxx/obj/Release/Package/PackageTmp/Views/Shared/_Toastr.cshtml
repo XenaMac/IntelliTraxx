@@ -1,6 +1,0 @@
-﻿@using IntelliTraxx.Toastr
-@if (ViewData.ContainsKey("Toastr"))
-{
-    Toastr toastr = ViewData["Toastr"] as Toastr;
-    @ToastrBuilder.ShowToastMessages(toastr);
-}

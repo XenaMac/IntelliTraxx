@@ -3,8 +3,7 @@ using System.Security.Claims;
 using System.Web.Mvc;
 
 namespace IntelliTraxx.Common
-{
-    [JwtAuthentication]
+{   
     public class MobileBaseController : Controller
     {
         public string GetUserEmail()
