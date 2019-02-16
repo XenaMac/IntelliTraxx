@@ -70,6 +70,9 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
     </Reference>
@@ -96,15 +99,263 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccountViewModels.cs" />
-    <Compile Include="IdentityConfig.cs" />
-    <Compile Include="IdentityModels.cs" />
-    <Compile Include="ManageViewModels.cs" />
+    <Compile Include="Concrete\UserSecurity.cs" />
+    <Compile Include="Connected Services\AlertAdminService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\PolygonService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\TabletService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\TruckService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Contracts\IUserSecurity.cs" />
+    <Compile Include="Identity\AccountViewModels.cs" />
+    <Compile Include="Identity\AuthMgmt.cs" />
+    <Compile Include="Identity\IdentityConfig.cs" />
+    <Compile Include="Identity\IdentityModels.cs" />
+    <Compile Include="Identity\ManageViewModels.cs" />
+    <Compile Include="Identity\UserSecurityContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Connected Services\AlertAdminService\AlertAdminSvc.wsdl" />
+    <None Include="Connected Services\AlertAdminService\AlertAdminSvc.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\AlertAdminService\AlertAdminSvc1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\AlertAdminService\AlertAdminSvc2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\AlertAdminService\AlertAdminSvc3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\AlertAdminService\IntelliTraxx.Shared.AlertAdminService.alertClass.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\AlertAdminService\IntelliTraxx.Shared.AlertAdminService.alertData.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\AlertAdminService\IntelliTraxx.Shared.AlertAdminService.alertGeoFence.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\AlertAdminService\IntelliTraxx.Shared.AlertAdminService.alertVehicle.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\AlertAdminService\IntelliTraxx.Shared.AlertAdminService.dbAlert.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\AlertAdminService\IntelliTraxx.Shared.AlertAdminService.linkVehicle.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\AlertAdminService\IntelliTraxx.Shared.AlertAdminService.polyData.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\AlertAdminService\IntelliTraxx.Shared.AlertAdminService.schedule.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\AlertAdminService\IntelliTraxx.Shared.AlertAdminService.vsLink.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\PolygonService\IntelliTraxx.Shared.PolygonService.polygonData.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\PolygonService\PolygonService.wsdl" />
+    <None Include="Connected Services\PolygonService\PolygonService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\PolygonService\PolygonService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\PolygonService\PolygonService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\TabletService\IntelliTraxx.Shared.TabletService.customStatus.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TabletService\IntelliTraxx.Shared.TabletService.dispatch.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TabletService\IntelliTraxx.Shared.TabletService.TabletDriver.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TabletService\IntelliTraxx.Shared.TabletService.tabletGPS.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TabletService\TabletInterface.wsdl" />
+    <None Include="Connected Services\TabletService\TabletInterface.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\TabletService\TabletInterface1.wsdl" />
+    <None Include="Connected Services\TabletService\TabletInterface1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\TabletService\TabletInterface2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\TruckService\IntelliTraxx.Shared.TruckService.alertReturn.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TruckService\IntelliTraxx.Shared.TruckService.Company.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TruckService\IntelliTraxx.Shared.TruckService.customStatus.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TruckService\IntelliTraxx.Shared.TruckService.dispatch.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TruckService\IntelliTraxx.Shared.TruckService.Driver.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TruckService\IntelliTraxx.Shared.TruckService.driverVehicleReturn.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TruckService\IntelliTraxx.Shared.TruckService.linkVehicle.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TruckService\IntelliTraxx.Shared.TruckService.macVehicle.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TruckService\IntelliTraxx.Shared.TruckService.OBDLog.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TruckService\IntelliTraxx.Shared.TruckService.retVehicle.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TruckService\IntelliTraxx.Shared.TruckService.Role.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TruckService\IntelliTraxx.Shared.TruckService.statusObjectReturn.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TruckService\IntelliTraxx.Shared.TruckService.systemvar.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TruckService\IntelliTraxx.Shared.TruckService.User.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TruckService\IntelliTraxx.Shared.TruckService.UserCompany.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TruckService\IntelliTraxx.Shared.TruckService.UserRole.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TruckService\IntelliTraxx.Shared.TruckService.Vehicle.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TruckService\IntelliTraxx.Shared.TruckService.VehicleClass.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TruckService\IntelliTraxx.Shared.TruckService.VehicleExtendedData.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TruckService\IntelliTraxx.Shared.TruckService.VehicleGPSRecord.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TruckService\TruckService.wsdl" />
+    <None Include="Connected Services\TruckService\TruckService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\TruckService\TruckService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\TruckService\TruckService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\TruckService\TruckService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\TruckService\TruckService4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\TruckService\TruckService5.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\AlertAdminService\" />
+    <WCFMetadataStorage Include="Connected Services\PolygonService\" />
+    <WCFMetadataStorage Include="Connected Services\TabletService\" />
+    <WCFMetadataStorage Include="Connected Services\TruckService\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\TruckService\TruckService.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\TruckService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\TruckService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\TruckService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\AlertAdminService\AlertAdminSvc.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\AlertAdminService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\AlertAdminService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\AlertAdminService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\PolygonService\PolygonService.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\PolygonService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\PolygonService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\PolygonService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\TabletService\TabletInterface.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\TabletService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\TabletService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\TabletService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

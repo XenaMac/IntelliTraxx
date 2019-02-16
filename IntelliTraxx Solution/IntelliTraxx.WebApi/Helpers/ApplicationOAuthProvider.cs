@@ -1,30 +1,29 @@
-﻿using System;
-using System.Linq;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Threading.Tasks;
-using IntelliTraxx.Shared;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
+using IntelliTraxx.Shared.Identity;
+using IntelliTraxx.Shared.TruckService;
 using Microsoft.Owin.Security.OAuth;
 
 namespace IntelliTraxx.WebApi.Helpers
 {
     public class ApplicationOAuthProvider : OAuthAuthorizationServerProvider
     {
+        private readonly AuthMgmt _authMgmt = new AuthMgmt();
+        private readonly TruckServiceClient _truckService = new TruckServiceClient();
+        
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
-            var userStore = new UserStore<ApplicationUser>();
-            var manager = new UserManager<ApplicationUser>(userStore);
-            var user = await manager.FindAsync(context.UserName, context.Password);
-            if (user != null)
+            var userId = _authMgmt.LogonUser(context.UserName, context.Password);
+            var appUser = _truckService.getUserProfile(userId);
+
+            if (appUser != null)
             {
-                var role = manager.GetRoles(user.Id).FirstOrDefault();
                 var identity = new ClaimsIdentity(context.Options.AuthenticationType);
-                identity.AddClaim(new Claim("UserId", user.Id));
-                identity.AddClaim(new Claim("Email", user.Email));
-                identity.AddClaim(new Claim("Name", user.UserName));
-                identity.AddClaim(new Claim(ClaimTypes.Role, role));
-                identity.AddClaim(new Claim("LoggedOn", DateTime.Now.ToString()));
+                identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, appUser.UserEmail));
+                identity.AddClaim(new Claim(ClaimTypes.Name, $"{appUser.UserFirstName} {appUser.UserLastName}"));
+                identity.AddClaim(new Claim(ClaimTypes.Email, appUser.UserEmail));
+                identity.AddClaim(new Claim(ClaimTypes.HomePhone, appUser.UserPhone));
+                identity.AddClaim(new Claim(ClaimTypes.Sid, appUser.UserID.ToString()));
                 context.Validated(identity);
             }
         }

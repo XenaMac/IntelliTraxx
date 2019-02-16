@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="9c26837e-8b38-42e3-ac0c-4c92a9a6fec9" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:59978/PolygonService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="PolygonService.wsdl" MetadataType="Wsdl" ID="cf4b6039-24f2-4e26-b7b0-469dd2432ac6" SourceId="1" SourceUrl="http://localhost:59978/PolygonService.svc?wsdl" />
+    <MetadataFile FileName="PolygonService.xsd" MetadataType="Schema" ID="53a17b18-d305-417b-8515-62b2477e48d1" SourceId="1" SourceUrl="http://localhost:59978/PolygonService.svc?xsd=xsd2" />
+    <MetadataFile FileName="PolygonService1.xsd" MetadataType="Schema" ID="4444976f-1f37-41b0-8b71-bb24fcb26123" SourceId="1" SourceUrl="http://localhost:59978/PolygonService.svc?xsd=xsd1" />
+    <MetadataFile FileName="PolygonService2.xsd" MetadataType="Schema" ID="084d17ed-c820-417c-b81e-1739794164c3" SourceId="1" SourceUrl="http://localhost:59978/PolygonService.svc?xsd=xsd0" />
+    <MetadataFile FileName="PolygonService.disco" MetadataType="Disco" ID="98f5c73c-d3e7-470f-adcf-a72cefed9d6c" SourceId="1" SourceUrl="http://localhost:59978/PolygonService.svc?disco" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

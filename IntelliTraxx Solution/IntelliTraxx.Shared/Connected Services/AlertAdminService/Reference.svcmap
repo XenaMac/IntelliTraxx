@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="a7bcb811-d5e3-4ae4-831b-9e0a52a94da0" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:59978/AlertAdminSvc.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="AlertAdminSvc.xsd" MetadataType="Schema" ID="4c2ba22e-fc09-497e-9b72-cc257734962d" SourceId="1" SourceUrl="http://localhost:59978/AlertAdminSvc.svc?xsd=xsd3" />
+    <MetadataFile FileName="AlertAdminSvc1.xsd" MetadataType="Schema" ID="9bb84cb0-4e61-4720-b51a-e6295408e861" SourceId="1" SourceUrl="http://localhost:59978/AlertAdminSvc.svc?xsd=xsd0" />
+    <MetadataFile FileName="AlertAdminSvc2.xsd" MetadataType="Schema" ID="5c40105e-d566-43b5-acd1-ec5ca85c693a" SourceId="1" SourceUrl="http://localhost:59978/AlertAdminSvc.svc?xsd=xsd1" />
+    <MetadataFile FileName="AlertAdminSvc.disco" MetadataType="Disco" ID="ab87b70a-38f4-4687-863c-053c4a2926cc" SourceId="1" SourceUrl="http://localhost:59978/AlertAdminSvc.svc?disco" />
+    <MetadataFile FileName="AlertAdminSvc.wsdl" MetadataType="Wsdl" ID="be8c9e1a-0cc6-454a-b476-c543d6406bcb" SourceId="1" SourceUrl="http://localhost:59978/AlertAdminSvc.svc?wsdl" />
+    <MetadataFile FileName="AlertAdminSvc3.xsd" MetadataType="Schema" ID="a5dadeb7-f0d6-48eb-868f-8a2d82b2358d" SourceId="1" SourceUrl="http://localhost:59978/AlertAdminSvc.svc?xsd=xsd2" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

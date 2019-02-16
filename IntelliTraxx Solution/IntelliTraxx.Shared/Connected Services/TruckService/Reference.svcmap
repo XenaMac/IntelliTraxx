@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="e58469b0-ec70-4cac-824b-c5822ca02fd4" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:59978/TruckService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="TruckService.xsd" MetadataType="Schema" ID="a6f6667c-8384-4314-bb05-76a2e32de225" SourceId="1" SourceUrl="http://localhost:59978/TruckService.svc?xsd=xsd2" />
+    <MetadataFile FileName="TruckService.disco" MetadataType="Disco" ID="cebb6767-8288-4770-8221-123075d2ac6c" SourceId="1" SourceUrl="http://localhost:59978/TruckService.svc?disco" />
+    <MetadataFile FileName="TruckService1.xsd" MetadataType="Schema" ID="d8f5333c-bc87-4494-a6b9-6e45d49721b0" SourceId="1" SourceUrl="http://localhost:59978/TruckService.svc?xsd=xsd5" />
+    <MetadataFile FileName="TruckService2.xsd" MetadataType="Schema" ID="04b77669-f26a-45ea-b102-1191ed8174e1" SourceId="1" SourceUrl="http://localhost:59978/TruckService.svc?xsd=xsd1" />
+    <MetadataFile FileName="TruckService3.xsd" MetadataType="Schema" ID="98bea780-e941-415c-8b2f-4ac0ad0e31a5" SourceId="1" SourceUrl="http://localhost:59978/TruckService.svc?xsd=xsd3" />
+    <MetadataFile FileName="TruckService4.xsd" MetadataType="Schema" ID="51ea25fa-bffb-46b9-81dd-16bc108ee2ad" SourceId="1" SourceUrl="http://localhost:59978/TruckService.svc?xsd=xsd4" />
+    <MetadataFile FileName="TruckService.wsdl" MetadataType="Wsdl" ID="4aa6b2a6-d777-4360-af8d-256be7b935b2" SourceId="1" SourceUrl="http://localhost:59978/TruckService.svc?wsdl" />
+    <MetadataFile FileName="TruckService5.xsd" MetadataType="Schema" ID="62c13c7c-f79b-4c97-a807-627e7e73c9e5" SourceId="1" SourceUrl="http://localhost:59978/TruckService.svc?xsd=xsd0" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

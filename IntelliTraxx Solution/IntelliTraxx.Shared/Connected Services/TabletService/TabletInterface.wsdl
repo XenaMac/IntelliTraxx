@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tabletinterface.com" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://tabletinterface.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tabletinterface.com/Imports">
+      <xsd:import schemaLocation="http://localhost:59978/TabletInterface.svc?xsd=xsd0" namespace="http://tabletinterface.com" />
+      <xsd:import schemaLocation="http://localhost:59978/TabletInterface.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost:59978/TabletInterface.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/LATATrax" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="ITabletInterface_LogonDriver_InputMessage">
+    <wsdl:part name="parameters" element="tns:LogonDriver" />
+  </wsdl:message>
+  <wsdl:message name="ITabletInterface_LogonDriver_OutputMessage">
+    <wsdl:part name="parameters" element="tns:LogonDriverResponse" />
+  </wsdl:message>
+  <wsdl:message name="ITabletInterface_DriverAutoLogon_InputMessage">
+    <wsdl:part name="parameters" element="tns:DriverAutoLogon" />
+  </wsdl:message>
+  <wsdl:message name="ITabletInterface_DriverAutoLogon_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DriverAutoLogonResponse" />
+  </wsdl:message>
+  <wsdl:message name="ITabletInterface_LogoffDriver_InputMessage">
+    <wsdl:part name="parameters" element="tns:LogoffDriver" />
+  </wsdl:message>
+  <wsdl:message name="ITabletInterface_LogoffDriver_OutputMessage">
+    <wsdl:part name="parameters" element="tns:LogoffDriverResponse" />
+  </wsdl:message>
+  <wsdl:message name="ITabletInterface_LogonDriverByPin_InputMessage">
+    <wsdl:part name="parameters" element="tns:LogonDriverByPin" />
+  </wsdl:message>
+  <wsdl:message name="ITabletInterface_LogonDriverByPin_OutputMessage">
+    <wsdl:part name="parameters" element="tns:LogonDriverByPinResponse" />
+  </wsdl:message>
+  <wsdl:message name="ITabletInterface_getPosition_InputMessage">
+    <wsdl:part name="parameters" element="tns:getPosition" />
+  </wsdl:message>
+  <wsdl:message name="ITabletInterface_getPosition_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getPositionResponse" />
+  </wsdl:message>
+  <wsdl:message name="ITabletInterface_setStatus_InputMessage">
+    <wsdl:part name="parameters" element="tns:setStatus" />
+  </wsdl:message>
+  <wsdl:message name="ITabletInterface_setStatus_OutputMessage">
+    <wsdl:part name="parameters" element="tns:setStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="ITabletInterface_getCustomStatuses_InputMessage">
+    <wsdl:part name="parameters" element="tns:getCustomStatuses" />
+  </wsdl:message>
+  <wsdl:message name="ITabletInterface_getCustomStatuses_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getCustomStatusesResponse" />
+  </wsdl:message>
+  <wsdl:message name="ITabletInterface_getDispatches_InputMessage">
+    <wsdl:part name="parameters" element="tns:getDispatches" />
+  </wsdl:message>
+  <wsdl:message name="ITabletInterface_getDispatches_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getDispatchesResponse" />
+  </wsdl:message>
+  <wsdl:message name="ITabletInterface_ackDispatch_InputMessage">
+    <wsdl:part name="parameters" element="tns:ackDispatch" />
+  </wsdl:message>
+  <wsdl:message name="ITabletInterface_ackDispatch_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ackDispatchResponse" />
+  </wsdl:message>
+  <wsdl:message name="ITabletInterface_closeDispatch_InputMessage">
+    <wsdl:part name="parameters" element="tns:closeDispatch" />
+  </wsdl:message>
+  <wsdl:message name="ITabletInterface_closeDispatch_OutputMessage">
+    <wsdl:part name="parameters" element="tns:closeDispatchResponse" />
+  </wsdl:message>
+  <wsdl:message name="ITabletInterface_createNewVehicle_InputMessage">
+    <wsdl:part name="parameters" element="tns:createNewVehicle" />
+  </wsdl:message>
+  <wsdl:message name="ITabletInterface_createNewVehicle_OutputMessage">
+    <wsdl:part name="parameters" element="tns:createNewVehicleResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ITabletInterface">
+    <wsdl:operation name="LogonDriver">
+      <wsdl:input wsaw:Action="http://tabletinterface.com/ITabletInterface/LogonDriver" message="tns:ITabletInterface_LogonDriver_InputMessage" />
+      <wsdl:output wsaw:Action="http://tabletinterface.com/ITabletInterface/LogonDriverResponse" message="tns:ITabletInterface_LogonDriver_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DriverAutoLogon">
+      <wsdl:input wsaw:Action="http://tabletinterface.com/ITabletInterface/DriverAutoLogon" message="tns:ITabletInterface_DriverAutoLogon_InputMessage" />
+      <wsdl:output wsaw:Action="http://tabletinterface.com/ITabletInterface/DriverAutoLogonResponse" message="tns:ITabletInterface_DriverAutoLogon_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="LogoffDriver">
+      <wsdl:input wsaw:Action="http://tabletinterface.com/ITabletInterface/LogoffDriver" message="tns:ITabletInterface_LogoffDriver_InputMessage" />
+      <wsdl:output wsaw:Action="http://tabletinterface.com/ITabletInterface/LogoffDriverResponse" message="tns:ITabletInterface_LogoffDriver_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="LogonDriverByPin">
+      <wsdl:input wsaw:Action="http://tabletinterface.com/ITabletInterface/LogonDriverByPin" message="tns:ITabletInterface_LogonDriverByPin_InputMessage" />
+      <wsdl:output wsaw:Action="http://tabletinterface.com/ITabletInterface/LogonDriverByPinResponse" message="tns:ITabletInterface_LogonDriverByPin_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getPosition">
+      <wsdl:input wsaw:Action="http://tabletinterface.com/ITabletInterface/getPosition" message="tns:ITabletInterface_getPosition_InputMessage" />
+      <wsdl:output wsaw:Action="http://tabletinterface.com/ITabletInterface/getPositionResponse" message="tns:ITabletInterface_getPosition_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="setStatus">
+      <wsdl:input wsaw:Action="http://tabletinterface.com/ITabletInterface/setStatus" message="tns:ITabletInterface_setStatus_InputMessage" />
+      <wsdl:output wsaw:Action="http://tabletinterface.com/ITabletInterface/setStatusResponse" message="tns:ITabletInterface_setStatus_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getCustomStatuses">
+      <wsdl:input wsaw:Action="http://tabletinterface.com/ITabletInterface/getCustomStatuses" message="tns:ITabletInterface_getCustomStatuses_InputMessage" />
+      <wsdl:output wsaw:Action="http://tabletinterface.com/ITabletInterface/getCustomStatusesResponse" message="tns:ITabletInterface_getCustomStatuses_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getDispatches">
+      <wsdl:input wsaw:Action="http://tabletinterface.com/ITabletInterface/getDispatches" message="tns:ITabletInterface_getDispatches_InputMessage" />
+      <wsdl:output wsaw:Action="http://tabletinterface.com/ITabletInterface/getDispatchesResponse" message="tns:ITabletInterface_getDispatches_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ackDispatch">
+      <wsdl:input wsaw:Action="http://tabletinterface.com/ITabletInterface/ackDispatch" message="tns:ITabletInterface_ackDispatch_InputMessage" />
+      <wsdl:output wsaw:Action="http://tabletinterface.com/ITabletInterface/ackDispatchResponse" message="tns:ITabletInterface_ackDispatch_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="closeDispatch">
+      <wsdl:input wsaw:Action="http://tabletinterface.com/ITabletInterface/closeDispatch" message="tns:ITabletInterface_closeDispatch_InputMessage" />
+      <wsdl:output wsaw:Action="http://tabletinterface.com/ITabletInterface/closeDispatchResponse" message="tns:ITabletInterface_closeDispatch_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="createNewVehicle">
+      <wsdl:input wsaw:Action="http://tabletinterface.com/ITabletInterface/createNewVehicle" message="tns:ITabletInterface_createNewVehicle_InputMessage" />
+      <wsdl:output wsaw:Action="http://tabletinterface.com/ITabletInterface/createNewVehicleResponse" message="tns:ITabletInterface_createNewVehicle_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

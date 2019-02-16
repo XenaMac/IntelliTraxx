@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using IntelliTraxx.AJAXVehiclesService;
 
 namespace IntelliTraxx.Controllers
@@ -23,7 +19,7 @@ namespace IntelliTraxx.Controllers
         public ActionResult setOBDData(OBDUpdate ODBData)
         {
             var setOBDData = AVS.setODBData(ODBData);
-            return Json(setOBDData, JsonRequestBehavior.AllowGet);            
+            return Json(setOBDData, JsonRequestBehavior.AllowGet);
         }
     }
 }

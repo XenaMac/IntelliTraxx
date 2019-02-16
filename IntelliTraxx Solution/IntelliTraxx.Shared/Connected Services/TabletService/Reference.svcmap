@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="857996c8-9e2c-45a8-86bd-ae696bddff0a" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:59978/TabletInterface.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="TabletInterface.wsdl" MetadataType="Wsdl" ID="5ce25cd5-60c2-4c1e-b0e1-cc3059e9afce" SourceId="1" SourceUrl="http://localhost:59978/TabletInterface.svc?wsdl=wsdl0" />
+    <MetadataFile FileName="TabletInterface.xsd" MetadataType="Schema" ID="723b9a35-62df-44d8-8ee2-146844b576fa" SourceId="1" SourceUrl="http://localhost:59978/TabletInterface.svc?xsd=xsd0" />
+    <MetadataFile FileName="TabletInterface1.wsdl" MetadataType="Wsdl" ID="27f60f30-519f-41f1-a632-f61707169fac" SourceId="1" SourceUrl="http://localhost:59978/TabletInterface.svc?wsdl" />
+    <MetadataFile FileName="TabletInterface1.xsd" MetadataType="Schema" ID="8bbd406c-0e4f-4679-886a-89b691f9e59d" SourceId="1" SourceUrl="http://localhost:59978/TabletInterface.svc?xsd=xsd2" />
+    <MetadataFile FileName="TabletInterface2.xsd" MetadataType="Schema" ID="83e0910a-7254-45d5-8193-a81fdbc26073" SourceId="1" SourceUrl="http://localhost:59978/TabletInterface.svc?xsd=xsd1" />
+    <MetadataFile FileName="TabletInterface.disco" MetadataType="Disco" ID="cd91f91d-28cc-4242-aabb-69ca8cba1d0a" SourceId="1" SourceUrl="http://localhost:59978/TabletInterface.svc?disco" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

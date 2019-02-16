@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/LATATrax.Models" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/LATATrax.Models" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:59978/PolygonService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:complexType name="ArrayOfpolygonData">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="polygonData" nillable="true" type="tns:polygonData" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfpolygonData" nillable="true" type="tns:ArrayOfpolygonData" />
+  <xs:complexType name="polygonData">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="geoFence" nillable="true" type="tns:ArrayOfLatLon" />
+      <xs:element minOccurs="0" name="geoFenceID" type="ser:guid" />
+      <xs:element minOccurs="0" name="geoType" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="maxLat" type="xs:double" />
+      <xs:element minOccurs="0" name="maxLon" type="xs:double" />
+      <xs:element minOccurs="0" name="minLat" type="xs:double" />
+      <xs:element minOccurs="0" name="minLon" type="xs:double" />
+      <xs:element minOccurs="0" name="notes" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="polyName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="radius" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="polygonData" nillable="true" type="tns:polygonData" />
+  <xs:complexType name="ArrayOfLatLon">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="LatLon" nillable="true" type="tns:LatLon" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfLatLon" nillable="true" type="tns:ArrayOfLatLon" />
+  <xs:complexType name="LatLon">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Alt" type="xs:double" />
+      <xs:element minOccurs="0" name="Lat" type="xs:double" />
+      <xs:element minOccurs="0" name="Lon" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="LatLon" nillable="true" type="tns:LatLon" />
+</xs:schema>

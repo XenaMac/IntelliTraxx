@@ -10,6 +10,7 @@ using System.Web.Security;
 using IntelliTraxx.Common;
 using IntelliTraxx.Common.Jwt;
 using IntelliTraxx.Shared;
+using IntelliTraxx.Shared.Identity;
 using IntelliTraxx.Toastr;
 using IntelliTraxx.TruckService;
 using Microsoft.AspNet.Identity;
@@ -166,7 +167,7 @@ namespace IntelliTraxx.Controllers
                 }
 
                 //this.AddToastMessage("Logon Successful", "Welcome to IntelliTruxx, " + User.Identity.Name + "!", ToastType.Success);
-                return RedirectToAction("/Index", "Fleet");
+                //return RedirectToAction("/Index", "Fleet");
             }
 
             // invalid username or password
