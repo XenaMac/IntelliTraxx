@@ -1,4 +1,4 @@
-﻿using IntelliTraxx.Shared.Contracts;
+﻿using IntelliTraxx.Shared;
 
 namespace IntelliTraxx.WebApi.Helpers
 {

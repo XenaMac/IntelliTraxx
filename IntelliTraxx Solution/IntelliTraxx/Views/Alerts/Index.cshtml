@@ -1,8 +1,10 @@
-﻿@model List<IntelliTraxx.AlertAdminService.dbAlert>
+﻿@model List<IntelliTraxx.Shared.AlertAdminService.dbAlert>
 
 @{
-    ViewBag.Title = "Alerts";
-    Layout = "~/Views/Shared/_LayoutAlerts.cshtml";
+                /**/
+
+                ViewBag.Title = "Alerts";
+                Layout = "~/Views/Shared/_LayoutAlerts.cshtml";
 }
 
 <div id="nav" class="container-fluid center-block">
@@ -16,16 +18,16 @@
     <div id="adminIcon" class="adminIcon_in" data-toggle="tooltip" data-placement="right" title="Administration"></div>
     <div id="profileDiv" class="profileDiv_in">
         @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
-            {
-        @Html.AntiForgeryToken()
-        <small>
-            <ul class="list-group">
-                <li class="list-group-item"><a href="" class="text-left" style="padding: 5px;" id="userNameRole"></a><br /></li>
-                <li class="list-group-item"><a href="" class="text-left" style="padding: 5px;"><i class="glyphicons glyphicons-bell"></i> Notifications@*<span class="badge" style="margin-left: 5px;">3</span>*@ (Coming Soon)</a><br /></li>
-                <li class="list-group-item"><a href="" class="text-left" style="padding: 5px;"><i class="glyphicons glyphicons-question-sign"></i> Help  (Coming Soon)</a></li>
-                <li class="list-group-item"><a href="javascript:document.getElementById('logoutForm').submit()" style="padding: 5px;"><i class="glyphicons glyphicons-exit"></i> Log off</a></li>
-            </ul>
-        </small>
+        {
+            @Html.AntiForgeryToken()
+            <small>
+                <ul class="list-group">
+                    <li class="list-group-item"><a href="" class="text-left" style="padding: 5px;" id="userNameRole"></a><br /></li>
+                    <li class="list-group-item"><a href="" class="text-left" style="padding: 5px;"><i class="glyphicons glyphicons-bell"></i> Notifications@*<span class="badge" style="margin-left: 5px;">3</span>*@ (Coming Soon)</a><br /></li>
+                    <li class="list-group-item"><a href="" class="text-left" style="padding: 5px;"><i class="glyphicons glyphicons-question-sign"></i> Help  (Coming Soon)</a></li>
+                    <li class="list-group-item"><a href="javascript:document.getElementById('logoutForm').submit()" style="padding: 5px;"><i class="glyphicons glyphicons-exit"></i> Log off</a></li>
+                </ul>
+            </small>
         }
     </div>
 </div>

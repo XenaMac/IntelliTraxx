@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 using System.Threading.Tasks;
-using IntelliTraxx.Shared.Identity;
+using IntelliTraxx.Shared;
 using IntelliTraxx.Shared.TruckService;
 using Microsoft.Owin.Security.OAuth;
 
@@ -8,12 +8,17 @@ namespace IntelliTraxx.WebApi.Helpers
 {
     public class ApplicationOAuthProvider : OAuthAuthorizationServerProvider
     {
-        private readonly AuthMgmt _authMgmt = new AuthMgmt();
+        private readonly IAuthManager _authManager;
         private readonly TruckServiceClient _truckService = new TruckServiceClient();
-        
+
+        public ApplicationOAuthProvider(IAuthManager authManager)
+        {
+            _authManager = authManager;
+        }
+
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
-            var userId = _authMgmt.LogonUser(context.UserName, context.Password);
+            var userId = _authManager.LogonUser(context.UserName, context.Password);
             var appUser = _truckService.getUserProfile(userId);
 
             if (appUser != null)

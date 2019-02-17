@@ -1,6 +1,4 @@
-﻿using IntelliTraxx.Shared.Identity;
-
-namespace IntelliTraxx.Shared.Contracts
+﻿namespace IntelliTraxx.Shared
 {
     public interface IUserSecurity
     {

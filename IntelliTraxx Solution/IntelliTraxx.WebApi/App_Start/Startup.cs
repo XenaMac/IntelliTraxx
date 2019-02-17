@@ -9,8 +9,17 @@ using Owin;
 
 namespace IntelliTraxx.WebApi
 {
+   
+
     public class Startup
     {
+        private readonly IAuthManager _authManager;
+
+        public Startup(IAuthManager authManager)
+        {
+            _authManager = authManager;
+        }
+
         public void Configuration(IAppBuilder app)
         {
             app.CreatePerOwinContext(ApplicationDbContext.Create);
@@ -20,7 +29,7 @@ namespace IntelliTraxx.WebApi
             var option = new OAuthAuthorizationServerOptions
             {
                 TokenEndpointPath = new PathString("/token"),
-                Provider = new ApplicationOAuthProvider(),
+                Provider = new ApplicationOAuthProvider(_authManager),
                 AccessTokenExpireTimeSpan = TimeSpan.FromHours(2),
                 AllowInsecureHttp = true
             };

@@ -1,21 +1,15 @@
 ﻿using System;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
-using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Security;
-using IntelliTraxx.Common;
-using IntelliTraxx.Common.Jwt;
 using IntelliTraxx.Shared;
-using IntelliTraxx.Shared.Identity;
+using IntelliTraxx.Shared.TruckService;
 using IntelliTraxx.Toastr;
-using IntelliTraxx.TruckService;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.Owin.Security;
 
 namespace IntelliTraxx.Controllers
@@ -23,10 +17,10 @@ namespace IntelliTraxx.Controllers
     [Authorize]
     public class AccountController : MessageControllerBase
     {
-        private readonly AuthMgmt _authMgmt = new AuthMgmt();
+        private readonly AuthManager _authManager = new AuthManager();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-        private readonly TruckServiceClient truckService = new TruckServiceClient();
+        private readonly TruckServiceClient _truckService = new TruckServiceClient();
 
         public AccountController()
         {
@@ -56,41 +50,7 @@ namespace IntelliTraxx.Controllers
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
-        
-        [HttpPost]
-        [AllowAnonymous]        
-        public ActionResult LoginMobile(LoginViewModel model)
-        {
-            var user = new User();
-            if (!ModelState.IsValid)
-                return Json(user, JsonRequestBehavior.AllowGet);
-
-            var userId = _authMgmt.LogonUser(model.Email, model.Password);
-
-            if (userId.ToString() != "00000000-0000-0000-0000-000000000000")
-            {
-                user = truckService.getUserProfile(userId);
-                var userCompanies = truckService.getUserCompaniesFull(userId);
-                var userCompanyNames = string.Join("-", userCompanies);
-                var userRoles = _authMgmt.GetUserRoles(userId);
-                var userRoleNames = string.Join("-", userRoles);
-                                
-                var jwtToken = JwtManager.GenerateToken(user, userRoleNames, userCompanyNames);
-
-                var response = new
-                {
-                    user.UserID,
-                    user.UserFirstName,
-                    user.UserLastName,
-                    user.UserEmail,
-                    AccessToken = jwtToken
-                };
-                                                
-                return Json(response, JsonRequestBehavior.AllowGet);
-            }
-            return Json(user, JsonRequestBehavior.AllowGet);
-        }
-       
+             
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -99,15 +59,15 @@ namespace IntelliTraxx.Controllers
             string rolesList = null;
             if (!ModelState.IsValid) return View(model);
 
-            var userID = _authMgmt.LogonUser(model.Email, model.Password);
+            var userId = _authManager.LogonUser(model.Email, model.Password);
 
-            if (userID.ToString() != "00000000-0000-0000-0000-000000000000")
+            if (userId.ToString() != "00000000-0000-0000-0000-000000000000")
             {
                 //Set User Session Object
-                var IntelliTruxxUser = truckService.getUserProfile(userID);
+                var intelliTruxxUser = _truckService.getUserProfile(userId);
 
                 //Set UserCompanies Session Object
-                var IntelliTruxxUserCompanies = truckService.getUserCompaniesFull(userID);
+                var intelliTruxxUserCompanies = _truckService.getUserCompaniesFull(userId);
 
                 //Start authentication
                 var ident = new ClaimsIdentity(
@@ -118,16 +78,16 @@ namespace IntelliTraxx.Controllers
                         new Claim("http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider",
                             "ASP.NET Identity", "http://www.w3.org/2001/XMLSchema#string"),
                         new Claim(ClaimTypes.Name,
-                            IntelliTruxxUser.UserFirstName + " " + IntelliTruxxUser.UserLastName),
-                        new Claim(ClaimTypes.Email, IntelliTruxxUser.UserEmail),
-                        new Claim(ClaimTypes.HomePhone, IntelliTruxxUser.UserPhone),
-                        new Claim(ClaimTypes.Sid, IntelliTruxxUser.UserID.ToString())
+                            intelliTruxxUser.UserFirstName + " " + intelliTruxxUser.UserLastName),
+                        new Claim(ClaimTypes.Email, intelliTruxxUser.UserEmail),
+                        new Claim(ClaimTypes.HomePhone, intelliTruxxUser.UserPhone),
+                        new Claim(ClaimTypes.Sid, intelliTruxxUser.UserID.ToString())
                     },
                     DefaultAuthenticationTypes.ApplicationCookie);
 
                 #region Add all roles to Ident
 
-                var roleNames = _authMgmt.GetUserRoles(userID);
+                var roleNames = _authManager.GetUserRoles(userId);
                 string rnames = null;
                 foreach (var s in roleNames) rnames += s + ", ";
 
@@ -139,7 +99,7 @@ namespace IntelliTraxx.Controllers
                 #region Add all companies to Ident
 
                 string companies = null;
-                foreach (var c in IntelliTruxxUserCompanies) companies += c.CompanyName + ", ";
+                foreach (var c in intelliTruxxUserCompanies) companies += c.CompanyName + ", ";
                 var claimCo = new Claim("Companies", companies);
                 ident.AddClaim(claimCo);
 
@@ -166,8 +126,8 @@ namespace IntelliTraxx.Controllers
                     Response.Cookies.Add(cookie);
                 }
 
-                //this.AddToastMessage("Logon Successful", "Welcome to IntelliTruxx, " + User.Identity.Name + "!", ToastType.Success);
-                //return RedirectToAction("/Index", "Fleet");
+                this.AddToastMessage("Logon Successful", "Welcome to IntelliTruxx, " + User.Identity.Name + "!", ToastType.Success);
+                return RedirectToAction("/Index", "Fleet");
             }
 
             // invalid username or password

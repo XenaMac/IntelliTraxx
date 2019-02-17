@@ -1,21 +1,21 @@
-﻿using IntelliTraxx.AlertAdminService;
-using IntelliTraxx.PolygonService;
-using IntelliTraxx.TruckService;
-using IntelliTraxx.TabletService;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using IntelliTraxx.Shared.AlertAdminService;
+using IntelliTraxx.Shared.PolygonService;
+using IntelliTraxx.Shared.TabletService;
+using IntelliTraxx.Shared.TruckService;
 using RestSharp;
 
 namespace IntelliTraxx.Controllers
 {
     public class FleetController : Controller
     {
-        TruckServiceClient truckService = new TruckServiceClient();
-        PolygonServiceClient polygonService = new PolygonServiceClient();
-        AlertAdminSvcClient alertAdminService = new AlertAdminSvcClient();
-        TabletInterfaceClient tabletService = new TabletInterfaceClient();
+        readonly TruckServiceClient _truckService = new TruckServiceClient();
+        readonly PolygonServiceClient _polygonService = new PolygonServiceClient();
+        readonly AlertAdminSvcClient _alertAdminService = new AlertAdminSvcClient();
+        TabletInterfaceClient _tabletService = new TabletInterfaceClient();
 
         // GET: Fleet
         [Authorize]
@@ -27,7 +27,7 @@ namespace IntelliTraxx.Controllers
         public ActionResult GetParentCompanyLocation()
         {
             Company parentCompany = new Company();
-            List<Company> companies = truckService.getCompanies(new Guid());
+            var companies = _truckService.getCompanies(new Guid());
 
             foreach (Company c in companies)
             {
@@ -42,35 +42,34 @@ namespace IntelliTraxx.Controllers
 
         public ActionResult getVariables()
         {
-            var variables = truckService.getVarsAsync();
+            var variables = _truckService.getVarsAsync();
 
             return Json(variables, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult getVehicles()
         {
-            var vehicles = truckService.getVehicles();
+            var vehicles = _truckService.getVehicles();
 
             return Json(vehicles, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult getAllVehicles(bool loadHistorical)
         {
-            List<Vehicle> allVehicles = truckService.getAllVehicles(loadHistorical);
-
+            var allVehicles = _truckService.getAllVehicles(loadHistorical);
             return Json(allVehicles, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult getVehicleList()
         {
-            var vehicleList = truckService.getVehicleList();
+            var vehicleList = _truckService.getVehicleList();
 
             return Json(vehicleList, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult getGPS(Guid id)
         {
-            var vehicleData = truckService.getGPS(id);
+            var vehicleData = _truckService.getGPS(id);
 
             return Json(vehicleData, JsonRequestBehavior.AllowGet);
         }
@@ -78,11 +77,11 @@ namespace IntelliTraxx.Controllers
         public ActionResult getVehicleData(string id)
         {
 
-            var vehicleData = truckService.getVehicleData(new Guid(id));
+            var vehicleData = _truckService.getVehicleData(new Guid(id));
 
             if (vehicleData == null)
             {
-                var allVehicles = truckService.getAllVehicles(true);
+                var allVehicles = _truckService.getAllVehicles(true);
                 foreach (Vehicle v in allVehicles)
                 {
                     if (v.extendedData.ID == new Guid(id))
@@ -97,7 +96,7 @@ namespace IntelliTraxx.Controllers
 
         public ActionResult getAvailableDrivers()
         {
-            List<Driver> availableDrivers = truckService.getAvailableDrivers().OrderBy(d => d.DriverFirstName).ToList();
+            List<Driver> availableDrivers = _truckService.getAvailableDrivers().OrderBy(d => d.DriverFirstName).ToList();
             
             return Json(availableDrivers, JsonRequestBehavior.AllowGet);
         }
@@ -106,7 +105,7 @@ namespace IntelliTraxx.Controllers
         {
             string result = "";
 
-            result = truckService.changeDrivers(from, to, vehicleID, User.Identity.Name);
+            result = _truckService.changeDrivers(from, to, vehicleID, User.Identity.Name);
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -115,14 +114,14 @@ namespace IntelliTraxx.Controllers
         {
             string result = "";
 
-            result = truckService.removeDriver(from, vehicleID);
+            result = _truckService.removeDriver(from, vehicleID);
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult killVehilce(string from, string VehicleID)
         {
-            var VehilceDead = truckService.killVehicle(VehicleID);
+            var VehilceDead = _truckService.killVehicle(VehicleID);
 
             return Json(VehilceDead, JsonRequestBehavior.AllowGet);
         }
@@ -132,48 +131,49 @@ namespace IntelliTraxx.Controllers
         [Authorize]
         public ActionResult GetAllFences()
         {
-            var Fences = polygonService.getPolygons();
+            var Fences = _polygonService.getPolygons();
 
             return Json(Fences, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult GetFence(string id)
         {
-            var Fence = polygonService.getPolygon(id);
+            var Fence = _polygonService.getPolygon(id);
 
             return Json(Fence, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult addFence(string type, string polyName, string notes, string geofenceID, string geoFence, string radius)
         {
-            PolygonService.polygonData polygon = new PolygonService.polygonData();
-            List<PolygonService.LatLon> LatLongs = new List<PolygonService.LatLon>();
+            var polygon = new Shared.PolygonService.polygonData();
+            var latLongs = new List<Shared.PolygonService.LatLon>();
 
             polygon.geoType = type;
             polygon.polyName = polyName;
             polygon.notes = notes;
             polygon.geoFenceID = new Guid(geofenceID);
 
-            string[] coords = geoFence.Split(',');
+            var coords = geoFence.Split(',');
             foreach (string s in coords)
             {
-                string[] latlong = s.Split('^');
-                PolygonService.LatLon LL = new PolygonService.LatLon();
-                LL.Lat = Convert.ToDouble(latlong[0]);
-                LL.Lon = Convert.ToDouble(latlong[1]);
-                LatLongs.Add(LL);
+                var latlong = s.Split('^');
+                var LL = new Shared.PolygonService.LatLon
+                {
+                    Lat = Convert.ToDouble(latlong[0]), Lon = Convert.ToDouble(latlong[1])
+                };
+                latLongs.Add(LL);
             }
             polygon.radius = (type == "circle") ? Convert.ToDouble(radius) : 0;
-            polygon.geoFence = LatLongs;
+            polygon.geoFence = latLongs.ToArray();
 
-            var success = polygonService.addPolygon(polygon);
+            var success = _polygonService.addPolygon(polygon);
 
             return Json(success, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult DeleteFence(string id)
         {
-            polygonService.deletePolygon(new Guid(id));
+            _polygonService.deletePolygon(new Guid(id));
 
             return Json("OK", JsonRequestBehavior.AllowGet);
         }
@@ -184,7 +184,7 @@ namespace IntelliTraxx.Controllers
 
         public ActionResult getVehicleAlerts(Guid ID)
         {
-            List<Vehicle> vehicles = truckService.getAllVehicles(false).Where(a => a.extendedData.ID == ID).ToList();
+            List<Vehicle> vehicles = _truckService.getAllVehicles(false).Where(a => a.extendedData.ID == ID).ToList();
             List<alert> alerts = new List<alert>();
             foreach (Vehicle v in vehicles)
             {
@@ -200,7 +200,7 @@ namespace IntelliTraxx.Controllers
         public ActionResult getAlerts(string from, string to)
         {
             DateTime today = DateTime.Now.Date; //new DateTime(2016, 5, 16); //;
-            DateTime Tomorrow = today.AddDays(1); //new DateTime(2016, 5, 17); //;
+            DateTime tomorrow = today.AddDays(1); //new DateTime(2016, 5, 17); //;
 
             if (from != null)
             {
@@ -209,19 +209,19 @@ namespace IntelliTraxx.Controllers
 
             if (to != null)
             {
-                Tomorrow = DateTime.Parse(to);
+                tomorrow = DateTime.Parse(to);
             }
 
-            List<alertReturn> Todays = truckService.getAllAlertsByRange(today, Tomorrow);
+            var todays = _truckService.getAllAlertsByRange(today, tomorrow);
 
-            return Json(Todays.OrderByDescending(o => o.alertStart), JsonRequestBehavior.AllowGet);
+            return Json(todays.OrderByDescending(o => o.alertStart), JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult ViewAlert(string alertID)
         {
             Guid id = new Guid(alertID);
             alertReturn alert = null;
-            alert = truckService.getAllAlertByID(new Guid(alertID));
+            alert = _truckService.getAllAlertByID(new Guid(alertID));
 
             return Json(alert, JsonRequestBehavior.AllowGet);
         }
@@ -230,7 +230,7 @@ namespace IntelliTraxx.Controllers
         {
             DateTime startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             DateTime endDate = startDate.AddMonths(1).AddDays(-1);
-            List<alertReturn> alerts = truckService.getAllAlertsByRange(startDate, endDate).OrderByDescending(a => a.alertStart).ToList();
+            List<alertReturn> alerts = _truckService.getAllAlertsByRange(startDate, endDate).OrderByDescending(a => a.alertStart).ToList();
 
             GridAlerts gridAlerts = new GridAlerts();
             gridAlerts.GridAlertList = new List<GridAlert>();
@@ -253,20 +253,20 @@ namespace IntelliTraxx.Controllers
         public ActionResult GetAlertHistory(string alertID, string vehicleID)
         {
             AlertHistory AH = new AlertHistory();
-            alertReturn alert = truckService.getAllAlertByID(new Guid(alertID));
+            alertReturn alert = _truckService.getAllAlertByID(new Guid(alertID));
             alert.alertStart = alert.alertStart.AddMinutes(-2);
             alert.alertEnd = alert.alertEnd.ToString() != "1/1/2001 12:00:00 AM" ? alert.alertEnd.AddMinutes(2) : alert.alertStart.AddMinutes(5);
             AH.Alert = alert;
 
-            AH.Locations = truckService.getGPSTracking(vehicleID, alert.alertStart.ToString(), alert.alertEnd.ToString());
+            AH.Locations = _truckService.getGPSTracking(vehicleID, alert.alertStart.ToString(), alert.alertEnd.ToString()).ToList();
 
             return Json(AH, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult getGeoFenceAlerts(Guid id)
         {
-            List<alertGeoFence> fences = alertAdminService.getAlertGeoFences().Where(gf => gf.GeoFenceID == id).ToList();
-            List<dbAlert> alerts = alertAdminService.getAlerts().ToList();
+            List<alertGeoFence> fences = _alertAdminService.getAlertGeoFences().Where(gf => gf.GeoFenceID == id).ToList();
+            List<dbAlert> alerts = _alertAdminService.getAlerts().ToList();
             List<dbAlert> GFAlerts = new List<dbAlert>();
 
             foreach (alertGeoFence agf in fences)
@@ -285,7 +285,7 @@ namespace IntelliTraxx.Controllers
 
         public ActionResult changeAlertStatus(Guid[] aList, bool enabled, bool updatedb)
         {
-            var ret = alertAdminService.changeAlertStatus(aList.ToList<Guid>(), enabled, updatedb);
+            var ret = _alertAdminService.changeAlertStatus(aList.ToArray(), enabled, updatedb);
 
             return Json(ret, JsonRequestBehavior.AllowGet);
         }
@@ -294,7 +294,7 @@ namespace IntelliTraxx.Controllers
 
         public ActionResult getHistory(string ID, string start, string end)
         {
-            var tracking = truckService.getGPSTracking(ID, start, end);
+            var tracking = _truckService.getGPSTracking(ID, start, end);
 
             return Json(tracking.OrderBy(t => t.timestamp), JsonRequestBehavior.AllowGet);
         }

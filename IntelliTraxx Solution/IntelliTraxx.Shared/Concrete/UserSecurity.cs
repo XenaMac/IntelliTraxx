@@ -2,10 +2,8 @@
 using System.Linq;
 using System.Security.Claims;
 using System.Web;
-using IntelliTraxx.Shared.Contracts;
-using IntelliTraxx.Shared.Identity;
 
-namespace IntelliTraxx.Shared.Concrete
+namespace IntelliTraxx.Shared
 {
     public class UserSecurity : IUserSecurity
     {

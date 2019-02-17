@@ -484,6 +484,24 @@
   <wsdl:message name="ITruckService_removeDriver_OutputMessage">
     <wsdl:part name="parameters" element="tns:removeDriverResponse" />
   </wsdl:message>
+  <wsdl:message name="ITruckService_submitDispatchRequest_InputMessage">
+    <wsdl:part name="parameters" element="tns:submitDispatchRequest" />
+  </wsdl:message>
+  <wsdl:message name="ITruckService_submitDispatchRequest_OutputMessage">
+    <wsdl:part name="parameters" element="tns:submitDispatchRequestResponse" />
+  </wsdl:message>
+  <wsdl:message name="ITruckService_getDispatchRequestForDriver_InputMessage">
+    <wsdl:part name="parameters" element="tns:getDispatchRequestForDriver" />
+  </wsdl:message>
+  <wsdl:message name="ITruckService_getDispatchRequestForDriver_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getDispatchRequestForDriverResponse" />
+  </wsdl:message>
+  <wsdl:message name="ITruckService_getDispatchRequestForVehicle_InputMessage">
+    <wsdl:part name="parameters" element="tns:getDispatchRequestForVehicle" />
+  </wsdl:message>
+  <wsdl:message name="ITruckService_getDispatchRequestForVehicle_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getDispatchRequestForVehicleResponse" />
+  </wsdl:message>
   <wsdl:message name="ITruckService_getOBDDataReturnByDateRange_InputMessage">
     <wsdl:part name="parameters" element="tns:getOBDDataReturnByDateRange" />
   </wsdl:message>
@@ -806,6 +824,18 @@
     <wsdl:operation name="removeDriver">
       <wsdl:input wsaw:Action="http://tempuri.org/ITruckService/removeDriver" message="tns:ITruckService_removeDriver_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ITruckService/removeDriverResponse" message="tns:ITruckService_removeDriver_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="submitDispatchRequest">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITruckService/submitDispatchRequest" message="tns:ITruckService_submitDispatchRequest_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITruckService/submitDispatchRequestResponse" message="tns:ITruckService_submitDispatchRequest_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getDispatchRequestForDriver">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITruckService/getDispatchRequestForDriver" message="tns:ITruckService_getDispatchRequestForDriver_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITruckService/getDispatchRequestForDriverResponse" message="tns:ITruckService_getDispatchRequestForDriver_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getDispatchRequestForVehicle">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITruckService/getDispatchRequestForVehicle" message="tns:ITruckService_getDispatchRequestForVehicle_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITruckService/getDispatchRequestForVehicleResponse" message="tns:ITruckService_getDispatchRequestForVehicle_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="getOBDDataReturnByDateRange">
       <wsdl:input wsaw:Action="http://tempuri.org/ITruckService/getOBDDataReturnByDateRange" message="tns:ITruckService_getOBDDataReturnByDateRange_InputMessage" />
@@ -1518,6 +1548,33 @@
     </wsdl:operation>
     <wsdl:operation name="removeDriver">
       <soap:operation soapAction="http://tempuri.org/ITruckService/removeDriver" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="submitDispatchRequest">
+      <soap:operation soapAction="http://tempuri.org/ITruckService/submitDispatchRequest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDispatchRequestForDriver">
+      <soap:operation soapAction="http://tempuri.org/ITruckService/getDispatchRequestForDriver" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDispatchRequestForVehicle">
+      <soap:operation soapAction="http://tempuri.org/ITruckService/getDispatchRequestForVehicle" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

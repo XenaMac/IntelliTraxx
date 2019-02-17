@@ -1,19 +1,17 @@
-﻿using IntelliTraxx.TruckService;
-using Newtonsoft.Json;
-using RestSharp;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text.RegularExpressions;
-using System.Web;
 using System.Web.Mvc;
+using IntelliTraxx.Shared.TruckService;
+using Newtonsoft.Json;
+using RestSharp;
 
 namespace IntelliTraxx.Controllers
 {
     public class AnalyticsController : Controller
     {
-        TruckServiceClient truckService = new TruckServiceClient();
+        private readonly TruckServiceClient _truckService = new TruckServiceClient();
 
         // GET: Analytics
         public ActionResult Index()
@@ -23,38 +21,34 @@ namespace IntelliTraxx.Controllers
 
         public ActionResult getAllVehicles(bool loadHistorical)
         {
-            List<Vehicle> allVehicles = truckService.getAllVehicles(loadHistorical);
+            var allVehicles = _truckService.getAllVehicles(loadHistorical);
 
             return Json(allVehicles, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult getDriverAnalytics()
         {
-            driverAnalytics da = new driverAnalytics();
-            List<driverVehicleReturn> driversAssigned = truckService.driverVehicleReturn();
-            List<Vehicle> Vehicles = truckService.getAllVehicles(true);
-            foreach (Vehicle v in Vehicles)
-            {
+            var da = new driverAnalytics();
+            var driversAssigned = _truckService.driverVehicleReturn();
+            var Vehicles = _truckService.getAllVehicles(true);
+            foreach (var v in Vehicles)
                 if (v.driver != null && v.driver.DriverID.ToString() != "00000000-0000-0000-0000-000000000000")
-                {
                     da.driving++;
-                }
-            }
             da.notDriving = driversAssigned.Count() - da.driving;
-            da.notAssigned = truckService.getAvailableDrivers().Count();
-            da.vehiclesWithoutDrivers = truckService.getAvailableVehicles().Count();
+            da.notAssigned = _truckService.getAvailableDrivers().Count();
+            da.vehiclesWithoutDrivers = _truckService.getAvailableVehicles().Count();
             return Json(da, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult getAlertsByRange(DateTime start, DateTime end)
         {
-            List<alertReturn> alerts = truckService.getAllAlertsByRange(start, end);
+            var alerts = _truckService.getAllAlertsByRange(start, end);
             return Json(alerts, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult getVehicleListMac()
         {
-            List<macVehicle> vehicles = truckService.getVehicleListMac();
+            var vehicles = _truckService.getVehicleListMac();
             return Json(vehicles, JsonRequestBehavior.AllowGet);
         }
 
@@ -63,7 +57,7 @@ namespace IntelliTraxx.Controllers
             //macAddress = macAddress.Replace(":", "");
 
             //get vars for api keys
-            List<systemvar> vars = truckService.getAppVars();
+            var vars = _truckService.getAppVars();
 
             var client = new RestClient();
             client.BaseUrl = new Uri("https://www.cradlepointecm.com/");
@@ -73,19 +67,23 @@ namespace IntelliTraxx.Controllers
 
             // easily add HTTP Headers
             request.AddHeader("Content-Type", "application/json");
-            request.AddHeader("X-CP-API-ID", vars.Where(v => v.varName == "X-CP-API-ID").Select(x => x.varVal).FirstOrDefault());
-            request.AddHeader("X-CP-API-KEY", vars.Where(v => v.varName == "X-CP-API-KEY").Select(x => x.varVal).FirstOrDefault());
-            request.AddHeader("X-ECM-API-ID", vars.Where(v => v.varName == "X-ECM-API-ID").Select(x => x.varVal).FirstOrDefault());
-            request.AddHeader("X-ECM-API-KEY", vars.Where(v => v.varName == "X-ECM-API-KEY").Select(x => x.varVal).FirstOrDefault());
+            request.AddHeader("X-CP-API-ID",
+                vars.Where(v => v.varName == "X-CP-API-ID").Select(x => x.varVal).FirstOrDefault());
+            request.AddHeader("X-CP-API-KEY",
+                vars.Where(v => v.varName == "X-CP-API-KEY").Select(x => x.varVal).FirstOrDefault());
+            request.AddHeader("X-ECM-API-ID",
+                vars.Where(v => v.varName == "X-ECM-API-ID").Select(x => x.varVal).FirstOrDefault());
+            request.AddHeader("X-ECM-API-KEY",
+                vars.Where(v => v.varName == "X-ECM-API-KEY").Select(x => x.varVal).FirstOrDefault());
             request.Method = Method.GET;
 
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
-                |  SecurityProtocolType.Tls11
-                |  SecurityProtocolType.Tls12
-                |  SecurityProtocolType.Ssl3;
+                                                   | SecurityProtocolType.Tls11
+                                                   | SecurityProtocolType.Tls12
+                                                   | SecurityProtocolType.Ssl3;
 
-            IRestResponse response = client.Execute(request);
-            RoutersRootobject routers = JsonConvert.DeserializeObject<RoutersRootobject>(response.Content);
+            var response = client.Execute(request);
+            var routers = JsonConvert.DeserializeObject<RoutersRootobject>(response.Content);
             var router = routers.data.Where(d => d.mac == macAddress.ToUpper()).FirstOrDefault();
             return Json(router, JsonRequestBehavior.AllowGet);
         }
@@ -93,7 +91,7 @@ namespace IntelliTraxx.Controllers
         public ActionResult getFirmware(string fw)
         {
             //get vars for api keys
-            List<systemvar> vars = truckService.getAppVars();
+            var vars = _truckService.getAppVars();
 
             var client = new RestClient();
             client.BaseUrl = new Uri("https://www.cradlepointecm.com/");
@@ -103,20 +101,24 @@ namespace IntelliTraxx.Controllers
 
             // easily add HTTP Headers
             request.AddHeader("Content-Type", "application/json");
-            request.AddHeader("X-CP-API-ID", vars.Where(v => v.varName == "X-CP-API-ID").Select(x => x.varVal).FirstOrDefault());
-            request.AddHeader("X-CP-API-KEY", vars.Where(v => v.varName == "X-CP-API-KEY").Select(x => x.varVal).FirstOrDefault());
-            request.AddHeader("X-ECM-API-ID", vars.Where(v => v.varName == "X-ECM-API-ID").Select(x => x.varVal).FirstOrDefault());
-            request.AddHeader("X-ECM-API-KEY", vars.Where(v => v.varName == "X-ECM-API-KEY").Select(x => x.varVal).FirstOrDefault());
+            request.AddHeader("X-CP-API-ID",
+                vars.Where(v => v.varName == "X-CP-API-ID").Select(x => x.varVal).FirstOrDefault());
+            request.AddHeader("X-CP-API-KEY",
+                vars.Where(v => v.varName == "X-CP-API-KEY").Select(x => x.varVal).FirstOrDefault());
+            request.AddHeader("X-ECM-API-ID",
+                vars.Where(v => v.varName == "X-ECM-API-ID").Select(x => x.varVal).FirstOrDefault());
+            request.AddHeader("X-ECM-API-KEY",
+                vars.Where(v => v.varName == "X-ECM-API-KEY").Select(x => x.varVal).FirstOrDefault());
 
-            IRestResponse response = client.Execute(request);
-            FirmWareRootobject firmware = JsonConvert.DeserializeObject<FirmWareRootobject>(response.Content);
+            var response = client.Execute(request);
+            var firmware = JsonConvert.DeserializeObject<FirmWareRootobject>(response.Content);
             return Json(firmware, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult getECMAccount(string accountNum)
         {
             //get vars for api keys
-            List<systemvar> vars = truckService.getAppVars();
+            var vars = _truckService.getAppVars();
 
             var client = new RestClient();
             client.BaseUrl = new Uri("https://www.cradlepointecm.com/");
@@ -126,23 +128,27 @@ namespace IntelliTraxx.Controllers
 
             // easily add HTTP Headers
             request.AddHeader("Content-Type", "application/json");
-            request.AddHeader("X-CP-API-ID", vars.Where(v => v.varName == "X-CP-API-ID").Select(x => x.varVal).FirstOrDefault());
-            request.AddHeader("X-CP-API-KEY", vars.Where(v => v.varName == "X-CP-API-KEY").Select(x => x.varVal).FirstOrDefault());
-            request.AddHeader("X-ECM-API-ID", vars.Where(v => v.varName == "X-ECM-API-ID").Select(x => x.varVal).FirstOrDefault());
-            request.AddHeader("X-ECM-API-KEY", vars.Where(v => v.varName == "X-ECM-API-KEY").Select(x => x.varVal).FirstOrDefault());
+            request.AddHeader("X-CP-API-ID",
+                vars.Where(v => v.varName == "X-CP-API-ID").Select(x => x.varVal).FirstOrDefault());
+            request.AddHeader("X-CP-API-KEY",
+                vars.Where(v => v.varName == "X-CP-API-KEY").Select(x => x.varVal).FirstOrDefault());
+            request.AddHeader("X-ECM-API-ID",
+                vars.Where(v => v.varName == "X-ECM-API-ID").Select(x => x.varVal).FirstOrDefault());
+            request.AddHeader("X-ECM-API-KEY",
+                vars.Where(v => v.varName == "X-ECM-API-KEY").Select(x => x.varVal).FirstOrDefault());
 
-            IRestResponse response = client.Execute(request);
-            AccountRootobject account = JsonConvert.DeserializeObject<AccountRootobject>(response.Content);
+            var response = client.Execute(request);
+            var account = JsonConvert.DeserializeObject<AccountRootobject>(response.Content);
             return Json(account, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult getECMSignalStrength(string routerID)
         {
             //initialize RouterSignal
-            List<RouterSignal> RSList = new List<RouterSignal>();
+            var RSList = new List<RouterSignal>();
 
             //get vars for api keys
-            List<systemvar> vars = truckService.getAppVars();
+            var vars = _truckService.getAppVars();
 
             var client = new RestClient();
             client.BaseUrl = new Uri("https://www.cradlepointecm.com/");
@@ -153,30 +159,32 @@ namespace IntelliTraxx.Controllers
 
             // easily add HTTP Headers
             request.AddHeader("Content-Type", "application/json");
-            request.AddHeader("X-CP-API-ID", vars.Where(v => v.varName == "X-CP-API-ID").Select(x => x.varVal).FirstOrDefault());
-            request.AddHeader("X-CP-API-KEY", vars.Where(v => v.varName == "X-CP-API-KEY").Select(x => x.varVal).FirstOrDefault());
-            request.AddHeader("X-ECM-API-ID", vars.Where(v => v.varName == "X-ECM-API-ID").Select(x => x.varVal).FirstOrDefault());
-            request.AddHeader("X-ECM-API-KEY", vars.Where(v => v.varName == "X-ECM-API-KEY").Select(x => x.varVal).FirstOrDefault());
+            request.AddHeader("X-CP-API-ID",
+                vars.Where(v => v.varName == "X-CP-API-ID").Select(x => x.varVal).FirstOrDefault());
+            request.AddHeader("X-CP-API-KEY",
+                vars.Where(v => v.varName == "X-CP-API-KEY").Select(x => x.varVal).FirstOrDefault());
+            request.AddHeader("X-ECM-API-ID",
+                vars.Where(v => v.varName == "X-ECM-API-ID").Select(x => x.varVal).FirstOrDefault());
+            request.AddHeader("X-ECM-API-KEY",
+                vars.Where(v => v.varName == "X-ECM-API-KEY").Select(x => x.varVal).FirstOrDefault());
 
-            IRestResponse response = client.Execute(request);
-            NetDevicesRootobject devices = JsonConvert.DeserializeObject<NetDevicesRootobject>(response.Content);
+            var response = client.Execute(request);
+            var devices = JsonConvert.DeserializeObject<NetDevicesRootobject>(response.Content);
 
-            foreach (NetDevicesDatum device in devices.data)
-            {
+            foreach (var device in devices.data)
                 if (device.mode == "wan" && device.service_type == "LTE")
                 {
-                    RouterSignal rs = getRouterStrength(device);
+                    var rs = getRouterStrength(device);
                     RSList.Add(rs);
                 }
-            }
 
             return Json(RSList, JsonRequestBehavior.AllowGet);
         }
 
         public RouterSignal getRouterStrength(NetDevicesDatum device)
         {
-            RouterSignal NewRS = new RouterSignal();
-            List<systemvar> vars = truckService.getAppVars();
+            var NewRS = new RouterSignal();
+            var vars = _truckService.getAppVars();
 
             var client = new RestClient();
             client.BaseUrl = new Uri("https://www.cradlepointecm.com/");
@@ -188,14 +196,19 @@ namespace IntelliTraxx.Controllers
 
             // easily add HTTP Headers
             request.AddHeader("Content-Type", "application/json");
-            request.AddHeader("X-CP-API-ID", vars.Where(v => v.varName == "X-CP-API-ID").Select(x => x.varVal).FirstOrDefault());
-            request.AddHeader("X-CP-API-KEY", vars.Where(v => v.varName == "X-CP-API-KEY").Select(x => x.varVal).FirstOrDefault());
-            request.AddHeader("X-ECM-API-ID", vars.Where(v => v.varName == "X-ECM-API-ID").Select(x => x.varVal).FirstOrDefault());
-            request.AddHeader("X-ECM-API-KEY", vars.Where(v => v.varName == "X-ECM-API-KEY").Select(x => x.varVal).FirstOrDefault());
+            request.AddHeader("X-CP-API-ID",
+                vars.Where(v => v.varName == "X-CP-API-ID").Select(x => x.varVal).FirstOrDefault());
+            request.AddHeader("X-CP-API-KEY",
+                vars.Where(v => v.varName == "X-CP-API-KEY").Select(x => x.varVal).FirstOrDefault());
+            request.AddHeader("X-ECM-API-ID",
+                vars.Where(v => v.varName == "X-ECM-API-ID").Select(x => x.varVal).FirstOrDefault());
+            request.AddHeader("X-ECM-API-KEY",
+                vars.Where(v => v.varName == "X-ECM-API-KEY").Select(x => x.varVal).FirstOrDefault());
 
-            IRestResponse response = client.Execute(request);
-            DSSRootobject samples = JsonConvert.DeserializeObject<DSSRootobject>(response.Content);
-            DSSDatum sample = samples.data.Where(s => s.net_device.Contains(device.id)).OrderByDescending(d => d.created_at).FirstOrDefault();
+            var response = client.Execute(request);
+            var samples = JsonConvert.DeserializeObject<DSSRootobject>(response.Content);
+            var sample = samples.data.Where(s => s.net_device.Contains(device.id)).OrderByDescending(d => d.created_at)
+                .FirstOrDefault();
             if (sample != null)
             {
                 NewRS.connection_state = device.connection_state;
@@ -221,9 +234,8 @@ namespace IntelliTraxx.Controllers
         public ActionResult getDataUsage(string routerID)
         {
             //get vars for api keys
-            List<systemvar> vars = truckService.getAppVars();
-            List<NDMDatum> NDs = new List<NDMDatum>();
-            var totalBytes = 0;
+            var vars = _truckService.getAppVars();
+            var NDs = new List<NDMDatum>();
 
             var client = new RestClient();
             client.BaseUrl = new Uri("https://www.cradlepointecm.com/");
@@ -234,16 +246,19 @@ namespace IntelliTraxx.Controllers
 
             // easily add HTTP Headers
             request.AddHeader("Content-Type", "application/json");
-            request.AddHeader("X-CP-API-ID", vars.Where(v => v.varName == "X-CP-API-ID").Select(x => x.varVal).FirstOrDefault());
-            request.AddHeader("X-CP-API-KEY", vars.Where(v => v.varName == "X-CP-API-KEY").Select(x => x.varVal).FirstOrDefault());
-            request.AddHeader("X-ECM-API-ID", vars.Where(v => v.varName == "X-ECM-API-ID").Select(x => x.varVal).FirstOrDefault());
-            request.AddHeader("X-ECM-API-KEY", vars.Where(v => v.varName == "X-ECM-API-KEY").Select(x => x.varVal).FirstOrDefault());
+            request.AddHeader("X-CP-API-ID",
+                vars.Where(v => v.varName == "X-CP-API-ID").Select(x => x.varVal).FirstOrDefault());
+            request.AddHeader("X-CP-API-KEY",
+                vars.Where(v => v.varName == "X-CP-API-KEY").Select(x => x.varVal).FirstOrDefault());
+            request.AddHeader("X-ECM-API-ID",
+                vars.Where(v => v.varName == "X-ECM-API-ID").Select(x => x.varVal).FirstOrDefault());
+            request.AddHeader("X-ECM-API-KEY",
+                vars.Where(v => v.varName == "X-ECM-API-KEY").Select(x => x.varVal).FirstOrDefault());
 
-            IRestResponse response = client.Execute(request);
-            NetDevicesRootobject devices = JsonConvert.DeserializeObject<NetDevicesRootobject>(response.Content);
+            var response = client.Execute(request);
+            var devices = JsonConvert.DeserializeObject<NetDevicesRootobject>(response.Content);
 
-            foreach (NetDevicesDatum device in devices.data)
-            {
+            foreach (var device in devices.data)
                 if (device.mode == "wan" && device.service_type == "LTE")
                 {
                     var client2 = new RestClient();
@@ -251,38 +266,36 @@ namespace IntelliTraxx.Controllers
                     var request2 = new RestRequest();
 
                     request2.AddHeader("Content-Type", "application/json");
-                    request2.AddHeader("X-CP-API-ID", vars.Where(v => v.varName == "X-CP-API-ID").Select(x => x.varVal).FirstOrDefault());
-                    request2.AddHeader("X-CP-API-KEY", vars.Where(v => v.varName == "X-CP-API-KEY").Select(x => x.varVal).FirstOrDefault());
-                    request2.AddHeader("X-ECM-API-ID", vars.Where(v => v.varName == "X-ECM-API-ID").Select(x => x.varVal).FirstOrDefault());
-                    request2.AddHeader("X-ECM-API-KEY", vars.Where(v => v.varName == "X-ECM-API-KEY").Select(x => x.varVal).FirstOrDefault());
+                    request2.AddHeader("X-CP-API-ID",
+                        vars.Where(v => v.varName == "X-CP-API-ID").Select(x => x.varVal).FirstOrDefault());
+                    request2.AddHeader("X-CP-API-KEY",
+                        vars.Where(v => v.varName == "X-CP-API-KEY").Select(x => x.varVal).FirstOrDefault());
+                    request2.AddHeader("X-ECM-API-ID",
+                        vars.Where(v => v.varName == "X-ECM-API-ID").Select(x => x.varVal).FirstOrDefault());
+                    request2.AddHeader("X-ECM-API-KEY",
+                        vars.Where(v => v.varName == "X-ECM-API-KEY").Select(x => x.varVal).FirstOrDefault());
 
                     request2.Resource = "api/v2/net_device_metrics/";
                     request2.AddParameter("net_device", device.id);
 
-                    IRestResponse response2 = client2.Execute(request2);
-                    NDMRootobject dms = JsonConvert.DeserializeObject<NDMRootobject>(response2.Content);
+                    var response2 = client2.Execute(request2);
+                    var dms = JsonConvert.DeserializeObject<NDMRootobject>(response2.Content);
                     NDs.Add(dms.data[0]);
                 }
-            }
 
             return Json(NDs, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult getVehicleData(string id)
         {
-
-            var vehicleData = truckService.getVehicleData(new Guid(id));
+            var vehicleData = _truckService.getVehicleData(new Guid(id));
 
             if (vehicleData == null)
             {
-                var allVehicles = truckService.getAllVehicles(true);
-                foreach (Vehicle v in allVehicles)
-                {
+                var allVehicles = _truckService.getAllVehicles(true);
+                foreach (var v in allVehicles)
                     if (v.extendedData.ID == new Guid(id))
-                    {
                         vehicleData = v;
-                    }
-                }
             }
 
             return Json(vehicleData, JsonRequestBehavior.AllowGet);
@@ -290,38 +303,40 @@ namespace IntelliTraxx.Controllers
 
         public ActionResult getPIDSByDateRange(string VehicleID, DateTime from, DateTime to)
         {
-            List<OBDLog> OBDData = truckService.getOBDDataReturnByDateRange(VehicleID, from, to).OrderByDescending(d => d.timestamp).ToList();
+            var OBDData = _truckService.getOBDDataReturnByDateRange(VehicleID, from, to)
+                .OrderByDescending(d => d.timestamp).ToList();
 
             return Json(OBDData, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult getOBDByDateRange(string PID, string VehicleID, DateTime from, DateTime to)
         {
-            List<string> PIDs = PID.Split(',').ToList();
-            List<OBDLog> OBDData = truckService.getOBDDataReturnByDateRange(VehicleID, from, to).Where(n => PIDs.Contains(n.name)).OrderBy(d => d.timestamp).ToList();
+            var PIDs = PID.Split(',').ToList();
+            var OBDData = _truckService.getOBDDataReturnByDateRange(VehicleID, from, to)
+                .Where(n => PIDs.Contains(n.name)).OrderBy(d => d.timestamp).ToList();
 
             return Json(OBDData, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult getTripsByDate(string ID, DateTime start, DateTime end)
         {
-            List<VehicleGPSRecord> tracking = truckService.getLocationHistory(ID, start.Date, end.AddDays(1).AddTicks(-1)).OrderBy(g => g.timestamp).ToList<VehicleGPSRecord>();
+            var tracking = _truckService.getLocationHistory(ID, start.Date, end.AddDays(1).AddTicks(-1))
+                .OrderBy(g => g.timestamp).ToList();
 
-            List<Trip> Trips = new List<Trip>();
-            bool NewTrip = true;
+            var Trips = new List<Trip>();
+            var NewTrip = true;
             Trip trip = null;
 
             for (var i = 0; i <= tracking.Count - 1; i++)
-            {
                 if (NewTrip)
                 {
                     trip = new Trip();
                     trip.Start = tracking[i].timestamp;
                     NewTrip = false;
                 }
-                else 
+                else
                 {
-                    TimeSpan ts = tracking[i].timestamp - tracking[i+1].timestamp;
+                    var ts = tracking[i].timestamp - tracking[i + 1].timestamp;
                     if (ts.Minutes > 3)
                     {
                         trip.End = tracking[i].timestamp;
@@ -330,27 +345,25 @@ namespace IntelliTraxx.Controllers
                     }
                 }
 
-            }
-
             return Json(Trips, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult getTripAnalytics(string ID, DateTime start, DateTime end)
         {
-            List<VehicleGPSRecord> tracking = truckService.getLocationHistory(ID, start, end).OrderByDescending(g => g.timestamp).ToList<VehicleGPSRecord>();
+            var tracking = _truckService.getLocationHistory(ID, start, end).OrderByDescending(g => g.timestamp)
+                .ToList();
 
-            List<Trip> Trips = new List<Trip>();
-            bool NewTrip = true;
+            var Trips = new List<Trip>();
+            var NewTrip = true;
             Trip trip = null;
 
             for (var i = 0; i <= tracking.Count - 1; i++)
-            {
                 if (NewTrip)
                 {
                     trip = new Trip();
                     trip.GPSRecords = new List<ModVehilcleGPSRecord>();
                     trip.Start = tracking[i].lastMessageReceived;
-                    ModVehilcleGPSRecord gpsr = new ModVehilcleGPSRecord();
+                    var gpsr = new ModVehilcleGPSRecord();
                     gpsr.ABI = tracking[i].ABI;
                     gpsr.Direction = tracking[i].Direction;
                     gpsr.ExtensionData = tracking[i].ExtensionData;
@@ -369,17 +382,11 @@ namespace IntelliTraxx.Controllers
                     //If the next record is over 10 minutes difference then it's a single data ghost.
                     if (i == 0)
                     {
-                        TimeSpan ts = tracking[i].lastMessageReceived - tracking[i + 1].lastMessageReceived;
+                        var ts = tracking[i].lastMessageReceived - tracking[i + 1].lastMessageReceived;
                         if (ts.Minutes < 10)
-                        {
-                            //start record
                             gpsr.recordstate = State.Start.ToString();
-                        }
                         else
-                        {
-                            //end record
                             gpsr.recordstate = State.End.ToString();
-                        }
                     }
 
                     trip.GPSRecords.Add(gpsr);
@@ -387,10 +394,10 @@ namespace IntelliTraxx.Controllers
                 }
                 else
                 {
-                    TimeSpan ts = tracking[i].lastMessageReceived - tracking[i + 1].lastMessageReceived;
+                    var ts = tracking[i].lastMessageReceived - tracking[i + 1].lastMessageReceived;
                     if (ts.Minutes < 10)
                     {
-                        ModVehilcleGPSRecord gpsr = new ModVehilcleGPSRecord();
+                        var gpsr = new ModVehilcleGPSRecord();
                         gpsr.ABI = tracking[i].ABI;
                         gpsr.Direction = tracking[i].Direction;
                         gpsr.ExtensionData = tracking[i].ExtensionData;
@@ -410,7 +417,7 @@ namespace IntelliTraxx.Controllers
                     }
                     else
                     {
-                        ModVehilcleGPSRecord gpsr = new ModVehilcleGPSRecord();
+                        var gpsr = new ModVehilcleGPSRecord();
                         gpsr.ABI = tracking[i].ABI;
                         gpsr.Direction = tracking[i].Direction;
                         gpsr.ExtensionData = tracking[i].ExtensionData;
@@ -433,12 +440,9 @@ namespace IntelliTraxx.Controllers
                     }
                 }
 
-            }
-
             return Json(tracking.OrderByDescending(v => v.lastMessageReceived), JsonRequestBehavior.AllowGet);
         }
     }
-    
 
 
     //------------------------------ Classes ----------------------------------------//
@@ -677,5 +681,11 @@ namespace IntelliTraxx.Controllers
         public string recordstate { get; set; }
     }
 
-    public enum State { Idle, Moving, Start, End };
+    public enum State
+    {
+        Idle,
+        Moving,
+        Start,
+        End
+    }
 }

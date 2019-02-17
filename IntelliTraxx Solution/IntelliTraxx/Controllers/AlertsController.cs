@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using IntelliTraxx.AlertAdminService;
-using IntelliTraxx.PolygonService;
-using IntelliTraxx.TruckService;
+using IntelliTraxx.Shared.AlertAdminService;
+using IntelliTraxx.Shared.PolygonService;
+using IntelliTraxx.Shared.TruckService;
+using polygonData = IntelliTraxx.Shared.PolygonService.polygonData;
 
 namespace IntelliTraxx.Controllers
 {
     public class AlertsController : Controller
     {
-        TruckServiceClient truckService = new TruckServiceClient();
-        AlertAdminSvcClient alertService = new AlertAdminSvcClient();
-        PolygonServiceClient polygonService = new PolygonServiceClient();
+        private readonly AlertAdminSvcClient _alertService = new AlertAdminSvcClient();
+        private readonly PolygonServiceClient _polygonService = new PolygonServiceClient();
+        private readonly TruckServiceClient _truckService = new TruckServiceClient();
 
         // GET: Alerts
         [Authorize]
@@ -30,13 +31,13 @@ namespace IntelliTraxx.Controllers
         //GET: All Alerts
         public ActionResult getAllAlerts()
         {
-            List<dbAlerts> Alerts = new List<dbAlerts>();
-            List<dbAlert> alerts = alertService.getAlerts();
-            List<alertClass> classes = alertService.getAlertClasses();
+            var Alerts = new List<dbAlerts>();
+            var alerts = _alertService.getAlerts();
+            var classes = _alertService.getAlertClasses().ToList();
 
-            foreach (dbAlert a in alerts)
+            foreach (var a in alerts)
             {
-                dbAlerts newAlert = new dbAlerts();
+                var newAlert = new dbAlerts();
                 newAlert.AlertActive = a.AlertActive;
                 newAlert.AlertClassID = a.AlertClassID;
                 newAlert.AlertClassName = classes.Find(x => x.AlertClassID == a.AlertClassID).AlertClassName;
@@ -56,7 +57,7 @@ namespace IntelliTraxx.Controllers
 
         public ActionResult getAllVehicles(bool loadHistorical)
         {
-            var allVehicles = truckService.getAllVehicles(loadHistorical);
+            var allVehicles = _truckService.getAllVehicles(loadHistorical);
 
             return Json(allVehicles, JsonRequestBehavior.AllowGet);
         }
@@ -64,108 +65,115 @@ namespace IntelliTraxx.Controllers
         //GET: All Alerts
         public ActionResult getAllAlertsByRangeByType(DateTime from, DateTime to, string type)
         {
-            List<alertReturn> alerts = truckService.getAllAlertsByRangeByType(from, to, type);
+            var alerts = _truckService.getAllAlertsByRangeByType(from, to, type);
             return Json(alerts, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult getAllAlertsByRangeByVehicle(DateTime from, DateTime to, string vehicleid)
         {
-            List<alertReturn> alerts = truckService.getAllAlertsByRangeByVehicle(from, to, vehicleid);
+            var alerts = _truckService.getAllAlertsByRangeByVehicle(from, to, vehicleid);
             return Json(alerts, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult ViewAlert(string alertID)
         {
-            Guid id = new Guid(alertID);
+            var id = new Guid(alertID);
             alertReturn alert = null;
-            alert = truckService.getAllAlertByID(new Guid(alertID));
+            alert = _truckService.getAllAlertByID(new Guid(alertID));
 
             return Json(alert, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult GetAlertHistory(string alertID, string vehicleID)
         {
-            AlertHistory AH = new AlertHistory();
-            alertReturn alert = truckService.getAllAlertByID(new Guid(alertID));
+            var AH = new AlertHistory();
+            var alert = _truckService.getAllAlertByID(new Guid(alertID));
             alert.alertStart = alert.alertStart.AddMinutes(-2);
-            alert.alertEnd = alert.alertEnd.ToString() != "1/1/2001 12:00:00 AM" ? alert.alertEnd.AddMinutes(2) : alert.alertStart.AddMinutes(5);
+            alert.alertEnd = alert.alertEnd.ToString() != "1/1/2001 12:00:00 AM"
+                ? alert.alertEnd.AddMinutes(2)
+                : alert.alertStart.AddMinutes(5);
             AH.Alert = alert;
 
-            AH.Locations = truckService.getGPSTracking(vehicleID, alert.alertStart.ToString(), alert.alertEnd.ToString());
+            AH.Locations = _truckService
+                .getGPSTracking(vehicleID, alert.alertStart.ToString(), alert.alertEnd.ToString()).ToList();
 
             return Json(AH, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult changeAlertStatus(Guid[] aList, bool enabled, bool updatedb)
         {
-            var ret = alertService.changeAlertStatus(aList.ToList<Guid>(), enabled, updatedb);
+            var ret = _alertService.changeAlertStatus(aList, enabled, updatedb);
 
             return Json(ret, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult getAlertClasses()
         {
-            var classes = alertService.getAlertClasses();
+            var classes = _alertService.getAlertClasses();
 
             return Json(classes, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult GetAllFences()
         {
-            var Fences = polygonService.getPolygons();
+            var Fences = _polygonService.getPolygons();
 
             return Json(Fences, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult getLinkedAlertsVehicles(string alertFriendlyName)
         {
-            List<Vehicle> vehicles = truckService.getAllVehicles(true);
-            List<string> linkedVehicles = alertService.getLinkedAlertsVehicles(alertFriendlyName);
-            List<Vehicle> linkedAlertVehicles = new List<Vehicle>();
-            foreach (string id in linkedVehicles)
+            var vehicles = _truckService.getAllVehicles(true);
+            var linkedVehicles = _alertService.getLinkedAlertsVehicles(alertFriendlyName);
+            var linkedAlertVehicles = new List<Vehicle>();
+            foreach (var id in linkedVehicles)
             {
-                Guid Vid = new Guid(id);
-                Vehicle v = vehicles.Where(veh => veh.extendedData.ID == Vid).FirstOrDefault();
+                var Vid = new Guid(id);
+                var v = vehicles.FirstOrDefault(veh => veh.extendedData.ID == Vid);
                 linkedAlertVehicles.Add(v);
             }
+
             return Json(linkedAlertVehicles, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult getLinkedAlertsFences(string alertFriendlyName)
         {
-            List<polyData> allFences = alertService.getPolygons();
-            List<string> linkedFences = alertService.getLinkedAlertsGeoFences(alertFriendlyName);
-            List<polyData> linkeAlertFences = new List<polyData>();
-            foreach (string GeoName in linkedFences)
+            var allFences = _alertService.getPolygons();
+            var linkedFences = _alertService.getLinkedAlertsGeoFences(alertFriendlyName);
+            var linkeAlertFences = new List<polyData>();
+            foreach (var GeoName in linkedFences)
             {
-                polyData p = allFences.Where(ply => ply.polyName == GeoName).FirstOrDefault();
+                var p = allFences.FirstOrDefault(ply => ply.polyName == GeoName);
                 linkeAlertFences.Add(p);
             }
+
             return Json(linkeAlertFences, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult getAlertData(Guid ID)
         {
-            alertData AD = alertService.getAlertData(ID);
-            extendedAlertData EAD = new extendedAlertData();
-            EAD.alert = AD.alert;
-            EAD.alertGeoFences = AD.alertGeoFences;
-            EAD.alertVehicles = AD.alertVehicles;
-            EAD.extendedAlertFences = new List<PolygonService.polygonData>();
-            EAD.extendedAlertVehicles = new List<Vehicle>();
-
-
-            foreach (alertGeoFence gf in AD.alertGeoFences)
+            var AD = _alertService.getAlertData(ID);
+            var EAD = new extendedAlertData
             {
-                PolygonService.polygonData poly = new PolygonService.polygonData();
-                poly = polygonService.getPolygons().Where(p => p.geoFenceID == gf.GeoFenceID).FirstOrDefault();
+                alert = AD.alert,
+                alertGeoFences = AD.alertGeoFences,
+                alertVehicles = AD.alertVehicles,
+                extendedAlertFences = new List<polygonData>(),
+                extendedAlertVehicles = new List<Vehicle>()
+            };
+
+
+            foreach (var gf in AD.alertGeoFences)
+            {
+                var poly = new polygonData();
+                poly = _polygonService.getPolygons().FirstOrDefault(p => p.geoFenceID == gf.GeoFenceID);
                 EAD.extendedAlertFences.Add(poly);
             }
 
-            foreach (alertVehicle av in AD.alertVehicles)
+            foreach (var av in AD.alertVehicles)
             {
-                Vehicle v = new Vehicle();
-                v = truckService.getAllVehicles(true).Where(vh => vh.extendedData.ID == av.VehicleID).FirstOrDefault();
+                var v = new Vehicle();
+                v = _truckService.getAllVehicles(true).FirstOrDefault(vh => vh.extendedData.ID == av.VehicleID);
                 EAD.extendedAlertVehicles.Add(v);
             }
 
@@ -173,31 +181,23 @@ namespace IntelliTraxx.Controllers
         }
 
         [HttpPost]
-        public ActionResult updateAlertData(string alertClassID, string alertClassName, string alertName, string editAlertID, string startDate, string endDate, List<polygonID> polygonIDs, List<polygonNames> polygonNames, List<AV> alertVehicles, string alertValue, bool TNDB)
+        public ActionResult updateAlertData(string alertClassID, string alertClassName, string alertName,
+            string editAlertID, string startDate, string endDate, List<polygonID> polygonIDs,
+            List<polygonNames> polygonNames, List<AV> alertVehicles, string alertValue, bool TNDB)
         {
-            DateTime s = DateTime.Now;
-            DateTime e = DateTime.Now.AddYears(5);
+            var s = DateTime.Now;
+            var e = DateTime.Now.AddYears(5);
 
-            if (startDate != "")
-            {
-                s = Convert.ToDateTime(startDate).ToUniversalTime();
-            }
+            if (startDate != "") s = Convert.ToDateTime(startDate).ToUniversalTime();
 
-            if (endDate != "")
-            {
-                e = Convert.ToDateTime(endDate).ToUniversalTime();
-            }
+            if (endDate != "") e = Convert.ToDateTime(endDate).ToUniversalTime();
 
             //create alert class
-            dbAlert alert = new dbAlert();
-            if (editAlertID == null || editAlertID == "")
-            {
+            var alert = new dbAlert();
+            if (string.IsNullOrEmpty(editAlertID))
                 alert.AlertID = Guid.NewGuid();
-            }
             else
-            {
                 alert.AlertID = new Guid(editAlertID);
-            }
             alert.AlertActive = true;
             alert.AlertStartTime = s;
             alert.AlertEndTime = e;
@@ -208,30 +208,26 @@ namespace IntelliTraxx.Controllers
             alert.NDB = TNDB;
 
             //create polygon list
-            List<alertGeoFence> fences = new List<alertGeoFence>();
+            var fences = new List<alertGeoFence>();
             if (polygonIDs != null)
-            {
-                foreach (polygonID pg in polygonIDs)
+                foreach (var pg in polygonIDs)
                 {
-                    alertGeoFence fence = new alertGeoFence();
-                    fence.AlertID = alert.AlertID;
-                    fence.GeoFenceID = new Guid(pg.id);
+                    var fence = new alertGeoFence {AlertID = alert.AlertID, GeoFenceID = new Guid(pg.id)};
                     fences.Add(fence);
                 }
-            }
 
             //list of vehicles
-            List<alertVehicle> vehicles = new List<alertVehicle>();
-            foreach (AV veh in alertVehicles)
+            var vehicles = new List<alertVehicle>();
+            foreach (var veh in alertVehicles)
             {
-                alertVehicle vehicle = new alertVehicle();
-                vehicle.AlertAction = veh.email;
-                vehicle.AlertID = alert.AlertID;
-                vehicle.VehicleID = new Guid(veh.id);
+                var vehicle = new alertVehicle
+                {
+                    AlertAction = veh.email, AlertID = alert.AlertID, VehicleID = new Guid(veh.id)
+                };
                 vehicles.Add(vehicle);
             }
 
-            string results = alertService.updateAlertData(alert, fences, vehicles);
+            var results = _alertService.updateAlertData(alert, fences.ToArray(), vehicles.ToArray());
 
             return Json("OK", JsonRequestBehavior.AllowGet);
         }
@@ -239,7 +235,7 @@ namespace IntelliTraxx.Controllers
         [HttpPost]
         public ActionResult deleteAlert(dbAlert alert)
         {
-            string result = alertService.deleteAlert(alert);
+            var result = _alertService.deleteAlert(alert);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
@@ -275,7 +271,7 @@ namespace IntelliTraxx.Controllers
         {
             public List<Vehicle> extendedAlertVehicles { get; set; }
 
-            public List<PolygonService.polygonData> extendedAlertFences { get; set; }
+            public List<polygonData> extendedAlertFences { get; set; }
         }
     }
 }

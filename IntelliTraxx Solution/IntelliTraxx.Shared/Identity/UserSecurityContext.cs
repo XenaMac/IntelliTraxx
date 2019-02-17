@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace IntelliTraxx.Shared.Identity
+namespace IntelliTraxx.Shared
 {
     public class UserSecurityContext
     {

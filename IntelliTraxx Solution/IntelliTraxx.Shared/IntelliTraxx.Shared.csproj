@@ -120,9 +120,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Contracts\IAuthManager.cs" />
     <Compile Include="Contracts\IUserSecurity.cs" />
     <Compile Include="Identity\AccountViewModels.cs" />
-    <Compile Include="Identity\AuthMgmt.cs" />
+    <Compile Include="Concrete\AuthManager.cs" />
     <Compile Include="Identity\IdentityConfig.cs" />
     <Compile Include="Identity\IdentityModels.cs" />
     <Compile Include="Identity\ManageViewModels.cs" />
@@ -217,6 +218,9 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Connected Services\TruckService\IntelliTraxx.Shared.TruckService.dispatch.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TruckService\IntelliTraxx.Shared.TruckService.DispatchRequest.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Connected Services\TruckService\IntelliTraxx.Shared.TruckService.Driver.datasource">

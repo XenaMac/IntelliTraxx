@@ -5,8 +5,7 @@ namespace IntelliTraxx.WebApi.App_Start
 {
     using System;
     using System.Web;
-    using IntelliTraxx.Shared.Concrete;
-    using IntelliTraxx.Shared.Contracts;
+    using IntelliTraxx.Shared;    
     using IntelliTraxx.WebApi.Helpers;
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 
@@ -51,6 +50,7 @@ namespace IntelliTraxx.WebApi.App_Start
         {
             kernel.Bind<IAppBaseContracts>().To<AppBaseContracts>();
             kernel.Bind<IUserSecurity>().To<UserSecurity>();
+            kernel.Bind<IAuthManager>().To<AuthManager>();
         }
     }
 }

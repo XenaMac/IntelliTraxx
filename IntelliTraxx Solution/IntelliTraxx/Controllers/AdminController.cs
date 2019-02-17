@@ -10,14 +10,14 @@ using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using IntelliTraxx.Common;
-using IntelliTraxx.Shared.Identity;
-using IntelliTraxx.TruckService;
+using IntelliTraxx.Shared;
+using IntelliTraxx.Shared.TruckService;
 
 namespace IntelliTraxx.Controllers
 {
     public class AdminController : Controller
     {
-        private readonly TruckServiceClient truckService = new TruckServiceClient();
+        private readonly TruckServiceClient _truckService = new TruckServiceClient();
 
         public ActionResult Index(string tab)
         {
@@ -26,37 +26,37 @@ namespace IntelliTraxx.Controllers
             admin.Users = new List<ITUser>();
 
             //Get Users and apply to ITUsers
-            var serviceUsers = truckService.getUsers(new Guid()).OrderBy(u => u.UserLastName).ToList();
+            var serviceUsers = _truckService.getUsers(new Guid()).OrderBy(u => u.UserLastName).ToList();
             foreach (var u in serviceUsers)
             {
                 var itu = new ITUser();
                 itu.user = u;
-                itu.Roles = truckService.getUserRolesFull(u.UserID);
-                itu.Companies = truckService.getUserCompaniesFull(u.UserID);
+                itu.Roles = _truckService.getUserRolesFull(u.UserID).ToList();
+                itu.Companies = _truckService.getUserCompaniesFull(u.UserID).ToList();
                 admin.Users.Add(itu);
             }
 
             //Get Roles
-            admin.Roles = truckService.getRoles(new Guid()).OrderBy(x => x.roleName).ToList();
+            admin.Roles = _truckService.getRoles(new Guid()).OrderBy(x => x.roleName).ToList();
 
             //Get Companies
-            admin.Companies = truckService.getCompanies(new Guid()).OrderBy(c => c.CompanyName).ToList();
+            admin.Companies = _truckService.getCompanies(new Guid()).OrderBy(c => c.CompanyName).ToList();
 
             //Get Vehicle Classes
-            admin.VehicleClasses = truckService.getVehicleClasses().OrderBy(vc => vc.VehicleClassName).ToList();
+            admin.VehicleClasses = _truckService.getVehicleClasses().OrderBy(vc => vc.VehicleClassName).ToList();
 
             #region get vehicles
 
-            var VEDS = truckService.getAllVehicles(true);
+            var VEDS = _truckService.getAllVehicles(true);
             admin.Vehicles = new List<VehicleVM>();
             foreach (var ved in VEDS)
             {
                 var nv = new VehicleVM();
                 nv.CompanyID = ved.extendedData.companyID;
-                var vcompany = truckService.getCompanies(ved.extendedData.companyID);
+                var vcompany = _truckService.getCompanies(ved.extendedData.companyID);
                 nv.Company = vcompany[0].CompanyName;
                 nv.VehicleClassID = ved.extendedData.vehicleClassID;
-                var vclass = truckService.getVehicleClasses();
+                var vclass = _truckService.getVehicleClasses();
                 foreach (var vc in vclass)
                     if (vc.VehicleClassID == nv.VehicleClassID)
                         nv.VehicleClass = vc.VehicleClassName;
@@ -75,14 +75,14 @@ namespace IntelliTraxx.Controllers
 
             #region get drivers
 
-            var truckDrivers = truckService.getDrivers();
+            var truckDrivers = _truckService.getDrivers();
             admin.Drivers = new List<DriverVM>();
             foreach (var d in truckDrivers)
             {
                 var driver = new DriverVM();
                 driver.DriverID = d.DriverID;
                 driver.CompanyID = d.CompanyID;
-                var company = truckService.getCompanies(driver.CompanyID);
+                var company = _truckService.getCompanies(driver.CompanyID);
                 driver.CompanyName = company[0].CompanyName;
                 driver.DriverFirstName = d.DriverFirstName;
                 driver.DriverEmail = d.DriverEmail;
@@ -100,7 +100,7 @@ namespace IntelliTraxx.Controllers
 
             #region Get App Variables
 
-            var AppVariables = truckService.getAppVars();
+            var AppVariables = _truckService.getAppVars();
             admin.AppVariables = new List<Vars>();
             foreach (var var in AppVariables)
             {
@@ -115,7 +115,7 @@ namespace IntelliTraxx.Controllers
 
             #region Get Service Variables
 
-            var SvcVariables = truckService.getServiceVars();
+            var SvcVariables = _truckService.getServiceVars();
             admin.ServiceVariables = new List<Vars>();
             foreach (var var in SvcVariables)
             {
@@ -132,9 +132,9 @@ namespace IntelliTraxx.Controllers
 
             #region Vehicles->to->Drivers
 
-            admin.availableDrivers = truckService.getAvailableDrivers();
-            admin.availableVehicles = truckService.getAvailableVehicles();
-            admin.DriversToVehicles = truckService.driverVehicleReturn();
+            admin.availableDrivers = _truckService.getAvailableDrivers().ToList();
+            admin.availableVehicles = _truckService.getAvailableVehicles().ToList();
+            admin.DriversToVehicles = _truckService.driverVehicleReturn().ToList();
 
             #endregion
 
@@ -144,20 +144,20 @@ namespace IntelliTraxx.Controllers
         [CustomAuthorize(Roles = "Administrator")]
         public ActionResult AddUser()
         {
-            ViewBag.Roles = truckService.getRoles(new Guid());
-            ViewBag.Companies = truckService.getCompanies(new Guid());
+            ViewBag.Roles = _truckService.getRoles(new Guid());
+            ViewBag.Companies = _truckService.getCompanies(new Guid());
 
             return View();
         }
 
         [CustomAuthorize(Roles = "Administrator")]
         [HttpPost]
-        public ActionResult AddUser(AddUser model, string[] Companies, string[] Roles)
+        public ActionResult AddUser(AddUser model, string[] companies, string[] roles)
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.Roles = truckService.getRoles(new Guid());
-                ViewBag.Companies = truckService.getCompanies(new Guid());
+                ViewBag.Roles = _truckService.getRoles(new Guid());
+                ViewBag.Companies = _truckService.getCompanies(new Guid());
                 return View(model);
             }
 
@@ -165,76 +165,81 @@ namespace IntelliTraxx.Controllers
             var identity = (ClaimsPrincipal) Thread.CurrentPrincipal;
             var sid = identity.Claims.Where(c => c.Type == ClaimTypes.Sid).Select(c => c.Value).SingleOrDefault();
 
-            var u = new User();
-            u.UserID = Guid.NewGuid();
-            u.UserEmail = model.UserEmail;
-            u.UserFirstName = model.UserFirstName;
-            u.UserLastName = model.UserLastName;
-            u.UserOffice = model.UserOffice;
-            u.UserPhone = model.UserPhone;
-            u.UserPassword = model.UserPassword;
+            var u = new User
+            {
+                UserID = Guid.NewGuid(),
+                UserEmail = model.UserEmail,
+                UserFirstName = model.UserFirstName,
+                UserLastName = model.UserLastName,
+                UserOffice = model.UserOffice,
+                UserPhone = model.UserPhone,
+                UserPassword = model.UserPassword
+            };
 
-            var success = truckService.setUser(u, new Guid(sid));
+            var success = _truckService.setUser(u, new Guid(sid));
             if (success == "OK")
             {
-                foreach (var selection in Companies)
+                foreach (var selection in companies)
                 {
-                    var success2 = truckService.addUserToCompany(u.UserID, new Guid(selection), new Guid(sid));
+                    var success2 = _truckService.addUserToCompany(u.UserID, new Guid(selection), new Guid(sid));
                 }
 
-                foreach (var roleSelection in Roles)
+                foreach (var roleSelection in roles)
                 {
-                    var success3 = truckService.addUserToRole(u.UserID, new Guid(roleSelection), new Guid(sid));
+                    var success3 = _truckService.addUserToRole(u.UserID, new Guid(roleSelection), new Guid(sid));
                 }
             }
             else
             {
-                ViewBag.Roles = truckService.getRoles(new Guid());
-                ViewBag.Companies = truckService.getCompanies(new Guid());
+                ViewBag.Roles = _truckService.getRoles(new Guid());
+                ViewBag.Companies = _truckService.getCompanies(new Guid());
             }
 
             return Redirect("Index");
         }
 
         [CustomAuthorize(Roles = "Administrator")]
-        public ActionResult EditUser(string userID)
+        public ActionResult EditUser(string userId)
         {
-            ViewBag.Roles = truckService.getRoles(new Guid());
-            ViewBag.Companies = truckService.getCompanies(new Guid());
+            ViewBag.Roles = _truckService.getRoles(new Guid());
+            ViewBag.Companies = _truckService.getCompanies(new Guid());
 
-            var user = truckService.getUserProfile(new Guid(userID));
-            var EditUser = new EditUser();
-            EditUser.UserID = user.UserID;
-            EditUser.UserLastName = user.UserLastName;
-            EditUser.UserFirstName = user.UserFirstName;
-            EditUser.UserEmail = user.UserEmail;
-            EditUser.UserOffice = user.UserOffice;
-            EditUser.UserPhone = user.UserPhone;
-            EditUser.UserPassword = user.UserPassword;
-            EditUser.UserSalt = user.UserSalt;
-            EditUser.VerifyUserPassword = user.UserPassword;
-            var _authMgmt = new AuthMgmt();
-            var roleNames = _authMgmt.GetUserRoles(user.UserID);
-            foreach (var s in roleNames) EditUser.Roles += s + "|";
-            var IntelliTruxxUserCompanies = truckService.getUserCompaniesFull(EditUser.UserID);
-            foreach (var c in IntelliTruxxUserCompanies) EditUser.Companies += c.CompanyName + "|";
+            var user = _truckService.getUserProfile(new Guid(userId));
+            var editUser = new EditUser
+            {
+                UserID = user.UserID,
+                UserLastName = user.UserLastName,
+                UserFirstName = user.UserFirstName,
+                UserEmail = user.UserEmail,
+                UserOffice = user.UserOffice,
+                UserPhone = user.UserPhone,
+                UserPassword = user.UserPassword,
+                UserSalt = user.UserSalt,
+                VerifyUserPassword = user.UserPassword
+            };
+            var authMgmt = new AuthManager();
+            var roleNames = authMgmt.GetUserRoles(user.UserID);
+            foreach (var s in roleNames) editUser.Roles += s + "|";
+            var intelliTruxxUserCompanies = _truckService.getUserCompaniesFull(editUser.UserID);
+            foreach (var c in intelliTruxxUserCompanies) editUser.Companies += c.CompanyName + "|";
 
-            return View(EditUser);
+            return View(editUser);
         }
 
         [CustomAuthorize(Roles = "Administrator")]
         [HttpPost]
-        public ActionResult EditUser(EditUser model, string[] Companies, string[] Roles)
+        public ActionResult EditUser(EditUser model, string[] companies, string[] roles)
         {
+            if (roles == null) throw new ArgumentNullException(nameof(roles));
             if (!ModelState.IsValid)
             {
-                ViewBag.Roles = truckService.getRoles(new Guid());
-                ViewBag.Companies = truckService.getCompanies(new Guid());
-                var _authMgmt = new AuthMgmt();
-                var roleNames = _authMgmt.GetUserRoles(model.UserID);
+                ViewBag.Roles = _truckService.getRoles(new Guid());
+                ViewBag.Companies = _truckService.getCompanies(new Guid());
+                var authMgmt = new AuthManager();
+                var roleNames = authMgmt.GetUserRoles(model.UserID);
                 foreach (var s in roleNames) model.Roles += s + "|";
-                var IntelliTruxxUserCompanies = truckService.getUserCompaniesFull(model.UserID);
-                foreach (var c in IntelliTruxxUserCompanies) model.Companies += c.CompanyName + "|";
+                var intelliTruxxUserCompanies = _truckService.getUserCompaniesFull(model.UserID);
+                foreach (var c in intelliTruxxUserCompanies) model.Companies += c.CompanyName + "|";
                 return View(model);
             }
 
@@ -243,7 +248,7 @@ namespace IntelliTraxx.Controllers
             var sid = identity.Claims.Where(c => c.Type == ClaimTypes.Sid).Select(c => c.Value).SingleOrDefault();
 
             //Grab current edited user to see if password has changed
-            var eu = truckService.getUserProfile(model.UserID);
+            var eu = _truckService.getUserProfile(model.UserID);
 
             //compare EU to model tos ee if pwd has changed
             if (eu.UserPassword != model.UserPassword)
@@ -271,58 +276,58 @@ namespace IntelliTraxx.Controllers
                 eu.UserSalt = model.UserSalt;
             }
 
-            var success = truckService.setUser(eu, new Guid(sid));
+            var success = _truckService.setUser(eu, new Guid(sid));
 
             #region blow away user roles and companies
 
             //blow away all roles with userid
-            var UserRoles = truckService.getUserRolesGuids(eu.UserID);
+            var UserRoles = _truckService.getUserRolesGuids(eu.UserID);
             foreach (var roleID in UserRoles)
-                success = truckService.removeUserFromRole(eu.UserID, roleID, new Guid(sid));
+                success = _truckService.removeUserFromRole(eu.UserID, roleID, new Guid(sid));
 
             //blow away all roles with userid
-            var UserCompanies = truckService.getUserCompanies(eu.UserID);
+            var UserCompanies = _truckService.getUserCompanies(eu.UserID);
             foreach (var companyID in UserCompanies)
-                success = truckService.removeUserFromCompany(eu.UserID, companyID, new Guid(sid));
+                success = _truckService.removeUserFromCompany(eu.UserID, companyID, new Guid(sid));
 
             #endregion
 
             #region add user roles and companies
 
-            foreach (var roleSelection in Roles)
-                success = truckService.addUserToRole(eu.UserID, new Guid(roleSelection), new Guid(sid));
+            foreach (var roleSelection in roles)
+                success = _truckService.addUserToRole(eu.UserID, new Guid(roleSelection), new Guid(sid));
 
-            foreach (var selection in Companies)
-                success = truckService.addUserToCompany(eu.UserID, new Guid(selection), new Guid(sid));
+            foreach (var selection in companies)
+                success = _truckService.addUserToCompany(eu.UserID, new Guid(selection), new Guid(sid));
 
             #endregion
 
             if (success != "OK")
             {
-                ViewBag.Roles = truckService.getRoles(new Guid());
-                ViewBag.Companies = truckService.getCompanies(new Guid());
-                ViewBag.UserRoles = truckService.getUserRolesFull(model.UserID);
-                ViewBag.UserCompanies = truckService.getUserCompaniesFull(model.UserID);
+                ViewBag.Roles = _truckService.getRoles(new Guid());
+                ViewBag.Companies = _truckService.getCompanies(new Guid());
+                ViewBag.UserRoles = _truckService.getUserRolesFull(model.UserID);
+                ViewBag.UserCompanies = _truckService.getUserCompaniesFull(model.UserID);
             }
 
             return Redirect("Index");
         }
 
         [CustomAuthorize(Roles = "Administrator")]
-        public ActionResult DeleteUser(string userID)
+        public ActionResult DeleteUser(string userId)
         {
             //get current identity and claims
             var identity = (ClaimsPrincipal) Thread.CurrentPrincipal;
             var sid = identity.Claims.Where(c => c.Type == ClaimTypes.Sid).Select(c => c.Value).SingleOrDefault();
 
             //get user
-            var u = truckService.getUserProfile(new Guid(userID));
+            var u = _truckService.getUserProfile(new Guid(userId));
 
-            var success = truckService.deleteUser(u, new Guid(sid));
+            var success = _truckService.deleteUser(u, new Guid(sid));
 
             if (success == "OK")
                 return Redirect("Index");
-            return RedirectToAction("EditUser", new {userid = userID});
+            return RedirectToAction("EditUser", new {userid = userId});
         }
 
         [CustomAuthorize(Roles = "Administrator")]
@@ -351,7 +356,7 @@ namespace IntelliTraxx.Controllers
             else
                 r.isAdmin = false;
 
-            var success = truckService.setRole(r, new Guid(sid));
+            var success = _truckService.setRole(r, new Guid(sid));
 
             if (success != "OK") return View(model);
 
@@ -360,10 +365,10 @@ namespace IntelliTraxx.Controllers
         }
 
         [CustomAuthorize(Roles = "Administrator")]
-        public ActionResult EditRole(string roleID)
+        public ActionResult EditRole(string roleId)
         {
-            var RoleID = new Guid(roleID);
-            var Role = truckService.getRoles(RoleID);
+            var RoleID = new Guid(roleId);
+            var Role = _truckService.getRoles(RoleID);
             var role = new Roles();
             role.RoleID = Role[0].RoleID;
             role.RoleName = Role[0].roleName;
@@ -375,16 +380,16 @@ namespace IntelliTraxx.Controllers
         }
 
         [CustomAuthorize(Roles = "Administrator")]
-        public ActionResult DeleteRole(string roleID)
+        public ActionResult DeleteRole(string roleId)
         {
             //get current identity and claims
             var identity = (ClaimsPrincipal) Thread.CurrentPrincipal;
             var sid = identity.Claims.Where(c => c.Type == ClaimTypes.Sid).Select(c => c.Value).SingleOrDefault();
 
             //get role
-            var r = truckService.getRoles(new Guid(roleID));
+            var r = _truckService.getRoles(new Guid(roleId));
 
-            var success = truckService.deleteRole(r[0], new Guid(sid));
+            var success = _truckService.deleteRole(r[0], new Guid(sid));
 
             if (success == "OK")
             {
@@ -395,7 +400,7 @@ namespace IntelliTraxx.Controllers
                 return RedirectToAction("EditRole", new {roleID = r[0].RoleID});
             }
 
-            return View(roleID);
+            return View(roleId);
         }
 
         [CustomAuthorize(Roles = "Administrator")]
@@ -423,9 +428,9 @@ namespace IntelliTraxx.Controllers
             company.CompanyState = model.CompanyState;
             company.CompanyCountry = model.CompanyCountry;
             company.isParent = false;
-            company.CompanyContact = truckService.getUserProfile(model.Contact);
+            company.CompanyContact = _truckService.getUserProfile(model.Contact);
 
-            var success = truckService.setCompany(company, new Guid(sid));
+            var success = _truckService.setCompany(company, new Guid(sid));
 
             if (success != "OK") return View(model);
 
@@ -434,10 +439,10 @@ namespace IntelliTraxx.Controllers
         }
 
         [CustomAuthorize(Roles = "Administrator")]
-        public ActionResult EditCompany(string companyID)
+        public ActionResult EditCompany(string companyId)
         {
-            var CompanyID = new Guid(companyID);
-            var Co = truckService.getCompanies(CompanyID);
+            var CompanyID = new Guid(companyId);
+            var Co = _truckService.getCompanies(CompanyID);
             var company = new Companies();
             company.CompanyID = Co[0].CompanyID;
             company.CompanyName = Co[0].CompanyName;
@@ -472,10 +477,10 @@ namespace IntelliTraxx.Controllers
                 CompanyState = model.CompanyState,
                 CompanyCountry = model.CompanyCountry,
                 isParent = model.IsParent,
-                CompanyContact = truckService.getUserProfile(model.Contact)
+                CompanyContact = _truckService.getUserProfile(model.Contact)
             };
 
-            var success = truckService.setCompany(company, new Guid(sid));
+            var success = _truckService.setCompany(company, new Guid(sid));
 
             if (success != "OK") return View(model);
 
@@ -484,18 +489,19 @@ namespace IntelliTraxx.Controllers
         }
 
         [CustomAuthorize(Roles = "Administrator")]
-        public ActionResult DeleteCompany(string companyID)
+        public ActionResult DeleteCompany(string companyId)
         {
+            if (companyId == null) throw new ArgumentNullException(nameof(companyId));
             //get current identity and claims
             var identity = (ClaimsPrincipal) Thread.CurrentPrincipal;
             var sid = identity.Claims.Where(c => c.Type == ClaimTypes.Sid).Select(c => c.Value).SingleOrDefault();
 
             //get role
-            var co = truckService.getCompanies(new Guid(companyID));
+            var co = _truckService.getCompanies(new Guid(companyId));
 
             if (co[0].isParent) return RedirectToAction("EditCompany", new {tab = "C"});
 
-            var success = truckService.deleteCompany(co[0], new Guid(sid));
+            var success = _truckService.deleteCompany(co[0], new Guid(sid));
 
             if (success == "OK")
                 return RedirectToAction("EditCompany", new {tab = "C"});
@@ -506,7 +512,7 @@ namespace IntelliTraxx.Controllers
         public ActionResult GetParentCompanyLocation()
         {
             var parentCompany = new Company();
-            var companies = truckService.getCompanies(new Guid());
+            var companies = _truckService.getCompanies(new Guid());
 
             foreach (var c in companies)
                 if (c.isParent)
@@ -520,8 +526,8 @@ namespace IntelliTraxx.Controllers
             //get current identity and claims
             var identity = (ClaimsPrincipal) Thread.CurrentPrincipal;
             var sid = identity.Claims.Where(c => c.Type == ClaimTypes.Sid).Select(c => c.Value).SingleOrDefault();
-            var user = truckService.getUserProfile(new Guid(sid));
-            var roles = truckService.getUserRolesFull(new Guid(sid));
+            var user = _truckService.getUserProfile(new Guid(sid));
+            var roles = _truckService.getUserRolesFull(new Guid(sid));
             return Json(new
             {
                 user.UserEmail,
@@ -559,17 +565,17 @@ namespace IntelliTraxx.Controllers
                 VehicleClassImage = model.VehicleClassImage
             };
 
-            truckService.updateVehicleClass(nvc, new Guid(sid));
+            _truckService.updateVehicleClass(nvc, new Guid(sid));
 
             //return RedirectToAction("/Index", new { tab = "VC" });
             return View(model);
         }
 
         [CustomAuthorize(Roles = "Administrator")]
-        public ActionResult EditVehicleClass(string VehicleClassID)
+        public ActionResult EditVehicleClass(string vehicleClassId)
         {
-            var vehicleClassID = new Guid(VehicleClassID);
-            var vcs = truckService.getVehicleClasses();
+            var vehicleClassID = new Guid(vehicleClassId);
+            var vcs = _truckService.getVehicleClasses();
             var vcToEdit = new VehicleClasses();
             foreach (var vc in vcs)
                 if (vc.VehicleClassID == vehicleClassID)
@@ -601,23 +607,23 @@ namespace IntelliTraxx.Controllers
             VCToEdit.VehicleClassDescription = model.VehicleClassDescription;
             VCToEdit.VehicleClassImage = model.VehicleClassImage;
 
-            truckService.updateVehicleClass(VCToEdit, new Guid(sid));
+            _truckService.updateVehicleClass(VCToEdit, new Guid(sid));
 
             return RedirectToAction("/Index", "Admin", new {tab = "VC"});
         }
 
         [CustomAuthorize(Roles = "Administrator")]
-        public ActionResult DeleteVehicleClass(string vehicleClassID)
+        public ActionResult DeleteVehicleClass(string vehicleClassId)
         {
             //get current identity and claims
             var identity = (ClaimsPrincipal) Thread.CurrentPrincipal;
             var sid = identity.Claims.Where(c => c.Type == ClaimTypes.Sid).Select(c => c.Value).SingleOrDefault();
 
             //get vehicleclasstoedit
-            var vcs = truckService.getVehicleClasses();
+            var vcs = _truckService.getVehicleClasses();
             var vcToEdit = new VehicleClass();
             foreach (var vc in vcs)
-                if (vc.VehicleClassID == new Guid(vehicleClassID))
+                if (vc.VehicleClassID == new Guid(vehicleClassId))
                 {
                     vcToEdit.VehicleClassID = vc.VehicleClassID;
                     vcToEdit.VehicleClassName = vc.VehicleClassName;
@@ -625,7 +631,7 @@ namespace IntelliTraxx.Controllers
                 }
 
             //delete class
-            truckService.deleteVehicleClass(vcToEdit, new Guid(sid));
+            _truckService.deleteVehicleClass(vcToEdit, new Guid(sid));
 
             return RedirectToAction("/Index", new {tab = "VC"});
         }
@@ -661,16 +667,16 @@ namespace IntelliTraxx.Controllers
             nv.MACAddress = model.VehicleMACAddress;
             nv.RouterID = model.RouterID;
 
-            truckService.updateExtendedData(nv, new Guid(sid));
+            _truckService.updateExtendedData(nv, new Guid(sid));
 
             return RedirectToAction("/Index", new {tab = "V"});
         }
 
         [CustomAuthorize(Roles = "Administrator")]
-        public ActionResult EditVehicle(string VehicleID)
+        public ActionResult EditVehicle(string vehicleId)
         {
-            var id = new Guid(VehicleID);
-            var vehicle = truckService.getVehicleData(id);
+            var id = new Guid(vehicleId);
+            var vehicle = _truckService.getVehicleData(id);
 
             var vehicleToEdit = new VehicleVM();
             vehicleToEdit.ID = vehicle.extendedData.ID;
@@ -714,27 +720,28 @@ namespace IntelliTraxx.Controllers
             nv.MACAddress = model.VehicleMACAddress;
             nv.RouterID = model.RouterID;
 
-            truckService.updateExtendedData(nv, new Guid(sid));
+            _truckService.updateExtendedData(nv, new Guid(sid));
 
             return RedirectToAction("/Index", "Admin", new {tab = "V"});
         }
 
         [CustomAuthorize(Roles = "Administrator")]
-        public ActionResult DeleteVehicle(string VehicleID)
+        public ActionResult DeleteVehicle(string vehicleId)
         {
+            if (vehicleId == null) throw new ArgumentNullException(nameof(vehicleId));            
             //get current identity and claims
             var identity = (ClaimsPrincipal) Thread.CurrentPrincipal;
             var sid = identity.Claims.Where(c => c.Type == ClaimTypes.Sid).Select(c => c.Value).SingleOrDefault();
 
             //get vehicleclasstoedit
-            var vehicles = truckService.getExtendedData();
+            var vehicles = _truckService.getExtendedData();
             var vcToEdit = new VehicleExtendedData();
             foreach (var vc in vehicles)
-                if (vc.ID == new Guid(VehicleID))
+                if (vc.ID == new Guid(vehicleId))
                     vcToEdit = vc;
 
             //delete class
-            truckService.deleteExtendedData(vcToEdit, new Guid(sid));
+            _truckService.deleteExtendedData(vcToEdit, new Guid(sid));
 
             return RedirectToAction("/Index", new {tab = "V"});
         }
@@ -778,7 +785,7 @@ namespace IntelliTraxx.Controllers
                 var br = new BinaryReader(fileUpload.InputStream);
                 nd.imageData = br.ReadBytes((int) fileUpload.InputStream.Length);
                 nd.imageType = fileUpload.ContentType;
-                truckService.updateDriver(nd, new Guid(sid));
+                _truckService.updateDriver(nd, new Guid(sid));
             }
             else
             {
@@ -800,7 +807,7 @@ namespace IntelliTraxx.Controllers
                 nd.ProfilePic = "defaulDriver.png";
                 nd.imageData = arr;
                 nd.imageType = "png";
-                truckService.updateDriver(nd, new Guid(sid));
+                _truckService.updateDriver(nd, new Guid(sid));
             }
 
             return RedirectToAction("/Index", new {tab = "D"});
@@ -809,7 +816,7 @@ namespace IntelliTraxx.Controllers
         [CustomAuthorize(Roles = "Administrator")]
         public ActionResult EditDriver(string driverID)
         {
-            var drivers = truckService.getDrivers();
+            var drivers = _truckService.getDrivers();
             var EditDriver = new DriverVM();
             foreach (var driver in drivers)
                 if (driver.DriverID == new Guid(driverID))
@@ -862,7 +869,7 @@ namespace IntelliTraxx.Controllers
                 ed.imageData = br.ReadBytes((int) fileUpload.InputStream.Length);
                 ed.imageType = fileUpload.ContentType;
                 ed.ProfilePic = "-";
-                truckService.updateDriver(ed, new Guid(sid));
+                _truckService.updateDriver(ed, new Guid(sid));
             }
             else
             {
@@ -879,7 +886,7 @@ namespace IntelliTraxx.Controllers
                 ed.ProfilePic = "-";
                 ed.imageData = model.imageDataField;
                 ed.imageType = model.imageTypeField;
-                truckService.updateDriver(ed, new Guid(sid));
+                _truckService.updateDriver(ed, new Guid(sid));
             }
 
             return RedirectToAction("/Index", new {tab = "D"});
@@ -893,14 +900,14 @@ namespace IntelliTraxx.Controllers
             var sid = identity.Claims.Where(c => c.Type == ClaimTypes.Sid).Select(c => c.Value).SingleOrDefault();
 
             //get vehicleclasstoedit
-            var drivers = truckService.getDrivers();
+            var drivers = _truckService.getDrivers();
             var driverToEdit = new Driver();
             foreach (var dr in drivers)
                 if (dr.DriverID == new Guid(driverID))
                     driverToEdit = dr;
 
             //delete class
-            truckService.deleteDriver(driverToEdit, new Guid(sid));
+            _truckService.deleteDriver(driverToEdit, new Guid(sid));
 
             return RedirectToAction("/Index", new {tab = "D"});
         }
@@ -931,26 +938,27 @@ namespace IntelliTraxx.Controllers
             nv.varType = 1;
             nv.Email = email;
 
-            truckService.updateAppVar(nv, new Guid(sid));
+            _truckService.updateAppVar(nv, new Guid(sid));
 
             return RedirectToAction("/Index", new {tab = "A"});
         }
 
         [CustomAuthorize(Roles = "Administrator")]
-        public ActionResult EditSetting(string settingID)
+        public ActionResult EditSetting(string settingId)
         {
-            var vars = truckService.getAppVars();
-            var AppSetting = new Vars();
+            if (settingId == null) throw new ArgumentNullException(nameof(settingId));
+            var vars = _truckService.getAppVars();
+            var appSetting = new Vars();
             foreach (var var in vars)
-                if (var.varID == new Guid(settingID))
+                if (var.varID == new Guid(settingId))
                 {
-                    AppSetting.ID = var.varID;
-                    AppSetting.varName = var.varName;
-                    AppSetting.varValue = var.varVal;
-                    AppSetting.varMinValue = var.minValue;
+                    appSetting.ID = var.varID;
+                    appSetting.varName = var.varName;
+                    appSetting.varValue = var.varVal;
+                    appSetting.varMinValue = var.minValue;
                 }
 
-            return View(AppSetting);
+            return View(appSetting);
         }
 
         [CustomAuthorize(Roles = "Administrator")]
@@ -973,27 +981,27 @@ namespace IntelliTraxx.Controllers
             ev.varType = 1;
             ev.Email = email;
 
-            truckService.updateAppVar(ev, new Guid(sid));
+            _truckService.updateAppVar(ev, new Guid(sid));
 
             return RedirectToAction("/Index", new {tab = "A"});
         }
 
         [CustomAuthorize(Roles = "Administrator")]
-        public ActionResult DeleteSetting(string varID)
+        public ActionResult DeleteSetting(string varId)
         {
             //get current identity and claims
             var identity = (ClaimsPrincipal) Thread.CurrentPrincipal;
             var sid = identity.Claims.Where(c => c.Type == ClaimTypes.Sid).Select(c => c.Value).SingleOrDefault();
 
             //get vehicleclasstoedit
-            var settings = truckService.getAppVars();
+            var settings = _truckService.getAppVars();
             var varToEdit = new systemvar();
             foreach (var v in settings)
-                if (v.varID == new Guid(varID))
+                if (v.varID == new Guid(varId))
                     varToEdit = v;
 
             //delete class
-            truckService.deleteAppVar(varToEdit, new Guid(sid));
+            _truckService.deleteAppVar(varToEdit, new Guid(sid));
 
             return RedirectToAction("/Index", new {tab = "A"});
         }
@@ -1024,18 +1032,18 @@ namespace IntelliTraxx.Controllers
             nv.varType = 0;
             nv.Email = model.email;
 
-            truckService.updateVar(nv, new Guid(sid));
+            _truckService.updateVar(nv, new Guid(sid));
 
             return RedirectToAction("/Index", new {tab = "VAR"});
         }
 
         [CustomAuthorize(Roles = "Administrator")]
-        public ActionResult EditServiceVar(string varID)
+        public ActionResult EditServiceVar(string varId)
         {
-            var vars = truckService.getServiceVars();
+            var vars = _truckService.getServiceVars();
             var VarSetting = new Vars();
             foreach (var var in vars)
-                if (var.varID == new Guid(varID))
+                if (var.varID == new Guid(varId))
                 {
                     VarSetting.ID = var.varID;
                     VarSetting.varName = var.varName;
@@ -1066,37 +1074,38 @@ namespace IntelliTraxx.Controllers
             ev.Email = model.email;
             ev.varType = 0;
 
-            truckService.updateServiceVar(ev, new Guid(sid));
+            _truckService.updateServiceVar(ev, new Guid(sid));
 
             return RedirectToAction("/Index", new {tab = "VAR"});
         }
 
         [CustomAuthorize(Roles = "Administrator")]
-        public ActionResult DeleteServiceVar(string varID)
+        public ActionResult DeleteServiceVar(string varId)
         {
             //get current identity and claims
             var identity = (ClaimsPrincipal) Thread.CurrentPrincipal;
             var sid = identity.Claims.Where(c => c.Type == ClaimTypes.Sid).Select(c => c.Value).SingleOrDefault();
 
             //get vehicleclasstoedit
-            var settings = truckService.getServiceVars();
+            var settings = _truckService.getServiceVars();
             var varToEdit = new systemvar();
             foreach (var v in settings)
-                if (v.varID == new Guid(varID))
+                if (v.varID == new Guid(varId))
                     varToEdit = v;
 
             //delete class
-            truckService.deleteServiceVar(varToEdit, new Guid(sid));
+            _truckService.deleteServiceVar(varToEdit, new Guid(sid));
 
             return RedirectToAction("/Index", new {tab = "VAR"});
         }
 
 
         [CustomAuthorize(Roles = "Administrator")]
-        public ActionResult deleteVehicleDriver(string ID)
+        public ActionResult deleteVehicleDriver(string id)
         {
+            if (id == null) throw new ArgumentNullException(nameof(id));        
             //deleteVehicleDriver
-            truckService.deleteVehicleDriver(ID);
+            _truckService.deleteVehicleDriver(id);
 
             return Json("OK", JsonRequestBehavior.AllowGet);
         }

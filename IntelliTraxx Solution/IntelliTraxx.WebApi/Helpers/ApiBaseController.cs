@@ -1,5 +1,5 @@
 ﻿using System.Web.Http;
-using IntelliTraxx.Shared.Contracts;
+using IntelliTraxx.Shared;
 
 namespace IntelliTraxx.WebApi.Helpers
 {
