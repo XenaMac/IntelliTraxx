@@ -1089,46 +1089,6 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="submitDispatchRequest">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element xmlns:q115="http://schemas.datacontract.org/2004/07/LATATrax.Models" minOccurs="0" name="dispatchRequest" nillable="true" type="q115:DispatchRequest" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="submitDispatchRequestResponse">
-    <xs:complexType>
-      <xs:sequence />
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="getDispatchRequestForDriver">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element xmlns:q116="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="driverId" type="q116:guid" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="getDispatchRequestForDriverResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element xmlns:q117="http://schemas.datacontract.org/2004/07/LATATrax.Models" minOccurs="0" name="getDispatchRequestForDriverResult" nillable="true" type="q117:DispatchRequest" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="getDispatchRequestForVehicle">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element xmlns:q118="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="vehicleId" type="q118:guid" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="getDispatchRequestForVehicleResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element xmlns:q119="http://schemas.datacontract.org/2004/07/LATATrax.Models" minOccurs="0" name="getDispatchRequestForVehicleResult" nillable="true" type="q119:DispatchRequest" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
   <xs:element name="getOBDDataReturnByDateRange">
     <xs:complexType>
       <xs:sequence>
@@ -1141,7 +1101,7 @@
   <xs:element name="getOBDDataReturnByDateRangeResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q120="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="getOBDDataReturnByDateRangeResult" nillable="true" type="q120:ArrayOfOBDLog" />
+        <xs:element xmlns:q115="http://schemas.datacontract.org/2004/07/LATATrax" minOccurs="0" name="getOBDDataReturnByDateRangeResult" nillable="true" type="q115:ArrayOfOBDLog" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

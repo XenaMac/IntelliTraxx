@@ -16,8 +16,17 @@ namespace IntelliTraxx
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
 
-            // Use the development version of Modernizr to develop with and learn from. Then, when you're
-            // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
+            bundles.Add(new ScriptBundle("~/bundles/appAngular").Include(
+                "~/Scripts/angular.js",
+                "~/Scripts/angular-sanitize.js",
+                "~/Scripts/angular-route.js",
+               
+                "~/app/app.js",               
+                                                
+                "~/app/dispatch/dispatch.module.js",
+                "~/app/dispatch/*.js"                
+            ));
+            
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 

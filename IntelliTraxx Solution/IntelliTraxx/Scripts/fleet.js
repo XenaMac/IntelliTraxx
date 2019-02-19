@@ -25,21 +25,21 @@
     //setting inactive or active vehilce get
     var gh = getCookie('GH');
 
-    if (gh == undefined) {
+    if (gh === undefined) {
         setCookie('GH', 'false');
         var getHistorical = false;
-        $('#historical').bootstrapToggle('on')
+        $('#historical').bootstrapToggle('on');
     } else {
         var getHistorical = gh;
         if (gh == "true") {
-            $('#historical').bootstrapToggle('off')
+            $('#historical').bootstrapToggle('off');
         } else {
-            $('#historical').bootstrapToggle('on')
+            $('#historical').bootstrapToggle('on');
         }
     }
 
 
-    $('[data-toggle="tooltip"]').tooltip()
+    $('[data-toggle="tooltip"]').tooltip();
 
     //#region REMOVE FOR PROD ROLL!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     $('#startSim').click(function () {
@@ -49,21 +49,21 @@
     //---------------------------------------------------
 
     initiate();
-
+       
     //#region Vehicle class
     function Vehicle(data, selected) {
         this.ID = data.extendedData.ID
         this.VehicleID = data.VehicleID;
         this.VehicleID = data.VehicleID;
-		
-        if(data.driver != null) {
-			this.Name = data.extendedData.VehicleFriendlyName + "<br />(" + data.driver.DriverLastName + ")";
-		} else {
-			this.Name = data.extendedData.VehicleFriendlyName + "<br />(No Driver)";
-		}
 
-        if (data.status[0] != null && data.status[0].statusName == "Active") {
-            if (data.status[0].statusVal == "Inactive")
+        if (data.driver !== null) {
+            this.Name = data.extendedData.VehicleFriendlyName + " (" + data.driver.DriverLastName + ")";
+        } else {
+            this.Name = data.extendedData.VehicleFriendlyName + " (No Driver)";
+        }
+
+        if (data.status[0] !== null && data.status[0].statusName === "Active") {
+            if (data.status[0].statusVal === "Inactive")
                 this.status = "Inactive";
         } else {
             this.status = "Active";
@@ -131,7 +131,7 @@
                     scaledSize: new google.maps.Size(32, 50), // scaled size
                     origin: new google.maps.Point(0, 0), // origin
                     anchor: new google.maps.Point(16, 50) // anchor
-                },               
+                },
                 map: map,
                 title: this.Name,
                 duration: this.ABI * 1000,
@@ -182,7 +182,7 @@
             map.setZoom(15);
             map.setCenter(this.getPosition());
         });
-        
+
         mapLogEntry("position", this);
 
         if (this.status != "Inactive") {
@@ -282,8 +282,7 @@
                     }
 
                     if (data.Result[i].varName == "MARKERLABELS") {
-                        if (data.Result[i].varVal == "false")
-                        {
+                        if (data.Result[i].varVal == "false") {
                             labelOpacity = "0.0";
                             $('#labels').bootstrapToggle('off');
                         }
@@ -416,17 +415,17 @@
         $('#listLoader').removeClass('hidden');
 
         //on if reload = true
-        if (reload == true) {
+        if (reload === true) {
             for (i = 0; i < vehicles.length; i++) {
                 vehicles[i].Marker.setMap(null);
             }
             vehicles = [];
             currentD2V = 0
-            $("#vehicleList").empty();
-            $("#vehicleList").append($('<option>', { value: 'None' }).text('-- Select Vehicle ID --'));
+            $("#vehicleList").empty();           
+            $("#vehicleList").append($('<option>', { value: 'None' }).text('-- Select Vehicle ID --'));            
         } else {
-            $("#vehicleList").empty();
-            $("#vehicleList").append($('<option>', { value: 'None' }).text('-- Select Vehicle ID --'));
+            $("#vehicleList").empty();            
+            $("#vehicleList").append($('<option>', { value: 'None' }).text('-- Select Vehicle ID --'));            
         }
 
         $.post("getAllVehicles?loadHistorical=" + getHistorical, null, function (data) {
@@ -443,19 +442,17 @@
             });
 
             for (var i = 0; i < vehicles.length; i++) {
-                $("#vehicleList").append($('<option>', { value: vehicles[i].ID }).text(vehicles[i].Name + " (" + vehicles[i].VehicleID + ")"));
+                $("#vehicleList").append($('<option>', { value: vehicles[i].ID }).text(vehicles[i].Name + " (" + vehicles[i].VehicleID + ")"));                
             }
 
-            $('#currentD2V').html('Current Active Vehicles without Assigned Drivers: <strong>' + (data.length - currentD2V) + "</strong><hr />")
-
+            $('#currentD2V').html('Current Active Vehicles without Assigned Drivers: <strong>' + (data.length - currentD2V) + "</strong><hr />");
             $('#vehicleListDiv').removeClass('hidden');
             $('#listLoader').addClass('hidden');
         });
     };
 
     var selectThisVehicle = function (selected, old) {
-
-        if (selected != old) {
+        if (selected !== old) {
             if (old != null) {
                 old.modifyIcon("normal");
                 mapLogEntry("unselected", old);
@@ -476,10 +473,15 @@
             //if no driver then no interface so then no dispatch
             $('#collapseSixPanel').show();
             $('#collapseSix').collapse('show');
-            if (selectedVehicle.driver != null && selectedVehicle.driver.DriverID != "00000000-0000-0000-0000-000000000000") {
-                
-                $('#driverPic').html('<img id="ItemPreview" src="../Content/Images/' + selectedVehicle.driver.ProfilePic + '"  width="150" class="vertical- align: top;"/>');
-                $('#driverName').html(selectedVehicle.driver.DriverFirstName + " " + selectedVehicle.driver.DriverLastName);
+            if (selectedVehicle.driver != null &&
+                selectedVehicle.driver.DriverID != "00000000-0000-0000-0000-000000000000") {
+
+                $('#driverPic').html('<img id="ItemPreview" src="../Content/Images/' +
+                    selectedVehicle.driver.ProfilePic +
+                    '"  width="150" class="vertical- align: top;"/>');
+                $('#driverName').html(selectedVehicle.driver.DriverFirstName +
+                    " " +
+                    selectedVehicle.driver.DriverLastName);
                 $('#driverEmail').html(selectedVehicle.driver.DriverEmail);
                 if (selectedVehicle.driver.currentStatus.statusName == null) {
                     $('#driverStatus').html("Administrative Log On");
@@ -491,7 +493,9 @@
                 $('#collapseEightPanel').show();
                 $('#SubmitDispatch').append(' ' + selectedVehicle.Name);
             } else {
-                $('#driverPic').html('<span class="glyphicons glyphicons-user-key" style="font-size: 150px;" id="driverIcon"></span>');
+                $('#driverPic')
+                    .html(
+                        '<span class="glyphicons glyphicons-user-key" style="font-size: 150px;" id="driverIcon"></span>');
                 $('#driverName').html('No Driver Assigned');
                 $('#driverEmail').html('');
                 $('#driverStatus').html('');
@@ -509,7 +513,7 @@
         } else {
             if (selected.status == "Inactive") {
                 selected.modifyIcon("Inactive");
-            } else if (selected.status == "InAlert") {
+            } else if (selected.status === "InAlert") {
                 selected.modifyIcon("InAlert");
             } else {
                 selected.modifyIcon("normal");
@@ -518,7 +522,7 @@
             mapLogEntry("unselected", selected);
             closeNav();
         }
-    }
+    };
 
     //#region GetVehicleData Functions
     function getVehicleData(ID) { //Get a download of the vehicle for ID
@@ -593,7 +597,7 @@
                     var markup = "<tr class=\'danger rowClick\'>";
                 } else {
                     var markup = "<tr class=\'rowClick\'>";
-                }                   
+                }
 
                 markup += "<td class=\'hidden\'>" + result[a].alertID + "</td><td class='text-center'>" + result[a].alertName.substr(0, 25) + " ... </td><td class='text-center'>" + moment(alertStart).format('MM/DD/YYYY HH:mm') + "</td><td class='text-center'>" + alertEnd + "</td></tr>";
                 $("#alertsTable tbody").append(markup);
@@ -1651,33 +1655,33 @@
                 smallify: 'remove'
             },
             content: '<div id=\'alertLoader\' class=\'loading hidden\'><img src=\'../Content/Images/preloader.gif\' width=\'100\' /></div>' +
-            '<div id="specificAlertPane">' +
-            '<h2>View Alert</h2>' +
-            '<hr />' +
-            '<input type="hidden" id=alertID />' +
-            '<input type="hidden" id=vehicleID />' +
-            '<div class="col-md-12">' +
-            '<p id="alertDesc"></p>' +
-            '<div class="col-md-12 pull-left">' +
-            '<strong>As of: </strong><label id="LC" class="mapText"></label>&nbsp;&nbsp;' +
-            '<strong>Lat: </strong><label id="Lat" class="mapText"></label>&nbsp;&nbsp;' +
-            '<strong>Long: </strong><label id="Long" class="mapText"></label>&nbsp;&nbsp;' +
-            '<strong>Direction: </strong><label id="Dir" class="mapText"></label>&nbsp;&nbsp;' +
-            '<strong>Speed: </strong><label id="SPD" class="mapText"></label><br />' +
-            '</div>' +
-            '<div class="col-md-12" id="alertMap"><br /><br /></div>' +
-            '<div class="col-md-12"></div>' +
-            '<div class="col-md-12 text-center sliderDiv">' +
-            '<br />' +
-            '<div id="alertMapSlider"></div>' +
-            '<div id="broadcastNum"></div>' +
-            '<br />' +
-            '</div>' +
-            '<div class="col-md-2 sliderDiv"><label id="ST" class="sm pull-left"></label></div>' +
-            '<div class="col-md-8 sliderDiv text-center"></div>' +
-            '<div class="col-md-2 sliderDiv"><label id="ET" class="small pull-right"></label></div>' +
-            '</div>' +
-            '</div>',
+                '<div id="specificAlertPane">' +
+                '<h2>View Alert</h2>' +
+                '<hr />' +
+                '<input type="hidden" id=alertID />' +
+                '<input type="hidden" id=vehicleID />' +
+                '<div class="col-md-12">' +
+                '<p id="alertDesc"></p>' +
+                '<div class="col-md-12 pull-left">' +
+                '<strong>As of: </strong><label id="LC" class="mapText"></label>&nbsp;&nbsp;' +
+                '<strong>Lat: </strong><label id="Lat" class="mapText"></label>&nbsp;&nbsp;' +
+                '<strong>Long: </strong><label id="Long" class="mapText"></label>&nbsp;&nbsp;' +
+                '<strong>Direction: </strong><label id="Dir" class="mapText"></label>&nbsp;&nbsp;' +
+                '<strong>Speed: </strong><label id="SPD" class="mapText"></label><br />' +
+                '</div>' +
+                '<div class="col-md-12" id="alertMap"><br /><br /></div>' +
+                '<div class="col-md-12"></div>' +
+                '<div class="col-md-12 text-center sliderDiv">' +
+                '<br />' +
+                '<div id="alertMapSlider"></div>' +
+                '<div id="broadcastNum"></div>' +
+                '<br />' +
+                '</div>' +
+                '<div class="col-md-2 sliderDiv"><label id="ST" class="sm pull-left"></label></div>' +
+                '<div class="col-md-8 sliderDiv text-center"></div>' +
+                '<div class="col-md-2 sliderDiv"><label id="ET" class="small pull-right"></label></div>' +
+                '</div>' +
+                '</div>',
             contentSize: {
                 width: function () { return $(window).width() / 1.5 },
                 height: function () { return $(window).height() / 1.5 },
@@ -1990,7 +1994,7 @@
         });
 
         $('#historySlider').slider("value", 1);
-    
+
         var month = moment().get('month') - 2;
         $('#playBackFrom_M').datetimepicker({
             dayOfWeekStart: 1,
@@ -2206,7 +2210,7 @@
     $('#vehicleList').on('change', function () {
         var listVehicle = null;
         for (var i = 0; i < vehicles.length; i++) {
-            if (vehicles[i].ID == $(this).val()) {
+            if (vehicles[i].ID === $(this).val()) {
                 listVehicle = vehicles[i];
             }
         }

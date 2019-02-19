@@ -112,24 +112,4 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="dailySchedule" nillable="true" type="tns:dailySchedule" />
-  <xs:complexType name="DispatchRequest">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="Comments" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="DispatchAddress" nillable="true" type="tns:Address" />
-      <xs:element minOccurs="0" name="DriverId" type="ser:guid" />
-      <xs:element minOccurs="0" name="UserId" type="ser:guid" />
-      <xs:element minOccurs="0" name="VehicleId" type="ser:guid" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="DispatchRequest" nillable="true" type="tns:DispatchRequest" />
-  <xs:complexType name="Address">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="City" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Line1" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Line2" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="State" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Zip" nillable="true" type="xs:string" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="Address" nillable="true" type="tns:Address" />
 </xs:schema>

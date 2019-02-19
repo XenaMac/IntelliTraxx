@@ -224,7 +224,83 @@
             </div>
             <div id="collapseDispatch" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingDispatch">
                 <div class="panel-body" id="dispatch_panel">
-                    Dispatch
+
+                    <div ng-app="intelliTraxxApp" ng-cloak>
+                        <div ng-controller="dispatchController">
+                            <form name="pageConfig.dispatchForm">
+                                <div class="form-group"
+                                     ng-class="{'has-error': pageConfig.dispatchForm.vehicleId.$invalid}">
+                                    Select Vehicle
+                                    <select class="form-control input-sm"
+                                            name="vehicleId"
+                                            required
+                                            ng-model="dispatch.vehicleId"
+                                            ng-disabled="vehicles.length === 0 || isBusyGettingVehicles">
+                                        <option value="">
+                                            --Select Vehicle--
+                                        </option>
+                                        <option ng-repeat="vehicle in vehicles"
+                                                value="{{vehicle.extendedData.vehicleID}}">
+                                            {{vehicle.extendedData.VehicleFriendlyName}} ({{vehicle.extendedData.vehicleID}})
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-group"
+                                     ng-class="{'has-error': pageConfig.dispatchForm.address.$invalid}">
+                                    Address
+                                    <input type="text"
+                                           name="address"
+                                           ng-model="dispatch.address"
+                                           class="form-control input-sm"
+                                           required />
+                                </div>
+                                <div class="form-group"
+                                     ng-class="{'has-error': pageConfig.dispatchForm.city.$invalid}">
+                                    City
+                                    <input type="text"
+                                           name="city"
+                                           ng-model="dispatch.city"
+                                           class="form-control input-sm"
+                                           required />
+                                </div>
+                                <div class="form-group"
+                                     ng-class="{'has-error': pageConfig.dispatchForm.state.$invalid}">
+                                    State
+                                    <input type="text"
+                                           name="state"
+                                           ng-model="dispatch.state"
+                                           class="form-control input-sm"
+                                           required />
+                                </div>
+                                <div class="form-group"
+                                     ng-class="{'has-error': pageConfig.dispatchForm.zip.$invalid}">
+                                    Zip
+                                    <input type="text"
+                                           name="zip"
+                                           ng-model="dispatch.zip"
+                                           class="form-control input-sm"
+                                           required />
+                                </div>
+                                <div class="form-group">
+                                    Notes
+                                    <textarea type="text"
+                                              name="note"
+                                              ng-model="dispatch.note"
+                                              class="form-control input-sm"
+                                              rows="3"></textarea>
+                                </div>
+                                <br />
+                                <div class="form-group">
+                                    <button class="btn btn-primary btn-sm" type="button"
+                                            ng-disabled="pageConfig.dispatchForm.$invalid || isBusySubmittingDispatchRequest"
+                                            ng-click="submitDispatchRequest()">
+                                        <i class="fa fa-spinner fa-spin" ng-if="isBusySubmittingDispatchRequest"></i>
+                                        Submit Dispatch 
+                                    </button>
+                                </div>                                
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -390,3 +466,7 @@
         </div>
     </div>
 </div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/appAngular")
+}

@@ -220,9 +220,6 @@
     <None Include="Connected Services\TruckService\IntelliTraxx.Shared.TruckService.dispatch.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Connected Services\TruckService\IntelliTraxx.Shared.TruckService.DispatchRequest.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
     <None Include="Connected Services\TruckService\IntelliTraxx.Shared.TruckService.Driver.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>

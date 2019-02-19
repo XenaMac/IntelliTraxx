@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
+using System.Threading;
 using System.Web.Mvc;
 using IntelliTraxx.Shared.AlertAdminService;
 using IntelliTraxx.Shared.PolygonService;
 using IntelliTraxx.Shared.TabletService;
 using IntelliTraxx.Shared.TruckService;
+using Microsoft.AspNet.Identity;
 using RestSharp;
+using dispatch = IntelliTraxx.Shared.TruckService.dispatch;
 
 namespace IntelliTraxx.Controllers
 {
@@ -50,7 +54,6 @@ namespace IntelliTraxx.Controllers
         public ActionResult getVehicles()
         {
             var vehicles = _truckService.getVehicles();
-
             return Json(vehicles, JsonRequestBehavior.AllowGet);
         }
 
@@ -63,7 +66,6 @@ namespace IntelliTraxx.Controllers
         public ActionResult getVehicleList()
         {
             var vehicleList = _truckService.getVehicleList();
-
             return Json(vehicleList, JsonRequestBehavior.AllowGet);
         }
 
@@ -315,6 +317,34 @@ namespace IntelliTraxx.Controllers
             return Json(response.Data.Data, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public ActionResult SubmitDispatchRequest(dispatch dispatch)
+        {
+            try
+            {
+                var identity = (ClaimsPrincipal) Thread.CurrentPrincipal;
+                var sid = identity.Claims.Where(c => c.Type == ClaimTypes.Sid).Select(c => c.Value).SingleOrDefault();
+                if (string.IsNullOrEmpty(sid))
+                {
+                    return Json("User not found", JsonRequestBehavior.AllowGet);
+                }
+
+                var userId = Guid.Parse(sid);
+                var currentUser = _truckService.getUserProfile(userId);
+            
+                dispatch.ID = Guid.NewGuid();
+                dispatch.timeStamp = DateTime.Now;
+                dispatch.UserEmail = currentUser.UserEmail;
+
+                var response = _truckService.dispatchVehicle(dispatch);
+                return Json(response, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(ex, JsonRequestBehavior.AllowGet);
+            }
+           
+        }
         
         // ------------------------ Classes -------------------//
 
