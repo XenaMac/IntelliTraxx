@@ -1,12 +1,14 @@
-﻿using System;
-using System.Web.Http;
+﻿using System.Web.Http;
+using IntelliTraxx.Shared.TruckService;
 using IntelliTraxx.WebApi.Helpers;
 
 namespace IntelliTraxx.WebApi.Controllers.api
 {
-   
+    [Authorize]
     public class DispatchController : ApiBaseController
     {
+        private readonly TruckServiceClient _truckService = new TruckServiceClient();
+
         public DispatchController(IAppBaseContracts appBaseContracts)
         : base(appBaseContracts)
         {
@@ -15,20 +17,10 @@ namespace IntelliTraxx.WebApi.Controllers.api
 
         [AllowAnonymous]
         [HttpGet]
-        [Route("api/dispatch/getServerTime")]
-        public IHttpActionResult GetServerTime()
+        [Route("api/dispatch/getAllVehicles/{includeHistorical}")]
+        public IHttpActionResult GetAllVehicles(bool includeHistorical)
         {
-            var data = DateTime.Now;
-            return Ok(data);
-        }
-
-        [Authorize]
-        [HttpGet]
-        [Route("api/dispatch/getServerTimeSafe")]
-        public IHttpActionResult GetServerTimeSafe()
-        {
-            var userSecurityContext = this.UserSecurity.GetCurrentUserSecurityContext();            
-            var data = $"{DateTime.Now}-{userSecurityContext.FullName}-{userSecurityContext.Email}";
+            var data = _truckService.getAllVehicles(includeHistorical);
             return Ok(data);
         }
     }
