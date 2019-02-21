@@ -1,4 +1,5 @@
-﻿using System.Web.Http;
+﻿using System.Linq;
+using System.Web.Http;
 using IntelliTraxx.Shared.TruckService;
 using IntelliTraxx.WebApi.Helpers;
 
@@ -21,6 +22,14 @@ namespace IntelliTraxx.WebApi.Controllers.api
         public IHttpActionResult GetAllVehicles(bool includeHistorical)
         {
             var data = _truckService.getAllVehicles(includeHistorical);
+            return Ok(data);
+        }
+
+        [HttpGet]
+        [Route("api/dispatch/getDispatchRequests/{vehicleId}")]
+        public IHttpActionResult GetDispatchRequests(string vehicleId)
+        {
+            var data = _truckService.getDispatchesByVehicle(vehicleId).ToList();
             return Ok(data);
         }
     }
