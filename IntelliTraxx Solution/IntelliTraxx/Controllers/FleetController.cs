@@ -19,8 +19,7 @@ namespace IntelliTraxx.Controllers
         readonly TruckServiceClient _truckService = new TruckServiceClient();
         readonly PolygonServiceClient _polygonService = new PolygonServiceClient();
         readonly AlertAdminSvcClient _alertAdminService = new AlertAdminSvcClient();
-        TabletInterfaceClient _tabletService = new TabletInterfaceClient();
-
+        
         // GET: Fleet
         [Authorize]
         public ActionResult Index()
@@ -44,39 +43,39 @@ namespace IntelliTraxx.Controllers
             return Json(parentCompany.CompanyAddress + "," + parentCompany.CompanyCity + ", " + parentCompany.CompanyState, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult getVariables()
+        public ActionResult GetVariables()
         {
             var variables = _truckService.getVarsAsync();
 
             return Json(variables, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult getVehicles()
+        public ActionResult GetVehicles()
         {
             var vehicles = _truckService.getVehicles();
             return Json(vehicles, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult getAllVehicles(bool loadHistorical)
+        public ActionResult GetAllVehicles(bool loadHistorical)
         {
             var allVehicles = _truckService.getAllVehicles(loadHistorical);
             return Json(allVehicles, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult getVehicleList()
+        public ActionResult GetVehicleList()
         {
             var vehicleList = _truckService.getVehicleList();
             return Json(vehicleList, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult getGPS(Guid id)
+        public ActionResult GetGps(Guid id)
         {
             var vehicleData = _truckService.getGPS(id);
 
             return Json(vehicleData, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult getVehicleData(string id)
+        public ActionResult GetVehicleData(string id)
         {
 
             var vehicleData = _truckService.getVehicleData(new Guid(id));
