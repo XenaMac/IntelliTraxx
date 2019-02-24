@@ -6,9 +6,7 @@ using System.Threading;
 using System.Web.Mvc;
 using IntelliTraxx.Shared.AlertAdminService;
 using IntelliTraxx.Shared.PolygonService;
-using IntelliTraxx.Shared.TabletService;
 using IntelliTraxx.Shared.TruckService;
-using Microsoft.AspNet.Identity;
 using RestSharp;
 using dispatch = IntelliTraxx.Shared.TruckService.dispatch;
 
@@ -19,7 +17,7 @@ namespace IntelliTraxx.Controllers
         readonly TruckServiceClient _truckService = new TruckServiceClient();
         readonly PolygonServiceClient _polygonService = new PolygonServiceClient();
         readonly AlertAdminSvcClient _alertAdminService = new AlertAdminSvcClient();
-        
+
         // GET: Fleet
         [Authorize]
         public ActionResult Index()
@@ -98,7 +96,7 @@ namespace IntelliTraxx.Controllers
         public ActionResult getAvailableDrivers()
         {
             List<Driver> availableDrivers = _truckService.getAvailableDrivers().OrderBy(d => d.DriverFirstName).ToList();
-            
+
             return Json(availableDrivers, JsonRequestBehavior.AllowGet);
         }
 
@@ -160,7 +158,8 @@ namespace IntelliTraxx.Controllers
                 var latlong = s.Split('^');
                 var LL = new Shared.PolygonService.LatLon
                 {
-                    Lat = Convert.ToDouble(latlong[0]), Lon = Convert.ToDouble(latlong[1])
+                    Lat = Convert.ToDouble(latlong[0]),
+                    Lon = Convert.ToDouble(latlong[1])
                 };
                 latLongs.Add(LL);
             }
@@ -321,7 +320,7 @@ namespace IntelliTraxx.Controllers
         {
             try
             {
-                var identity = (ClaimsPrincipal) Thread.CurrentPrincipal;
+                var identity = (ClaimsPrincipal)Thread.CurrentPrincipal;
                 var sid = identity.Claims.Where(c => c.Type == ClaimTypes.Sid).Select(c => c.Value).SingleOrDefault();
                 if (string.IsNullOrEmpty(sid))
                 {
@@ -330,7 +329,7 @@ namespace IntelliTraxx.Controllers
 
                 var userId = Guid.Parse(sid);
                 var currentUser = _truckService.getUserProfile(userId);
-            
+
                 dispatch.ID = Guid.NewGuid();
                 dispatch.timeStamp = DateTime.Now;
                 dispatch.UserEmail = currentUser.UserEmail;
@@ -342,9 +341,9 @@ namespace IntelliTraxx.Controllers
             {
                 return Json(ex, JsonRequestBehavior.AllowGet);
             }
-           
+
         }
-        
+
         // ------------------------ Classes -------------------//
 
 
