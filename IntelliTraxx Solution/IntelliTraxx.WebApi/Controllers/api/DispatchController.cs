@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using IntelliTraxx.Shared.TabletService;
 using IntelliTraxx.Shared.TruckService;
 using IntelliTraxx.WebApi.Helpers;
 
 namespace IntelliTraxx.WebApi.Controllers.api
 {
-    [Authorize]
+    [Authorize]    
     public class DispatchController : ApiBaseController
     {
         private readonly TruckServiceClient _truckService = new TruckServiceClient();
