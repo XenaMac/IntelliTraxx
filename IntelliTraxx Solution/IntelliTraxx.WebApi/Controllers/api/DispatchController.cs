@@ -1,13 +1,13 @@
-﻿using System;
-using System.Linq;
-using System.Web.Http;
-using IntelliTraxx.Shared.TabletService;
+﻿using IntelliTraxx.Shared.TabletService;
 using IntelliTraxx.Shared.TruckService;
 using IntelliTraxx.WebApi.Helpers;
+using System;
+using System.Linq;
+using System.Web.Http;
 
 namespace IntelliTraxx.WebApi.Controllers.api
 {
-    [Authorize]    
+    [Authorize]
     public class DispatchController : ApiBaseController
     {
         private readonly TruckServiceClient _truckService = new TruckServiceClient();
@@ -32,7 +32,7 @@ namespace IntelliTraxx.WebApi.Controllers.api
         [Route("api/dispatch/getDispatchRequests/{vehicleId}")]
         public IHttpActionResult GetDispatchRequests(string vehicleId)
         {
-            var data = _truckService.getDispatchesByVehicle(vehicleId).ToList();
+            var data = _truckService.getDispatchesByVehicle(vehicleId).Where(p => !p.acked).ToList();
             return Ok(data);
         }
 
@@ -45,10 +45,10 @@ namespace IntelliTraxx.WebApi.Controllers.api
                 _tabletInterfaceClient.ackDispatch(ack.DispatchId, ack.Note, ack.DriverPin);
                 return Ok();
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                return this.Ok();
-            }           
+                return Ok();
+            }
         }
     }
 
